@@ -1,0 +1,13 @@
+{
+  "requirements": [
+    {"id":"FR-004","requirement":"初期版は Python コードから文章・表・計算式を組み立てるライブラリ","priority":"Must","notes":"2026-10-16 ユーザー回答。GUI 帳票デザイナは初期版に含めない。"},
+    {"id":"FR-005","requirement":"文字サイズを保ち、開始位置・字送り・行位置をグリッドに合わせる","priority":"Must","notes":"2026-10-16 ユーザー回答。自動縮小・字形の横方向伸縮を基本動作にしない。"}
+  ],
+  "decisions": [
+    {"decision":"Python library first","rationale":"ユーザーが初期版の利用形態として選択。","alternatives":"GUI 帳票デザイナを初期版から含める。","date":"2026-10-16"},
+    {"decision":"Preserve font size during grid adjustment","rationale":"ユーザーが文字サイズ保持と開始位置・字送り・行位置の調整を選択。","alternatives":"枠に収まるよう文字サイズや字形の横幅を自動変更する。","date":"2026-10-16"}
+  ],
+  "section_updates": [
+    {"heading":"## TODO / Open Questions","content":"- grill-with-docs の対話で、グリッド1マスと文字の関係を最初に確定する。A4.pdf は文字を含まないため、この意味は実測から推定しない。"}
+  ]
+}

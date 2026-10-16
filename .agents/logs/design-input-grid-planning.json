@@ -1,0 +1,14 @@
+{
+  "section_updates": [
+    {"heading":"## 背景・目的 (Background & Purpose)","content":"Python の自作 PDF 計算書ライブラリを設計する。A4.pdf の GridLayout に従って文字配置を調整し、計算書の書式と計算式の等号位置を統一する。"},
+    {"heading":"## スコープ (Scope)","content":"今回の成果物は資料調査と実装計画。対象資料は `.agents/docs/research/A4.pdf` と `tests/output/*.pdf`。ライブラリ実装と既存 P7 アプリへの移行は後続作業。"},
+    {"heading":"## 制約 (Constraints)","content":"参照 PDF は読み取り専用で保持する。グリッド寸法は PDF から検証し、確認済み事実と提案値を区別する。"},
+    {"heading":"## TODO / Open Questions","content":"- GridLayout の正確な寸法、文字基線、余白を資料で確認する。\n- 描画バックエンド、初期 API、検証条件は計画内で提案する。"}
+  ],
+  "requirements": [
+    {"id":"FR-001","requirement":"A4.pdf の GridLayout に基づく文字位置調整","priority":"Must","notes":"ユーザー指定"},
+    {"id":"FR-002","requirement":"複数行の計算式の等号位置を揃える","priority":"Must","notes":"ユーザー指定"},
+    {"id":"FR-003","requirement":"余白・フォント・改ページを共通コンポーネントで扱う","priority":"Must","notes":"会話で確認した目的"}
+  ],
+  "decisions": [{"decision":"Custom Python component library","rationale":"ユーザーが自作を選択し、A4 グリッドへの文字配置調整を独自性として指定した。","alternatives":"ReportLab Platypus, ReportBro, borb, fpdf2, WeasyPrint を調査済み。描画など下位機能のライブラリ利用は未決定。","date":"2026-10-16"}]
+}
