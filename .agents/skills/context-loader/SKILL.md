@@ -23,7 +23,7 @@ hand-maintained file list, so the plan never drifts from what actually exists
 on disk:
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/context-loader/load_context.py [--task-libraries name,name]
+uv run --no-project python .agents/skills/context-loader/load_context.py [--task-libraries name,name]
 ```
 
 Pass `--task-libraries` (comma-separated) when the task names specific

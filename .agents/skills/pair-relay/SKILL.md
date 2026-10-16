@@ -1,6 +1,7 @@
 ---
 name: pair-relay
-description: 司令塔Agentが Navigator と Driver を分けて長い実装を進めるための運用スキル。司令塔は実装・レビュー・検証を自分で抱えず、Driver の完了報告やバグ報告を Navigator に渡し、Navigator の「次の 1 手」を Driver に渡す。Driver は .claude/agents/pair-relay-driver.md、Navigator は .claude/agents/pair-relay-navigator.md に従う。トリガー: 「/pair-relay」「計画書を実装してください」「プランを実装」「段階的に実装」「複数ファイルにまたがる実装」「長い実装」「フェーズを実装」「TDD で実装」「codex でレビューして修正」「レビューして Medium 以上が無くなるまで修正」「コードレビューしてバグを直して」と言われたとき。複数ファイル・複数レイヤー（Rust + Python）にまたがる実装や、プランファイルを渡されて実装を指示されたときに優先的に発動すること。⚠️ **コード実装だけでなく「実装前のプラン／issue レビュー＆修正ループ」も本スキルの対象**: 「実装前にこの計画をレビューして修正」「issue/プランを Navigator と codex にレビューさせて Medium 以上が無くなるまで直す」と言われたら、Navigator がコードと突き合わせてプラン改訂を起草 → codex を独立セカンドオピニオンとして並走 → 司令塔が Medium 以上を集約 → Navigator が改訂版プランを再起草 → Medium 以上ゼロまでラウンドを回す。この場合 Driver の「適用」対象はコードではなく **issue 本文／プランファイルの編集**（`gh issue edit --body-file` 等）になる。プランがコード（footer.rs / main.rs / proto / tests）と食い違う指摘は実装着手前に潰せるので、コストの高い手戻りを防げる。⚠️ src/ui/** を触る作業では Navigator spawn 前に必ず bevy-engine スキルを発動して内容を把握すること（読まずに進めると Bevy 0.15 固有の罠でハマる）。⚠️ Rust テスト（`#[cfg(test)] mod tests` 追加や `cargo test --lib` 主体の TDD ループ）を伴う作業では Navigator spawn 前に rust-testing スキルも発動すること（subagent は親が発動したスキルしか引き継がない）。⚠️ Python テスト（pytest、特に `pytest-httpx` / `pytest-asyncio` / `freezegun` を使う RED→GREEN ループ）を伴う作業では Navigator spawn 前に tdd スキルも発動すること。**「バグ修正」「issue を実装」「不具合修正」名目でも、CLAUDE.md が「先に RED テストを書いてから修正」を要求している場合は必ず tdd を発動する**
+description: >-
+  司令塔が Navigator と Driver を分け、設計判断・レビューと 1 手ずつの実装をリレーする。Python の複数ファイルにまたがる実装、計画書や issue のレビューと修正、TDD、Medium 以上がなくなるまでの修正に使う。
 ---
 
 # Pair Relay
@@ -25,10 +26,7 @@ description: 司令塔Agentが Navigator と Driver を分けて長い実装を�
 | Driver | Navigator の指示を実装し、短く完了報告する |
 | Human / Owner | 最終承認、必要な手動 E2E、外部判断 |
 
-参照:
-
-- Navigator: `.claude/agents/pair-relay-navigator.md`
-- Driver: `.claude/agents/pair-relay-driver.md`
+役割の指示は spawn prompt に含める。Navigator は対象コードを確認して次の 1 手と検証方法を決め、Driver は指定されたファイル・範囲だけを編集する。利用可能なエージェント機能を使い、専用 agent type の存在を仮定しない。
 
 ## 標準ループ
 
@@ -50,15 +48,15 @@ Driver の「書きました」報告は、注意点を含めて Navigator に�
 
 例:
 
-- 「この瞬間 cargo check すると未定義シンボルになります」
+- 「この中間状態では import が失敗します」
 - 「既存関数はまだ他所から呼ばれているので削除不可です」
-- 「Save 側だけ変更済みで Save As は未変更です」
+- 「レイアウト計算側だけ変更済みで PDF 描画側は未変更です」
 
 これらを削らず Navigator に渡します。
 
 ### 4. Navigator の検証
 
-Navigator が `rg` / `cargo check` / `cargo test` / 旧経路 grep / E2E 指示 / 差分整理を行います。司令塔Agentは Navigator の結果を Driver または Human に運びます。
+Navigator が `rg` / `uv run --locked --extra dev python -m pytest` / 旧経路 grep / E2E 指示 / 差分整理を行います。司令塔Agentは Navigator の結果を Driver または Human に運びます。
 
 ## 司令塔が判断を返してはいけない場面
 
@@ -73,7 +71,7 @@ Driver の完了報告に**確認質問**（「進めて大丈夫ですか？」
 具体的な禁止例:
 
 - ❌ Driver: 「中間状態で未定義シンボルになります。進めて大丈夫ですか？」 → 司令塔: 「OK、想定通りです」
-- ❌ Driver: 「apply_cache_restore_system 側の理解で合っていますか？」 → 司令塔: 「たぶんそちらでしょう、進めてください」
+- ❌ Driver: 「PDF 描画側の理解で合っていますか？」 → 司令塔: 「たぶんそちらでしょう、進めてください」
 - ✅ Driver: 上記 → 司令塔: Driver 原文をそのまま Navigator に転送し、Navigator の指示を待つ
 
 「たぶん」「想定通り」「進めてください」が司令塔の口から出たら、それは Navigator の領分に踏み込んだ合図です。
@@ -113,16 +111,19 @@ Driver が指示を **適用せず保留** したという意味。次の処理:
 良いバグ報告（このまま Navigator に渡せる粒度）:
 
 ```text
-4 panel 全部 spawn されたが、位置が cache JSON の値に適用されていません。
-drag autosave は機能しています。
+生成 PDF で数式の右端が想定したグリッド線からずれています。
+同じ入力の数値表示は一致しています。
 
 仮説:
-apply_pending_layout_system の早期 return に引っかかっています。
+配置計算と PDF 描画で座標変換が重複している可能性があります。
 
-トレース:
-1. apply_cache_restore_system が fragments を populate
-2. panel_spawn_dispatcher_system が drain
-3. apply_pending_layout_system が waiting_for_strategy=true && empty で return
+確認済みの事実:
+1. 再現入力と生成 PDF を保存した
+2. 配置結果の座標を記録した
+3. PDF 上の実際の位置と比較した
+
+※ 報告例。実際の調査では対象ファイル・関数名と計測値を添える。
+
 ```
 
 ## 中間状態の扱い
@@ -135,10 +136,9 @@ format / restore の判断も Navigator に任せます。
 
 教訓:
 
-- 全体 `cargo fmt` は無関係ファイルを巻き込むことがある
-- 対象ファイルだけ `rustfmt --edition 2024` が有効なことがある
-- `mod.rs` の check は子 module まで見て既存未整形で落ちることがある
-- E2E で fixture が更新されることがあるため、最後に `git status` を分けて見る
+- 全体整形は無関係ファイルを巻き込むことがあるため、担当範囲に限定する
+- 検証で PDF や fixture が生成される場合は、実装差分と区別して `git status` を確認する
+- `.agents/docs/research/A4.pdf` と `tests/output/*.pdf` の既存参照ファイルは保持する
 
 司令塔Agentは、Navigator が示した restore 対象だけ Driver または Human に渡します。
 
@@ -148,13 +148,11 @@ format / restore の判断も Navigator に任せます。
 
 ルール:
 
-- Navigator が「Medium 以上なし」と返したら、司令塔は **完了宣言の前に必ず該当範囲の `cargo test` / `pytest` を回す**（Navigator/Driver に Bash が無い harness では司令塔が代行する原則どおり）。回す対象は Navigator が起草した検証コマンド、無ければ変更ファイルに対応するユニット/統合テスト。
+- Navigator が「Medium 以上なし」と返したら、司令塔は **完了宣言の前に必ず該当範囲の `uv run --locked --extra dev python -m pytest` を回す**（Navigator/Driver に Bash が無い harness では司令塔が代行する原則どおり）。回す対象は Navigator が起草した検証コマンド、無ければ変更ファイルに対応するユニット/統合テスト。
 - テストが赤なら、その raw 出力を **判定せずに Navigator へ verbatim で渡す**。Navigator が「実装バグ（Medium 以上）か / stale テスト（実装は正・テストが誤り）か」を切り分け、次の 1 手を起草する。
 - 「コミットメッセージに GREEN と書いてある」「前任 Navigator が健全と言った」だけで緑とみなさない。実際に回して確かめる。
 
-実例（issue #64 レビュー）: Navigator はコードレビューのみで「Medium 以上なし」と結論したが、司令塔が裏取りで `pytest` を回したところ 1 件が赤（`assert success is False` だが実装は `True` を返す）。Navigator 再判定で「register は mode gate なし＝実装が正、テストの期待が stale」と切り分けられ、テスト側を直して解決した。**司令塔がテストを回さなければこの赤は完了報告をすり抜けていた。**
-
-⚠️ **独立セカンドオピニオン（codex 代替の Claude レビュー Agent）は必ず read-only agent type（`Explore`）で spawn する**。`general-purpose` は Bash/Edit/Write を持つため、レビュー中に作業ツリーを触りうる。実例（#46 Slice B2 Step7）: `general-purpose` のレビュー Agent が「baseline 比較」のため `git stash pop` を実行 → conflict → `git reset --hard` で復旧、という**破壊的 git をレビュー名目で実行**した（幸い tree/stash は無傷で復旧）。レビューは静的観察に徹するべきで、`Explore`（read-only）なら構造的に不可能になる。cargo/git の裏取りは従来どおり司令塔が代行し raw 出力を渡す。これは「Navigator/Driver に破壊的 git をやらせない」原則の **レビュー Agent への拡張**。
+⚠️ **独立セカンドオピニオン（codex 代替の Claude レビュー Agent）は必ず read-only agent type（`Explore`）で spawn する**。`general-purpose` は Bash/Edit/Write を持つため、レビュー中に作業ツリーを触りうる。レビューは静的観察に徹するべきで、`Explore`（read-only）なら構造的に不可能になる。pytest/git の裏取りは従来どおり司令塔が代行し raw 出力を渡す。これは「Navigator/Driver に破壊的 git をやらせない」原則の **レビュー Agent への拡張**。
 
 ## 完了報告（司令塔 → Human）
 
@@ -163,12 +161,10 @@ format / restore の判断も Navigator に任せます。
 ```text
 完了です。
 
-- cargo check: OK
-- cargo test: OK
-- E2E Step 1-8: PASS
-- 旧保存経路 grep: 残骸なし
-- 本実装差分: Cargo.toml / Cargo.lock / src/ui/...
-- 検証副作用: examples/test_strategy_daily.* は戻す候補
+- pytest: 実行コマンドと結果
+- PDF 検証: 対象出力・確認内容・結果（レイアウト変更時）
+- 差分: src/gridlayoutpdf/ と tests/ の実際の変更ファイル
+- 検証生成物: 保存先と既存参照ファイルを保持したこと
 ```
 
 ## 司令塔Agentの禁止事項（一覧）
@@ -178,7 +174,7 @@ format / restore の判断も Navigator に任せます。
 - 自分で実装する（Edit / Write）
 - 自分で設計判断する（「たぶん」「想定通り」「進めて OK」）
 - 自分でコードレビューする
-- 自分で `cargo check` / `cargo test` / `rg` / `Read` を走らせる（**例外**: Navigator/Driver に Bash が付与されない harness では検証コマンドは司令塔が走らせ、**raw 出力をそのまま Navigator に渡して解釈させる**。下記「Navigator/Driver に Bash が無い harness の運用」参照）
+- 自分で `uv run --locked --extra dev python -m pytest` / `rg` / `Read` を走らせる（**例外**: Navigator/Driver に Bash が付与されない harness では検証コマンドは司令塔が走らせ、**raw 出力をそのまま Navigator に渡して解釈させる**。下記「Navigator/Driver に Bash が無い harness の運用」参照）
 - Navigator の指示を要約・改変・順番入れ替え
 - Driver の警告・確認質問・review-block を省略・丸めて Navigator に渡す
 - respawn 時に引き継ぎを書き換える・追加する・要約する
@@ -194,11 +190,11 @@ format / restore の判断も Navigator に任せます。
 
 ## 未コミット作業の保護（破壊的 git は subagent に絶対やらせない）
 
-実例: ある Navigator が一時 probe テストを「`git checkout` で除去」した際、**同ファイルの未コミット追加（289 行のテスト）まで巻き戻して消失**させた。実装は別ファイルで無傷だったが、消えたテストは未コミット＝git に記録が無く、復旧元は会話履歴の verbatim だけだった。
+未コミット変更は git に記録されていない。検証用コードの除去に巻き戻しコマンドを使うと、同じファイルにあるユーザーの変更まで失うことがある。
 
 ルール:
 
-- **Navigator/Driver を spawn する prompt に必ず**「`git checkout` / `git reset` / `git restore` / `git stash` 等、作業ツリーを巻き戻すコマンドは実行禁止」と明記する。検証は pytest / cargo / Read / Grep / `git status` まで。
+- **Navigator/Driver を spawn する prompt に必ず**「`git checkout` / `git reset` / `git restore` / `git stash` 等、作業ツリーを巻き戻すコマンドは実行禁止」と明記する。検証は pytest / Read / Grep / `git status` まで。
 - 一時 probe コードが要るなら、別 throwaway ファイルに書くか Read だけで観測し、消すときも対象を名指しの Edit で消す（git で戻さない）。
 - subagent はワークツリー全体の文脈を持たない。`git checkout <file>` でも、その subagent が作っていない未コミット変更まで道連れにする。`git reset --hard` だけの問題ではない。
 - 長い実装で未コミット差分が積み上がったら、節目で WIP コミットして保護を検討する（git は Bash 経由）。
@@ -213,22 +209,22 @@ format / restore の判断も Navigator に任せます。
    - Driver の完了報告を **verbatim**（要約・改変なし、code block で括る）
    - 直前の commit sha と現在の HEAD
    - regression baseline 数字（passed/failed/errors）
-   - これまでに固まったユーザー確定仕様（B4 全体仕様など、複数 subtask に跨る決定事項）
+   - これまでに固まったユーザー確定仕様（複数 subtask に跨る決定事項）
 3. Navigator の最初の仕事に「Read で SUT 直前状態を確認してから次手を起草」を含める（記憶がないため）
 
 この運用で 4-5 ターン回しても context 整合は保てる。同個体継続より 1 ターンあたり 5-10k token 増えるので、1 session あたりの subtask 上限は 2-3 のままで変わらない。
 
-**ただし「1 つの大タスクを小ステップに割って 15-20+ ターン回す」のは別物で、可能**（実績: Phase 7.3 A0 の per-instrument data refactor を proto→python→rust の十数ステップで完走）。鍵は **司令塔が cross-turn state を保持すること**: 毎回の新 Navigator prompt に「**安定した step シーケンス全体 + ユーザ確定の binding decisions + 直近の baseline 数字**」のコンパクトな block を貼り続ける（Navigator 個体は記憶を持たないが、この block が "外部記憶" になる）。各ステップを「1 ファイル / 1 関数 / 1 論理修正」まで小さく保てば、Navigator 1 個体の context は毎回ほぼ空から始まり破綻しない。subtask 上限 2-3 は「Navigator が跨いで判断を積む必要がある独立タスク」の話で、「司令塔が直列に運ぶ小ステップ」には適用されない。
+**ただし「1 つの大タスクを小ステップに割って 15-20+ ターン回す」のは別物で、可能**。鍵は **司令塔が cross-turn state を保持すること**: 毎回の新 Navigator prompt に「**安定した step シーケンス全体 + ユーザ確定の binding decisions + 直近の baseline 数字**」のコンパクトな block を貼り続ける（Navigator 個体は記憶を持たないが、この block が "外部記憶" になる）。各ステップを「1 ファイル / 1 関数 / 1 論理修正」まで小さく保てば、Navigator 1 個体の context は毎回ほぼ空から始まり破綻しない。subtask 上限 2-3 は「Navigator が跨いで判断を積む必要がある独立タスク」の話で、「司令塔が直列に運ぶ小ステップ」には適用されない。
 
 ## Navigator/Driver に Bash が無い harness の運用
 
-harness によっては subagent (Navigator / Driver) に **Bash が付与されない**ことがある（Navigator は Read/Grep/Glob のみ、Driver は Read/Edit/Write のみ。agent 定義に `Bash` が書いてあっても実行時に剥がされる）。この場合 `pytest` / `cargo` / `rg` などの**検証を誰も走らせられない**ので、**司令塔が代行する**（上記禁止事項の例外）。要点:
+harness によっては subagent (Navigator / Driver) に **Bash が付与されない**ことがある（Navigator は Read/Grep/Glob のみ、Driver は Read/Edit/Write のみ。agent 定義に `Bash` が書いてあっても実行時に剥がされる）。この場合 `pytest` / `rg` などの**検証を誰も走らせられない**ので、**司令塔が代行する**（上記禁止事項の例外）。要点:
 
 1. **Navigator は検証コマンドを「起草」する**（実行はしない）。「司令塔が cwd=X で `<cmd>` を回してください、期待は Y」の形で次手に添える。
 2. **Driver は Edit/Write のみ**。Navigator が依頼した Bash も実行できないので、編集だけさせる（Bash 込みの 1 手を渡すと Driver が `[review-block]` で返す → Bash 部分を司令塔に巻き取って Edit のみ再依頼）。
 3. **司令塔が検証コマンドを実行し、raw 出力（要点）を次の Navigator に verbatim で渡す**。司令塔は合否を**自分で判定しない**（「3 passed」「`WinError 10038` で 4 failed」等の事実だけ運ぶ。緑/赤の意味づけ・次手は Navigator）。コマンド実行は機械作業、解釈は Navigator —「司令塔は判断しない」原則と矛盾しない。
 4. RED→GREEN は「司令塔が RED 確認 → Driver が実装 Write → 司令塔が GREEN 確認 → 次 Navigator が解釈」で回す。
-5. proto/codegen の生成物 fixup（例: `engine_pb2_grpc.py` の import 再パッチ）も Edit なので Driver に渡す（司令塔が直接 Edit しない）。codegen コマンド自体は司令塔が走らせる。
+5. 検証スクリプトの修正も編集作業なので Driver に渡す。検証コマンドの実行は司令塔が代行する。
 6. この harness では Navigator/Driver が**最初の 1-2 ターンで「Bash を持っていない」と返して判明する**。判明したら即この運用に切り替える。
 
 ## 合言葉

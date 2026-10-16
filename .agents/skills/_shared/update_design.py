@@ -13,10 +13,10 @@ is a contract violation (exit 2), so a caller can never report "recorded" for a
 run that wrote nothing.
 
 Usage:
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/update_design.py --input input.json
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/update_design.py --input input.json --apply
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/update_design.py --input input.json --apply --require-change
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/update_design.py --input input.json --apply --now 2026-07-25T09:00:00
+    uv run --no-project python .agents/skills/_shared/update_design.py --input input.json
+    uv run --no-project python .agents/skills/_shared/update_design.py --input input.json --apply
+    uv run --no-project python .agents/skills/_shared/update_design.py --input input.json --apply --require-change
+    uv run --no-project python .agents/skills/_shared/update_design.py --input input.json --apply --now 2026-07-25T09:00:00
 
 Input JSON keys (all optional, at least one required):
     decisions      [{decision, rationale, alternatives, date}]

@@ -90,7 +90,7 @@ so give it a short English descriptor of the feature — not the user's raw
 wording, which the Language Protocol keeps out of paths:
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/workspace.py `
+uv run --no-project python .agents/skills/_shared/workspace.py `
   --skill feature --title "<short English title>" --create
 ```
 
@@ -166,7 +166,7 @@ from a previous label):
 ```powershell
 New-Item -ItemType Directory -Force .agents/logs/codex | Out-Null
 # write the prompt body to .agents/logs/codex/prompt-{label}.md, then:
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/codex_consult.py `
+uv run --no-project python .agents/skills/_shared/codex_consult.py `
   --prompt-file .agents/logs/codex/prompt-{label}.md --label {label} --sandbox read-only
 ```
 
@@ -221,10 +221,10 @@ content is refused. Use `section_updates` only for prose sections
 Run the dry-run, review the preview, then apply:
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/update_design.py `
+uv run --no-project python .agents/skills/_shared/update_design.py `
   --input .agents/logs/design-input-{slug}.json
 # Review the preview file path in the JSON output, then:
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/update_design.py `
+uv run --no-project python .agents/skills/_shared/update_design.py `
   --input .agents/logs/design-input-{slug}.json --apply --require-change
 ```
 
@@ -271,10 +271,10 @@ deterministic, atomic update; never edit root `AGENTS.md`.
 **Run dry-run**, review the preview, then apply:
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/append_state_block.py `
+uv run --no-project python .agents/skills/_shared/append_state_block.py `
   --type feature --input .agents/logs/state-input-{slug}.json
 # Review the preview file path in the JSON output, then:
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/append_state_block.py `
+uv run --no-project python .agents/skills/_shared/append_state_block.py `
   --type feature --input .agents/logs/state-input-{slug}.json --apply
 ```
 
@@ -338,7 +338,7 @@ reaches three Codex prompts undetected — every downstream step reads the file.
 Validate it before leaving this phase:
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/validate_doc.py `
+uv run --no-project python .agents/skills/_shared/validate_doc.py `
   --contract feature-brief --file .agents/docs/research/feature-{slug}-brief.md
 ```
 
@@ -450,7 +450,7 @@ Validate it before spawning the team — a teammate that starts from a truncated
 brief researches the wrong thing, and nothing downstream would notice:
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/validate_doc.py `
+uv run --no-project python .agents/skills/_shared/validate_doc.py `
   --contract feature-brief --file .agents/docs/research/feature-{slug}-brief.md
 ```
 
@@ -529,7 +529,7 @@ Spawn two teammates:
 
    How to consult Codex:
    Write the question to .agents/logs/codex/prompt-<topic>.md, then:
-   uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/codex_consult.py --prompt-file .agents/logs/codex/prompt-<topic>.md --label <topic> --sandbox read-only
+   uv run --no-project python .agents/skills/_shared/codex_consult.py --prompt-file .agents/logs/codex/prompt-<topic>.md --label <topic> --sandbox read-only
    Read the answer from the JSON output's response_file.
 
    Record architecture decisions in .agents/docs/DESIGN.md through the shared
@@ -538,9 +538,9 @@ Spawn two teammates:
    write the typed JSON to .agents/logs/design-input-{slug}-architect.json
    (keys: decisions / tech_choices / agent_roles / section_updates — table rows
    only through their typed key), then:
-   uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/update_design.py --input .agents/logs/design-input-{slug}-architect.json
+   uv run --no-project python .agents/skills/_shared/update_design.py --input .agents/logs/design-input-{slug}-architect.json
    # review the preview path in the JSON output, then:
-   uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/update_design.py --input .agents/logs/design-input-{slug}-architect.json --apply --require-change
+   uv run --no-project python .agents/skills/_shared/update_design.py --input .agents/logs/design-input-{slug}-architect.json --apply --require-change
    Verify "ok": true and "result": "applied". Exit 2 = invalid structure or a
    no-op; exit 3 = DESIGN.md changed concurrently — re-read it and redo the
    dry-run before applying. Report an exit 2 or 3 in your work log.
@@ -571,7 +571,7 @@ wrote a log missing `Issues Encountered`, is otherwise indistinguishable from
 success — and Phase 3 would then synthesize from an incomplete run:
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/validate_doc.py `
+uv run --no-project python .agents/skills/_shared/validate_doc.py `
   --contract work-log --dir .agents/logs/agent-teams/{team-name}/ --expect-files 2
 ```
 
@@ -621,7 +621,7 @@ In MODE=greenfield, validate each library doc the Researcher's work log claims
 it wrote, before its constraints are built into the plan:
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/validate_doc.py `
+uv run --no-project python .agents/skills/_shared/validate_doc.py `
   --contract lib-doc --file .agents/docs/libraries/{library}.md
 ```
 
@@ -657,7 +657,7 @@ Gate Phase 3 on the artifacts this phase actually consumes, before presenting
 the plan. MODE=existing:
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/workspace.py --skill feature --slug {slug} --verify
+uv run --no-project python .agents/skills/_shared/workspace.py --skill feature --slug {slug} --verify
 ```
 
 MODE=greenfield consumes the Researcher's `research` artifact as well, and that
@@ -665,7 +665,7 @@ key is not required by default — so name it explicitly, otherwise the gate
 verifies the scan and stays blind to the file Step 1 just read:
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/workspace.py --skill feature --slug {slug} `
+uv run --no-project python .agents/skills/_shared/workspace.py --skill feature --slug {slug} `
   --verify --require research
 ```
 
@@ -750,7 +750,7 @@ Exit `1` bad arguments, `3` the log could not be written.
 **2. Diff evidence (the other half of the Guardrails):**
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/verify_delegation.py `
+uv run --no-project python .agents/skills/_shared/verify_delegation.py `
   --base {ref the delegated run started from} `
   --expect-files {file the plan said would change} `
   --forbid-outside {directory the plan scoped the change to} `
@@ -782,7 +782,7 @@ Codex implements directly. Write the prompt body below to
 `.agents/logs/codex/prompt-route-a-implement.md`, then invoke with write access:
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/codex_consult.py `
+uv run --no-project python .agents/skills/_shared/codex_consult.py `
   --prompt-file .agents/logs/codex/prompt-route-a-implement.md `
   --label route-a-implement --sandbox workspace-write
 ```

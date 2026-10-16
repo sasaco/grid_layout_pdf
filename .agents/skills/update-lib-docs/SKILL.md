@@ -18,7 +18,7 @@ version the project declares and locks, and cross-checks declared
 dependencies:
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/update-lib-docs/lib_inventory.py `
+uv run --no-project python .agents/skills/update-lib-docs/lib_inventory.py `
   [--stale-days N] [--today YYYY-MM-DD] [--library NAME] [--project-root DIR]
 ```
 
@@ -74,7 +74,7 @@ Derive each doc path from the same authority research-lib uses, so an update
 and a creation can never disagree about the filename:
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/workspace.py --skill research-lib `
+uv run --no-project python .agents/skills/_shared/workspace.py --skill research-lib `
   --title "{library}" --create
 ```
 
@@ -94,7 +94,7 @@ documentation template for the full section layout):
 After updating or creating a doc, validate it against the `lib-doc` contract:
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/validate_doc.py --contract lib-doc `
+uv run --no-project python .agents/skills/_shared/validate_doc.py --contract lib-doc `
   --file <paths.lib_doc>
 ```
 

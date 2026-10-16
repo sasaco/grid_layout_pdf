@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "id": "merged_table",
+  "purpose": "2段ヘッダー、横結合、縦結合、日本語セルと右揃え数値を持つ小表。数値は表示用。",
+  "display_data_only": true,
+  "source_pages": [{"reference_id": "report_12", "page": 1}],
+  "profile": "A4_PORTRAIT_REFERENCE",
+  "body": [
+    {
+      "kind": "table", "column_spans": [8, 8, 7, 7], "row_count": 4, "header_rows": 2, "repeat_header": true,
+      "cells": [
+        {"row": 0, "column": 0, "rowspan": 2, "content": {"kind": "paragraph", "text": "区分"}},
+        {"row": 0, "column": 1, "colspan": 2, "content": {"kind": "paragraph", "text": "表示値"}},
+        {"row": 0, "column": 3, "rowspan": 2, "content": {"kind": "paragraph", "text": "単位"}},
+        {"row": 1, "column": 1, "content": {"kind": "paragraph", "text": "左側"}},
+        {"row": 1, "column": 2, "content": {"kind": "paragraph", "text": "右側"}},
+        {"row": 2, "column": 0, "rowspan": 2, "content": {"kind": "paragraph", "text": "区分A"}},
+        {"row": 2, "column": 1, "align": "right", "content": {"kind": "literal", "text": "12.150"}},
+        {"row": 2, "column": 2, "align": "right", "content": {"kind": "literal", "text": "9.500"}},
+        {"row": 2, "column": 3, "content": {"kind": "paragraph", "text": "kN"}},
+        {"row": 3, "column": 1, "align": "right", "content": {"kind": "literal", "text": "7.38113"}},
+        {"row": 3, "column": 2, "align": "right", "content": {"kind": "literal", "text": "6.25000"}},
+        {"row": 3, "column": 3, "content": {"kind": "paragraph", "text": "kN·m"}}
+      ]
+    }
+  ]
+}

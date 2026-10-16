@@ -38,8 +38,8 @@ including uncommitted work) and reports files nobody owned, files owned by two
 teammates, and owners that touched nothing.
 
 Usage:
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/team-execute/check_ownership.py --assignment owners.json --mode preflight
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/team-execute/check_ownership.py --assignment owners.json --mode reconcile --base main --allow-path PROGRESS.md
+    uv run --no-project python .agents/skills/team-execute/check_ownership.py --assignment owners.json --mode preflight
+    uv run --no-project python .agents/skills/team-execute/check_ownership.py --assignment owners.json --mode reconcile --base main --allow-path PROGRESS.md
 
 Exit codes:
     0  clean — no overlap, and in reconcile mode every change is owned

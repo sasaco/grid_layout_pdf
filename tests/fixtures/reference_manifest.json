@@ -1,0 +1,165 @@
+{
+  "schema_version": 1,
+  "recorded_on": "2026-10-16",
+  "source_policy": "read_only_originals",
+  "generated_output_directory": "build/reports",
+  "layout_cases_directory": "tests/fixtures/layout_cases",
+  "acceptance": "grid_normalized_appearance_not_source_pixel_equality",
+  "coordinates": {"origin": "top_left", "x": "right", "y": "down", "unit": "pt"},
+  "evidence_documents": [
+    ".agents/docs/research/grid-reference-findings.md",
+    ".agents/docs/research/sample-report-findings.md"
+  ],
+  "notes": [
+    "Original hashes protect source material; they are not expected hashes for generated PDFs.",
+    "Page numbers are one-based. Reviewed pages are the visually checked subset, not all structurally surveyed pages.",
+    "Measured page dimensions are rounded reference dimensions, not exact ISO paper sizes.",
+    "Only A4 portrait and A3 landscape grid references were measured; other orientations are generated profiles.",
+    "Display cases illustrate layout only and do not validate or implement engineering calculations."
+  ],
+  "references": [
+    {
+      "id": "grid_a4",
+      "path": ".agents/docs/research/A4.pdf",
+      "sha256": "eb6176ec32e60e494605da9e1e0481149eed89183d5ac306245db13ced603f60",
+      "page_count": 1,
+      "paper_runs": [{"first_page": 1, "last_page": 1, "size_pt": [595, 842], "rotation": 0}],
+      "reviewed_pages": [{"page": 1, "roles": ["grid_geometry"]}],
+      "grid": {
+        "origin_pt": [50.88, 54.598],
+        "pitch_pt": [16.08, 15.48],
+        "columns": 30,
+        "rows": 47,
+        "line_width_pt": 0.96,
+        "bottom_right_pt": [533.28, 782.158],
+        "measurement_status": "measured"
+      }
+    },
+    {
+      "id": "grid_a3",
+      "path": ".agents/docs/research/A3.pdf",
+      "sha256": "3ef244c1085416746b0392fc2ef8898004bb1be49fc35a0f56335482425d9e16",
+      "page_count": 1,
+      "paper_runs": [{"first_page": 1, "last_page": 1, "size_pt": [1191, 842], "rotation": 0}],
+      "reviewed_pages": [{"page": 1, "roles": ["grid_geometry"]}],
+      "grid": {
+        "origin_pt": [50.88, 54.598],
+        "pitch_pt": [16.08, 15.48],
+        "columns": 67,
+        "rows": 47,
+        "line_width_pt": 0.96,
+        "bottom_right_pt": [1128.24, 782.158],
+        "measurement_status": "measured"
+      }
+    },
+    {
+      "id": "report_04",
+      "path": "tests/output/04_地盤のモデル化.pdf",
+      "sha256": "f89ea249e4f9a9998821de7a7309af9bd41019841fa2feef6d0496af43183e3c",
+      "page_count": 3,
+      "paper_runs": [{"first_page": 1, "last_page": 3, "size_pt": [595, 842], "rotation": 0}],
+      "reviewed_pages": [{"page": 1, "roles": ["root", "scripts", "variable_definitions"]}]
+    },
+    {
+      "id": "report_06",
+      "path": "tests/output/06_照査の前提.pdf",
+      "sha256": "ca7436bb4364db6437acb4aa79b6c1e3aed87c23601d54cb00a58b1e4767ec55",
+      "page_count": 13,
+      "paper_runs": [{"first_page": 1, "last_page": 13, "size_pt": [595, 842], "rotation": 0}],
+      "reviewed_pages": [{"page": 1, "roles": ["paragraph_image_flow", "raster_images"]}]
+    },
+    {
+      "id": "report_07",
+      "path": "tests/output/07_荷重計算.pdf",
+      "sha256": "23a6358c5a5b8966789668dc80a140095a0d2fe22e6d29943691f900213c3f1b",
+      "page_count": 18,
+      "paper_runs": [{"first_page": 1, "last_page": 18, "size_pt": [595, 842], "rotation": 0}],
+      "reviewed_pages": [
+        {"page": 1, "roles": ["mixed_heading_table_diagram_equations", "two_equal_anchors", "wrapped_substitution"]},
+        {"page": 2, "roles": ["chain_relations", "side_by_side_groups"]}
+      ]
+    },
+    {
+      "id": "report_08",
+      "path": "tests/output/08_線路.pdf",
+      "sha256": "91e288880677f6e121afa887314d183000371478852b96663a6c753f76806706",
+      "page_count": 32,
+      "paper_runs": [{"first_page": 1, "last_page": 32, "size_pt": [595, 842], "rotation": 0}],
+      "reviewed_pages": [
+        {"page": 2, "roles": ["japanese_labels", "two_equal_anchors", "result_right_alignment", "unit_column", "scripts"]},
+        {"page": 3, "roles": ["numeric_table", "group_local_anchors", "fullwidth_relations"]}
+      ],
+      "observed_anchor_example": {
+        "page": 2,
+        "measurement_status": "measured_source_example_not_target_layout",
+        "first_equal_x_pt": 214.08,
+        "second_equal_x_pt": 402.24,
+        "result_right_x_pt": 465.56,
+        "unit_start_x_pt": 474.24,
+        "baseline_y_pt": [181.918, 196.798],
+        "japanese_advance_pt": 10.08,
+        "latin_numeric_advance_pt": 5.04
+      }
+    },
+    {
+      "id": "report_09",
+      "path": "tests/output/09_直角.pdf",
+      "sha256": "b6a7f5658b9f98ee8a7d6b29691edcb0209bc7455fa8309d4e3a2e16605474de",
+      "page_count": 29,
+      "paper_runs": [{"first_page": 1, "last_page": 29, "size_pt": [595, 842], "rotation": 0}],
+      "reviewed_pages": [{"page": 6, "roles": ["numeric_table", "sum_row", "equation_cells"]}]
+    },
+    {
+      "id": "report_10",
+      "path": "tests/output/10_線路(耐震).pdf",
+      "sha256": "933dec57e79330f44d07ed38adb89f8d2aa1ffd1c3e87b987ba3e20515f4063c",
+      "page_count": 26,
+      "paper_runs": [
+        {"first_page": 1, "last_page": 24, "size_pt": [595, 842], "rotation": 0},
+        {"first_page": 25, "last_page": 26, "size_pt": [1191, 842], "rotation": 0}
+      ],
+      "reviewed_pages": [{"page": 25, "roles": ["a3_landscape", "external_report_appearance_only"]}]
+    },
+    {
+      "id": "report_11",
+      "path": "tests/output/11_直角(耐震).pdf",
+      "sha256": "809a09f126daee89128ea991de35d50a4633151fccb7c50378af60d14965b838",
+      "page_count": 27,
+      "paper_runs": [
+        {"first_page": 1, "last_page": 25, "size_pt": [595, 842], "rotation": 0},
+        {"first_page": 26, "last_page": 27, "size_pt": [1191, 842], "rotation": 0}
+      ],
+      "reviewed_pages": [{"page": 8, "roles": ["numeric_table", "sum_row", "equation_cells"]}]
+    },
+    {
+      "id": "report_12",
+      "path": "tests/output/12_フーチング.pdf",
+      "sha256": "f14c3fd062d13a0109ac809eda6a3468fc6ebfdc1e527b43c89ef7b55175ddf6",
+      "page_count": 24,
+      "paper_runs": [{"first_page": 1, "last_page": 24, "size_pt": [595, 842], "rotation": 0}],
+      "reviewed_pages": [{"page": 1, "roles": ["merged_table", "multirow_header", "rowspan"]}]
+    },
+    {
+      "id": "report_13",
+      "path": "tests/output/13_片持ち梁照査.pdf",
+      "sha256": "e56bf3ddbe3314ed95517099bedb0e68005df1567b0b3e8f52a2a4066d03393e",
+      "page_count": 67,
+      "paper_runs": [{"first_page": 1, "last_page": 67, "size_pt": [595, 842], "rotation": 0}],
+      "reviewed_pages": [
+        {"page": 1, "roles": ["mixed_heading_table_diagram_equations"]},
+        {"page": 54, "roles": ["nested_fractions_scripts", "greek_symbols", "tall_delimiters", "multiline_derivation"]}
+      ]
+    },
+    {
+      "id": "report_14",
+      "path": "tests/output/14_桁座補強●.pdf",
+      "sha256": "448811731bc0afd5d8dbfc3297e44b014e22a947d545391f4b549d937d8f7c56",
+      "page_count": 12,
+      "paper_runs": [{"first_page": 1, "last_page": 12, "size_pt": [595, 842], "rotation": 0}],
+      "reviewed_pages": [
+        {"page": 1, "roles": ["fractions", "variable_definitions"]},
+        {"page": 11, "roles": ["root", "scripts", "vector_diagram"]}
+      ]
+    }
+  ]
+}

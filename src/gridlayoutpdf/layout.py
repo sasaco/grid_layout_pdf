@@ -1,0 +1,299 @@
+"""Immutable measurements shared by text, equations and document flow."""
+
+from __future__ import annotations
+
+from collections.abc import Iterable, Mapping
+from dataclasses import KW_ONLY, dataclass, field, replace
+import math
+from types import MappingProxyType
+from typing import Protocol, runtime_checkable
+
+from .bounds import command_bounds
+from .errors import FontError, LayoutOverflowError
+from .fonts import FontRegistry
+from .profiles import PageProfile
+from .scene import Command, Line, Polyline, RasterImage, Rectangle, Text
+from .styles import ReportStyle, _finite_number
+
+
+def _has_visible_commands(commands: Iterable[Command]) -> bool:
+    """Whitespace reserves layout space but cannot satisfy a heading's keep rule."""
+    return any(not isinstance(command, Text) or bool(command.text.strip()) for command in commands)
+
+
+def _positive_int(value, name: str) -> None:
+    if isinstance(value, bool) or not isinstance(value, int) or value < 1:
+        raise ValueError(f"{name} must be a positive integer")
+
+
+def _freeze_metadata(value, active: set[int]):
+    """Internal snapshot helper: JSON values, immutable containers, no cycles.
+
+    Keep layout independent of scene's private implementation. Both boundaries
+    accept the same JSON-shaped metadata contract.
+    """
+    if value is None or isinstance(value, (str, bool, int)):
+        return value
+    if isinstance(value, float):
+        if not math.isfinite(value):
+            raise ValueError("metadata numbers must be finite")
+        return value
+    if isinstance(value, (Mapping, list, tuple)):
+        identity = id(value)
+        if identity in active:
+            raise ValueError("metadata must not contain cycles")
+        active.add(identity)
+        try:
+            if isinstance(value, Mapping):
+                if any(not isinstance(key, str) for key in value):
+                    raise ValueError("metadata keys must be strings")
+                return MappingProxyType({
+                    key: _freeze_metadata(item, active) for key, item in value.items()
+                })
+            return tuple(_freeze_metadata(item, active) for item in value)
+        finally:
+            active.remove(identity)
+    raise ValueError(f"Unsupported metadata value: {type(value).__name__}")
+
+
+@dataclass(frozen=True, slots=True)
+class LayoutContext:
+    fonts: FontRegistry
+    profile: PageProfile
+    style: ReportStyle
+
+    def __post_init__(self) -> None:
+        for name, expected in (("fonts", FontRegistry), ("profile", PageProfile), ("style", ReportStyle)):
+            if not isinstance(getattr(self, name), expected):
+                raise ValueError(f"{name} must be a {expected.__name__}")
+
+    def baseline_for(self, ascent: float) -> float:
+        """Place a baseline at offset plus whole rows, leaving ascent above it."""
+        ascent = _finite_number(ascent, "ascent")
+        if ascent < 0:
+            raise ValueError("ascent must be nonnegative")
+        offset = self.style.baseline_offset
+        rows = self.rows_for(max(0, ascent - offset))
+        pitch = self.profile.grid.pitch_y
+        # Subtracting the offset can round an exact baseline past its row.
+        # Compare actual baselines to retain strict nextafter boundaries.
+        if rows > 0 and offset + (rows - 1) * pitch >= ascent:
+            rows -= 1
+        elif offset + rows * pitch < ascent:
+            rows += 1
+        return _finite_number(offset + rows * pitch, "baseline")
+
+    def rows_for(self, height: float) -> int:
+        return self.profile.grid.rows_for(height)
+
+
+@runtime_checkable
+class Block(Protocol):
+    """A component measures without drawing or changing the caller's inputs."""
+
+    def measure(self, context: LayoutContext, available_width: float) -> MeasuredBlock: ...
+
+
+@dataclass(frozen=True, slots=True)
+class LayoutPart:
+    """An indivisible vertical unit with commands relative to its top-left."""
+
+    rows: int
+    commands: tuple[Command, ...] = ()
+    metadata: Mapping[str, object] = field(default_factory=dict)
+
+    def __post_init__(self) -> None:
+        _positive_int(self.rows, "rows")
+        try:
+            commands = tuple(self.commands)
+        except TypeError as exc:
+            raise ValueError("commands must be an iterable of drawing commands") from exc
+        if any(not isinstance(command, (Text, Line, Polyline, Rectangle, RasterImage)) for command in commands):
+            raise ValueError("commands must contain supported drawing commands")
+        if not isinstance(self.metadata, Mapping):
+            raise ValueError("metadata must be a mapping")
+        object.__setattr__(self, "commands", commands)
+        object.__setattr__(self, "metadata", _freeze_metadata(self.metadata, set()))
+
+
+@dataclass(frozen=True, slots=True)
+class MeasuredBlock:
+    """A reserved width and a sequence of indivisible grid-height parts.
+
+    min_first/min_last count body parts (display lines), not physical grid rows.
+    prefix parts are repeated on every fragment and never count toward those
+    minimum line counts.
+    """
+
+    width: float
+    row_pitch: float
+    parts: tuple[LayoutPart, ...] = ()
+    _: KW_ONLY
+    prefix: tuple[LayoutPart, ...] = ()
+    break_after: tuple[int, ...] | None = None
+    min_first: int = 1
+    min_last: int = 1
+    keep_together: bool = False
+    keep_with_next: bool = False
+    prefer_keep: bool = False
+    block_id: str = ""
+
+    def __post_init__(self) -> None:
+        for name in ("width", "row_pitch"):
+            value = _finite_number(getattr(self, name), name)
+            if value <= 0:
+                raise ValueError(f"{name} must be positive")
+            object.__setattr__(self, name, value)
+        for name in ("parts", "prefix"):
+            try:
+                parts = tuple(getattr(self, name))
+            except TypeError as exc:
+                raise ValueError(f"{name} must be an iterable of LayoutPart objects") from exc
+            if any(not isinstance(part, LayoutPart) for part in parts):
+                raise ValueError(f"{name} must contain only LayoutPart objects")
+            object.__setattr__(self, name, parts)
+        if self.prefix and not self.parts:
+            raise ValueError("prefix requires at least one body part")
+        for name in ("min_first", "min_last"):
+            _positive_int(getattr(self, name), name)
+        for name in ("keep_together", "keep_with_next", "prefer_keep"):
+            if not isinstance(getattr(self, name), bool):
+                raise ValueError(f"{name} must be a boolean")
+        if not isinstance(self.block_id, str):
+            raise ValueError("block_id must be a string")
+        if self.break_after is not None:
+            try:
+                cuts = tuple(self.break_after)
+            except TypeError as exc:
+                raise ValueError("break_after must be an iterable of part boundaries") from exc
+            if any(isinstance(cut, bool) or not isinstance(cut, int)
+                   or not 1 <= cut < len(self.parts) for cut in cuts):
+                raise ValueError("break_after boundaries must be between 1 and len(parts)-1")
+            object.__setattr__(self, "break_after", tuple(sorted(set(cuts))))
+        try:
+            _finite_number(self.height, "height")
+        except OverflowError as exc:
+            raise ValueError("height must be finite") from exc
+
+    @property
+    def rows(self) -> int:
+        return sum(part.rows for part in (*self.prefix, *self.parts))
+
+    @property
+    def height(self) -> float:
+        return self.rows * self.row_pitch
+
+    @property
+    def commands(self) -> tuple[Command, ...]:
+        commands = []
+        rows = 0
+        for part in (*self.prefix, *self.parts):
+            commands.extend(command.translated(0, rows * self.row_pitch) for command in part.commands)
+            rows += part.rows
+        return tuple(commands)
+
+    def translated(self, dx: float, dy: float) -> tuple[Command, ...]:
+        dx, dy = _finite_number(dx, "dx"), _finite_number(dy, "dy")
+        return tuple(command.translated(dx, dy) for command in self.commands)
+
+    def _valid_cuts(self):
+        """Yield body-part boundaries and their prefix-inclusive grid rows."""
+        if self.keep_together:
+            return
+        allowed = None if self.break_after is None else set(self.break_after)
+        rows = sum(part.rows for part in self.prefix)
+        for index, part in enumerate(self.parts, start=1):
+            rows += part.rows
+            if (self.min_first <= index <= len(self.parts) - self.min_last
+                    and (allowed is None or index in allowed)):
+                yield index, rows
+
+    @property
+    def minimum_rows(self) -> int:
+        """The smallest first fragment in grid rows, or all rows if indivisible."""
+        return next((rows for _, rows in self._valid_cuts()), self.rows)
+
+    def split(self, available_rows: int) -> tuple[MeasuredBlock, MeasuredBlock] | None:
+        """Choose the last fitting legal cut, retaining a nonempty body on both sides."""
+        if (isinstance(available_rows, bool) or not isinstance(available_rows, int)
+                or available_rows < 0):
+            raise ValueError("available_rows must be a nonnegative integer")
+        if available_rows >= self.rows:
+            return None
+        cut = None
+        for index, rows in self._valid_cuts():
+            if rows > available_rows:
+                break
+            cut = index
+        if cut is None:
+            return None
+        head_cuts = tail_cuts = None
+        if self.break_after is not None:
+            head_cuts = tuple(index for index in self.break_after if index < cut)
+            tail_cuts = tuple(index - cut for index in self.break_after if index > cut)
+        return (
+            replace(self, parts=self.parts[:cut], break_after=head_cuts, keep_with_next=False),
+            replace(self, parts=self.parts[cut:], break_after=tail_cuts),
+        )
+
+
+_ROUNDING_TOLERANCE = 1e-7
+
+
+def measure_block(block: Block, context: LayoutContext, available_width: float) -> MeasuredBlock:
+    """Measure and validate a component at the shared layout boundary.
+
+    Only tiny absolute floating-point roundoff is tolerated. Parts may overlap
+    internally, but every command's ink/stroke envelope must fit its own part.
+    """
+    if not isinstance(context, LayoutContext):
+        raise ValueError("context must be a LayoutContext")
+    available_width = _finite_number(available_width, "available_width")
+    if available_width <= 0:
+        raise ValueError("available_width must be positive")
+    if not isinstance(block, Block) or not callable(block.measure):
+        raise ValueError("block must implement measure(context, available_width)")
+    source_id = getattr(block, "block_id", "")
+    source_id = source_id if isinstance(source_id, str) and source_id else type(block).__name__
+    try:
+        result = block.measure(context, available_width)
+    except FontError as exc:
+        raise FontError(f"{source_id}: {exc}") from exc
+    except LayoutOverflowError as exc:
+        raise LayoutOverflowError(
+            f"{source_id}: {exc}", block_id=exc.block_id or source_id,
+            needed=exc.needed, available=exc.available,
+        ) from exc
+    if not isinstance(result, MeasuredBlock):
+        raise ValueError(f"{source_id}: measure must return a MeasuredBlock")
+    block_id = result.block_id or source_id
+    if result.width > available_width + _ROUNDING_TOLERANCE:
+        raise LayoutOverflowError(
+            f"{block_id}: reserved width {result.width} exceeds available width {available_width}",
+            block_id=block_id, needed=result.width, available=available_width,
+        )
+    if abs(result.row_pitch - context.profile.grid.pitch_y) > _ROUNDING_TOLERANCE:
+        raise ValueError(f"{block_id}: row_pitch must match the context grid pitch")
+    for group_name, parts in (("prefix", result.prefix), ("parts", result.parts)):
+        for part_index, part in enumerate(parts):
+            height = part.rows * result.row_pitch
+            for command_index, command in enumerate(part.commands):
+                location = f"{block_id}.{group_name}[{part_index}].commands[{command_index}]"
+                try:
+                    bounds = command_bounds(command, context.fonts)
+                except FontError as exc:
+                    raise FontError(f"{location}: {exc}") from exc
+                if (bounds.x < -_ROUNDING_TOLERANCE or bounds.y < -_ROUNDING_TOLERANCE
+                        or bounds.right > result.width + _ROUNDING_TOLERANCE
+                        or bounds.bottom > height + _ROUNDING_TOLERANCE):
+                    horizontal = (bounds.x < -_ROUNDING_TOLERANCE
+                                  or bounds.right > result.width + _ROUNDING_TOLERANCE)
+                    raise LayoutOverflowError(
+                        f"{location}: {type(command).__name__} bounds "
+                        f"({bounds.x}, {bounds.y}, {bounds.right}, {bounds.bottom}) "
+                        f"exceed part (0, 0, {result.width}, {height})",
+                        block_id=block_id,
+                        needed=bounds.width if horizontal else bounds.height,
+                        available=result.width if horizontal else height,
+                    )
+    return result

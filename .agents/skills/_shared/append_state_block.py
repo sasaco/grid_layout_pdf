@@ -13,9 +13,9 @@ STATE.md changed since it was read, and verifies that the ``## Progress
 Tracker`` section survived the write.
 
 Usage:
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/append_state_block.py --type feature --input input.json
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/append_state_block.py --type bug-fix --input input.json --apply
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/append_state_block.py --type repository-identity --input id.json --apply
+    uv run --no-project python .agents/skills/_shared/append_state_block.py --type feature --input input.json
+    uv run --no-project python .agents/skills/_shared/append_state_block.py --type bug-fix --input input.json --apply
+    uv run --no-project python .agents/skills/_shared/append_state_block.py --type repository-identity --input id.json --apply
 
 Input JSON:
     feature | bug-fix | project   {title, id?, sections?: [{heading, content}]}

@@ -23,8 +23,8 @@ cannot be judged) -- because the previous boolean reported a renamed heading as
 "initialised".
 
 Usage:
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/context-loader/load_context.py
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/context-loader/load_context.py --task-libraries numpy,flask
+    uv run --no-project python .agents/skills/context-loader/load_context.py
+    uv run --no-project python .agents/skills/context-loader/load_context.py --task-libraries reportlab,pymupdf
 
 Exit codes:
     0  ok (rules dir and STATE.md are present and readable; design/progress/

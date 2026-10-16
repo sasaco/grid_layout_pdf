@@ -1,0 +1,219 @@
+"""Local-point vector figures and grid-framed raster images."""
+
+from dataclasses import KW_ONLY, dataclass
+from io import BytesIO
+from math import hypot
+from pathlib import Path
+
+from PIL import Image as PILImage, ImageOps
+
+from .bounds import command_bounds
+from .errors import FontError, LayoutOverflowError
+from .layout import LayoutContext, LayoutPart, MeasuredBlock
+from .scene import Color, Line, Polyline, RasterImage, Rectangle, Text
+from .styles import TextStyle, _finite_number
+
+
+def _frame(col_span, rows, block_id):
+    for name, value in (("col_span", col_span), ("rows", rows)):
+        if isinstance(value, bool) or not isinstance(value, int) or value <= 0:
+            raise ValueError(f"{name} must be a positive integer")
+    if not isinstance(block_id, str):
+        raise ValueError("block_id must be a string")
+
+
+def _frame_size(context, col_span, rows, available_width, block_id):
+    if not isinstance(context, LayoutContext):
+        raise ValueError("context must be a LayoutContext")
+    available_width = _finite_number(available_width, "available_width")
+    if available_width <= 0:
+        raise ValueError("available_width must be positive")
+    width = _finite_number(col_span * context.profile.grid.pitch_x, "frame width")
+    height = _finite_number(rows * context.profile.grid.pitch_y, "frame height")
+    if width > available_width + 1e-7:
+        raise LayoutOverflowError(
+            f"{block_id}: frame width {width:g} exceeds available width {available_width:g}",
+            block_id=block_id, needed=width, available=available_width)
+    return width, height
+
+
+@dataclass(frozen=True, slots=True)
+class Arrow:
+    """An oriented vector shaft and open two-sided head ending at (x2, y2)."""
+
+    x1: float
+    y1: float
+    x2: float
+    y2: float
+    _: KW_ONLY
+    head_length: float = 6.0
+    head_width: float = 4.0
+    width: float = .6
+    color: Color = (0, 0, 0)
+
+    def __post_init__(self) -> None:
+        shaft = Line(self.x1, self.y1, self.x2, self.y2, self.width, self.color)
+        for name in ("x1", "y1", "x2", "y2", "width", "color"):
+            object.__setattr__(self, name, getattr(shaft, name))
+        for name in ("head_length", "head_width"):
+            value = _finite_number(getattr(self, name), name)
+            if value <= 0:
+                raise ValueError(f"{name} must be positive")
+            object.__setattr__(self, name, value)
+        length = _finite_number(hypot(self.x2 - self.x1, self.y2 - self.y1), "axis length")
+        if length == 0 or self.head_length > length:
+            raise ValueError("arrow axis must be nonzero and at least head_length long")
+
+    def _commands(self) -> tuple[Line, Polyline]:
+        length = hypot(self.x2 - self.x1, self.y2 - self.y1)
+        ux, uy = (self.x2 - self.x1) / length, (self.y2 - self.y1) / length
+        bx, by = self.x2 - ux * self.head_length, self.y2 - uy * self.head_length
+        px, py = -uy * self.head_width / 2, ux * self.head_width / 2
+        return (
+            Line(self.x1, self.y1, self.x2, self.y2, self.width, self.color),
+            Polyline(((bx + px, by + py), (self.x2, self.y2), (bx - px, by - py)),
+                     self.width, self.color),
+        )
+
+
+@dataclass(frozen=True, slots=True)
+class Label:
+    """Single-line text anchored by its complete measured horizontal bounds."""
+
+    x: float
+    y: float
+    text: str
+    _: KW_ONLY
+    style: TextStyle | None = None
+    align: str = "left"
+
+    def __post_init__(self) -> None:
+        for name in ("x", "y"):
+            object.__setattr__(self, name, _finite_number(getattr(self, name), name))
+        if not isinstance(self.text, str) or any(char in self.text for char in "\r\n\t"):
+            raise ValueError("text must be a single line without tabs")
+        if self.style is not None and not isinstance(self.style, TextStyle):
+            raise ValueError("style must be a TextStyle or None")
+        if self.align not in ("left", "center", "right"):
+            raise ValueError("align must be left, center or right")
+
+    def _command(self, context: LayoutContext) -> Text:
+        style = self.style if self.style is not None else context.style.body
+        text = context.fonts.normalize_text(self.text)
+        bounds = context.fonts.measure(text, style).bounds
+        offset = bounds.width if self.align == "right" else bounds.width / 2 if self.align == "center" else 0
+        return Text(self.x - bounds.x - offset, self.y, text, style)
+
+
+@dataclass(frozen=True, slots=True, init=False)
+class Figure:
+    """An indivisible grid frame containing immutable local-point artwork."""
+
+    col_span: int
+    rows: int
+    items: tuple
+    block_id: str
+
+    def __init__(self, col_span, rows, *items, block_id=""):
+        _frame(col_span, rows, block_id)
+        if any(not isinstance(item, (Line, Polyline, Rectangle, Text, Arrow, Label)) for item in items):
+            raise ValueError("items must contain drawing commands, Arrow or Label")
+        object.__setattr__(self, "col_span", col_span)
+        object.__setattr__(self, "rows", rows)
+        object.__setattr__(self, "items", tuple(items))
+        object.__setattr__(self, "block_id", block_id)
+
+    def measure(self, context: LayoutContext, available_width: float) -> MeasuredBlock:
+        source = self.block_id or "Figure"
+        width, height = _frame_size(context, self.col_span, self.rows, available_width, source)
+        commands = []
+        for index, item in enumerate(self.items):
+            try:
+                expanded = (item._commands() if isinstance(item, Arrow) else
+                            (item._command(context),) if isinstance(item, Label) else (item,))
+            except FontError as exc:
+                raise FontError(f"{source}.items[{index}]: {exc}") from exc
+            for command in expanded:
+                self._check_bounds(command, context, width, height, source, index)
+            commands.extend(expanded)
+        return MeasuredBlock(width,
+                             context.profile.grid.pitch_y,
+                             (LayoutPart(self.rows, tuple(commands)),),
+                             keep_together=True, block_id=self.block_id)
+
+    @staticmethod
+    def _check_bounds(command, context, width, height, source, index):
+        try:
+            bounds = command_bounds(command, context.fonts)
+        except FontError as exc:
+            raise FontError(f"{source}.items[{index}]: {exc}") from exc
+        if (bounds.x < -1e-7 or bounds.y < -1e-7 or bounds.right > width + 1e-7
+                or bounds.bottom > height + 1e-7):
+            horizontal = bounds.x < 0 or bounds.right > width
+            raise LayoutOverflowError(
+                f"{source}.items[{index}]: bounds {bounds} exceed figure frame (0, 0, {width}, {height})",
+                block_id=source, needed=bounds.width if horizontal else bounds.height,
+                available=width if horizontal else height)
+
+
+@dataclass(frozen=True, slots=True)
+class Image:
+    """Snapshot one PNG/JPEG at measurement time and fit it without distortion.
+
+    EXIF orientation is applied before sizing. RGB/RGBA PNG snapshot bytes keep
+    alpha and are independent of the source path after measurement. Repeating
+    measurement reads the current file again, without changing an earlier result.
+    """
+
+    path: Path
+    _: KW_ONLY
+    col_span: int
+    rows: int
+    align: str = "center"
+    valign: str = "middle"
+    block_id: str = ""
+
+    def __post_init__(self) -> None:
+        _frame(self.col_span, self.rows, self.block_id)
+        try:
+            object.__setattr__(self, "path", Path(self.path))
+        except TypeError as exc:
+            raise ValueError("path must be a filesystem path") from exc
+        if self.align not in ("left", "center", "right"):
+            raise ValueError("align must be left, center or right")
+        if self.valign not in ("top", "middle", "bottom"):
+            raise ValueError("valign must be top, middle or bottom")
+
+    def _snapshot(self) -> tuple[bytes, int, int]:
+        try:
+            data = self.path.read_bytes()
+            with PILImage.open(BytesIO(data)) as source:
+                if source.format not in ("PNG", "JPEG"):
+                    raise ValueError("only PNG and JPEG are supported")
+                if getattr(source, "n_frames", 1) != 1:
+                    raise ValueError("only single-frame images are supported")
+                source.verify()
+            with PILImage.open(BytesIO(data)) as source:
+                source.load()
+                with ImageOps.exif_transpose(source) as oriented:
+                    alpha = "A" in oriented.getbands() or "transparency" in oriented.info
+                    with oriented.convert("RGBA" if alpha else "RGB") as normalized:
+                        output = BytesIO()
+                        normalized.save(output, format="PNG")
+                        return output.getvalue(), normalized.width, normalized.height
+        except (OSError, ValueError, SyntaxError, PILImage.DecompressionBombError) as exc:
+            raise ValueError(f"{self.block_id or 'Image'}: cannot load {self.path}: {exc}") from exc
+
+    def measure(self, context: LayoutContext, available_width: float) -> MeasuredBlock:
+        width, height = _frame_size(context, self.col_span, self.rows, available_width,
+                                    self.block_id or "Image")
+        data, image_width, image_height = self._snapshot()
+        scale = min(width / image_width, height / image_height)
+        image_width, image_height = image_width * scale, image_height * scale
+        x = {"left": 0, "center": (width - image_width) / 2, "right": width - image_width}[self.align]
+        y = {"top": 0, "middle": (height - image_height) / 2, "bottom": height - image_height}[self.valign]
+        command = RasterImage(x, y,
+                              image_width, image_height, data)
+        return MeasuredBlock(width, context.profile.grid.pitch_y,
+                             (LayoutPart(self.rows, (command,)),), keep_together=True,
+                             block_id=self.block_id)

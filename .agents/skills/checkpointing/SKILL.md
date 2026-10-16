@@ -38,7 +38,7 @@ untouched.
 4. Save the summary to `.agents/logs/pending-summary.md`, then preview:
 
    ```powershell
-   uv run --project FrameWeb --locked --extra dev python .agents/skills/checkpointing/checkpoint.py `
+   uv run --no-project python .agents/skills/checkpointing/checkpoint.py `
      --summary-file .agents/logs/pending-summary.md
    ```
 
@@ -50,7 +50,7 @@ untouched.
 5. Review the three previews, then write for real:
 
    ```powershell
-   uv run --project FrameWeb --locked --extra dev python .agents/skills/checkpointing/checkpoint.py `
+   uv run --no-project python .agents/skills/checkpointing/checkpoint.py `
      --summary-file .agents/logs/pending-summary.md `
      --apply --consume-summary --json
    ```
@@ -66,7 +66,7 @@ untouched.
 6. Confirm the shared-state invariant mechanically rather than by reading:
 
    ```powershell
-   uv run --project FrameWeb --locked --extra dev python .agents/skills/checkpointing/refresh_guard.py --mode check
+   uv run --no-project python .agents/skills/checkpointing/refresh_guard.py --mode check
    ```
 
    Exit `0` means exactly one `# Agent State` and one `## Progress Tracker`
@@ -87,7 +87,7 @@ be lost is reported in `sections_dropped` and aborts the run with exit `2`.
 1. Inspect the state, the compaction preview, and the suggested archive moves:
 
    ```powershell
-   uv run --project FrameWeb --locked --extra dev python .agents/skills/checkpointing/refresh_guard.py --mode plan
+   uv run --no-project python .agents/skills/checkpointing/refresh_guard.py --mode plan
    ```
 
    Reports `blocks_pruned`, `sections_preserved`, `sections_dropped`,
@@ -98,7 +98,7 @@ be lost is reported in `sections_dropped` and aborts the run with exit `2`.
 2. Write the candidate state to a draft:
 
    ```powershell
-   uv run --project FrameWeb --locked --extra dev python .agents/skills/checkpointing/refresh_guard.py --mode compose
+   uv run --no-project python .agents/skills/checkpointing/refresh_guard.py --mode compose
    ```
 
 3. Review `.agents/logs/composed-state.md` and the reported move plan.
@@ -107,8 +107,8 @@ be lost is reported in `sections_dropped` and aborts the run with exit `2`.
 5. After approval, apply the compaction with the script — never by hand:
 
    ```powershell
-   uv run --project FrameWeb --locked --extra dev python .agents/skills/checkpointing/refresh_guard.py --mode apply
-   uv run --project FrameWeb --locked --extra dev python .agents/skills/checkpointing/refresh_guard.py --mode apply --apply
+   uv run --no-project python .agents/skills/checkpointing/refresh_guard.py --mode apply
+   uv run --no-project python .agents/skills/checkpointing/refresh_guard.py --mode apply --apply
    ```
 
    The first call previews to `.agents/logs/state-compaction-preview-*.md` and
@@ -120,7 +120,7 @@ be lost is reported in `sections_dropped` and aborts the run with exit `2`.
 6. Confirm the compaction landed:
 
    ```powershell
-   uv run --project FrameWeb --locked --extra dev python .agents/skills/checkpointing/refresh_guard.py --mode verify
+   uv run --no-project python .agents/skills/checkpointing/refresh_guard.py --mode verify
    ```
 
    `verify` compares the on-disk state against a freshly composed candidate and

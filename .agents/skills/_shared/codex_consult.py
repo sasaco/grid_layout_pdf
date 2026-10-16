@@ -17,10 +17,10 @@ stays diagnosable after the fact. With neither ``--prompt-file`` nor
 ``.agents/logs/codex/prompt-{label}.md``.
 
 Usage:
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/codex_consult.py --prompt-file prompt.txt --label design-review
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/codex_consult.py --label design-review
-    "Objective: ..." | uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/codex_consult.py --prompt-stdin
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/codex_consult.py --prompt-file p.txt --config model_reasoning_effort=low
+    uv run --no-project python .agents/skills/_shared/codex_consult.py --prompt-file prompt.txt --label design-review
+    uv run --no-project python .agents/skills/_shared/codex_consult.py --label design-review
+    "Objective: ..." | uv run --no-project python .agents/skills/_shared/codex_consult.py --prompt-stdin
+    uv run --no-project python .agents/skills/_shared/codex_consult.py --prompt-file p.txt --config model_reasoning_effort=low
 
 Exit codes:
     0  codex exec exited 0 and its output was saved and verified

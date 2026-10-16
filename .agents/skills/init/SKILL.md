@@ -24,7 +24,7 @@ Initialize project-owned context without expanding the always-loaded root
 Run:
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/init/detect_stack.py
+uv run --no-project python .agents/skills/init/detect_stack.py
 ```
 
 The script reports **evidence, not conclusions**. It never infers a command:
@@ -42,8 +42,9 @@ Read these fields before writing anything:
 - `warnings` — a manifest that could not be read, decoded, or parsed. Non-empty
   means the evidence is partial, even though the exit code is `0`.
 - `evidence.parsed_manifests` / `evidence.unparsed_manifests` — "parsed and
-  empty" versus "present but not parsed for dependencies" (`Cargo.toml`,
-  `go.mod`, `setup.py`, `Makefile`, `Dockerfile`).
+  empty" versus "present but not parsed for dependencies" (for example,
+  `setup.py`, `Makefile`, or `Dockerfile`). This is a generic detector contract;
+  only present manifests are evidence of this repository's stack.
 - `manifests` — every checked filename with an explicit `true`/`false`, so
   "checked and absent" is never mistaken for "never checked".
 - `agent_bootstrap` — `agents_md` and `state_md`.
@@ -78,9 +79,9 @@ typed keys:
 | Prose sections (背景・目的, スコープ, 制約, TODO / Open Questions) | `section_updates` | `heading`, `content` |
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/update_design.py --input .agents/logs/init-design-input.json
+uv run --no-project python .agents/skills/_shared/update_design.py --input .agents/logs/init-design-input.json
 # Read the preview at preview_file, then apply:
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/update_design.py --input .agents/logs/init-design-input.json --apply --require-change
+uv run --no-project python .agents/skills/_shared/update_design.py --input .agents/logs/init-design-input.json --apply --require-change
 ```
 
 Completion test — `result == "applied"` **and** (`decisions_appended > 0` or any
@@ -105,9 +106,9 @@ replaces only that section's body and aborts if `## Main Agent`,
 ```
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/append_state_block.py --type repository-identity `
+uv run --no-project python .agents/skills/_shared/append_state_block.py --type repository-identity `
   --input .agents/logs/init-identity-input.json
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/append_state_block.py --type repository-identity `
+uv run --no-project python .agents/skills/_shared/append_state_block.py --type repository-identity `
   --input .agents/logs/init-identity-input.json --apply
 ```
 
@@ -123,9 +124,9 @@ rejects them (exit `1`). Confirm `result: "applied"`, `structure_ok: true`, and
 Re-run the closing gate, and report the JSON verdicts rather than a claim:
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/init/detect_stack.py
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/validate_doc.py --contract design-doc --file .agents/docs/DESIGN.md
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/validate_doc.py --contract state-doc --file .agents/STATE.md
+uv run --no-project python .agents/skills/init/detect_stack.py
+uv run --no-project python .agents/skills/_shared/validate_doc.py --contract design-doc --file .agents/docs/DESIGN.md
+uv run --no-project python .agents/skills/_shared/validate_doc.py --contract state-doc --file .agents/STATE.md
 ```
 
 All three must exit `0` with `ok: true`. `detect_stack.py` confirms shared state

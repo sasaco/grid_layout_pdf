@@ -63,11 +63,7 @@ DEFAULT_EXCLUDED_DIRECTORIES = frozenset(
         "vendor",
     }
 )
-DEFAULT_EXCLUDED_PATHS = (
-    "FrameWebforJS/src/assets/js/rxfire",
-    "FrameWebforJS/src/assets/js/paramquery",
-    "tools/local-tools",
-)
+DEFAULT_EXCLUDED_PATHS: tuple[str, ...] = ()
 REQUIREMENT_NAME_RE = re.compile(r"^([A-Za-z0-9._-]+)")
 WORKFLOW_SUFFIXES = frozenset({".yml", ".yaml"})
 

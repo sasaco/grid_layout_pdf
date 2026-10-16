@@ -1,0 +1,35 @@
+"""Shared real-ink and stroke envelopes for scene and layout validation."""
+
+from .fonts import FontRegistry
+from .geometry import Rect
+from .scene import Line, Polyline, RasterImage, Rectangle, Text
+
+
+def command_bounds(command, fonts: FontRegistry) -> Rect:
+    """Return a command's top-origin bounds, including ink and half stroke.
+
+    Stroke envelopes assume bounded joins (the renderer uses round joins).
+    Overlapping commands are valid; this function only describes one envelope.
+    """
+    if isinstance(command, RasterImage):
+        return Rect(command.x, command.y, command.width, command.height)
+    if isinstance(command, Text):
+        bounds = fonts.measure(fonts.normalize_text(command.text), command.style).bounds
+        return Rect(command.x + bounds.x, command.y + bounds.y,
+                    bounds.width, bounds.height)
+    if isinstance(command, Line):
+        left, right = sorted((command.x1, command.x2))
+        top, bottom = sorted((command.y1, command.y2))
+        radius = command.width / 2
+    elif isinstance(command, Polyline):
+        left, right = min(p.x for p in command.points), max(p.x for p in command.points)
+        top, bottom = min(p.y for p in command.points), max(p.y for p in command.points)
+        radius = command.width / 2
+    elif isinstance(command, Rectangle):
+        left, right = command.x, command.x + command.width
+        top, bottom = command.y, command.y + command.height
+        radius = command.stroke_width / 2
+    else:
+        raise ValueError(f"Unsupported drawing command: {type(command).__name__}")
+    return Rect(left - radius, top - radius,
+                right - left + 2 * radius, bottom - top + 2 * radius)

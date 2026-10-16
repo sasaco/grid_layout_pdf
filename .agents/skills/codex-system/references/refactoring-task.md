@@ -30,11 +30,12 @@ Output:
 For a nested implementation, use explicit repository write authority:
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/codex_consult.py `
+uv run --no-project python .agents/skills/_shared/codex_consult.py `
   --prompt-file .agents/logs/codex/prompt-refactor.md `
   --label refactor `
   --sandbox workspace-write
 ```
 
 Finish with `& .agents/check.ps1` when agent infrastructure changed and with
-the relevant Python, Angular, or .NET component gates.
+the relevant Python tests (`uv run --locked --extra dev python -m pytest`).
+For layout changes, also inspect the generated PDF output.

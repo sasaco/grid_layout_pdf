@@ -35,9 +35,9 @@ everything beneath it. Keeping it literal means the answer to "was this file in
 scope" is inspectable by the reader of the JSON.
 
 Usage:
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/simplify/simplify_gate.py --phase before --scope FrameWeb/fem.py
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/simplify/simplify_gate.py --phase after --scope FrameWeb/fem.py --base main
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/simplify/simplify_gate.py --phase before --scope FrameWeb --allow-no-gates
+    uv run --no-project python .agents/skills/simplify/simplify_gate.py --phase before --scope src/gridlayoutpdf
+    uv run --no-project python .agents/skills/simplify/simplify_gate.py --phase after --scope src/gridlayoutpdf --base main
+    uv run --no-project python .agents/skills/simplify/simplify_gate.py --phase before --scope src/gridlayoutpdf --allow-no-gates
 
 Exit codes:
     0  ok — baseline recorded, or the after phase found no regression and no

@@ -11,7 +11,7 @@
 ## Read-only Consultation
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/codex_consult.py `
+uv run --no-project python .agents/skills/_shared/codex_consult.py `
   --prompt-file .agents/logs/codex/prompt-troubleshoot.md `
   --label troubleshoot `
   --sandbox read-only

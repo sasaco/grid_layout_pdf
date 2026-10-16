@@ -7,14 +7,14 @@ in every phase instead of re-deriving them by hand, which is how cross-phase
 artifacts silently drift out of sync.
 
 Usage:
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/workspace.py --skill spike --title "Load Case Set Analysis"
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/workspace.py --skill spike --slug load-case-set-analysis --create
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/workspace.py --skill spike --slug load-case-set-analysis --verify
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/workspace.py --skill spike --slug load-case-set-analysis --verify --require prototype_dir
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/workspace.py --skill team-execute --slug result-set --teammate backend
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/workspace.py --skill research-lib --title "numpy"
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/workspace.py --skill design-tracker --title "Version result-set representations"
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/workspace.py --skill troubleshoot --slug result-set-empty --verify --require diagnosis
+    uv run --no-project python .agents/skills/_shared/workspace.py --skill spike --title "Grid Layout Measurement"
+    uv run --no-project python .agents/skills/_shared/workspace.py --skill spike --slug grid-layout-measurement --create
+    uv run --no-project python .agents/skills/_shared/workspace.py --skill spike --slug grid-layout-measurement --verify
+    uv run --no-project python .agents/skills/_shared/workspace.py --skill spike --slug grid-layout-measurement --verify --require prototype_dir
+    uv run --no-project python .agents/skills/_shared/workspace.py --skill team-execute --slug equation-layout --teammate layout
+    uv run --no-project python .agents/skills/_shared/workspace.py --skill research-lib --title "reportlab"
+    uv run --no-project python .agents/skills/_shared/workspace.py --skill design-tracker --title "Separate report layout from calculations"
+    uv run --no-project python .agents/skills/_shared/workspace.py --skill troubleshoot --slug equation-overflow --verify --require diagnosis
 
 Exit codes:
     0  resolved (preview) or created successfully

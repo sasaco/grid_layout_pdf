@@ -1,0 +1,39 @@
+[build-system]
+requires = ["hatchling>=1.26"]
+build-backend = "hatchling.build"
+
+[project]
+name = "gridlayoutpdf"
+version = "0.1.0"
+description = "Grid-aligned PDF calculation reports built from Python components."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "reportlab>=5.0.1",
+    "pillow>=9.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pymupdf>=1.28.2",
+    "pytest>=9.1.1",
+    "pytest-cov>=7.1.0",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/gridlayoutpdf"]
+
+[tool.hatch.build.targets.sdist]
+include = ["/src", "/pyproject.toml", "/README.md"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+
+[dependency-groups]
+# Keep test tools installed for the shared runner's plain `uv run pytest`.
+dev = [
+    "pymupdf>=1.28.2",
+    "pytest>=9.1.1",
+    "pytest-cov>=7.1.0",
+]

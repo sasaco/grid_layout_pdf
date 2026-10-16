@@ -14,10 +14,10 @@ quote, parsed a ``--bisect-good`` flag it never used, and reported an absent git
 repository as an empty history.
 
 Usage:
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/troubleshoot/repro.py "uv --directory FrameWeb run --locked --extra dev python -m pytest tests/validation/test_unit_invariance.py"
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/troubleshoot/repro.py --command "dotnet build FrameWeb.sln" --file FrameWeb.sln --label dotnet-build
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/troubleshoot/repro.py "uv --directory FrameWeb run --locked --extra dev python -m pytest tests/validation/test_unit_invariance.py" --expect-exit 0
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/troubleshoot/repro.py "dotnet build FrameWeb.sln" --timeout 600 --bisect-good v1.2.0
+    uv run --no-project python .agents/skills/troubleshoot/repro.py "uv run --locked --extra dev python -m pytest tests/unit/test_reference_integrity.py"
+    uv run --no-project python .agents/skills/troubleshoot/repro.py --command "uv build" --file pyproject.toml --label package-build
+    uv run --no-project python .agents/skills/troubleshoot/repro.py "uv run --locked --extra dev python -m pytest tests/unit/test_reference_integrity.py" --expect-exit 0
+    uv run --no-project python .agents/skills/troubleshoot/repro.py "uv run --locked --extra dev python -m pytest tests/unit" --timeout 600 --bisect-good <known-good-ref>
 
 Exit codes:
     0  capture completed (and matched --expect-exit, when given)

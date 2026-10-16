@@ -91,7 +91,7 @@ registry rather than deriving it by hand, so the slug rule is the same one every
 other skill uses:
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/workspace.py `
+uv run --no-project python .agents/skills/_shared/workspace.py `
   --skill design-tracker --title "{decision topic}" --create
 ```
 
@@ -118,9 +118,9 @@ Example input (use only the keys you need):
 Run dry-run, read the preview, then apply:
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/update_design.py --input "${input}"
+uv run --no-project python .agents/skills/_shared/update_design.py --input "${input}"
 # Read the file named by preview_file in the JSON output, then:
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/update_design.py --input "${input}" --apply --require-change
+uv run --no-project python .agents/skills/_shared/update_design.py --input "${input}" --apply --require-change
 ```
 
 **Completion test.** `"ok": true` alone is not it — a duplicate or empty entry

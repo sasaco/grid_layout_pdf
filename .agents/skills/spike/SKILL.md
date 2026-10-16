@@ -33,12 +33,12 @@ This skill handles time-boxed feasibility studies and technical investigations. 
 
 | Situation | Example |
 |-----------|---------|
-| **Technology feasibility** | "Can we use WebSocket for real-time sync?" |
-| **Library evaluation** | "Is DuckDB suitable for our analytics pipeline?" |
-| **Architecture question** | "Should we use event sourcing for the order system?" |
-| **Performance hypothesis** | "Can we serve 10k concurrent requests with this stack?" |
-| **Migration risk** | "What would it take to migrate from REST to gRPC?" |
-| **Integration question** | "Can we integrate with the Stripe Connect API for our use case?" |
+| **Technology feasibility** | "Can we align equation terms to the PDF grid?" |
+| **Library evaluation** | "Does this PDF library support the required fonts and text metrics?" |
+| **Architecture question** | "Where should layout calculation end and PDF drawing begin?" |
+| **Performance hypothesis** | "Can we render a long calculation report within the agreed time limit?" |
+| **Migration risk** | "What would it take to change PDF rendering libraries?" |
+| **Integration question** | "Can a caller supply calculated values without coupling its solver to rendering?" |
 
 ### When NOT to Use
 
@@ -85,7 +85,7 @@ Phase 3: SYNTHESIZE (Codex Evaluation + Codex Lead + User)
 Resolve this spike's deterministic workspace once. The title becomes file and directory names, so give it a short English descriptor of the question -- not the user's raw wording, which the Language Protocol keeps out of paths:
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/workspace.py --skill spike --title "{short English title}" --create
+uv run --no-project python .agents/skills/_shared/workspace.py --skill spike --title "{short English title}" --create
 ```
 
 This prints one JSON object: `slug`, `team_name`, and `paths` (`brief`, `research`, `feasibility`, `report`, `prototype_dir`, `team_dir`). Exit 0 resolved/created; 1 bad args; 2 applies only to `--verify` (used later in Phase 3); 3 the workspace directories could not be created. Use `{slug}`, `{team_name}`, and every `paths.*` value from this JSON verbatim for the rest of this skill -- do not re-derive them by hand in a later phase.
@@ -128,7 +128,7 @@ Output format:
 ```
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/codex_consult.py --prompt-file .agents/logs/codex/prompt-spike-decomposition.md --label spike-decomposition
+uv run --no-project python .agents/skills/_shared/codex_consult.py --prompt-file .agents/logs/codex/prompt-spike-decomposition.md --label spike-decomposition
 ```
 
 `.agents/skills/_shared/codex_consult.py` exits 0 when Codex answered normally, 2 if the Codex CLI is not installed, 3 if Codex failed or timed out -- check the JSON `ok` field and read `response_file` for the answer (`error`/`stderr_file` explain a failure). Every later Codex consultation in this skill follows this same write-prompt-then-invoke pattern without repeating these exit codes.
@@ -138,7 +138,7 @@ uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/cod
 Combine user parameters + Codex decomposition into a Spike Brief following the template contract in `references/brief-template.md`. Write it to `{paths.brief}` (from Step 0) -- not only into this conversation -- then validate it:
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/validate_doc.py --contract spike-brief --file {paths.brief}
+uv run --no-project python .agents/skills/_shared/validate_doc.py --contract spike-brief --file {paths.brief}
 ```
 
 `references/brief-template.md` is the single source of truth for the required
@@ -243,7 +243,7 @@ Spawn two teammates:
    You MUST consult Codex for EACH of the following analysis tasks.
    Do NOT skip Codex consultation -- it is the primary reasoning engine for this role.
    Each consultation below follows the same shape: write the prompt to a file,
-   then run `uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/codex_consult.py --prompt-file <path> --label <label>`
+   then run `uv run --no-project python .agents/skills/_shared/codex_consult.py --prompt-file <path> --label <label>`
    and read the JSON `response_file`.
 
    ### 1. Technical Feasibility Assessment
@@ -266,7 +266,7 @@ Spawn two teammates:
    ## Soft Challenges
    ## Effort Estimate (if feasible)
 
-   uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/codex_consult.py --prompt-file .agents/logs/codex/prompt-spike-feasibility.md --label spike-feasibility
+   uv run --no-project python .agents/skills/_shared/codex_consult.py --prompt-file .agents/logs/codex/prompt-spike-feasibility.md --label spike-feasibility
 
    ### 2. Architecture Compatibility Analysis
    Write the prompt below to a file, then consult Codex to evaluate fit with existing architecture:
@@ -286,7 +286,7 @@ Spawn two teammates:
    ## Required Architectural Changes
    ## Migration Complexity (LOW / MEDIUM / HIGH)
 
-   uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/codex_consult.py --prompt-file .agents/logs/codex/prompt-spike-architecture.md --label spike-architecture
+   uv run --no-project python .agents/skills/_shared/codex_consult.py --prompt-file .agents/logs/codex/prompt-spike-architecture.md --label spike-architecture
 
    ### 3. Risk and Trade-off Analysis
    Write the prompt below to a file, then consult Codex to evaluate risks:
@@ -307,7 +307,7 @@ Spawn two teammates:
    ## Comparison with Alternatives
    ## Mitigation Strategies
 
-   uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/codex_consult.py --prompt-file .agents/logs/codex/prompt-spike-risk.md --label spike-risk
+   uv run --no-project python .agents/skills/_shared/codex_consult.py --prompt-file .agents/logs/codex/prompt-spike-risk.md --label spike-risk
 
    ### 4. Prototype Validation (PROTOTYPE mode only)
    If the investigation mode is PROTOTYPE, write the prompt below to a file, then have Codex build a minimal throwaway prototype. This is the one call that keeps `--sandbox workspace-write`; every other consultation in this skill uses the default `read-only`:
@@ -328,7 +328,7 @@ Spawn two teammates:
    ## Result (VALIDATED / INVALIDATED / INCONCLUSIVE)
    ## Evidence
 
-   uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/codex_consult.py --prompt-file .agents/logs/codex/prompt-spike-prototype.md --label spike-prototype --sandbox workspace-write
+   uv run --no-project python .agents/skills/_shared/codex_consult.py --prompt-file .agents/logs/codex/prompt-spike-prototype.md --label spike-prototype --sandbox workspace-write
 
    ### 5. Post-Prototype Acceptance Checks (MANDATORY after the call above)
    `ok: true` from the wrapper means `codex exec` exited 0 -- nothing more. Per
@@ -336,8 +336,8 @@ Spawn two teammates:
    checks; a write-enabled delegated CLI is never trusted on its self-report.
    Run both, in this order:
 
-   uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/workspace.py --skill spike --slug {slug} --verify --require prototype_dir
-   uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/verify_delegation.py --base HEAD --forbid-outside {paths.prototype_dir}
+   uv run --no-project python .agents/skills/_shared/workspace.py --skill spike --slug {slug} --verify --require prototype_dir
+   uv run --no-project python .agents/skills/_shared/verify_delegation.py --base HEAD --forbid-outside {paths.prototype_dir}
 
    The first exits 2 when `{paths.prototype_dir}` holds no non-trivial file --
    i.e. Codex reported success and wrote nothing. Read `verify.missing` /
@@ -390,16 +390,15 @@ Wait for both teammates to complete their tasks.
 ### Why Bidirectional Communication Matters for Spikes
 
 ```
-Example interaction flow:
+Hypothetical interaction flow (not findings about any library):
 
-Researcher: "DuckDB supports concurrent reads but only single-writer"
-    -> Feasibility Analyst: "Single-writer is a hard blocker for our multi-tenant writes"
-    -> Feasibility Analyst: "Research: does DuckDB support WAL mode or write queuing?"
-    -> Researcher: "WAL mode available since v0.9. Also found a connection pooling pattern."
-    -> Feasibility Analyst: "Codex analysis: WAL + write queue is feasible but adds complexity"
-    -> Feasibility Analyst: "Updated assessment: PARTIALLY_FEASIBLE with medium effort"
-    -> Researcher: "Found alternative: SQLite with litestream -- simpler write model"
-    -> Feasibility Analyst: "Codex comparison: SQLite+litestream wins on simplicity, DuckDB wins on analytics"
+Researcher: "The candidate renderer's font support needs a focused check."
+    -> Feasibility Analyst: "Japanese text and equation symbols are acceptance criteria."
+    -> Feasibility Analyst: "Research: verify font embedding and text-width measurement."
+    -> Researcher: "I will check primary documentation and prepare a minimal sample."
+    -> Feasibility Analyst: "Compare the sample PDF with the required glyphs and grid positions."
+    -> Researcher: "Record measured results and any missing glyphs in the investigation report."
+    -> Feasibility Analyst: "Update feasibility only after inspecting that evidence."
 ```
 
 Without Agent Teams, this discovery loop would require multiple sequential subagent rounds.
@@ -417,7 +416,7 @@ both teammates to complete" is a self-report, and a half-finished investigation
 read as complete produces a confident verdict on partial evidence:
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/validate_doc.py --contract work-log `
+uv run --no-project python .agents/skills/_shared/validate_doc.py --contract work-log `
   --dir {paths.team_dir} --expect-files 2
 ```
 
@@ -464,7 +463,7 @@ Output format (headings chosen to drop straight into `references/report-template
 ```
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/codex_consult.py --prompt-file .agents/logs/codex/prompt-spike-evaluation.md --label spike-evaluation
+uv run --no-project python .agents/skills/_shared/codex_consult.py --prompt-file .agents/logs/codex/prompt-spike-evaluation.md --label spike-evaluation
 ```
 
 ### Step 3: Save Research Report
@@ -472,10 +471,10 @@ uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/cod
 Save the complete spike report to `{paths.report}` (from Phase 1 Step 0) following the template contract in `references/report-template.md`. Then validate it and gate Phase 3 before presenting to the user:
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/validate_doc.py --contract spike-report --file {paths.report}
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/workspace.py --skill spike --slug {slug} --verify
+uv run --no-project python .agents/skills/_shared/validate_doc.py --contract spike-report --file {paths.report}
+uv run --no-project python .agents/skills/_shared/workspace.py --skill spike --slug {slug} --verify
 # PROTOTYPE mode only -- make the prototype itself a required artifact:
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/workspace.py --skill spike --slug {slug} --verify --require prototype_dir
+uv run --no-project python .agents/skills/_shared/workspace.py --skill spike --slug {slug} --verify --require prototype_dir
 ```
 
 `references/report-template.md` is the single source of truth for the report's

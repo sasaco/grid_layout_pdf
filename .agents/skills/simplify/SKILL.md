@@ -33,7 +33,7 @@ is reported as `out_of_scope_files` and fails Step 5.
 ### 0. Record the Baseline (mandatory, before any edit)
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/simplify/simplify_gate.py --phase before `
+uv run --no-project python .agents/skills/simplify/simplify_gate.py --phase before `
   --scope {target file or dir} [--scope {another}] [--base main]
 ```
 
@@ -169,7 +169,7 @@ def main():
 ### 5. Verify Against the Baseline
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/simplify/simplify_gate.py --phase after
+uv run --no-project python .agents/skills/simplify/simplify_gate.py --phase after
 ```
 
 The scope and base ref are read back from the baseline, so they cannot drift

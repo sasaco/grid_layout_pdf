@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "id": "mixed_diagram",
+  "purpose": "見出し、説明、寸法付きの線図、画像、式を同じフローに置く。図は新規の表示例。",
+  "display_data_only": true,
+  "source_pages": [{"reference_id": "report_07", "page": 1}, {"reference_id": "report_06", "page": 1}],
+  "profile": "A4_PORTRAIT_REFERENCE",
+  "body": [
+    {"kind": "heading", "text": "荷重図の表示例"},
+    {"kind": "paragraph", "text": "矢印、寸法線、日本語ラベルと画像の配置を確認する。計算結果は呼び出し側から渡す。"},
+    {
+      "kind": "figure", "width_pt": 240, "height_pt": 100,
+      "elements": [
+        {"kind": "rectangle", "x": 20, "y": 45, "width": 200, "height": 10},
+        {"kind": "arrow", "start": [120, 10], "end": [120, 43]},
+        {"kind": "line", "start": [20, 75], "end": [220, 75]},
+        {"kind": "line", "start": [20, 65], "end": [20, 85]},
+        {"kind": "line", "start": [220, 65], "end": [220, 85]},
+        {"kind": "label", "position": [135, 18], "text": "荷重 P"},
+        {"kind": "label", "position": [90, 80], "text": "L = 4.50 m"}
+      ]
+    },
+    {"kind": "image", "asset": "sample_pixels.png", "width_columns": 10, "height_rows": 4, "preserve_aspect_ratio": true, "description": "新規作成した2:1の配色パターン。原本PDFからの複写ではない。"},
+    {"kind": "equation", "label": "表示値", "lhs": {"kind": "symbol", "text": "P"}, "relation": "=", "rhs": {"kind": "literal", "text": "12.50"}, "result_relation": "=", "result": "12.50", "unit": "kN"}
+  ]
+}

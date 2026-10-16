@@ -19,11 +19,11 @@ The diff includes uncommitted work (a delegated CLI run usually leaves the tree
 dirty) and untracked files, whose lines are scanned as additions.
 
 Usage:
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/verify_delegation.py
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/verify_delegation.py --base HEAD~1
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/verify_delegation.py --expect-files FrameWeb/main.py --expect-files FrameWeb/tests/validation/test_unit_invariance.py
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/verify_delegation.py --forbid-outside FrameWeb --forbid-outside .agents
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/verify_delegation.py --label implement --now 2026-07-25T09:00:00
+    uv run --no-project python .agents/skills/_shared/verify_delegation.py
+    uv run --no-project python .agents/skills/_shared/verify_delegation.py --base HEAD~1
+    uv run --no-project python .agents/skills/_shared/verify_delegation.py --expect-files src/gridlayoutpdf/__init__.py --expect-files tests/unit/test_reference_integrity.py
+    uv run --no-project python .agents/skills/_shared/verify_delegation.py --forbid-outside src --forbid-outside tests --forbid-outside .agents
+    uv run --no-project python .agents/skills/_shared/verify_delegation.py --label implement --now 2026-07-25T09:00:00
 
 Exit codes:
     0  evidence collected, nothing actionable, no violated expectation.

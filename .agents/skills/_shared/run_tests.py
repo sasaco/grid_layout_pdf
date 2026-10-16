@@ -10,9 +10,9 @@ at all (a mistyped path, or a test that was never written). ``pytest`` reports
 all four as a non-zero exit, so a human reading "not passing" accepts every one
 of them and the Green step then writes code against a test that never ran.
 
-This script does **not** re-implement ``.agents/check.ps1``: that runs the whole
-configured gate set and answers "is the project healthy". This answers the
-narrower question "did this one run come out the way the caller said it would".
+``.agents/check.ps1`` validates repository metadata and document contracts.
+This script runs product tests and answers the separate question "did this
+one run come out the way the caller said it would".
 Which tests to write stays a judgment call and is never scripted; only the
 invariant is.
 
@@ -30,10 +30,10 @@ internal error (exit 3) or a missing/timed-out runner is an external failure:
 ``observed`` is ``null`` and the exit code is 3. ``observed`` is never guessed.
 
 Usage:
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/run_tests.py --target FrameWeb/tests/validation/test_unit_invariance.py --expect fail
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/run_tests.py --target FrameWeb/tests/validation/test_unit_invariance.py --expect pass
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/run_tests.py --target FrameWeb/tests/validation/test_unit_invariance.py --target FrameWeb/tests/validation/test_stored_references.py --expect pass --label green-2
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/run_tests.py --target FrameWeb/tests --expect pass --cov FrameWeb --min-coverage 90
+    uv run --no-project python .agents/skills/_shared/run_tests.py --target tests/unit/test_reference_integrity.py --expect fail
+    uv run --no-project python .agents/skills/_shared/run_tests.py --target tests/unit/test_reference_integrity.py --expect pass
+    uv run --no-project python .agents/skills/_shared/run_tests.py --target tests/unit/test_reference_integrity.py --target tests/unit/test_font_assets.py --expect pass --label green-2
+    uv run --no-project python .agents/skills/_shared/run_tests.py --target tests --expect pass --cov gridlayoutpdf --min-coverage 90
 
 Exit codes:
     0  ok — observed matches --expect (and coverage meets --min-coverage)
@@ -200,9 +200,9 @@ def select_configured_prefix(
 ) -> tuple[list[str] | None, str | None, str | None, bool]:
     """Select one configured Python test prefix for *targets*.
 
-    Returns ``(prefix, component_id, error, config_present)``. Agent-framework
-    tests outside a product working directory use the sole Python environment,
-    which is how this repository runs ``.agents/tests`` without a root venv.
+    Returns ``(prefix, component_id, error, config_present)``. Tests outside a
+    configured component's working directory can use its Python environment
+    when it is the sole configured Python component.
     """
     prefixes, error, config_present = configured_test_prefixes(project_root)
     if error:
@@ -243,9 +243,9 @@ def targets_for_runner(
     """Render repo-root targets in a configured component's coordinates.
 
     The public CLI always accepts repository-relative targets. A configured
-    prefix may establish a component working directory (for example, ``uv
-    --directory FrameWeb``), so the target arguments appended to that prefix
-    must be relative to the component rather than the repository root.
+    prefix may establish a component working directory, so target arguments
+    appended to it must be relative to that component rather than the
+    repository root.
     """
     if not runner_note.startswith("repository.toml:"):
         return list(targets)

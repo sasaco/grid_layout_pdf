@@ -27,10 +27,10 @@ files (``scope: "changed_files"``), so pre-existing repo-wide lint debt is not
 attributed to this change.
 
 Usage:
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/gather_diff.py
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/gather_diff.py --base origin/main --out .agents/logs/review-diff.patch
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/gather_diff.py --no-include-uncommitted
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/gather_diff.py --project-root . --base HEAD~3
+    uv run --no-project python .agents/skills/_shared/gather_diff.py
+    uv run --no-project python .agents/skills/_shared/gather_diff.py --base origin/main --out .agents/logs/review-diff.patch
+    uv run --no-project python .agents/skills/_shared/gather_diff.py --no-include-uncommitted
+    uv run --no-project python .agents/skills/_shared/gather_diff.py --project-root . --base HEAD~3
 
 Exit codes:
     0  scope collected and non-empty

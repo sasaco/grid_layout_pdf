@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "id": "nested_fractions_scripts",
+  "purpose": "段分数、分数の指数、上下付き、根号、背の高い括弧を局所座標で組む。結果は表示用の固定値。",
+  "display_data_only": true,
+  "source_pages": [{"reference_id": "report_13", "page": 54}, {"reference_id": "report_04", "page": 1}],
+  "profile": "A4_PORTRAIT_REFERENCE",
+  "body": [
+    {
+      "kind": "equation_group",
+      "equations": [
+        {
+          "kind": "equation", "label": "係数の組版例",
+          "lhs": {"kind": "script", "base": {"kind": "symbol", "text": "α"}, "subscript": {"kind": "literal", "text": "1"}},
+          "relation": "=",
+          "rhs": {
+            "kind": "script",
+            "base": {
+              "kind": "delimited", "left": "(", "right": ")",
+              "body": {
+                "kind": "fraction",
+                "numerator": {"kind": "literal", "text": "1"},
+                "denominator": {
+                  "kind": "row", "items": [
+                    {"kind": "literal", "text": "1"}, {"kind": "operator", "text": "+"},
+                    {
+                      "kind": "fraction",
+                      "numerator": {"kind": "script", "base": {"kind": "symbol", "text": "β"}, "subscript": {"kind": "literal", "text": "2"}},
+                      "denominator": {"kind": "root", "body": {"kind": "row", "items": [{"kind": "literal", "text": "1"}, {"kind": "operator", "text": "+"}, {"kind": "symbol", "text": "γ"}]}}
+                    }
+                  ]
+                }
+              }
+            },
+            "superscript": {"kind": "fraction", "numerator": {"kind": "literal", "text": "1"}, "denominator": {"kind": "literal", "text": "2"}}
+          },
+          "result_relation": "=", "result": "0.875", "unit": ""
+        }
+      ]
+    }
+  ]
+}

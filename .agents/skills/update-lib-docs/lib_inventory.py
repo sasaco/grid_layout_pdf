@@ -21,10 +21,10 @@ and every dependency table actually parsed is listed in ``sources`` so an empty
 ``undocumented`` can never be mistaken for "everything is documented".
 
 Usage:
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/update-lib-docs/lib_inventory.py
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/update-lib-docs/lib_inventory.py --stale-days 60 --today 2026-07-21
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/update-lib-docs/lib_inventory.py --library numpy
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/update-lib-docs/lib_inventory.py --project-root .
+    uv run --no-project python .agents/skills/update-lib-docs/lib_inventory.py
+    uv run --no-project python .agents/skills/update-lib-docs/lib_inventory.py --stale-days 60 --today 2026-07-21
+    uv run --no-project python .agents/skills/update-lib-docs/lib_inventory.py --library reportlab
+    uv run --no-project python .agents/skills/update-lib-docs/lib_inventory.py --project-root .
 
 Exit codes:
     0  scan completed (an empty or absent libraries dir is a valid state)
@@ -114,11 +114,7 @@ EXCLUDED_DIRECTORY_NAMES = frozenset(
         "vendor",
     }
 )
-EXCLUDED_PATHS = (
-    "FrameWebforJS/src/assets/js/rxfire",
-    "FrameWebforJS/src/assets/js/paramquery",
-    "tools/local-tools",
-)
+EXCLUDED_PATHS: tuple[str, ...] = ()
 
 
 def _emit(obj: dict) -> None:

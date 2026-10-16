@@ -58,7 +58,7 @@ Phase 3: FIX PLAN & APPROVE (Codex Validation + Codex Lead + User)
 Resolve this bug's deterministic workspace once. The title becomes file and directory names, so give it a short English descriptor of the bug -- not the user's raw wording, which the Language Protocol keeps out of paths:
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/workspace.py --skill troubleshoot --title "{short English title}" --create
+uv run --no-project python .agents/skills/_shared/workspace.py --skill troubleshoot --title "{short English title}" --create
 ```
 
 This prints one JSON object: `slug`, `team_name`, and `paths` (`bug_report`, `context`, `root_cause`, `impact`, `diagnosis`, `state_input`, `team_dir`). Exit 0 resolved/created; 1 bad args; 2 applies only to `--verify` (used later in Phase 3); 3 the workspace directories could not be created. Use `{slug}`, `{team_name}`, and every `paths.*` value from this JSON verbatim for the rest of this skill -- do not re-derive them by hand in a later phase.
@@ -81,7 +81,7 @@ to a log file keyed by `--label`, and gathers recent git history (plus optional
 last-commit context for a stack-trace file):
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/troubleshoot/repro.py "<repro-command>" `
+uv run --no-project python .agents/skills/troubleshoot/repro.py "<repro-command>" `
   --label {slug}-initial [--file <path-from-stack-trace>] [--timeout 120]
 ```
 
@@ -161,7 +161,7 @@ Output format:
 ```
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/codex_consult.py --prompt-file .agents/logs/codex/prompt-troubleshoot-initial.md --label troubleshoot-initial
+uv run --no-project python .agents/skills/_shared/codex_consult.py --prompt-file .agents/logs/codex/prompt-troubleshoot-initial.md --label troubleshoot-initial
 ```
 
 `.agents/skills/_shared/codex_consult.py` exits 0 when Codex answered normally, 2 if the Codex CLI is not installed, 3 if Codex failed or timed out -- check the JSON `ok` field and read `response_file` for the answer (`error`/`stderr_file` explain a failure). Every later Codex consultation in this skill follows this same write-prompt-then-invoke pattern without repeating these exit codes.
@@ -173,7 +173,7 @@ Use Codex's analysis to strengthen the Initial Hypotheses section of the Bug Rep
 Combine error details + codebase analysis + Codex initial hypotheses into a Bug Report following the template contract in `references/bug-report-template.md`. Save it to `{paths.bug_report}` (from Step 0), then validate it:
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/validate_doc.py --contract bug-report --file {paths.bug_report}
+uv run --no-project python .agents/skills/_shared/validate_doc.py --contract bug-report --file {paths.bug_report}
 ```
 
 `references/bug-report-template.md` is the single source of truth for the
@@ -229,7 +229,7 @@ Spawn two teammates:
    You MUST consult Codex for EACH of the following analysis tasks.
    Do NOT skip Codex consultation — it is the primary reasoning engine for this role.
    Each consultation below follows the same shape: write the prompt to a file,
-   then run `uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/codex_consult.py --prompt-file <path> --label <label>`
+   then run `uv run --no-project python .agents/skills/_shared/codex_consult.py --prompt-file <path> --label <label>`
    and read the JSON `response_file`.
 
    ### 1. Execution Flow Tracing
@@ -249,7 +249,7 @@ Spawn two teammates:
    ## Assumption Violations
    ## Critical Decision Points
 
-   uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/codex_consult.py --prompt-file .agents/logs/codex/prompt-troubleshoot-flow.md --label troubleshoot-flow
+   uv run --no-project python .agents/skills/_shared/codex_consult.py --prompt-file .agents/logs/codex/prompt-troubleshoot-flow.md --label troubleshoot-flow
 
    ### 2. Hypothesis Evaluation
    For each hypothesis, write the prompt below to a file, then consult Codex to evaluate evidence:
@@ -268,7 +268,7 @@ Spawn two teammates:
    ## Reasoning
    ## Remaining Unknowns
 
-   uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/codex_consult.py --prompt-file .agents/logs/codex/prompt-troubleshoot-hypothesis.md --label troubleshoot-hypothesis
+   uv run --no-project python .agents/skills/_shared/codex_consult.py --prompt-file .agents/logs/codex/prompt-troubleshoot-hypothesis.md --label troubleshoot-hypothesis
 
    ### 3. Fix Approach Design
    Write the prompt below to a file, then consult Codex for trade-off analysis of fix alternatives:
@@ -289,7 +289,7 @@ Spawn two teammates:
    ## Comparison Matrix
    ## Recommendation with Rationale
 
-   uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/codex_consult.py --prompt-file .agents/logs/codex/prompt-troubleshoot-fix-design.md --label troubleshoot-fix-design
+   uv run --no-project python .agents/skills/_shared/codex_consult.py --prompt-file .agents/logs/codex/prompt-troubleshoot-fix-design.md --label troubleshoot-fix-design
 
    ### 4. Fix Correctness Verification
    Before finalizing, write the prompt below to a file, then consult Codex to verify the proposed fix:
@@ -309,7 +309,7 @@ Spawn two teammates:
    ## New Failure Modes (if any)
    ## Confidence Level
 
-   uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/codex_consult.py --prompt-file .agents/logs/codex/prompt-troubleshoot-fix-verify.md --label troubleshoot-fix-verify
+   uv run --no-project python .agents/skills/_shared/codex_consult.py --prompt-file .agents/logs/codex/prompt-troubleshoot-fix-verify.md --label troubleshoot-fix-verify
 
    Save analysis to `{paths.root_cause}` (from Phase 1 Step 0).
 
@@ -376,7 +376,7 @@ Spawn two teammates:
 
    You MUST consult Codex for regression risk reasoning and fix safety analysis.
    Each consultation below follows the same shape: write the prompt to a file,
-   then run `uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/codex_consult.py --prompt-file <path> --label <label>`
+   then run `uv run --no-project python .agents/skills/_shared/codex_consult.py --prompt-file <path> --label <label>`
    and read the JSON `response_file`.
 
    ### Regression Risk Reasoning
@@ -398,7 +398,7 @@ Spawn two teammates:
    ## Implicit Contracts at Risk
    ## Recommended Safeguards
 
-   uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/codex_consult.py --prompt-file .agents/logs/codex/prompt-troubleshoot-regression.md --label troubleshoot-regression
+   uv run --no-project python .agents/skills/_shared/codex_consult.py --prompt-file .agents/logs/codex/prompt-troubleshoot-regression.md --label troubleshoot-regression
 
    ### Fix Safety Analysis
    Write the prompt below to a file, then consult Codex to verify the proposed fix does not introduce new issues:
@@ -419,7 +419,7 @@ Spawn two teammates:
    ## Side Effects
    ## Mitigation Recommendations
 
-   uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/codex_consult.py --prompt-file .agents/logs/codex/prompt-troubleshoot-fix-safety.md --label troubleshoot-fix-safety
+   uv run --no-project python .agents/skills/_shared/codex_consult.py --prompt-file .agents/logs/codex/prompt-troubleshoot-fix-safety.md --label troubleshoot-fix-safety
 
    Save findings to `{paths.impact}` (from Phase 1 Step 0).
 
@@ -484,8 +484,8 @@ Gate Phase 3 on the Phase 1/2 artifacts **before** reading anything, so a
 teammate that stopped early cannot be mistaken for one that finished:
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/workspace.py --skill troubleshoot --slug {slug} --verify
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/validate_doc.py --contract work-log `
+uv run --no-project python .agents/skills/_shared/workspace.py --skill troubleshoot --slug {slug} --verify
+uv run --no-project python .agents/skills/_shared/validate_doc.py --contract work-log `
   --dir {paths.team_dir} --expect-files 2
 ```
 
@@ -520,7 +520,7 @@ Output format:
 ```
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/codex_consult.py --prompt-file .agents/logs/codex/prompt-troubleshoot-plan-validation.md --label troubleshoot-plan-validation
+uv run --no-project python .agents/skills/_shared/codex_consult.py --prompt-file .agents/logs/codex/prompt-troubleshoot-plan-validation.md --label troubleshoot-plan-validation
 ```
 
 If Codex returns NEEDS_REVISION, update the fix plan before presenting to user.
@@ -547,7 +547,7 @@ Typical fix task structure:
    Phase 1 failure log survives:
 
    ```powershell
-   uv run --project FrameWeb --locked --extra dev python .agents/skills/troubleshoot/repro.py "<repro-command>" `
+   uv run --no-project python .agents/skills/troubleshoot/repro.py "<repro-command>" `
      --label {slug}-fix-verify --expect-exit 0
    ```
 
@@ -593,10 +593,10 @@ shared writer script and `.agents/rules/agent-state.md`.
 **Run dry-run**, review the preview, then apply:
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/append_state_block.py `
+uv run --no-project python .agents/skills/_shared/append_state_block.py `
   --type bug-fix --input {paths.state_input}
 # Review the preview file path in the JSON output, then:
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/append_state_block.py `
+uv run --no-project python .agents/skills/_shared/append_state_block.py `
   --type bug-fix --input {paths.state_input} --apply
 ```
 
@@ -611,9 +611,9 @@ Compose the diagnosis and fix plan following the template contract in
 its structure before presenting it:
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/validate_doc.py --contract diagnosis `
+uv run --no-project python .agents/skills/_shared/validate_doc.py --contract diagnosis `
   --file {paths.diagnosis}
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/workspace.py --skill troubleshoot `
+uv run --no-project python .agents/skills/_shared/workspace.py --skill troubleshoot `
   --slug {slug} --verify --require diagnosis
 ```
 

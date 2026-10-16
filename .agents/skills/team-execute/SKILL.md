@@ -85,7 +85,7 @@ Resolve this run's paths once, reusing the same `slug` `/feature` or `/plan`
 resolved:
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/workspace.py `
+uv run --no-project python .agents/skills/_shared/workspace.py `
   --skill team-execute --slug {slug} --create
 ```
 
@@ -149,7 +149,7 @@ change to reconcile later):
 ```
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/team-execute/check_ownership.py `
+uv run --no-project python .agents/skills/team-execute/check_ownership.py `
   --assignment .agents/logs/ownership-{team_name}.json --mode preflight
 ```
 
@@ -228,7 +228,7 @@ Spawn teammates:
    IMPORTANT — Work Log:
    When ALL your assigned tasks are complete, write your work log to
    {paths.work_log} — resolve it with
-   uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/workspace.py --skill team-execute
+   uv run --no-project python .agents/skills/_shared/workspace.py --skill team-execute
      --slug {slug} --teammate {your-teammate-name}
    and use the returned path verbatim — per the shared
    format: .agents/skills/_shared/work-log-format.md
@@ -260,7 +260,7 @@ Spawn teammates:
    IMPORTANT — Work Log:
    When ALL your assigned tasks are complete, write your work log to
    {paths.work_log} — resolve it with
-   uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/workspace.py --skill team-execute
+   uv run --no-project python .agents/skills/_shared/workspace.py --skill team-execute
      --slug {slug} --teammate {your-teammate-name}
    and use the returned path verbatim — per the shared
    format: .agents/skills/_shared/work-log-format.md
@@ -326,7 +326,7 @@ Validate every teammate's work log in the team directory with a single call.
 `{N}` is the number of teammates you actually dispatched:
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/validate_doc.py --contract work-log `
+uv run --no-project python .agents/skills/_shared/validate_doc.py --contract work-log `
   --dir {paths.team_dir} --expect-files {N}
 ```
 
@@ -347,7 +347,7 @@ Step 1-1 — do not re-derive the path by hand.
 Compare the assignment against what git says actually changed:
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/team-execute/check_ownership.py `
+uv run --no-project python .agents/skills/team-execute/check_ownership.py `
   --assignment .agents/logs/ownership-{team_name}.json `
   --mode reconcile --base main
 ```
@@ -427,7 +427,7 @@ If Phase 1 already ran, Step 1-1 resolved the workspace already — repeat the
 identical call here (idempotent) when entering directly via `--review-only`:
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/workspace.py `
+uv run --no-project python .agents/skills/_shared/workspace.py `
   --skill team-execute --slug {slug} --create
 ```
 
@@ -449,7 +449,7 @@ chooses to review a red tree. This is the only executable check on the
 On the `--review-only` path, also run:
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/verify_delegation.py --base main
+uv run --no-project python .agents/skills/_shared/verify_delegation.py --base main
 ```
 
 It reports `deletions`, `placeholders`, `weakened_tests` and
@@ -460,7 +460,7 @@ to the reviewers as known risk areas.
 ### 3. Gather the diff
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/gather_diff.py --base main --out {paths.diff_file}
+uv run --no-project python .agents/skills/_shared/gather_diff.py --base main --out {paths.diff_file}
 ```
 
 Always pass `--out {paths.diff_file}`. The script's own default is a single
@@ -551,7 +551,7 @@ Spawn reviewers:
    IMPORTANT — Work Log:
    When your review is complete, write your work log to
    {paths.work_log} — resolve it with
-   uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/workspace.py --skill team-execute
+   uv run --no-project python .agents/skills/_shared/workspace.py --skill team-execute
      --slug {slug} --teammate security-reviewer
    and use the returned path verbatim — per the shared
    format: .agents/skills/_shared/work-log-format.md (reviewer variant:
@@ -573,7 +573,7 @@ Spawn reviewers:
 
    Use Codex CLI for deep analysis of complex logic. Write the question to
    .agents/logs/codex/prompt-quality-review.md, then:
-   uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/codex_consult.py --prompt-file .agents/logs/codex/prompt-quality-review.md --label quality-review --sandbox read-only
+   uv run --no-project python .agents/skills/_shared/codex_consult.py --prompt-file .agents/logs/codex/prompt-quality-review.md --label quality-review --sandbox read-only
    Read the answer from the JSON output's response_file. Exit codes: 0 ok
    (read response_file); 1 bad args; 2 codex CLI missing; 3 codex failed or
    timed out (inspect error/stderr_file).
@@ -591,7 +591,7 @@ Spawn reviewers:
    IMPORTANT — Work Log:
    When your review is complete, write your work log to
    {paths.work_log} — resolve it with
-   uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/workspace.py --skill team-execute
+   uv run --no-project python .agents/skills/_shared/workspace.py --skill team-execute
      --slug {slug} --teammate quality-reviewer
    and use the returned path verbatim — per the shared
    format: .agents/skills/_shared/work-log-format.md (reviewer variant:
@@ -631,7 +631,7 @@ Spawn reviewers:
    IMPORTANT — Work Log:
    When your review is complete, write your work log to
    {paths.work_log} — resolve it with
-   uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/workspace.py --skill team-execute
+   uv run --no-project python .agents/skills/_shared/workspace.py --skill team-execute
      --slug {slug} --teammate test-reviewer
    and use the returned path verbatim — per the shared
    format: .agents/skills/_shared/work-log-format.md (reviewer variant:
@@ -669,7 +669,7 @@ Validate every reviewer's work log in the team directory with a single call.
 any Phase 1 logs still in the directory — count what should be there):
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/validate_doc.py --contract work-log `
+uv run --no-project python .agents/skills/_shared/validate_doc.py --contract work-log `
   --dir {paths.team_dir} --expect-files {N}
 ```
 
@@ -681,7 +681,7 @@ a reviewer that produced no log has not demonstrably reviewed anything.
 ### Workspace Artifact Check
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/workspace.py --skill team-execute --slug {slug} --verify
+uv run --no-project python .agents/skills/_shared/workspace.py --skill team-execute --slug {slug} --verify
 ```
 
 `ok: true` means all three review reports exist and are non-empty — read them

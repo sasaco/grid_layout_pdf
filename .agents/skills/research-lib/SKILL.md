@@ -20,7 +20,7 @@ script normalizes it the same way `lib_inventory.py` normalizes a declared
 dependency, so the doc filename and the dependency name always match.
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/workspace.py --skill research-lib `
+uv run --no-project python .agents/skills/_shared/workspace.py --skill research-lib `
   --title "$ARGUMENTS" --create
 ```
 
@@ -34,7 +34,7 @@ The declared and locked versions are facts with one correct answer, so read
 them instead of asking the web:
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/update-lib-docs/lib_inventory.py --library "$ARGUMENTS"
+uv run --no-project python .agents/skills/update-lib-docs/lib_inventory.py --library "$ARGUMENTS"
 ```
 
 The `dependencies` array carries `{name, declared_spec, declared_in,
@@ -180,9 +180,9 @@ maintained.
 Both checks are gates. Do not report completion until both exit 0.
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/validate_doc.py --contract lib-doc `
+uv run --no-project python .agents/skills/_shared/validate_doc.py --contract lib-doc `
   --file <paths.lib_doc>
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/workspace.py --skill research-lib `
+uv run --no-project python .agents/skills/_shared/workspace.py --skill research-lib `
   --slug <slug> --verify
 ```
 

@@ -25,9 +25,9 @@ The prompt that was actually sent is always persisted next to the response
 stays diagnosable after the fact.
 
 Usage:
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/cli_consult.py --cli gemini --prompt-file p.txt --label design-review
-    "Objective: ..." | uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/cli_consult.py --cli gemini --prompt-stdin
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/cli_consult.py --cli gemini --prompt-file p.txt --write-access
+    uv run --no-project python .agents/skills/_shared/cli_consult.py --cli gemini --prompt-file p.txt --label design-review
+    "Objective: ..." | uv run --no-project python .agents/skills/_shared/cli_consult.py --cli gemini --prompt-stdin
+    uv run --no-project python .agents/skills/_shared/cli_consult.py --cli gemini --prompt-file p.txt --write-access
 
 Exit codes:
     0  the callee CLI exited 0, did not report an error, and its output was

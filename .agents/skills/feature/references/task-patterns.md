@@ -65,7 +65,7 @@ Order tasks by dependencies:
 
 ```
 1. [Independent] Create database schema
-2. [Independent] Define TypeScript interfaces
+2. [Independent] Define Python data types
 3. [Depends on 1,2] Implement data access layer
 4. [Depends on 3] Build service layer
 5. [Depends on 4] Create API endpoints

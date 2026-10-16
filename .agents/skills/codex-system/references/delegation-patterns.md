@@ -17,7 +17,7 @@ Use a nested read-only pass for independent planning, architecture evaluation,
 debugging hypotheses, or review:
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/codex_consult.py `
+uv run --no-project python .agents/skills/_shared/codex_consult.py `
   --prompt-file .agents/logs/codex/prompt-architecture.md `
   --label architecture `
   --sandbox read-only

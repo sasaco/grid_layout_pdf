@@ -12,6 +12,10 @@ Python の自作 PDF 計算書ライブラリを設計する。A4.pdf の GridLa
 
 初期版の用紙設定はA4縦を標準とし、A3・横向き・同一PDF内の混在を含める（FR-011）。外部PDFページの読み込み・合成の要否はこの回答だけからは追加せず、実装計画で境界を明示する。
 
+2026-10-16 更新：ユーザーが plans/grid-aligned-calculation-reports.md の実装開始を承認した。以後の作業は同計画の全8工程と検証・修正を含む。既存P7アプリの移行は含めない。進捗と担当は plans/grid-aligned-calculation-reports-execution.md に記録する。
+
+2026-10-16 最終更新：ユーザー承認済みのPythonライブラリ初期版と全8工程の受入を完了した。製品はsrc/gridlayoutpdf、公開例はexamples/representative_report.py、利用・設計・検証ガイドはdocs/。P7移行、構造計算ソルバー、GUI、TeXパーサー、外部PDF取込み、PyPI公開は範囲外のまま。初期調査・計画のみとした冒頭は履歴であり、現状は実装済み。
+
 ## 機能要件 (Functional Requirements)
 
 | ID | Requirement | Priority | Notes |
@@ -47,6 +51,8 @@ Python の自作 PDF 計算書ライブラリを設計する。A4.pdf の GridLa
 
 2026-10-16 実装計画案を [plans/grid-aligned-calculation-reports.md](plans/grid-aligned-calculation-reports.md) に作成。部品ツリー → 計測 → グリッド・アンカー配置と改ページ → 確定した描画命令 → PDF の責務分離を提案する。数式内部の分数・根号・添字は局所pt座標で組み、数式全体の位置・占有行数と等号列をグリッドへ合わせる。本文は自動フロー、横並びは宣言した容器、明示位置はフローカーソル以降の予約枠で扱う。これらは計画提案であり、製品実装済み・ユーザー承認済みを意味しない。
 
+2026-10-16 実装確定：文書部品→measureによる不変のMeasuredBlock/LayoutPart→Documentの整数行フロー・分割→ScenePage→ReportLabの一時PDF/原子的置換。数式内部はpt、外側の占有高と等号等のアンカーはグリッド。containers.pyは容器、document.pyは改ページ・用紙混在・装飾、diagnostics.pyは確定ページの配置JSON。Tableの列は整数tupleとしColumnSpecを増やさない。公開API/拡張契約はリポジトリ直下docs/api.mdとdocs/architecture.md。
+
 ## 技術選定 (Tech Stack & Rationale)
 
 | Area | Technology | Rationale | Alternatives Considered |
@@ -56,6 +62,7 @@ Python の自作 PDF 計算書ライブラリを設計する。A4.pdf の GridLa
 | 共有スクリプトの実行 | uv run --no-project python | 初期化時点で製品のmanifestがなく、同コマンドで共有スクリプトを実行できた。 | FrameWeb指定のコマンドは、このリポジトリの構成に一致しない。 |
 | 現在の作業環境 | Windows / PowerShell | ユーザーから提示された作業環境。製品の対応OSを決めるものではない。 | 製品の対応OSは未決定。 |
 | 描画バックエンド（計画案） | ReportLab Canvasを第一候補、PyMuPDFは開発検証用 | 独自のグリッド計測・配置・改ページを中核に保ち、低水準PDF描画を委ねる。日本語書体・数式記号・混在ページをStep 2で実証してから採用を確定する。 | Platypusのフローを主構造にする方式、PDF生成まで全自作する方式。 |
+| 初期版の確定構成（2026-10-16） | Python>=3.12、ReportLab/Pillow、Hatchling/uv。WindowsでPython3.12.12と3.13.11を確認 | 低水準PDFはReportLab、画像はPillow、独自部分は計測・グリッド配置・改ページ。PyMuPDF/pytest/pytest-covは開発のみ。uv.lockに固定。wheelは20モジュールとパッケージ情報のみ、書体や資料は含めない。 | 未選定だった計画段階の記述を本行で更新する。他OSは未検証。 |
 
 ## 制約 (Constraints)
 
@@ -77,6 +84,11 @@ Python の自作 PDF 計算書ライブラリを設計する。A4.pdf の GridLa
 | Author equations with structured Python components | ユーザーがPython部品を組み合わせる方式を選択。等号・分数・添字を個別に計測・配置できる構造を採る。 | TeX風の文字列を初期版の主要入力形式にする。 | 2026-10-16 |
 | Wrap equations at valid structural boundaries | ユーザーが自動折り返し＋明示改行を選択。可変長の式を文字サイズを保って表示する。 | 呼び出し側が全改行位置を指定し、未指定の幅超過を即時エラーとする。 | 2026-10-16 |
 | Support mixed page and grid profiles in the first release | ユーザーがA4縦標準＋A3・横向き・混在対応を選択。参考PDFにはA3横のページがある。 | 初期版をA4縦に限定する。 | 2026-10-16 |
+| Implement the approved plan with TDD and parallel ownership | 2026-10-16 ユーザーが『ok $tdd $parallel-agent-dev』と回答し、計画全体の実装開始を承認した。依存関係のないモジュールを分担し、Red-Green-Refactorとleadによる検証を行う。 | 計画段階に留める。 | 2026-10-16 |
+| Prepare local package installation before PyPI publication | 2026-10-16 ユーザーが将来のPyPI公開を前提に、まずローカルでuv pip installできる状態を依頼した。既存のHatchlingとsrcレイアウトを維持し、通常・編集可能インストール、README、wheel/sdistを検証する。 | 今回からPyPI公開や公開用ワークフローを整備する。 | 2026-10-16 |
+| Adopt ReportLab after measured typography proof | Step 2の全体テスト413件とA4/A3/A4の通常・検査PDF全6PNG目視により、日本語・2等号列・段分数・分数指数・根号・括弧を確認。本文10pt、基線offset11pt、添字比率0.65を初期値として採用する。文字は縮小せず、送り幅と実字形境界を別に計測する。 | 書体または描画バックエンドを再選定する。 | 2026-10-16 |
+| Complete the approved component library and retain measured visual baselines | 全8工程をTDDとファイル所有による並行実装で完了。1269 passed、製品行coverage98.82%、独立レビューMedium以上0。標準5頁・長文6頁の通常/grid全22画像を目視し、標準通常5頁を固定書体・ツール・入力hash付きの画像回帰基準にした。等号列、構造化数式、文章、結合表、図画像、用紙混在を公開APIで構成できる。 | 元PDF全251頁の完全複製を受入基準にする、個別Canvas座標を利用側へ公開する、幅不足を自動縮小で隠す。 | 2026-10-16 |
+| Require a visible legal body fragment after headings | Documentと容器で可視内容の判定を共通化し、空白Textや空行だけのfragmentでは見出しの孤立防止を満たした扱いにしない。段落の最小先頭・末尾行数と既存の分割条件を満たす、可視本文を含むfragmentを予約する。独立レビューで見つけた境界を回帰TDDで修正・再確認済み。 | 非空の描画命令一覧だけで可視本文と判定する。 | 2026-10-16 |
 
 ## TODO / Open Questions
 
@@ -98,3 +110,7 @@ Python の自作 PDF 計算書ライブラリを設計する。A4.pdf の GridLa
 2026-10-16 解決済み：数式の幅超過はFR-010の自動折り返し＋明示改行で扱う。分割できない式の幅超過はエラーとし、自動縮小しない。具体的な分割候補・優先順位・継続行配置は実装計画で定義する。
 
 2026-10-16 現時点の整理：FR-001〜011の主要方針は対話で確認済み。A4/A3のグリッド寸法は research/grid-reference-findings.md に実測済み。A3横はA4縦と同じ原点・ピッチ・47行で、30列から67列へ広がる。未確定事項は計画書のOpen Questionsへ集約した。標準書体・基線・字間の値、描画バックエンドの実用性はStep 1〜2の実証ゲートで確定し、不成立なら後続工程へ進まない。工程は環境整備、最小PDF実証、文字組、数式、改ページと用紙混在、表、図と代表帳票、受入検証の8段階。元PDFの完全複製・全251ページの移植を合格条件にはしない。製品コードは未実装で、計画提示後に実装開始の承認を得る。
+
+2026-10-16 実装進捗：承認済み8工程のStep 1〜2を完了。上記の書体・基線・描画バックエンドは実証により確定した。製品は実装中であり、文章・数式の折り返し、自動改ページ、結合表、図、代表帳票、最終受入は継続する。正本の進捗は plans/grid-aligned-calculation-reports-execution.md、共通型の契約は plans/gridlayoutpdf-flow-draft.md。新しい実字形境界と破損フォント診断は独立再レビュー済み、数式の独立レビューもMedium以上0。
+
+2026-10-16 最終受入：上記の実装中・承認待ち・未実装という記録は解消済み。グリッド寸法、書体、本文10pt/基線11pt/添字比0.65/追加字間上限0.05em、描画器、API、改ページと用紙混在、表、図、代表例、画像回帰を確定した。全11要件と検証はリポジトリ直下docs/validation.md、経緯はplans/grid-aligned-calculation-reports-execution.md。lead最終全件1269 passed/coverage98.82%、原本12PDF不変、独立レビューMedium以上0、Python3.12/3.13のwheel実行成功。300頁14,100行は31.251秒、別メモリ計測でPython割当peak37.877MiB、全行・頁番号を独立抽出で確認。計画内の未解決事項はない。新たな表現や既存アプリ移行は別依頼の範囲で扱う。

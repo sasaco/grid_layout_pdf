@@ -17,11 +17,11 @@ to write, atomic ``os.replace``, a content-hash concurrent-modification guard,
 and validation of the composed document before it replaces the original.
 
 Usage:
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/checkpointing/checkpoint.py --summary-file .agents/logs/pending-summary.md
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/checkpointing/checkpoint.py --summary-file PATH --apply
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/checkpointing/checkpoint.py --summary-file PATH --apply --consume-summary
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/checkpointing/checkpoint.py --summary-file PATH --since 2026-07-01 --json
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/checkpointing/checkpoint.py --summary-file PATH --now 2026-07-25T12:00:00+00:00
+    uv run --no-project python .agents/skills/checkpointing/checkpoint.py --summary-file .agents/logs/pending-summary.md
+    uv run --no-project python .agents/skills/checkpointing/checkpoint.py --summary-file PATH --apply
+    uv run --no-project python .agents/skills/checkpointing/checkpoint.py --summary-file PATH --apply --consume-summary
+    uv run --no-project python .agents/skills/checkpointing/checkpoint.py --summary-file PATH --since 2026-07-01 --json
+    uv run --no-project python .agents/skills/checkpointing/checkpoint.py --summary-file PATH --now 2026-07-25T12:00:00+00:00
 
 Exit codes:
     0  preview written (default) or checkpoint applied

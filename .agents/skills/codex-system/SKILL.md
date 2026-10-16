@@ -43,7 +43,7 @@ Delegation policy — when to consult, when NOT to, and trigger criteria — liv
 > Invoke Codex through the wrapper — `.agents/skills/_shared/codex_consult.py` — instead of calling `codex exec` directly. `codex exec` itself waits for stdin EOF and hangs indefinitely when stdin is left open (e.g. background shells); the wrapper always runs it with stdin closed, so callers never need `< /dev/null`. It also passes the prompt as a single argv element (no shell, so nested quotes in the prompt body never break it), captures stdout/stderr to timestamped files under `.agents/logs/codex/`, and reports one JSON result instead of silently discarding stderr.
 
 ```
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/codex_consult.py (--prompt-file PATH | --prompt-stdin) [--label L] [--sandbox {read-only,workspace-write,danger-full-access}] [--model M] [--timeout N] [--cwd DIR] [--project-root DIR] [--skip-git-repo-check] [--config KEY=VALUE]
+uv run --no-project python .agents/skills/_shared/codex_consult.py (--prompt-file PATH | --prompt-stdin) [--label L] [--sandbox {read-only,workspace-write,danger-full-access}] [--model M] [--timeout N] [--cwd DIR] [--project-root DIR] [--skip-git-repo-check] [--config KEY=VALUE]
 ```
 
 - Write the prompt body (Objective / Constraints / Relevant files / Acceptance checks / Output format) to `.agents/logs/codex/prompt-{label}.md` and pass it via `--prompt-file`; use `--prompt-stdin` only for a short prompt. Keeping prompts beside wrapper responses makes a disappointing answer diagnosable.
@@ -78,7 +78,7 @@ Collaboration task brief:
     ## Risks
     ## Next Steps
 
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/codex_consult.py --prompt-file {prompt_path} --label {short-slug} --sandbox read-only
+    uv run --no-project python .agents/skills/_shared/codex_consult.py --prompt-file {prompt_path} --label {short-slug} --sandbox read-only
 
     Parse the JSON result. ok: true means only that codex exec exited 0 — it is
     not a completion report. Read response_file for the full analysis, and judge
@@ -91,7 +91,7 @@ For a **write-access** subagent call, add the Verify Before Trusting steps to th
 ### Direct Call (short questions, responses up to ~50 lines)
 
 ```powershell
-echo "Objective: {brief question}" | uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/codex_consult.py --prompt-stdin --label quick-question --sandbox read-only
+echo "Objective: {brief question}" | uv run --no-project python .agents/skills/_shared/codex_consult.py --prompt-stdin --label quick-question --sandbox read-only
 ```
 
 ### Having Codex Implement Code
@@ -116,7 +116,7 @@ Output format:
 ## Validation
 ## Remaining Risks
 '@ | Set-Content -LiteralPath $promptFile -Encoding utf8NoBOM
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/codex_consult.py --prompt-file $promptFile --label implement --sandbox workspace-write
+uv run --no-project python .agents/skills/_shared/codex_consult.py --prompt-file $promptFile --label implement --sandbox workspace-write
 ```
 
 The call is **not** finished here. Continue with the next section.
@@ -136,7 +136,7 @@ Exit `0` = `overall: "pass"`. Exit **`2`** = a gate failed, **or** no gate ran a
 **2. Collect the Guardrail evidence from the diff**, naming the scope the prompt actually authorised:
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/verify_delegation.py --base HEAD `
+uv run --no-project python .agents/skills/_shared/verify_delegation.py --base HEAD `
   --expect-files {file the task was supposed to change} `
   --forbid-outside {directory the task was scoped to}
 ```
@@ -171,19 +171,19 @@ Relevant files, Acceptance checks, and Output format sections.
 ### Implementation Planning
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/codex_consult.py --prompt-file .agents/logs/codex/prompt-plan.md --label plan --sandbox read-only
+uv run --no-project python .agents/skills/_shared/codex_consult.py --prompt-file .agents/logs/codex/prompt-plan.md --label plan --sandbox read-only
 ```
 
 ### Design Review
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/codex_consult.py --prompt-file .agents/logs/codex/prompt-design-review.md --label design-review --sandbox read-only
+uv run --no-project python .agents/skills/_shared/codex_consult.py --prompt-file .agents/logs/codex/prompt-design-review.md --label design-review --sandbox read-only
 ```
 
 ### Debug Analysis
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/codex_consult.py --prompt-file .agents/logs/codex/prompt-debug.md --label debug --sandbox read-only
+uv run --no-project python .agents/skills/_shared/codex_consult.py --prompt-file .agents/logs/codex/prompt-debug.md --label debug --sandbox read-only
 ```
 
 ## Language Protocol

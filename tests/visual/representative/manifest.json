@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "approval": {
+    "reviewer": "root",
+    "date": "2026-10-16",
+    "decision": "approved for representative visual baseline",
+    "record": ".agents/logs/lead-visual-approval.json",
+    "record_sha256": "ee9792e54a726b2ec0ca6e9f7da1a4418fe4bde815e2721c31260cbe9ac17f63"
+  },
+  "report": {
+    "example": "examples/representative_report.py",
+    "variant": "standard",
+    "image_path": "examples/assets/bridge-overview.png",
+    "image_sha256": "30e17a9e5b07ff99f2c777507380b20b60c9c90b97e5cadcee16b0f6759ade37"
+  },
+  "render": {
+    "matrix": [
+      1.5,
+      1.5
+    ],
+    "alpha": false,
+    "mode": "RGB"
+  },
+  "font": {
+    "path": "tests/fixtures/fonts/ipaexm.ttf",
+    "sha256": "7a306386f930fee80922f71eebf4ffe0f1ff2817da8e619230953487673d71c7"
+  },
+  "tools": {
+    "reportlab": "5.0.1",
+    "PyMuPDF": "1.28.2",
+    "Pillow": "12.3.0"
+  },
+  "pages": [
+    {
+      "file": "representative-report-page-1.png",
+      "approved_source": "build/reports/representative/standard/previews/representative-report-page-1.png",
+      "sha256": "72690150b65e6c20241203eb4b941bde4fb1505dc8df069c0f2b975ddd53efbe",
+      "pixel_sha256": "d300a0ba1e441df87d7985f617a4f50333ab211e8a914ec7811b61ff237840df",
+      "size": [
+        893,
+        1263
+      ],
+      "mode": "RGB"
+    },
+    {
+      "file": "representative-report-page-2.png",
+      "approved_source": "build/reports/representative/standard/previews/representative-report-page-2.png",
+      "sha256": "c1eb0fa3c2154485fa2b3637d4297acbe3529a3203091082eff37a38f0edbb56",
+      "pixel_sha256": "9fd06e6d5d4ed20d408e587853108c5f589598b6fb7ff1e4d84f926403df9d6a",
+      "size": [
+        893,
+        1263
+      ],
+      "mode": "RGB"
+    },
+    {
+      "file": "representative-report-page-3.png",
+      "approved_source": "build/reports/representative/standard/previews/representative-report-page-3.png",
+      "sha256": "d8646d9d1c31f15314075808c04bb45bfcf6cd99dfc1f028678199a43ea1c826",
+      "pixel_sha256": "7f631fea6ebdc9d3fa17675302b7c01cac668a41ca38683bb6abbc351fc58bc7",
+      "size": [
+        1787,
+        1263
+      ],
+      "mode": "RGB"
+    },
+    {
+      "file": "representative-report-page-4.png",
+      "approved_source": "build/reports/representative/standard/previews/representative-report-page-4.png",
+      "sha256": "aacab951433f7ccc25a6939a1069ae8ccaf2d5f1827a2fc9893f958ba2974d74",
+      "pixel_sha256": "558a4ba77865191104e7b6f41a3311bc28acd0073d4539f777dfe3c426e44165",
+      "size": [
+        1787,
+        1263
+      ],
+      "mode": "RGB"
+    },
+    {
+      "file": "representative-report-page-5.png",
+      "approved_source": "build/reports/representative/standard/previews/representative-report-page-5.png",
+      "sha256": "b34b2738144ecff6cec7a6ddd7d463fc5a05e98d4b684784dbb36792f7ffa89a",
+      "pixel_sha256": "a98bc252ed518cc0c23e4af9233362324118a76039b6c3fef61462a05e35ba48",
+      "size": [
+        893,
+        1263
+      ],
+      "mode": "RGB"
+    }
+  ]
+}

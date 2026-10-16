@@ -31,12 +31,12 @@ The guard never moves research notes; ``move_plan`` is a suggestion that
 requires explicit user approval.
 
 Usage:
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/checkpointing/refresh_guard.py --mode check
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/checkpointing/refresh_guard.py --mode plan --project-root .
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/checkpointing/refresh_guard.py --mode compose
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/checkpointing/refresh_guard.py --mode apply
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/checkpointing/refresh_guard.py --mode apply --apply
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/checkpointing/refresh_guard.py --mode verify
+    uv run --no-project python .agents/skills/checkpointing/refresh_guard.py --mode check
+    uv run --no-project python .agents/skills/checkpointing/refresh_guard.py --mode plan --project-root .
+    uv run --no-project python .agents/skills/checkpointing/refresh_guard.py --mode compose
+    uv run --no-project python .agents/skills/checkpointing/refresh_guard.py --mode apply
+    uv run --no-project python .agents/skills/checkpointing/refresh_guard.py --mode apply --apply
+    uv run --no-project python .agents/skills/checkpointing/refresh_guard.py --mode verify
 
 Exit codes:
     0  ok / preview

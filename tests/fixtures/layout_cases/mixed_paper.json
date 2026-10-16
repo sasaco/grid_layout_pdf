@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "id": "mixed_paper",
+  "purpose": "A4縦からA3横へ切り替え、A4縦へ戻る。文字サイズと物理ピッチを保持し、各節を明示する。",
+  "display_data_only": true,
+  "source_pages": [{"reference_id": "grid_a4", "page": 1}, {"reference_id": "grid_a3", "page": 1}, {"reference_id": "report_10", "page": 25}],
+  "body": [
+    {"kind": "page_section", "profile": "A4_PORTRAIT_REFERENCE", "font_size_pt": 10, "body": [{"kind": "heading", "text": "A4 表示例・開始"}, {"kind": "paragraph", "text": "30列の本文。次の節で用紙を変更する。"}]},
+    {"kind": "page_section", "profile": "A3_LANDSCAPE_REFERENCE", "font_size_pt": 10, "body": [{"kind": "heading", "text": "A3 横向きの表示例"}, {"kind": "paragraph", "text": "67列の本文。文字を拡大せず、横方向の配置領域を増やす。"}]},
+    {"kind": "page_section", "profile": "A4_PORTRAIT_REFERENCE", "font_size_pt": 10, "body": [{"kind": "heading", "text": "A4 表示例・再開"}, {"kind": "paragraph", "text": "30列の本文に戻る。"}]}
+  ]
+}

@@ -44,7 +44,7 @@ message**; they share no test file, so nothing serializes them.
 ## The Red/Green Invariant
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/run_tests.py `
+uv run --no-project python .agents/skills/_shared/run_tests.py `
   --target tests/test_{module}.py --expect fail --label red-1
 ```
 
@@ -123,9 +123,9 @@ Collaboration task:
     - Existing conventions to follow: {paths of comparable modules}
 
     Acceptance checks — run these yourself, per cycle, and never skip Red:
-      uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/run_tests.py `
+      uv run --no-project python .agents/skills/_shared/run_tests.py `
         --target tests/test_{module}.py --expect fail --label red-{n}
-      uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/run_tests.py `
+      uv run --no-project python .agents/skills/_shared/run_tests.py `
         --target tests/test_{module}.py --expect pass --label green-{n}
     A Red that exits 2 with observed=passed/collection_error/no_tests_collected
     is not a Red: fix the test, not the production code, and re-run.
@@ -161,7 +161,7 @@ def test_{function}_basic():
 Confirm the test is red **for the right reason**:
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/run_tests.py `
+uv run --no-project python .agents/skills/_shared/run_tests.py `
   --target tests/test_{module}.py --expect fail --label red-{n}
 ```
 
@@ -179,7 +179,7 @@ Write **minimal** code to pass the test:
 Confirm success:
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/run_tests.py `
+uv run --no-project python .agents/skills/_shared/run_tests.py `
   --target tests/test_{module}.py --expect pass --label green-{n}
 ```
 
@@ -194,7 +194,7 @@ Improve while tests still pass:
 - Clean up structure
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/run_tests.py `
+uv run --no-project python .agents/skills/_shared/run_tests.py `
   --target tests/test_{module}.py --expect pass --label refactor-{n}
 ```
 
@@ -225,7 +225,7 @@ Then check coverage — with a threshold, so the answer is a gate and not a glan
 at `term-missing` output:
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/run_tests.py `
+uv run --no-project python .agents/skills/_shared/run_tests.py `
   --target tests/test_{module}.py --expect pass `
   --cov {module} --min-coverage {N} --label coverage
 ```

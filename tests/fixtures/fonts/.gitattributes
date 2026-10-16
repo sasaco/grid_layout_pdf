@@ -1,0 +1,4 @@
+# Preserve the original publisher bytes so SHA-256 stays stable on every OS.
+*.ttf binary
+IPA_Font_License_Agreement_v1.0.txt -text
+Readme_ipaexm00401.txt -text

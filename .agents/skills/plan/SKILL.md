@@ -23,7 +23,7 @@ so give it a short English descriptor — not the user's raw wording, which the
 Language Protocol keeps out of paths:
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/workspace.py `
+uv run --no-project python .agents/skills/_shared/workspace.py `
   --skill plan --title "<short English title>" --create
 ```
 
@@ -88,7 +88,7 @@ is not created by the wrapper before it reads the prompt, so create it first):
 ```powershell
 New-Item -ItemType Directory -Force .agents/logs/codex | Out-Null
 # write the prompt body to .agents/logs/codex/prompt-plan-{slug}-steps.md, then:
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/codex_consult.py `
+uv run --no-project python .agents/skills/_shared/codex_consult.py `
   --prompt-file .agents/logs/codex/prompt-plan-{slug}-steps.md `
   --label plan-{slug}-steps --sandbox read-only
 ```
@@ -163,7 +163,7 @@ document has its sections, never that the plan is any good.
 **Gate 1 — shape.** The document contract:
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/validate_doc.py `
+uv run --no-project python .agents/skills/_shared/validate_doc.py `
   --contract plan-doc --file .agents/docs/plans/{slug}.md
 ```
 
@@ -175,7 +175,7 @@ nothing about whether the steps are correct, complete, or ordered sensibly.
 **Gate 2 — the artifact exists and is not empty:**
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/workspace.py --skill plan --slug {slug} --verify
+uv run --no-project python .agents/skills/_shared/workspace.py --skill plan --slug {slug} --verify
 ```
 
 Exit `0` the plan document exists and is non-empty; exit `2` it is missing or

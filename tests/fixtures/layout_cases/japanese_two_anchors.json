@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "id": "japanese_two_anchors",
+  "purpose": "日本語ラベルと英数字、2つの等号列、結果右端、単位列を共有する。数値は表示済み文字列。",
+  "display_data_only": true,
+  "source_pages": [{"reference_id": "report_08", "page": 2}],
+  "profile": "A4_PORTRAIT_REFERENCE",
+  "body": [
+    {"kind": "heading", "text": "断面の表示例"},
+    {
+      "kind": "equation_group",
+      "anchor_columns": {"first_equal": 10, "second_equal": 22, "result_right": 26, "unit_start": 27},
+      "equations": [
+        {
+          "kind": "equation", "label": "断面積", "lhs": {"kind": "symbol", "text": "A"},
+          "relation": "=",
+          "rhs": {"kind": "row", "items": [{"kind": "literal", "text": "4.50"}, {"kind": "operator", "text": "×"}, {"kind": "literal", "text": "2.70"}]},
+          "result_relation": "=", "result": "12.150", "unit": "m²"
+        },
+        {
+          "kind": "equation", "label": "断面二次モーメント", "lhs": {"kind": "symbol", "text": "I"},
+          "relation": "=",
+          "rhs": {
+            "kind": "fraction",
+            "numerator": {
+              "kind": "row", "items": [
+                {"kind": "literal", "text": "4.50"}, {"kind": "operator", "text": "×"},
+                {"kind": "script", "base": {"kind": "literal", "text": "2.70"}, "superscript": {"kind": "literal", "text": "3"}}
+              ]
+            },
+            "denominator": {"kind": "literal", "text": "12"}
+          },
+          "result_relation": "=", "result": "7.38113", "unit": "m⁴"
+        }
+      ]
+    }
+  ]
+}

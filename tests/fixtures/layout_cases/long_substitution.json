@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "id": "long_substitution",
+  "purpose": "長い代入式を演算子の前で折り返し、明示改行と項の順序、結果列を保持する。入力値は表示用。",
+  "display_data_only": true,
+  "source_pages": [{"reference_id": "report_07", "page": 1}],
+  "profile": "A4_PORTRAIT_REFERENCE",
+  "body": [
+    {
+      "kind": "equation_group",
+      "anchor_columns": {"first_equal": 7, "second_equal": 22, "result_right": 27, "unit_start": 28},
+      "equations": [
+        {
+          "kind": "equation", "label": "反力の表示例",
+          "lhs": {"kind": "script", "base": {"kind": "symbol", "text": "R"}, "subscript": {"kind": "literal", "text": "1"}},
+          "relation": "=",
+          "rhs": {
+            "kind": "row",
+            "items": [
+              {"kind": "literal", "text": "12.50"}, {"kind": "operator", "text": "×"}, {"kind": "literal", "text": "3.20"},
+              {"kind": "operator", "text": "+", "break_before": "allowed"},
+              {"kind": "literal", "text": "8.75"}, {"kind": "operator", "text": "×"}, {"kind": "literal", "text": "4.00"},
+              {"kind": "break", "mode": "forced"},
+              {"kind": "operator", "text": "+", "break_before": "allowed"},
+              {"kind": "literal", "text": "6.25"}, {"kind": "operator", "text": "×"}, {"kind": "literal", "text": "2.10"},
+              {"kind": "operator", "text": "+", "break_before": "allowed"},
+              {"kind": "literal", "text": "9.50"}, {"kind": "operator", "text": "×"}, {"kind": "literal", "text": "1.80"}
+            ]
+          },
+          "result_relation": "=", "result": "105.225", "unit": "kN"
+        }
+      ]
+    }
+  ]
+}

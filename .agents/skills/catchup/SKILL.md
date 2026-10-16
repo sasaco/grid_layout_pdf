@@ -47,7 +47,7 @@ Phase 3: ASSEMBLE (write_guide.py)
 ## Phase 1: COLLECT (via collect_repo_state.py)
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/catchup/collect_repo_state.py
+uv run --no-project python .agents/skills/catchup/collect_repo_state.py
 ```
 
 Optional flags: `--since "30 days ago"` (recent-work window, passed to git),
@@ -122,8 +122,8 @@ Write the bodies to a JSON file keyed by the section ids in
 ## Phase 3: ASSEMBLE (via write_guide.py)
 
 ```powershell
-uv run --project FrameWeb --locked --extra dev python .agents/skills/catchup/write_guide.py --input body.json
-uv run --project FrameWeb --locked --extra dev python .agents/skills/catchup/write_guide.py --input body.json --apply
+uv run --no-project python .agents/skills/catchup/write_guide.py --input body.json
+uv run --no-project python .agents/skills/catchup/write_guide.py --input body.json --apply
 ```
 
 The first call previews to `.agents/logs/guide-preview-*.md`; the second writes

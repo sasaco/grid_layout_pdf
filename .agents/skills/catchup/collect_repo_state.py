@@ -15,9 +15,9 @@ subcommand that fails inside a real repository is ``null`` plus an entry in
 ``git.errors`` — never an empty list that reads as "clean tree".
 
 Usage:
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/catchup/collect_repo_state.py
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/catchup/collect_repo_state.py --since "30 days ago" --max-commits 100
-    uv run --project FrameWeb --locked --extra dev python .agents/skills/catchup/collect_repo_state.py --project-root .
+    uv run --no-project python .agents/skills/catchup/collect_repo_state.py
+    uv run --no-project python .agents/skills/catchup/collect_repo_state.py --since "30 days ago" --max-commits 100
+    uv run --no-project python .agents/skills/catchup/collect_repo_state.py --project-root .
 
 Exit codes:
     0  ok (optional paths may legitimately be absent; that is reported)
@@ -77,11 +77,7 @@ EXCLUDED_DIRECTORY_NAMES = frozenset(
         "vendor",
     }
 )
-EXCLUDED_PATHS = (
-    "FrameWebforJS/src/assets/js/rxfire",
-    "FrameWebforJS/src/assets/js/paramquery",
-    "tools/local-tools",
-)
+EXCLUDED_PATHS: tuple[str, ...] = ()
 
 CHECKPOINT_STEM_RE = re.compile(r"^\d{4}-\d{2}-\d{2}-\d{6}$")
 DESIGN_PLACEHOLDER_HEADING_MARKER = "Background & Purpose"
@@ -117,7 +113,6 @@ COMMAND_LEADERS = {
     "dotnet",
     "pwsh",
     "powershell",
-    "cargo",
     "go",
     "bash",
     "sh",
