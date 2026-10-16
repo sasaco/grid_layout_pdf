@@ -1,0 +1,11 @@
+{
+  "requirements": [
+    {"id":"FR-011","requirement":"A4縦を標準に、A3・横向きのページと同一PDF内の用紙混在に対応する","priority":"Must","notes":"2026-10-16 ユーザーが選択肢1を選択。ページごとに用紙とグリッドを設定する。大きな表・図の横向きページへの配置を扱う。"}
+  ],
+  "decisions": [
+    {"decision":"Support mixed page and grid profiles in the first release","rationale":"ユーザーがA4縦標準＋A3・横向き・混在対応を選択。参考PDFにはA3横のページがある。","alternatives":"初期版をA4縦に限定する。","date":"2026-10-16"}
+  ],
+  "section_updates": [
+    {"heading":"## スコープ (Scope)","content":"初期版の用紙設定はA4縦を標準とし、A3・横向き・同一PDF内の混在を含める（FR-011）。外部PDFページの読み込み・合成の要否はこの回答だけからは追加せず、実装計画で境界を明示する。"}
+  ]
+}

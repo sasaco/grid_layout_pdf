@@ -1,0 +1,2371 @@
+Reading additional input from stdin...
+OpenAI Codex v0.163.0
+--------
+workdir: C:\Users\sasai\Documents\GridLayoutPdf
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 01a14489-d607-79c3-9d9a-7dd25279c53f
+--------
+user
+Read .agents/logs/codex/prompt-plan-grid-aligned-calculation-reports-steps.md as the complete task brief and fulfill its Objective now. This is a read-only architecture consultation; do not edit files or invoke agents or recursive consultations. Return the requested ordered implementation steps with concrete verification and risks in English. The previous attempt received only the first line of the brief through a Windows multiline argv issue; the complete task is in the referenced file, not missing from the user.
+codex
+I’m loading the repository context first, then I’ll apply the architecture/planning guidance to the complete brief. I’ll keep the work strictly read-only and won’t invoke any agents or recursive consultations.
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "Get-Content -Raw '.agents/skills/context-loader/SKILL.md'; Get-Content -Raw '.agents/skills/codex-system/SKILL.md'; Get-Content -Raw '.agents/skills/plan/SKILL.md'" in C:\Users\sasai\Documents\GridLayoutPdf
+ succeeded in 653ms:
+---
+name: context-loader
+description: ALWAYS activate this skill at the start of every task. Load shared rules from .agents/ and project design context before executing any task.
+---
+
+# Context Loader Skill
+
+## Purpose
+
+Load canonical shared context from `.agents/` plus project-owned design
+documentation so every agent runtime uses the same source files.
+
+## When to Activate
+
+**ALWAYS** - This skill must run at the beginning of every task to load project context.
+
+## Workflow
+
+### Step 1: Resolve the Read Plan
+
+Run `load_context.py` to get a deterministic read order instead of a
+hand-maintained file list, so the plan never drifts from what actually exists
+on disk:
+
+```powershell
+uv run --project FrameWeb --locked --extra dev python .agents/skills/context-loader/load_context.py [--task-libraries name,name]
+```
+
+Pass `--task-libraries` (comma-separated) when the task names specific
+libraries; the script matches them against `.agents/docs/libraries/` and folds
+any hits into the read order.
+
+The JSON reports `{ok, read_order, rules, state, design, progress, libraries,
+missing, unreadable, warnings}`. `read_order` is the exact ordered list of
+repo-relative paths to read, in this order:
+
+1. the rule files in `.agents/rules/` (coding principles, delegation, dev
+   environment, language, security, testing, tiers, CLI execution, Codex
+   delegation, and any newly added rule file);
+2. `.agents/STATE.md`  Ethe active main agent and current working blocks;
+3. `PROGRESS.md`  Ethe rolling record of the latest five checkpoints, and the
+   session-to-session continuity `/feature` reads first;
+4. `.agents/docs/DESIGN.md`  Earchitecture decisions and constraints;
+5. any matched library docs.
+
+### Step 2: Read Everything in `read_order`, Then Surface Gaps
+
+Read each path in `read_order`. Then check the rest of the report:
+
+- **`missing`**  Ecanonical files that do not exist at all (e.g.
+  `.agents/docs/DESIGN.md`, `PROGRESS.md`). Report these; do not silently
+  proceed as if they were empty.
+- **`unreadable`**  Efiles that *do* exist but could not be read or decoded.
+  This is a filesystem or encoding problem, not an un-bootstrapped repository:
+  do not respond by suggesting `/init`.
+- **`warnings`**  E`design.placeholder` is tri-state: `true` means
+  `.agents/docs/DESIGN.md` is absent or still the uninitialised `/init`
+  template (its "Background & Purpose" section is empty), `false` means real
+  prose, and `null` means the marker heading is gone so the question cannot be
+  answered. `progress.entries: 0` means `PROGRESS.md` exists but holds no
+  checkpoint entry.
+- **`libraries.matched`** vs **`libraries.files`**  E`matched` is what
+  `read_order` included for the current task; `files` is every doc that
+  exists. If a library relevant to the task isn't in `files` at all, its
+  documentation simply doesn't exist yet.
+
+Exit code 2 means `.agents/rules/` or `.agents/STATE.md` is missing entirely or
+unreadable  Etreat this as a hard stop, not a warning.
+
+### Step 3: Route the Task Before Touching It
+
+`.agents/rules/delegation.md` was just loaded, and it applies from here on: the
+default is to delegate, and working alone is the exception. Before the first
+`Read`, `Grep`, or `Edit` of the actual task, decide the route out loud:
+
+1. Does the whole task fall on the **Self-Handle List** (answer from loaded
+   context · one known file, ~20 lines or fewer · a named gate or a
+   skill-bundled lead script · user interaction)? If yes, do it directly.
+2. Otherwise name the route from the rule's table  E`implementation collaborator`,
+   `high-capability analysis collaborator`, `debugging collaborator`, Codex, `independent reviewer`  Eor the
+   skill that owns the workflow, and delegate with all six elements of the
+   Subagent Prompt Contract.
+3. Split independent units and launch them **in one message** so they run in
+   parallel.
+
+Deciding the route after investigating is the anti-pattern the rule names: the
+investigation was itself the delegable work. When both routes look defensible,
+delegate.
+
+### Step 4: Execute or Delegate the Task
+
+With the loaded context, execute the route chosen in Step 3, following:
+- Coding principles from rules
+- Design decisions from DESIGN.md
+- Library constraints from docs
+
+If the work was delegated, verification stays here: run the acceptance checks
+and inspect the diff before reporting the result as done.
+
+## Key Rules
+
+The rules themselves live in the files `read_order` enumerates  Erestating them
+here would be a hand-maintained duplicate of authoritative content, which is the
+drift this script exists to prevent. Apply what you read in
+`.agents/rules/coding-principles.md`, `dev-environment.md`, `language.md`,
+`security.md`, and `testing.md`.
+
+## Output
+
+After loading context, briefly confirm in Japanese:
+
+- how many rule files were read, and that `.agents/STATE.md` was read;
+- the `missing`, `unreadable`, and `warnings` arrays **quoted verbatim** from the
+  JSON  Enot paraphrased, not summarised as "no issues";
+- `design.placeholder` and `progress.entries` as reported;
+- **the route chosen in Step 3**  Ethe subagent, Codex, or skill that will do
+  the work, or, when handling it directly, which Self-Handle List item applies;
+- ready to execute the task.
+
+---
+name: codex-system
+description: |
+  Codex CLI handles planning, design, and complex code implementation.
+  Use for: architecture design, implementation planning, complex algorithms,
+  debugging (root cause analysis), trade-off evaluation, code review.
+  External research is NOT Codex's job  Euse a web-enabled research collaborator instead.
+  Explicit triggers: "plan", "design", "architecture", "think deeper",
+  "analyze", "debug", "complex", "optimize".
+metadata:
+  short-description: Codex CLI  Eplanning, design, and complex implementation
+---
+
+# Codex System  EPlanning, Design & Complex Implementation
+
+**Codex CLI handles planning, design, and complex code implementation.**
+
+> **Preflight (SSOT):** Do not update Codex, Node, or any global CLI as task preflight. Use the repository's pinned toolchains and review upgrades as explicit maintenance work.
+> **Delegation policy (when to delegate)**: `.agents/rules/codex-delegation.md`
+
+## Two Roles of Codex
+
+### 1. Planning & Design
+
+- Architecture design, module composition
+- Implementation plan creation (step breakdown, dependency ordering)
+- Trade-off evaluation, technology selection
+- Code review (quality and correctness analysis)
+
+### 2. Complex Implementation
+
+- Complex algorithms, optimization
+- Debugging with unknown root causes
+- Advanced refactoring
+- Multi-step implementation tasks
+
+## When to Delegate
+
+Delegation policy  Ewhen to consult, when NOT to, and trigger criteria  Elives in `.agents/rules/codex-delegation.md` (SSOT). This skill covers *how* to consult. The other half of "how" is **how to verify what came back**: `.agents/rules/cli-execution.md` ↁE*Guardrails (Completion Verification)* is mandatory for every write-access call, and [Verify Before Trusting](#verify-before-trusting) below is its executable form. A delegated CLI is never trusted on its self-report.
+
+## How to Consult
+
+> Invoke Codex through the wrapper  E`.agents/skills/_shared/codex_consult.py`  Einstead of calling `codex exec` directly. `codex exec` itself waits for stdin EOF and hangs indefinitely when stdin is left open (e.g. background shells); the wrapper always runs it with stdin closed, so callers never need `< /dev/null`. It also passes the prompt as a single argv element (no shell, so nested quotes in the prompt body never break it), captures stdout/stderr to timestamped files under `.agents/logs/codex/`, and reports one JSON result instead of silently discarding stderr.
+
+```
+uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/codex_consult.py (--prompt-file PATH | --prompt-stdin) [--label L] [--sandbox {read-only,workspace-write,danger-full-access}] [--model M] [--timeout N] [--cwd DIR] [--project-root DIR] [--skip-git-repo-check] [--config KEY=VALUE]
+```
+
+- Write the prompt body (Objective / Constraints / Relevant files / Acceptance checks / Output format) to `.agents/logs/codex/prompt-{label}.md` and pass it via `--prompt-file`; use `--prompt-stdin` only for a short prompt. Keeping prompts beside wrapper responses makes a disappointing answer diagnosable.
+- `--sandbox` defaults to `read-only`. Pass `--sandbox workspace-write` only for an approved repository implementation  Esee Sandbox Modes below.
+- `--model` defaults to `$CODEX_MODEL`, else `gpt-5.6-sol`. `--label` is a `[a-z0-9-]+` slug used in the log filenames (default `consult`). `--timeout` defaults to 600 seconds. `--skip-git-repo-check` covers the non-Git working directory case  Esee `references/troubleshooting.md`.
+- `--config KEY=VALUE` (repeatable) forwards a Codex config override, e.g. `--config model_reasoning_effort=low` for a cheap question. Keys naming a sandbox or approval setting are refused: `--sandbox` must stay the single visible statement of what Codex is allowed to touch.
+- The wrapper prints exactly one JSON object: `{ok, exit_code, model, sandbox, write_access, timed_out, duration_sec, response_file, stderr_file, response_chars, response_head, error}`. `response_head` is only a ~400-char preview  Eread the file at `response_file` for the full response, and `stderr_file` (non-null whenever Codex wrote to stderr) when diagnosing a failure.
+- Exit codes: `0` succeeded · `1` bad args or unreadable prompt file · `2` `codex` not on PATH · `3` codex exited non-zero or timed out.
+
+### Subagent Pattern (Recommended)
+
+```
+Collaboration task brief:
+- role: "high-capability analysis collaborator"
+- run_in_background: true (optional)
+- prompt: |
+    Consult Codex about: {topic}
+
+    Write the prompt body below to a file, then run the wrapper against it:
+
+    Objective: {single-sentence objective}
+    Constraints:
+    - {constraint 1}
+    Relevant files:
+    - {file paths}
+    Acceptance checks:
+    - {commands}
+    Output format:
+    ## Analysis
+    ## Recommendation
+    ## Implementation Plan
+    ## Risks
+    ## Next Steps
+
+    uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/codex_consult.py --prompt-file {prompt_path} --label {short-slug} --sandbox read-only
+
+    Parse the JSON result. ok: true means only that codex exec exited 0  Eit is
+    not a completion report. Read response_file for the full analysis, and judge
+    it yourself: state which claims you verified and which you could not.
+    Return CONCISE summary (key recommendation + rationale + what is unverified).
+```
+
+For a **write-access** subagent call, add the Verify Before Trusting steps to the delegated prompt as well, and require the subagent to return the `.agents/check.ps1` and `verify_delegation.py` verdicts. A subagent that summarises Codex's self-report without them has not verified anything, and its summary must not be treated as a completion.
+
+### Direct Call (short questions, responses up to ~50 lines)
+
+```powershell
+echo "Objective: {brief question}" | uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/codex_consult.py --prompt-stdin --label quick-question --sandbox read-only
+```
+
+### Having Codex Implement Code
+
+Create a stable, reviewable prompt file under `.agents/logs/codex/`, then grant
+only repository-scoped write access:
+
+```powershell
+$promptFile = ".agents/logs/codex/prompt-implement.md"
+New-Item -ItemType Directory -Force (Split-Path $promptFile) | Out-Null
+@'
+Objective: Implement {detailed implementation task}
+Constraints:
+- Follow existing project conventions
+- Keep diffs minimal
+Relevant files:
+- {file paths}
+Acceptance checks:
+- {commands}
+Output format:
+## Changes Made
+## Validation
+## Remaining Risks
+'@ | Set-Content -LiteralPath $promptFile -Encoding utf8NoBOM
+uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/codex_consult.py --prompt-file $promptFile --label implement --sandbox workspace-write
+```
+
+The call is **not** finished here. Continue with the next section.
+
+### Verify Before Trusting
+
+Mandatory after every `workspace-write` / `danger-full-access` call (Codex or a peer CLI), per `.agents/rules/cli-execution.md` ↁE*Guardrails*. `ok: true` from the wrapper means only that `codex exec` exited `0`; it says nothing about whether the change is correct, complete, or honest.
+
+**1. Run the acceptance checks from your own prompt**, plus the project gates:
+
+```powershell
+& .agents/check.ps1
+```
+
+Exit `0` = `overall: "pass"`. Exit **`2`** = a gate failed, **or** no gate ran at all (`overall: "no_gates"`)  Ea delegated code change must never be accepted with zero checks executed. Exit `1` bad arguments, `3` the log file could not be written. Read `log_file` for the full output.
+
+**2. Collect the Guardrail evidence from the diff**, naming the scope the prompt actually authorised:
+
+```powershell
+uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/verify_delegation.py --base HEAD `
+  --expect-files {file the task was supposed to change} `
+  --forbid-outside {directory the task was scoped to}
+```
+
+It reports `deletions`, `placeholders`, `weakened_tests`, `out_of_scope_files`, `missing_expected_files`, `scope_empty`, and the captured diff at `diff_file`. Exit `0` = nothing actionable and no violated expectation  Edeletions alone land here, reported but not actionable on their own, and exit `0` is still not an accept. Exit **`2`** = an actionable finding (`placeholders`, `weakened_tests`) or a violated expectation (`out_of_scope_files`, `missing_expected_files`, `scope_empty`). Use `--base <pre-delegation ref>` when Codex committed its work; the default `HEAD` covers the usual uncommitted case.
+
+**3. Read the diff and decide.** `verdict` is always `needs-review` and there is no verdict that means "accepted"  Edeliberately. The pattern list is heuristic (a legitimate test deletion exists, and a `TODO` in a docstring is not a stub), and only you know what the prompt authorised. Reject the completion when the diff shows any of:
+
+- tests deleted, skipped (`@pytest.mark.skip`), or weakened (assertions removed or loosened) to make the suite pass;
+- exceptions silently swallowed (`except: pass` or equivalent) to hide failures;
+- hard-coded return values substituted for real logic  Ethe one Guardrail item no script screens for, so it is listed under `not_automated` and only your read of the diff catches it;
+- stub or placeholder completions where real logic was requested;
+- files changed that the task never mentioned, or unapproved deletions.
+
+**4. On failure, follow the re-delegate-once protocol** (`cli-execution.md` (c)): report the specific failures with evidence, re-delegate **once** with the original prompt plus the failure context appended, and if the second attempt also fails verification, **halt** and require explicit user approval before proceeding. Never patch over a failed delegation silently.
+
+### Sandbox Modes
+
+| Mode | Sandbox | Use Case |
+|------|---------|----------|
+| Analysis | `read-only` | Design review, debugging, trade-off analysis |
+| Implementation | `danger-full-access` | Implementation, fixes, refactoring |
+
+The wrapper and project configuration both default to `read-only`. Pass `--sandbox workspace-write` only after implementation is approved. Use `danger-full-access` only when the approved task truly requires writes outside the workspace, and make that expansion explicit.
+
+## Task Templates
+
+Write the full prompt to the named file before invoking the wrapper. These
+PowerShell commands assume the files already contain Objective, Constraints,
+Relevant files, Acceptance checks, and Output format sections.
+
+### Implementation Planning
+
+```powershell
+uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/codex_consult.py --prompt-file .agents/logs/codex/prompt-plan.md --label plan --sandbox read-only
+```
+
+### Design Review
+
+```powershell
+uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/codex_consult.py --prompt-file .agents/logs/codex/prompt-design-review.md --label design-review --sandbox read-only
+```
+
+### Debug Analysis
+
+```powershell
+uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/codex_consult.py --prompt-file .agents/logs/codex/prompt-debug.md --label debug --sandbox read-only
+```
+
+## Language Protocol
+
+See `.agents/rules/language.md` (SSOT): ask Codex in English, receive in English, report to the user per that rule.
+
+## Why Codex?
+
+- **Deep reasoning**: Complex analysis and problem-solving
+- **Planning expertise**: Architecture and implementation strategies
+- **Code mastery**: Complex algorithms, optimization, debugging
+
+## References
+
+Detailed templates and patterns in `references/`:
+
+- [agent-prompts.md](references/agent-prompts.md)  EPrompt templates for specialized review agents (Architect, etc.)
+- [code-review-task.md](references/code-review-task.md)  EPrompt template for delegating code review to Codex
+- [delegation-patterns.md](references/delegation-patterns.md)  EDelegation decision flowchart and detailed patterns
+- [refactoring-task.md](references/refactoring-task.md)  EPrompt template for delegating refactoring to Codex
+- [troubleshooting.md](references/troubleshooting.md)  ECodex CLI troubleshooting (installation, auth, common errors)
+
+Also `.agents/docs/CODEX_HANDOFF_PLAYBOOK.md`  Ethe handoff templates `.agents/rules/codex-delegation.md` points at, kept there because they are shared with non-Codex handoffs.
+
+---
+name: plan
+description: Create a detailed implementation plan for a feature or task. Use when user wants to plan before coding.
+disable-model-invocation: true
+---
+
+# Create Implementation Plan
+
+Create an implementation plan for $ARGUMENTS.
+
+**A plan is a file, not a transcript.** The plan produced here is written to a
+resolved path, validated against a document contract, reviewed by Codex, and
+approved by the user  Ein that order, and all four. A plan that lives only in
+the conversation cannot be handed to `/team-execute`, cannot survive a
+`/checkpointing` compaction, and cannot be re-read next session.
+
+## Planning Process
+
+### 0. Resolve the Workspace (always first)
+
+Resolve this plan's slug and output path once. The title becomes the file name,
+so give it a short English descriptor  Enot the user's raw wording, which the
+Language Protocol keeps out of paths:
+
+```powershell
+uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/workspace.py `
+  --skill plan --title "<short English title>" --create
+```
+
+The JSON on stdout carries `slug` and `paths.plan_doc`
+(`.agents/docs/plans/{slug}.md`). Every `{slug}` and every output path below  E
+and the `/team-execute` handoff in step 6  EMUST come from this JSON verbatim,
+never be re-derived by hand: two hand-derived slugs are exactly how a plan and
+its executor's work logs drift apart. Exit codes: `0` resolved (and created);
+`1` bad arguments.
+
+If `.agents/docs/plans/{slug}.md` already exists, the plan is a revision of that
+document  Eread it first and say so, rather than silently overwriting it.
+
+### 1. Requirements Analysis
+
+First clarify with the user:
+
+- **Purpose**: What to achieve
+- **Scope**: What to include, what to exclude
+- **Constraints**: Technical, time, dependencies
+
+Ask, do not assume. Unresolved items belong in `### Open Questions`, not in a
+guessed step.
+
+### 2. Current State Investigation
+
+Reading the codebase for a plan is broad-context work: delegate it rather than
+consuming orchestrator context.
+
+```
+Collaboration task:
+  role: "high-capability analysis collaborator"
+  prompt: |
+    Investigate this codebase for a planned change: {purpose from step 1}
+
+    Report, with file:line evidence for every claim:
+    1. Related existing code  Ewhich modules already do something similar
+    2. Files that will need to change, and why each one
+    3. Libraries and patterns the change should reuse (project conventions)
+    4. Existing tests that cover the affected area, and gaps in that coverage
+    5. Constraints or invariants the change must not break
+
+    Use Glob, Grep, and Read. Do not implement anything.
+    Return the findings; do not summarize away the file paths.
+```
+
+The returned findings are the source of `### Scope` and `### Risks &
+Considerations` in the plan document. A plan whose Scope names no concrete file
+paths is a plan written without reading the code  Esend the investigation back
+rather than proceeding.
+
+### 3. Break Down Implementation Steps
+
+`.agents/rules/codex-delegation.md` names "you need a step-by-step
+implementation plan" and "design/architecture decisions are involved" as
+explicit Codex triggers, so step decomposition is a **MANDATORY** Codex
+consult  Ethe same rule `/feature` follows for the same artifact class.
+
+Write the prompt body to a file, then invoke the shared wrapper (the directory
+is not created by the wrapper before it reads the prompt, so create it first):
+
+```powershell
+New-Item -ItemType Directory -Force .agents/logs/codex | Out-Null
+# write the prompt body to .agents/logs/codex/prompt-plan-{slug}-steps.md, then:
+uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/codex_consult.py `
+  --prompt-file .agents/logs/codex/prompt-plan-{slug}-steps.md `
+  --label plan-{slug}-steps --sandbox read-only
+```
+
+Prompt body:
+
+```
+Objective: Decompose this change into an ordered, independently testable implementation plan.
+Context:
+- Purpose: {purpose from step 1}
+- Scope in / out: {from step 1}
+- Constraints: {from step 1}
+- Current state: {findings from step 2, with file paths}
+Constraints:
+- Order steps by dependency (what must exist before what)
+- Each step is independently testable; name its verification
+- Put high-risk and high-uncertainty steps first
+- Keep steps small; do not over-detail work that will be re-decided during implementation
+Output format:
+## Implementation Steps (ordered by dependency)
+## Verification per Step
+## Risks and Mitigations
+## Open Questions
+```
+
+Read the answer from the JSON output's `response_file`. Exit codes: `0` the call
+succeeded  Eread `response_file`; `1` bad args; `2` codex CLI not on PATH; `3`
+codex exited non-zero or timed out  Einspect `error` and `stderr_file` before
+retrying or escalating. Codex proposes the decomposition; deciding which steps
+are the right steps stays yours.
+
+### 4. Output Format
+
+Write the plan to the `plan_doc` path from step 0 (`.agents/docs/plans/{slug}.md`)
+using this shape. The five `###` sections are the `plan-doc` document contract  E
+renaming or dropping one is a validation failure in step 5:
+
+```markdown
+## Implementation Plan: {Title}
+
+### Purpose
+{1-2 sentences}
+
+### Scope
+- New files: {list}
+- Modified files: {list}
+- Dependencies: {list}
+
+### Implementation Steps
+
+#### Step 1: {Title}
+- [ ] {Specific task}
+- [ ] {Specific task}
+**Verification**: {Completion criteria for this step}
+
+#### Step 2: {Title}
+...
+
+### Risks & Considerations
+- {Potential issues and mitigations}
+
+### Open Questions
+- {Items to clarify before implementation}
+```
+
+### 5. Completion Gates
+
+A plan is done when **all four** gates below have passed. They check different
+things and none of them substitutes for another: the shape gate proves the
+document has its sections, never that the plan is any good.
+
+**Gate 1  Eshape.** The document contract:
+
+```powershell
+uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/validate_doc.py `
+  --contract plan-doc --file .agents/docs/plans/{slug}.md
+```
+
+Exit `0` the required sections are present; `1` bad args or the file is
+unreadable; `2` a required section is missing  Eread `sections_missing` in the
+JSON and add the section. Exit `0` means the plan has the right *shape*. It says
+nothing about whether the steps are correct, complete, or ordered sensibly.
+
+**Gate 2  Ethe artifact exists and is not empty:**
+
+```powershell
+uv run --project FrameWeb --locked --extra dev python .agents/skills/_shared/workspace.py --skill plan --slug {slug} --verify
+```
+
+Exit `0` the plan document exists and is non-empty; exit `2` it is missing or
+effectively empty  Ethe plan was never written, so do not report a plan.
+
+**Gate 3  Eadequacy (MANDATORY Codex validation).** Same rigour `/feature`
+applies to its implementation plan. Write the body below to
+`.agents/logs/codex/prompt-plan-{slug}-validate.md` and consult with
+`--sandbox read-only`:
+
+```
+Objective: Validate this implementation plan for completeness, correctness, and risk.
+Context:
+- Purpose and scope: {from step 1}
+- Current state: {findings from step 2}
+- Implementation plan: contents of .agents/docs/plans/{slug}.md
+Constraints:
+- Check for missing edge cases or error handling
+- Verify the step order is actually dependency-correct
+- Ensure each step's stated verification would really detect a failure
+- Identify integration risks and convention violations
+- Check that nothing in Open Questions is in fact a blocker disguised as a question
+Output format:
+## Validation Result (PASS / NEEDS_REVISION)
+## Missing Coverage
+## Ordering Problems
+## Integration Risks
+## Revised Steps (if NEEDS_REVISION)
+```
+
+On `NEEDS_REVISION`, revise the plan document and re-run gates 1 and 3 before
+continuing. How to revise is judgment; re-validating is not optional.
+
+**Gate 4  Euser approval.** Present the plan (path included) and ask before any
+implementation starts. No script can decide that a plan is good enough to build.
+
+### 6. Handoff
+
+Report the resolved path so the next skill can consume it:
+
+```text
+Plan written to .agents/docs/plans/{slug}.md (slug: {slug})  ECodex: PASS
+Next: /team-execute with slug {slug}
+```
+
+`/team-execute` resolves its own workspace from that same `slug` and reads the
+plan from `.agents/docs/plans/{slug}.md`. Hand over the path and the slug; do not
+paste the plan back into the conversation as the source of truth, and do not
+invoke another skill from here  Ethis is a handoff the user makes.
+
+## Notes
+
+- Plans should be at actionable granularity
+- Include verification method for each step
+- Ask questions at planning stage for unclear points
+- Don't over-detail (adjust during implementation)
+- Deciding the steps, the risks, and what belongs in Open Questions is
+  judgment and stays prose; only the artifact's path, shape, and gates are
+  mechanical
+
+
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command 'uv run --no-project python .agents/skills/context-loader/load_context.py' in C:\Users\sasai\Documents\GridLayoutPdf
+ exited 1 in 618ms:
+error: Failed to initialize cache at `C:\Users\sasai\AppData\Local\uv\cache`
+  Caused by: failed to open file `C:\Users\sasai\AppData\Local\uv\cache\sdists-v9\.git`: アクセスが拒否されました。 (os error 5)
+
+codex
+The required context loader hit a read-only environment issue while initializing uv’s external cache. Per the repository’s memory guidance, I’m checking recorded caveats now, then I’ll run the loader script directly with Python so it can stay read-only.
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "Get-Content -Raw 'C:\\Users\\sasai\\.codex\\skills\\linksee-memory\\SKILL.md'" in C:\Users\sasai\Documents\GridLayoutPdf
+ succeeded in 654ms:
+---
+name: linksee-memory
+description: |
+  The bridge to the agent's "past self". Before any new task, file edit, decision, or right after a failure, recall past caveats (pain records) / learnings (growth log) / implementation history from linksee-memory.
+  This is the only way to solve Claude Code's "memory amnesia every session" problem. The "never repeat the same mistake" mechanism that Mem0 / Letta / Zep can't provide.
+  エージェント�E「過去の自刁E��への橋。新しい作業・ファイル編雁E�E意思決定�E失敗�E前後で、linksee-memory から過去の caveat�E�痛みの記録�E�E learning�E��E長ログ�E�E implementation�E��E功失敗）を recall する、E
+  ALWAYS use this skill at the following moments / 以下�Eタイミングで忁E��こ�Eスキルを使ぁE��と:
+  ① Task start / new task begins  E"let's implement...", "let's start", "build a new...", 「実裁E��よう」「始めよう」「新しく〜作る、E  ② Before editing a file  Esame file may have been touched before / 同じファイルを過去に触ってる可能性があめE  ③ The moment an error/failure happens  Eremember as caveat / エラー・失敗した瞬閁E  ④ The moment something succeeds or is learned  Eremember as learning / 成功した瞬間�E学んだ瞬閁E  ⑤ When the user says "before", "earlier", "last time", "same as", "remember?", "remember this" / 「前に」「同じ」「覚えてる？」「覚えておいて、E  ⑥ When asked "why did we do that", "when was this decided", "where did we discuss this" / 「なぜそぁE��た」「いつ決めた」「どこで議論した、E  ⑦ Returning from another project / switching sessions / 別プロジェクトから戻ってきたとぁE
+  Triggers (EN): remember/recall/forget/memory/before/earlier/last time/previously/remember when/same as before/history
+  Triggers (JP): 記�E/覚えて/忘れて/過去/前回/前に/そうぁE��ば/覚えてめE  Error keywords (EN): failed/broken/stuck/error/bug/doesn't work/not working/same error again/again/repeated/debug
+  Error keywords (JP): 失敁Eエラー/ぁE��くいかなぁEハ�EっぁE同じ/まぁE繰り返し
+  Decision keywords (EN): decided/let's go with/approved/settled on/pivot/strategy/switch to/abandon
+  Decision keywords (JP): 決めた/方釁E戦略/ピ�EチE��/めE��よう/方向転揁E---
+
+# Linksee Memory Skill  EConnecting the agent's past and future
+
+## 🧠 Core Principle
+
+**This skill is the only way to persist agent growth across sessions.**
+
+Claude Code forgets everything when a session ends. The solution the user taught yesterday, the failure you hit today, the decision made three days ago  Eall of it is normally lost. **linksee-memory is the "memory that doesn't disappear" device.**
+
+Writes are handled automatically by the Stop hook (already running). But **reads require the agent to actively pull**. This skill instills that "go look first" habit in the agent.
+
+*JP: Claude Code は session が終わると全部忘れる。linksee-memory は「消えなぁE���E」を作る裁E��。書き込みは Stop hook が�E動でめE��てくれるが、読み出し�Eエージェントが能動的にめE��忁E��がある、E
+
+---
+
+## 📐 The 6 layers  Ewhat goes where
+
+Which layer you record into determines later retrieval accuracy.
+
+| Layer | When to use | Example |
+|---|---|---|
+| 🎯 `goal` | The user states a clear goal | "want to integrate with freee", "want to npm publish" |
+| 📍 `context` | Background on when/why this is happening | "because there's a meeting with company X on Wednesday" |
+| 💭 `emotion` | User's temperature / tone | "tired", "excited", "stressed", 「疲れた」「焦ってる、E|
+| 🔧 `implementation` | Code written, configured, worked / didn't work | success: "OAuth flow works" / failure: "stopped with auth_expired" |
+| ⚠�E�E`caveat` | **Lessons you never want to repeat** (auto-protected from forgetting) | "freee OAuth expires in 24h", "never edit this file" |
+| 📈 `learning` | Learned something new, prior belief updated | "AST chunking beats line diff for token savings" |
+
+**Important:** `caveat` layer is automatically protected from forgetting. Pain records are never deleted.
+
+**Pin-via-importance (v0.1.0+):** Calling `remember` with `importance: 1.0` pins the memory across all layers, protecting it from auto-forget even outside the caveat layer. Use for "mission-critical goals", "key decisions", etc.:
+
+```
+remember({
+  entity_name: "KanseiLink", entity_kind: "project",
+  layer: "goal", content: "Plugin Marketplace submission under review",
+  importance: 1.0  // pin
+})
+```
+
+**Layer aliases**  Eno need to memorize canonical names. Natural language aliases resolve automatically:
+
+| Natural alias | ↁEcanonical |
+|---|---|
+| `decisions` / `insights` / `learned` | `learning` |
+| `warnings` / `rules` / `pitfalls` / `dont` | `caveat` |
+| `how` / `tried` / `attempts` / `success` / `failure` | `implementation` |
+| `why` / `intent` / `goals` / `targets` | `goal` |
+| `background` / `reason` / `situation` / `timing` | `context` |
+| `tone` / `feelings` / `mood` | `emotion` |
+
+---
+
+## 🔄 Execution flow  E5 canonical moments
+
+### ① Task Start  EAlways recall before starting work
+
+Before starting any new task, inject past context.
+
+**At the very beginning of a conversation**, use `list_entities` first to understand what you know:
+
+```
+mcp__linksee__list_entities({ min_memories: 5, limit: 10 })
+```
+
+The returned "high-momentum entities" are the projects likely to be discussed. Each entity's `layer_breakdown` reveals patterns ("this project has many caveats", "goal is unfinished", etc.).
+
+Then, once a specific task starts, recall:
+
+```
+mcp__linksee__recall({
+  query: "<keywords of current task  Eproject name + technology>",
+  max_tokens: 2000
+})
+```
+
+**Example**: User says "let's add a new tool to KanseiLink":
+```
+recall({ query: "KanseiLink new tool", max_tokens: 2000 })
+```
+
+In the returned memories, pay special attention to:
+- **`caveat` layer**  Etraps to absolutely avoid
+- **`learning` layer**  Epreviously-reached conclusions
+- **`implementation.failure`**  Epast failure patterns
+
+**Using the results:**
+```
+From past caveat: "Watch out for MCP tool name collisions"
+ↁEBefore adding a new tool, check existing tool names first.
+```
+
+### ② File Edit  EUse recall_file before touching a file
+
+Before touching a specific file, check its edit history:
+
+```
+mcp__linksee__recall_file({
+  path_substring: "<file path or substring match>",
+  max_intents: 5
+})
+```
+
+Returns: the file's entire edit history + **the user message that drove each edit**.
+
+**This is the key differentiator.** Mem0 / Letta don't have this. "Why was this file changed last time" is preserved.
+
+### ③ Before Reading  EUse read_smart for files already read
+
+When you need to read a file, **use `read_smart` instead of the standard `Read` tool**:
+
+```
+mcp__linksee__read_smart({
+  path: "<absolute path>"
+})
+```
+
+**Effect**:
+- First read: same tokens as normal Read (with chunk metadata)
+- Subsequent reads, unchanged: **~50 tokens returned** (99% savings)
+- Subsequent reads, changed: only changed chunks returned (50 E0% savings)
+
+Especially effective for large files (>1000 lines).
+
+### ③.5 Updating existing memory  Euse update_memory, not forget+remember
+
+When facts change / goal updated / caveat detail needs correction: **`forget` + `remember` breaks `memory_id` continuity, cutting the `session_file_edits` links.** Use `update_memory` instead:
+
+```
+update_memory({
+  memory_id: 1234,
+  content: '{"primary": "Plugin Marketplace under review (day 7)", "deadline": "2026-04-25"}',
+  importance: 1.0  // strengthen pin
+})
+```
+
+`layer` can also be changed, but demoting from caveat to another layer is **not allowed** (auto-protected).
+
+### ④ Failure  ERecord caveat the moment an error hits
+
+The moment an error, failure, or "doesn't work" happens, record immediately:
+
+```
+mcp__linksee__remember({
+  entity_name: "<project name or service name>",
+  entity_kind: "project",
+  layer: "caveat",
+  content: '{"rule_or_warning":"<what failed + workaround>","when":"<ISO datetime>"}',
+  importance: 0.8  // failures are high-importance
+})
+```
+
+**Example**:
+```json
+{
+  "rule_or_warning": "freee MCP OAuth token expires in 24 hours. Must refresh via refresh_token. Reusing access_token directly causes 401.",
+  "from_incident": "session 02759-... hit auth_expired error",
+  "workaround": "every 24h: refresh token ↁEnew access token"
+}
+```
+
+**Why this matters**: `caveat` is **auto-protected from forgetting**. Once recorded, a future agent in a different session avoids the same failure.
+
+### ⑤ Success / Learning  ERecord the moment of insight
+
+When you understand something new, change approaches, or solve a problem:
+
+```
+mcp__linksee__remember({
+  entity_name: "<entity>",
+  entity_kind: "project | concept | ...",
+  layer: "learning",
+  content: '{"at":"<datetime>","learned":"<what was learned>","prior_belief":"<what we used to think>"}',
+  importance: 0.7
+})
+```
+
+Recording `prior_belief` leaves a **belief-update history**. Later, this becomes the evidence for "why was this decision made".
+
+---
+
+## 🎯 Hard rules
+
+### ✁EDo
+
+1. **At any new task start, always call `recall` first** (even briefly)
+2. **Before touching the same file, verify history via `recall_file`**
+3. **Prefer `read_smart` over `Read` for larger files**
+4. **When an error occurs, record a `caveat` immediately** (on the spot  Edon't defer)
+5. **When the user is surprised or says "interesting", record a `learning`**
+
+### ❁EDon't
+
+1. ❁EStart a task without recalling first
+2. ❁ESolve an error on the spot without recording  Efuture you (or another agent) will hit the same failure
+3. ❁EUse `Read` everywhere instead of `read_smart` (wastes tokens)
+4. ❁EWrite caveats in a flippant tone  Epreserve them seriously
+5. ❁ESkip `consolidate` during long-running work  Erun it weekly
+
+---
+
+## 🔁 Consolidate  Eperiodic memory tidy-up
+
+When memory has grown (rough guideline: DB > 20MB, memories > 15,000):
+
+```
+mcp__linksee__consolidate({
+  scope: "session",
+  min_age_days: 7
+})
+```
+
+This clusters cold, low-importance memories older than 7 days ↁEcompresses them into a single `learning`-layer entry ↁEdeletes originals.
+
+**`caveat` memories and active `goal` memories are never consolidated away.** Equivalent to sleep-time memory reorganization.
+
+---
+
+## 🧭 Skill firing scenarios
+
+### Case A  EReturning to a project
+
+User: "Today I'm back on the XYZ project"
+
+```
+1. recall({ query: "XYZ", max_tokens: 2500 })
+2. Review returned caveat / learning / goal
+3. Tell user "Picking up from last time..." with a one-line status
+4. Resume work grounded in that context
+```
+
+### Case B  EDéjà-vu error
+
+User: "Wait, I feel like I've seen this error before..."
+
+```
+1. recall({ query: "<core keywords of the error message>", max_tokens: 1000 })
+2. Pull workaround from past caveat
+3. Reply: "Last time (DATE), we hit the same error and solved it with X."
+4. Apply the workaround
+```
+
+### Case C  EPre-edit check
+
+User: "Fix server.ts"
+
+```
+1. recall_file({ path_substring: "server.ts" })
+2. Review past edit frequency and reasons
+3. Report: "This file has been edited N times. Last edit was to <reason>."
+4. Perform the edit in that context
+5. After editing, record success / failure via implementation layer
+```
+
+### Case D  EDecision made
+
+User: "Alright, let's switch to Sonnet"
+
+```
+1. remember({
+     entity_name: "<project>",
+     entity_kind: "project",
+     layer: "learning",
+     content: '{"at":"...", "learned":"This project uses Sonnet", "prior_belief":"Was using Opus"}',
+     importance: 0.8
+   })
+2. Brief confirmation: "Recorded."
+3. From here, proceed assuming Sonnet
+```
+
+### Case E  EEnd of long session
+
+User: "That's it for today"
+
+```
+1. Record today's highlights via remember:
+   - Major decisions ↁElearning layer
+   - Failures hit ↁEcaveat layer
+   - Finished deliverables ↁEimplementation.success
+2. Report: "Recorded. Retrievable via recall next session."
+3. Optionally suggest: consolidate({scope:"session", min_age_days: 14})
+```
+
+### Case F  EUser explicitly says "remember this"
+
+User: "Remember this: DocuSign is more stable than CloudSign"
+
+```
+1. remember({
+     entity_name: "CloudSign vs DocuSign",
+     entity_kind: "concept",
+     layer: "caveat",
+     content: '{"rule_or_warning":"CloudSign (61% success) is less reliable than DocuSign-JP (100%). Recommend DocuSign when advising customers."}',
+     importance: 0.9  // user-explicit instruction = high priority
+   })
+2. Confirm: "Recorded. Since it's in the caveat layer, it won't be forgotten."
+```
+
+---
+
+## 🔐 Privacy (when the user asks)
+
+linksee-memory is **fully local**:
+- DB: `~/.linksee-memory/memory.db` (inside the user's PC)
+- External transmission: none (telemetry is opt-in, OFF by default)
+- Backup: a simple file copy is sufficient
+
+If the user asks "does our data leave my machine?", answer:
+"**By default, nothing leaves.** Unless you explicitly enable telemetry, everything is in a local DB. A copy of `~/.linksee-memory/memory.db` is the only backup you need."
+
+---
+
+## 🚀 Pairing with KanseiLink Skill
+
+The KanseiLink skill and linksee-memory skill **work best together**:
+
+```
+User: "Create an invoice via freee"
+ↁE[linksee-memory skill fires] recall({query: "freee"})
+  ↁEpast caveat: "fetch company_id first"
+  ↁEpast learning: "OAuth 24h refresh required"
+ↁE[kansei-link skill fires] search_services({intent: "invoice"})
+  ↁEfreee verified, trust 0.9
+  ↁEget_service_tips reveals pitfalls
+ↁENow you have both bodies of knowledge before starting
+```
+
+**KanseiLink = collective knowledge about external SaaS / linksee-memory = collective knowledge about your own past**. Two wheels of the same cart.
+
+---
+
+## 📊 Precision grows with usage
+
+| Moment | recall precision | Why |
+|---|---|---|
+| Day 1 | low (little data) | Stop hook is still collecting |
+| Week 1 | medium | thousands of memories, FTS5 kicks in |
+| Month 1 | high | heat_score stabilizes, important memories surface |
+| Month 3+ | strongest | consolidate has run, learnings crystallized |
+
+**"Gets smarter with use"**  Etime is on your side. Today's record is read by tomorrow's you.
+
+---
+
+*This skill runs on top of linksee-memory MCP v0.2.0+.*
+*Auto-write via Stop hook, explicit read via recall.*
+*Listed in MCP Official Registry, PulseMCP, mcpservers.org, Glama.*
+*MIT License  ESynapse Arrows PTE. LTD.*
+
+
+mcp: linksee/list_entities started
+mcp: linksee/list_entities (completed)
+mcp: linksee/recall started
+mcp: linksee/recall (completed)
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "Get-Item -LiteralPath '.venv\\Scripts\\python.exe' -ErrorAction SilentlyContinue | Select-Object -ExpandProperty FullName" in C:\Users\sasai\Documents\GridLayoutPdf
+ exited 1 in 767ms:
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "Get-Content -Raw '.agents/skills/context-loader/load_context.py'" in C:\Users\sasai\Documents\GridLayoutPdf
+ succeeded in 717ms:
+#!/usr/bin/env python3
+"""Deterministically resolve the context-loader skill's read plan.
+
+Enumerates the rule files actually present in ``.agents/rules/`` (with a
+stable preferred-order prefix so the order never drifts from what changes on
+disk), reports ``.agents/STATE.md`` / ``PROGRESS.md`` / ``.agents/docs/DESIGN.md``
+status, and lists library docs -- optionally filtered to the current task -- so
+"always start with context-loader" has one deterministic read order instead of a
+hand-maintained list in SKILL.md.
+
+``read_order`` is rules, then ``.agents/STATE.md``, then ``PROGRESS.md``, then
+``.agents/docs/DESIGN.md``, then matched library docs. ``PROGRESS.md`` sits
+directly after shared state because it carries the session-to-session
+continuity that ``checkpointing/references/formats.md`` calls "the first thing
+`/feature` reads on the next session"; it used to be reported and never read.
+
+Three states, never two: a file that exists but cannot be read or decoded is
+reported in ``unreadable`` rather than in ``missing``, so a permission or
+encoding problem does not steer the agent to ``/init``. ``design.placeholder``
+is likewise tri-state -- ``true`` (absent, or the untouched template), ``false``
+(real prose), ``null`` (the Background & Purpose heading is gone, so emptiness
+cannot be judged) -- because the previous boolean reported a renamed heading as
+"initialised".
+
+Usage:
+    uv run --project FrameWeb --locked --extra dev python .agents/skills/context-loader/load_context.py
+    uv run --project FrameWeb --locked --extra dev python .agents/skills/context-loader/load_context.py --task-libraries numpy,flask
+
+Exit codes:
+    0  ok (rules dir and STATE.md are present and readable; design/progress/
+       libraries may legitimately be absent -- that is reported, not an error)
+    1  bad args
+    2  a canonical file is missing entirely or is unreadable
+       (.agents/STATE.md or the .agents/rules/ directory)
+"""
+
+import argparse
+import json
+import re
+import sys
+from pathlib import Path
+from typing import NoReturn
+
+PROJECT_ROOT = Path(__file__).parent.parent.parent.parent
+
+# Stable prefix order; any rule file not listed here is appended alphabetically.
+PREFERRED_RULE_ORDER = [
+    "coding-principles",
+    "delegation",
+    "dev-environment",
+    "language",
+    "security",
+    "testing",
+    "tiers",
+    "cli-execution",
+    "codex-delegation",
+]
+
+# English parenthetical in the "## 背景・目皁E(Background & Purpose)" heading --
+# stable regardless of Japanese rendering/encoding, and the first section
+# `/init` fills in, so its emptiness is the most direct placeholder signal.
+DESIGN_PLACEHOLDER_HEADING_MARKER = "Background & Purpose"
+
+HTML_COMMENT_RE = re.compile(r"<!--.*?-->", re.DOTALL)
+
+# A rolling PROGRESS.md entry: `## [2026-07-25-100000](.agents/checkpoints/...)`,
+# the shape checkpointing/references/formats.md declares.
+PROGRESS_ENTRY_RE = re.compile(
+    r"^## \[\d{4}-\d{2}-\d{2}-\d{6}\]\(\.agents/checkpoints/", re.MULTILINE
+)
+
+EXIT_OK = 0
+EXIT_BAD_ARGS = 1
+EXIT_CONTRACT_VIOLATION = 2
+
+
+def _emit(obj: dict) -> None:
+    """Print a single JSON object to stdout."""
+    print(json.dumps(obj, ensure_ascii=False))
+
+
+class JsonArgumentParser(argparse.ArgumentParser):
+    """ArgumentParser that reports usage errors through this tool's own
+    JSON-on-stdout / exit-1 contract instead of argparse's default stderr
+    text + exit(2)  Eso an argparse-level failure never masquerades as this
+    tool's exit code 2, which means "a canonical file is missing"."""
+
+    def error(self, message: str) -> NoReturn:
+        _emit({"ok": False, "error": message})
+        sys.exit(EXIT_BAD_ARGS)
+
+
+def _rel_posix(path: Path, root: Path) -> str:
+    """Render *path* as a POSIX-style string relative to *root*."""
+    try:
+        return path.relative_to(root).as_posix()
+    except ValueError:
+        return path.as_posix()
+
+
+def _safe_read(path: Path) -> tuple[str | None, str | None]:
+    """Read a text file, returning ``(text, error)``.
+
+    ``(None, None)`` means the file does not exist; ``(None, "...")`` means it
+    exists but could not be read or decoded. Collapsing those two into one
+    ``None`` made a permission-denied STATE.md indistinguishable from an
+    un-bootstrapped repository.
+    """
+    if not path.exists():
+        return None, None
+    try:
+        return path.read_text(encoding="utf-8"), None
+    except (OSError, UnicodeDecodeError) as exc:
+        return None, f"{type(exc).__name__}: {exc}"
+
+
+def _normalize(name: str) -> str:
+    """Normalize a library name for loose matching against filenames."""
+    return name.strip().lower().replace("_", "-")
+
+
+def order_rule_files(rules_dir: Path) -> list[Path]:
+    """Order rule files: the stable preferred prefix, then unknowns alphabetically."""
+    by_stem = {path.stem: path for path in sorted(rules_dir.glob("*.md"))}
+    ordered: list[Path] = []
+    for stem in PREFERRED_RULE_ORDER:
+        found = by_stem.pop(stem, None)
+        if found is not None:
+            ordered.append(found)
+    ordered.extend(sorted(by_stem.values()))
+    return ordered
+
+
+def _extract_heading_value(text: str, heading: str) -> str | None:
+    """Return the first non-blank line under an exact ``## {heading}`` line."""
+    lines = text.splitlines()
+    target = f"## {heading}"
+    for idx, line in enumerate(lines):
+        if line.strip() != target:
+            continue
+        for candidate in lines[idx + 1 :]:
+            stripped = candidate.strip()
+            if not stripped:
+                continue
+            return None if stripped.startswith("#") else stripped
+        return None
+    return None
+
+
+def _extract_section_body(text: str, heading_marker: str) -> str | None:
+    """Return the body between a ``## `` heading containing *heading_marker*
+    and the next ``## `` heading (or EOF); None if no such heading exists."""
+    lines = text.splitlines()
+    start: int | None = None
+    for idx, line in enumerate(lines):
+        stripped = line.strip()
+        if stripped.startswith("## ") and heading_marker in stripped:
+            start = idx + 1
+            break
+    if start is None:
+        return None
+
+    end = len(lines)
+    for idx in range(start, len(lines)):
+        if lines[idx].strip().startswith("## "):
+            end = idx
+            break
+    return "\n".join(lines[start:end])
+
+
+def _is_design_placeholder(text: str) -> bool | None:
+    """Whether DESIGN.md is still the fresh /init template.
+
+    ``True`` when the Background & Purpose section holds only its instructional
+    HTML comment, ``False`` when real prose was added, and ``None`` when the
+    marker heading is absent altogether  Eemptiness cannot be judged then, and
+    reporting ``False`` (the old behaviour) claimed the document was initialised.
+    """
+    body = _extract_section_body(text, DESIGN_PLACEHOLDER_HEADING_MARKER)
+    if body is None:
+        return None
+    return HTML_COMMENT_RE.sub("", body).strip() == ""
+
+
+def build_state_info(root: Path) -> dict:
+    """Report STATE.md presence and its ``## Main Agent`` value."""
+    path = root / ".agents" / "STATE.md"
+    text, error = _safe_read(path)
+    return {
+        "present": text is not None,
+        "path": _rel_posix(path, root),
+        "error": error,
+        "main_agent": _extract_heading_value(text, "Main Agent") if text else None,
+    }
+
+
+def build_design_info(root: Path) -> dict:
+    """Report DESIGN.md presence and whether it is still the /init placeholder."""
+    path = root / ".agents" / "docs" / "DESIGN.md"
+    text, error = _safe_read(path)
+    return {
+        "present": text is not None,
+        "path": _rel_posix(path, root),
+        "error": error,
+        # Absent means definitively uninitialised; unreadable means unknowable.
+        "placeholder": _is_design_placeholder(text)
+        if text is not None
+        else (None if error else True),
+    }
+
+
+def build_progress_info(root: Path) -> dict:
+    """Report PROGRESS.md presence and how many checkpoint entries it holds."""
+    path = root / "PROGRESS.md"
+    text, error = _safe_read(path)
+    entries = len(PROGRESS_ENTRY_RE.findall(text)) if text is not None else 0
+    return {
+        "present": text is not None,
+        "path": _rel_posix(path, root),
+        "error": error,
+        "entries": entries,
+    }
+
+
+def build_libraries_info(root: Path, task_libraries: list[str]) -> dict:
+    """List library docs, optionally filtered to names relevant to the task."""
+    libraries_dir = root / ".agents" / "docs" / "libraries"
+    present = libraries_dir.is_dir()
+    files = sorted(p.name for p in libraries_dir.glob("*.md")) if present else []
+
+    matched: list[str] = []
+    if task_libraries:
+        wanted = [_normalize(name) for name in task_libraries]
+        for filename in files:
+            stem = _normalize(filename[: -len(".md")])
+            if any(w in stem or stem in w for w in wanted):
+                matched.append(filename)
+
+    return {
+        "dir": _rel_posix(libraries_dir, root),
+        "present": present,
+        "files": files,
+        "matched": matched,
+    }
+
+
+def build_report(root: Path, task_libraries: list[str]) -> tuple[dict, int]:
+    """Assemble the full load_context.py JSON report; return (report, exit_code)."""
+    rules_dir = root / ".agents" / "rules"
+    rules_present = rules_dir.is_dir()
+    rule_paths = order_rule_files(rules_dir) if rules_present else []
+    rule_rel_paths = [_rel_posix(p, root) for p in rule_paths]
+
+    state = build_state_info(root)
+    design = build_design_info(root)
+    progress = build_progress_info(root)
+    libraries = build_libraries_info(root, task_libraries)
+
+    read_order = list(rule_rel_paths)
+    if state["present"]:
+        read_order.append(state["path"])
+    if progress["present"]:
+        read_order.append(progress["path"])
+    if design["present"]:
+        read_order.append(design["path"])
+    libraries_dir = root / ".agents" / "docs" / "libraries"
+    read_order.extend(
+        _rel_posix(libraries_dir / name, root) for name in libraries["matched"]
+    )
+
+    missing: list[str] = []
+    unreadable: list[str] = []
+    if not rules_present:
+        missing.append(_rel_posix(rules_dir, root))
+    for info in (state, progress, design):
+        if info["present"]:
+            continue
+        (unreadable if info["error"] else missing).append(info["path"])
+
+    warnings: list[str] = []
+    for info in (state, progress, design):
+        if info["error"]:
+            warnings.append(f"{info['path']} exists but is unreadable: {info['error']}")
+    if design["placeholder"] is True:
+        warnings.append(
+            "DESIGN.md is still the uninitialised /init template; run /init to populate it"
+        )
+    elif design["present"] and design["placeholder"] is None:
+        warnings.append(
+            "DESIGN.md has no heading containing "
+            f"'{DESIGN_PLACEHOLDER_HEADING_MARKER}', so whether it is still a "
+            "placeholder cannot be determined"
+        )
+    if progress["present"] and progress["entries"] == 0:
+        warnings.append(
+            "PROGRESS.md holds no checkpoint entries; run /checkpointing to populate it"
+        )
+
+    ok = rules_present and state["present"]
+    report = {
+        "ok": ok,
+        "read_order": read_order,
+        "rules": {
+            "dir": _rel_posix(rules_dir, root),
+            "present": rules_present,
+            "files": rule_rel_paths,
+        },
+        "state": state,
+        "design": design,
+        "progress": progress,
+        "libraries": libraries,
+        "missing": missing,
+        "unreadable": unreadable,
+        "warnings": warnings,
+    }
+    return report, (EXIT_OK if ok else EXIT_CONTRACT_VIOLATION)
+
+
+def main() -> int:
+    parser = JsonArgumentParser(
+        description="Resolve the context-loader skill's read plan (JSON to stdout)",
+    )
+    parser.add_argument("--project-root", type=Path, default=PROJECT_ROOT)
+    parser.add_argument(
+        "--task-libraries",
+        default=None,
+        help="Comma-separated library names to match against docs/libraries/",
+    )
+    args = parser.parse_args()
+
+    task_libraries = (
+        [name.strip() for name in args.task_libraries.split(",") if name.strip()]
+        if args.task_libraries
+        else []
+    )
+
+    report, exit_code = build_report(args.project_root, task_libraries)
+    _emit(report)
+    return exit_code
+
+
+if __name__ == "__main__":
+    sys.exit(main())
+
+
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command '$preferred = @('"'coding-principles','delegation','dev-environment','language','security','testing','tiers','cli-execution','codex-delegation')
+"'$ruleFiles = @(Get-ChildItem -LiteralPath '"'.agents/rules' -Filter '*.md' -File)
+"'$ordered = @()
+foreach ($stem in $preferred) {
+    $match = $ruleFiles | Where-Object { $_.BaseName -eq $stem }
+    if ($match) { $ordered += $match }
+}
+$ordered += @($ruleFiles | Where-Object { $preferred -notcontains $_.BaseName } | Sort-Object Name)
+$rulePaths = @($ordered | ForEach-Object { '"'.agents/rules/' + "'$_.Name })
+$statePath = '"'.agents/STATE.md'
+"'$progressPath = '"'PROGRESS.md'
+"'$designPath = '"'.agents/docs/DESIGN.md'
+"'$statePresent = Test-Path -LiteralPath $statePath -PathType Leaf
+$progressPresent = Test-Path -LiteralPath $progressPath -PathType Leaf
+$designPresent = Test-Path -LiteralPath $designPath -PathType Leaf
+$progressText = if ($progressPresent) { Get-Content -Raw -LiteralPath $progressPath } else { '"'' }
+"'$progressEntries = [regex]::Matches($progressText, '"'(?m)"'^## '"\\[\\d{4}-\\d{2}-\\d{2}-\\d{6}\\]\\(\\.agents/checkpoints/').Count
+"'$designText = if ($designPresent) { Get-Content -Raw -LiteralPath $designPath } else { '"'' }
+"'$marker = '"'Background & Purpose'
+"'$designPlaceholder = $true
+$markerMatch = [regex]::Match($designText, '"'(?ms)"'^## .*'"' + [regex]::Escape("'$marker) + '"'.*?\\r?\\n(.*?)(?="'^## |'"\\z)')
+if ("'$designPresent -and -not $markerMatch.Success) { $designPlaceholder = $null }
+elseif ($designPresent) {
+    $body = [regex]::Replace($markerMatch.Groups[1].Value, '"'(?s)<"'!--.*?-->'"', '').Trim()
+    "'$designPlaceholder = ($body.Length -eq 0)
+}
+$readOrder = @($rulePaths)
+if ($statePresent) { $readOrder += $statePath }
+if ($progressPresent) { $readOrder += $progressPath }
+if ($designPresent) { $readOrder += $designPath }
+$missing = @()
+if (-not (Test-Path -LiteralPath '"'.agents/rules' -PathType Container)) { "'$missing += '"'.agents/rules' }
+if (-not "'$statePresent) { $missing += $statePath }
+if (-not $progressPresent) { $missing += $progressPath }
+if (-not $designPresent) { $missing += $designPath }
+$warnings = @()
+if ($designPlaceholder -eq $true) { $warnings += '"'DESIGN.md is still the uninitialised /init template; run /init to populate it' }
+elseif ("'$designPresent -and $null -eq $designPlaceholder) { $warnings += "DESIGN.md has no heading containing '"'Background & Purpose', so whether it is still a placeholder cannot be determined\" }
+if ("'$progressPresent -and $progressEntries -eq 0) { $warnings += '"'PROGRESS.md holds no checkpoint entries; run /checkpointing to populate it' }
+[ordered]@{
+    ok = ((Test-Path -LiteralPath '.agents/rules' -PathType Container) -and "'$statePresent)
+    read_order = $readOrder
+    rules = [ordered]@{ dir = '"'.agents/rules'; present = (Test-Path -LiteralPath '.agents/rules' -PathType Container); files = "'$rulePaths }
+    state = [ordered]@{ present = $statePresent; path = $statePath; error = $null }
+    design = [ordered]@{ present = $designPresent; path = $designPath; error = $null; placeholder = $designPlaceholder }
+    progress = [ordered]@{ present = $progressPresent; path = $progressPath; error = $null; entries = $progressEntries }
+    libraries = [ordered]@{ dir = '"'.agents/docs/libraries'; present = (Test-Path -LiteralPath '.agents/docs/libraries' -PathType Container); files = @(); matched = @() }
+    missing = "'$missing
+    unreadable = @()
+    warnings = $warnings
+} | ConvertTo-Json -Depth 6 -Compress' in C:\Users\sasai\Documents\GridLayoutPdf
+ succeeded in 1160ms:
+{"ok":true,"read_order":[".agents/rules/project.md",".agents/rules/project-scope.md",".agents/STATE.md","PROGRESS.md",".agents/docs/DESIGN.md"],"rules":{"dir":".agents/rules","present":true,"files":[".agents/rules/project.md",".agents/rules/project-scope.md"]},"state":{"present":true,"path":".agents/STATE.md","error":null},"design":{"present":true,"path":".agents/docs/DESIGN.md","error":null,"placeholder":false},"progress":{"present":true,"path":"PROGRESS.md","error":null,"entries":0},"libraries":{"dir":".agents/docs/libraries","present":false,"files":[],"matched":[]},"missing":[],"unreadable":[],"warnings":["PROGRESS.md holds no checkpoint entries; run /checkpointing to populate it"]}
+
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "Get-Content -Raw '.agents/rules/project.md'
+Get-Content -Raw '.agents/rules/project-scope.md'
+Get-Content -Raw '.agents/STATE.md'
+Get-Content -Raw 'PROGRESS.md'
+Get-Content -Raw '.agents/docs/DESIGN.md'" in C:\Users\sasai\Documents\GridLayoutPdf
+ succeeded in 815ms:
+# GridLayoutPdf の作業ルール
+
+## 言語と実行環墁E
+ユーザーへの報告と設計文書は日本語を基本とする。現在の作業環墁E�E Windows / PowerShell。製品�E Python による計算書の共通化を目皁E��しており、採用ライブラリ、対忁EPython バ�Eジョン、製品�E実行�EチE��トコマンド�E未決定、E
+共有スキルの標準ライブラリだけを使ぁEPython スクリプトは、リポジトリルートかめE`uv run --no-project python <script> ...` で実行する。スキルに残る `--project FrameWeb --locked --extra dev` は別プロジェクト�E持E��であり、このリポジトリのコマンドとして使用しなぁE��製品�E依存定義を追加した時点で、実際の manifest に合わせて実行方法を更新する、E
+## 斁E��の責勁E
+- 目皁E��要件、設計、未決定事頁E�E `.agents/docs/DESIGN.md` に記録する。�E容更新には `.agents/skills/_shared/update_design.py` の型付き入力、�Eレビュー、E��用を使ぁE��E- Repository Identity と作業状態�E `.agents/STATE.md` に置き、対応する型付きライターを使ぁE��Eain Agent と Progress Tracker を保持する、E- `PROGRESS.md` の履歴は `/checkpointing` で生�Eする。�E期雛形はチェチE��ポイント実施済みを意味しなぁE��E- `AGENTS.md` は薁E��起動案�Eに留める、E
+## 根拠と検証
+
+実裁E��要件、検討案を区別する。`.agents/docs/research/` と `tests/output/` の既孁EPDF は、�E容を検証するまでは要件めE�E功したテスト�E証拠としなぁE��既存ファイルとユーザーによる変更を保持する、E
+`.agents/check.ps1` はスタチE��検�E・斁E��契紁E�E検証用であり、製品�E機�E試験ではなぁE��製品�E検証方法�E実裁E��依存定義に合わせて決める、E
+# Project scope
+
+- This is a new Python library planning project for grid-aligned PDF calculation reports.
+- The user's `.agents/docs/research/A4.pdf` is the grid reference; `tests/output/*.pdf` are appearance references. Preserve these files.
+- The current request authorizes research, design documents, and an implementation plan. Product implementation is a subsequent task.
+- Distinguish user-confirmed requirements, measured PDF observations, and proposed implementation choices.
+- Keep engineering calculations separate from report layout and rendering.
+- Use `uv run --no-project python` for existing skill scripts while no project manifest exists. Copied `--project FrameWeb` examples do not describe this repository.
+
+# Agent State
+
+## Main Agent
+
+Codex
+
+## Repository Identity
+
+<!-- Managed by /init. Re-run /init to refresh. -->
+
+GridLayoutPdf は、A4グリチE��に沿った文字�E置と計算式�E等号位置を揃え、余白・フォント�E改ペ�Eジを�E通部品で扱ぁEython製PDF計算書ライブラリを設計する�Eロジェクト、E
+
+Macro requirements and design live in [docs/DESIGN.md](docs/DESIGN.md).
+
+## Progress Tracker
+
+進捗履歴は [PROGRESS.md](../PROGRESS.md) を参照する。�E期雛形のため、チェチE��ポイント�Eまだ記録されてぁE��ぁE��E
+
+# PROGRESS
+
+> Auto-maintained by /checkpointing. Shows the most recent 5 checkpoints (newest first).
+> Full checkpoints live in `.agents/checkpoints/`.
+
+初期雛形。チェチE��ポイント�Eまだ記録されてぁE��ぁE��E
+# GridLayoutPdf  EDesign
+
+## 背景・目皁E(Background & Purpose)
+
+Python の自佁EPDF 計算書ライブラリを設計する、E4.pdf の GridLayout に従って斁E���E置を調整し、計算書の書式と計算式�E等号位置を統一する、E
+
+## スコーチE(Scope)
+
+今回の成果物は賁E��調査と実裁E��画。対象賁E��は `.agents/docs/research/A4.pdf` と `tests/output/*.pdf`。ライブラリ実裁E��既孁EP7 アプリへの移行�E後続作業、E
+
+数式�E初期入力形式�E構造化したPython部品とする。TeX斁E���Eパ�Eサーは初期版�E忁E��機�Eに含めなぁE��E
+
+初期版�E用紙設定�EA4縦を標準とし、A3・横向き・同一PDF冁E�E混在を含める�E�ER-011�E�。外部PDFペ�Eジの読み込み・合�Eの要否はこ�E回答だけから�E追加せず、実裁E��画で墁E��を�E示する、E
+
+## 機�E要件 (Functional Requirements)
+
+| ID | Requirement | Priority | Notes |
+|---|---|---|---|
+| FR-001 | A4.pdf の GridLayout に基づく文字位置調整 | Must | ユーザー持E��E|
+| FR-002 | 褁E��行�E計算式�E等号位置を揃える | Must | ユーザー持E��E|
+| FR-003 | 余白・フォント�E改ペ�Eジを�E通コンポ�Eネントで扱ぁE| Must | 会話で確認した目皁E|
+| FR-004 | 初期版�E Python コードから文章・表・計算式を絁E��立てるライブラリ | Must | 2026-10-16 ユーザー回答、EUI 帳票チE��イナ�E初期版に含めなぁE��E|
+| FR-005 | 斁E��サイズを保ち、E��始位置・字送り・行位置をグリチE��に合わせる | Must | 2026-10-16 ユーザー回答。�E動縮小�E字形の横方向伸縮を基本動作にしなぁE��E|
+| FR-006 | グリチE��の1マスは斁E��・式�E表を�E置する単位とし、文字数と独立させる | Must | 2026-10-16 grill-with-docs 第1問で選択肢1をユーザーが選択。文章は褁E��マスにまたがり、等号は持E���Eに揁E��られる、E|
+| FR-007 | 上から�E動�E置し、忁E��な箁E��のみ位置持E��する方式を基本候補とする | Must | 2026-10-16 ユーザーは選択肢1を支持し、tests/output/*.pdf の体裁を実現できるか確認した。参老E��裁�E表現能力を検証して採用を確定する、E|
+| FR-008 | A4グリチE��上で見本と同等�E表現・読みめE��さへ体裁を統一する | Must | 2026-10-16 ユーザーが�E現基準�E選択肢1を選択。等号揁E��・数式�E表の構�Eを�E現し、余白・ペ�Eジ割り�E新規則に合わせる。�EPDFの斁E��座標�E改ペ�Eジの完�E一致は合格条件にしなぁE��E|
+| FR-009 | 計算式をPythonの数式部品�E絁E��合わせで記述できる | Must | 2026-10-16 ユーザーが選択肢1を選択、Equation(lhs=..., rhs=Fraction(...)) は概念例であり、最絁EPI名�E引数は実裁E��画で定義する、E|
+| FR-010 | 幁E��趁E��る数式�E適刁E��区刁E��で自動折り返しし、�E示改行も持E��できる | Must | 2026-10-16 ユーザーが選択肢1を選択。�E数・根号の冁E��を�E断せず、継続行�E等号の配置を揃える。�E割できず収まらなぁE��合�E自動縮小せずエラーとする、E|
+| FR-011 | A4縦を標準に、A3・横向きのペ�Eジと同一PDF冁E�E用紙混在に対応すめE| Must | 2026-10-16 ユーザーが選択肢1を選択。�Eージごとに用紙とグリチE��を設定する。大きな表・図の横向きペ�Eジへの配置を扱ぁE��E|
+
+## 非機�E要件 (Non-Functional Requirements)
+
+| Category | Requirement | Metric / Target |
+|---|---|---|
+| 保守性 | 余白・フォント�E改ペ�Eジ処琁E��共通部品として再利用し、帳票ごとの重褁E��義を減らす、E| 定量皁E��評価基準�E未設定、E|
+| 責務�E刁E�� | 構造計算と帳票のレイアウト�E描画を�E離する、E| `.agents/rules/project-scope.md` の方針。�E体的な構�Eは設計時に定める、E|
+
+## アーキチE��チャ (Architecture)
+
+### Agent Roles
+
+| Agent | Role | Responsibilities |
+|---|---|---|
+| Codex | Main Agent | ユーザーとの作業調整、�E有コンチE��スト�E維持、依頼された作業の実行と検証、E|
+
+検討案（未実裁E��：文章・数式�E表・図を部品単位で上から�E置し、E��品�E開始位置と占有行数を�E置グリチE��へ合わせる。部品�Eには等号列�E結果列�E単位�E、数式�E基線、�E数・添字�E局所配置を持たせる。�E動�E置の採用は、参照にある代表皁E��構�Eを表現できることを検証条件とする、E
+
+## 技術選宁E(Tech Stack & Rationale)
+
+| Area | Technology | Rationale | Alternatives Considered |
+|---|---|---|---|
+| 帳票部品E| Pythonによる自作ライブラリ�E�設計段階！E| 既存�EKey DecisionsとFR-001、E03に基づき、A4グリチE��、等号位置、�E通レイアウトを扱ぁE��E| 既存�EKey Decisionsに記載、E|
+| 描画バックエンチE| 未選宁E| 帳票部品を自作する決定と、描画など下位機�Eのライブラリ選定を区別する、E| 賁E��調査・実裁E��画で比輁E��る、E|
+| 共有スクリプトの実衁E| uv run --no-project python | 初期化時点で製品�Emanifestがなく、同コマンドで共有スクリプトを実行できた、E| FrameWeb持E���Eコマンド�E、このリポジトリの構�Eに一致しなぁE��E|
+| 現在の作業環墁E| Windows / PowerShell | ユーザーから提示された作業環墁E��製品�E対応OSを決めるも�EではなぁE��E| 製品�E対応OSは未決定、E|
+
+## 制紁E(Constraints)
+
+参�E PDF は読み取り専用で保持する。グリチE��寸法�E PDF から検証し、確認済み事実と提案値を区別する、E
+
+2026-10-16 の初期化時点で、製品コード、依存関係�Emanifest、ロチE��ファイル、製品�E実行�EチE��トコマンド�E未作�E。�E有スキルに残る FrameWeb 等�E別プロジェクト用の設定�E、GridLayoutPdf の採用技術�E証拠としなぁE��E
+
+`.agents/check.ps1` はスタチE��検�EとDESIGN・STATEの斁E��契紁E��検証する。製品�E機�EめE��照PDFの再現性は、別途検証する、E
+
+## Key Decisions
+
+| Decision | Rationale | Alternatives Considered | Date |
+|---|---|---|---|
+| Custom Python component library | ユーザーが�E作を選択し、A4 グリチE��への斁E���E置調整を独自性として持E��した、E| ReportLab Platypus, ReportBro, borb, fpdf2, WeasyPrint を調査済み。描画など下位機�Eのライブラリ利用は未決定、E| 2026-10-16 |
+| Python library first | ユーザーが�E期版の利用形態として選択、E| GUI 帳票チE��イナを初期版から含める、E| 2026-10-16 |
+| Preserve font size during grid adjustment | ユーザーが文字サイズ保持と開始位置・字送り・行位置の調整を選択、E| 枠に収まるよぁE��字サイズめE��形の横幁E��自動変更する、E| 2026-10-16 |
+| Grid cells represent placement units | ユーザーは斁E��・式�E表の配置単位を選択。文字送りを�E见Eマス・半角半マスに固定しなぁE��E| 原稿用紙�Eように1マスを文字送りの単位とする、E| 2026-10-16 |
+| Use grid-normalized appearance as acceptance criterion | ユーザーはA4グリチE��上で見本と同等�E表現・読みめE��さへ統一する基準を選択。�E容量に応じた�E動�E置・改ペ�Eジと両立させる、E| 元PDFの斁E��位置・余白・改ペ�Eジまで一致させる、E| 2026-10-16 |
+| Author equations with structured Python components | ユーザーがPython部品を絁E��合わせる方式を選択。等号・刁E��・添字を個別に計測・配置できる構造を採る、E| TeX風の斁E���Eを�E期版の主要�E力形式にする、E| 2026-10-16 |
+| Wrap equations at valid structural boundaries | ユーザーが�E動折り返し�E��E示改行を選択。可変長の式を斁E��サイズを保って表示する、E| 呼び出し�Eが�E改行位置を指定し、未持E���E幁E��E��を即時エラーとする、E| 2026-10-16 |
+| Support mixed page and grid profiles in the first release | ユーザーがA4縦標準＋A3・横向き・混在対応を選択。参考PDFにはA3横のペ�Eジがある、E| 初期版をA4縦に限定する、E| 2026-10-16 |
+
+## TODO / Open Questions
+
+- GridLayout の正確な寸法、文字基線、余白を賁E��で確認する、E
+- 描画バックエンド、�E朁EAPI、検証条件は計画冁E��提案する、E
+
+- 実裁E��始時に、対応OS・Pythonバ�Eジョン、依存定義と製品�E検証コマンドを整える、E
+
+- grill-with-docs の対話で、グリチE��1マスと斁E���E関係を最初に確定する、E4.pdf は斁E��を含まなぁE��め、この意味は実測から推定しなぁE��E
+
+2026-10-16 解決済み�E�上記�E『グリチE��1マスと斁E���E関係』�E、FR-006 と用語集 CONTEXT.md の『�E置グリチE��』で確定、Eマスは部品�E配置単位であり、文字数とは独立する、E4 の実測寸法�E余白は research/grid-reference-findings.md に記録済み。文字基線�E未決定、E
+
+2026-10-16 追加調査�E�research/sample-report-findings.md に10 PDF・251ペ�Eジの構造調査と14ペ�Eジの目視結果を記録、E8_線路 p2 の列揃え、E3_牁E��ち梁�E査 p54 の段刁E��・添字�E褁E��段導�E、E2_フ�Eチング p1 の結合セル表を�E期�E再現検証候補とする。�EPDFは斁E��送り・行間がA4グリチE��と異なるため、受入基準を『�Eの座標�E改ペ�Eジまで一致』とするか『A4グリチE��で同等�E体裁へ統一』とするか�E次の対話で確認する、E
+
+2026-10-16 解決済み�E�上記�E参�EPDF再現基準�EFR-008で確定。�EPDFの座標�Eペ�Eジ割り�E完�E一致を求めず、A4グリチE��に基づく体裁統一を合格基準とする。上から�E動�E置�E�忁E��箁E��のみ位置持E��を計画の基本方針とし、代表構�Eの出力検証は実裁E�E受�E工程として残す、E
+
+2026-10-16 解決済み�E�数式�E入力形式�EFR-009のPython部品方式。次に、幁E��趁E��る式�E折り返し方針を確認する、E
+
+2026-10-16 解決済み�E�数式�E幁E��E��はFR-010の自動折り返し�E��E示改行で扱ぁE���E割できなぁE���E幁E��E��はエラーとし、�E動縮小しなぁE���E体的な刁E��候補�E優先頁E���E継続行�E置は実裁E��画で定義する、E
+
+
+codex
+共有コンテキストを読み込みました（ルール2件、`.agents/STATE.md` 読了）。`missing: []`、`unreadable: []`、`warnings: ["PROGRESS.md holds no checkpoint entries; run /checkpointing to populate it"]`、`design.placeholder: false`、`progress.entries: 0` です。ルートは Codex による設計・計画分析ですが、ユーザー指定どおり再帰的な相談は行わず、メイン Codex が直接処理します。準備完了です。なお `uv` のキャッシュ初期化失敗は、既知の読み取り専用環境制約に従い、ローダーと同じ判定を PowerShell で再現して回避しました。
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "Get-Content -Raw '.agents/logs/codex/prompt-plan-grid-aligned-calculation-reports-steps.md'" in C:\Users\sasai\Documents\GridLayoutPdf
+ succeeded in 643ms:
+# Objective
+
+Decompose a custom Python PDF calculation-report library into an ordered, independently testable implementation plan. Read the local evidence and provide design advice only. Do NOT edit files, install anything, start recursive consultations or invoke other agents. The root agent will author the plan.
+
+# Confirmed requirements
+
+- User deliberately chose a custom reusable OOP library, with grid-adjusted layout as its differentiator. Initial authoring interface is Python, not a GUI designer.
+- A grid cell is a placement unit for paragraphs/equations/tables, NOT a full-width character cell. Preserve configured font size and glyph proportions; do not shrink automatically to fit.
+- Add blocks top-to-bottom with automatic height reservation/pagination and explicit positioning when needed.
+- Acceptance is equivalent expression/readability on the supplied grid, NOT exact reference PDF coordinates, byte equality, or identical page breaks.
+- Equations are structured Python components (fraction, root, scripts, relation, chain/group), not a TeX parser. Computation of structural engineering results is outside this library.
+- Long equations wrap at semantically valid structural boundaries with manual break hints, preserve fraction/root atomicity and equality alignment; fail clearly on unbreakable overflow.
+- First release supports A4 portrait default, A3/landscape, and mixed page settings within one PDF. Existing external PDF pages are evidence for mixed sizes, not authorization to implement PDF importing.
+
+# Current state and evidence
+
+- New repository: no product code, manifest or executable product tests. Only shared skills/bootstrap, design documents, references. Do not invent existing product paths or frame this as an in-place P7 migration.
+- Read `CONTEXT.md`, `.agents/docs/DESIGN.md` (FR001-011), `.agents/rules/project.md` and `.agents/rules/project-scope.md`.
+- Read `.agents/docs/research/grid-reference-findings.md` and `.agents/docs/research/sample-report-findings.md`.
+- A4 grid: MediaBox595x842 pt, 30 columns x47 rows, origin(50.88,54.598) from top-left at line centers, pitch(16.08,15.48)pt, line thickness0.96pt. No text/font instructions in grid.
+- A3 grid has just been measured: same origin/pitch/47 rows, 67 columns, landscape. Full evidence may be appended while you read; do not guess any not-yet-recorded MediaBox number.
+- Ten sample PDFs/251 pages structurally inspected,14 representative pages visually inspected. Body glyph advances10.08pt/5.04pt and e.g. baseline delta14.88pt do NOT match grid pitch; preserve grid-based normalized appearance, do not reproduce old coordinates.
+- Representative proof cases: `tests/output/08_線路.pdf` p2 two equality columns, result-right and unit-left alignment; `13_牁E��ち梁�E査.pdf` p54 stacked fractions, scripts, roots/brackets, derivations; `12_フ�Eチング.pdf` p1 merged cells/multirow headers/dense table; `07_荷重計箁Epdf` p1 heading+table+diagram+wrapped equations. A3 mixed-size evidence in10/11.
+- Source PDFs must remain unchanged; generated fixtures/output live elsewhere.
+
+# Design direction to assess (proposals, not user-approved details)
+
+- Custom layout engine over a narrow PDF drawing backend; ReportLab Canvas is a likely backend because of existing P7 usage and font/vector support. Own grid/measure/place/wrap/pagination and semantic components, not PDF file serialization. Use PyMuPDF only for development extraction/visual QA initially.
+- Immutable GridSpec/PageProfile/Style + semantic document/block/math trees -> deterministic measurement -> page placement with progress guarantees -> scene/drawing commands -> backend. One top-left coordinate convention and explicit conversion at renderer boundary.
+- Text glyph advance/font metrics are distinct from block/grid geometry. Block start/occupied rows follow grid; fractions/scripts have locally measured sub-row positions. Intentional script style sizes are not overflow shrinking. Baseline conventions and anchor-left/center semantics must be explicit.
+- Named equation alignment groups scope anchors locally; calculate shared columns against widest left side then snap, allow explicit anchors, multiple relation columns, result and unit slots. Account for all wrapped continuation lines before placing subsequent blocks. Unbreakable overflow must diagnose source block/path/size.
+- Mixed page templates are explicit at first; no automatic switch to larger paper to hide overflow. A3 is wider at the same pitch, not scaled A4. Ordinary figure scaling allowed as explicit/aspect-preserving placement, independent of font policy.
+- Keep interfaces/dependencies small; avoid speculative plugin ecosystems. No GUI, TeX parser, symbolic calculator, Excel export, full P7 migration, arbitrary PDF import in first release.
+
+# Constraints
+
+- Put uncertainty-heavy typography/math/anchor proof cases early before a large API/framework build.
+- Identify concrete NEW module and test paths. Ordered steps must form an achievable staged thin slice, then additive capabilities. No product implementation in this task.
+- Separate mechanical unit tests, independent PDF geometry checks, visual acceptance, and source-preservation hashes. Avoid circular tests that merely compare implementation outputs to themselves.
+- Must address mixed Japanese/Latin, Greek glyph coverage, intentional scripts, CJK wrapping, baseline/ink boxes, multiple equals, long labels/results/units, rowspans across page breaks, impossible blocks, explicit placement collisions, repeated page styles and total page numbers.
+- Recommendations can decide routine technical defaults. Report genuinely user-facing blockers rather than fabricate approvals. Do not request needless further user questions.
+
+# Output
+
+## Implementation Steps (ordered by dependency)
+## Verification per Step
+## Risks and Mitigations
+## Open Questions
+
+English, concise but actionable. Cite source file:line or PDF page where relevant.
+
+
+codex
+The full brief is present and unambiguous. I’m now grounding the step order in the two research reports and repository layout, with early proof spikes for typography, equations, and alignment before any broad public API is proposed.
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command 'rg --files' in C:\Users\sasai\Documents\GridLayoutPdf
+ succeeded in 466ms:
+CONTEXT.md
+AGENTS.md
+PROGRESS.md
+tests\output\14_桁座補強●.pdf
+tests\output\13_片持ち梁照査.pdf
+tests\output\12_フーチング.pdf
+tests\output\11_直角(耐震).pdf
+tests\output\10_線路(耐震).pdf
+tests\output\09_直角.pdf
+tests\output\08_線路.pdf
+tests\output\07_荷重計算.pdf
+tests\output\06_照査の前提.pdf
+tests\output\04_地盤のモデル化.pdf
+
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command 'rg -n "''^" '"'CONTEXT.md' '.agents/docs/DESIGN.md' '.agents/rules/project.md' '.agents/rules/project-scope.md' '.agents/docs/research/grid-reference-findings.md' '.agents/docs/research/sample-report-findings.md'" in C:\Users\sasai\Documents\GridLayoutPdf
+ succeeded in 457ms:
+.agents/rules/project-scope.md:1:# Project scope
+.agents/rules/project-scope.md:2:
+.agents/rules/project-scope.md:3:- This is a new Python library planning project for grid-aligned PDF calculation reports.
+.agents/rules/project-scope.md:4:- The user's `.agents/docs/research/A4.pdf` is the grid reference; `tests/output/*.pdf` are appearance references. Preserve these files.
+.agents/rules/project-scope.md:5:- The current request authorizes research, design documents, and an implementation plan. Product implementation is a subsequent task.
+.agents/rules/project-scope.md:6:- Distinguish user-confirmed requirements, measured PDF observations, and proposed implementation choices.
+.agents/rules/project-scope.md:7:- Keep engineering calculations separate from report layout and rendering.
+.agents/rules/project-scope.md:8:- Use `uv run --no-project python` for existing skill scripts while no project manifest exists. Copied `--project FrameWeb` examples do not describe this repository.
+.agents/docs/research/grid-reference-findings.md:1:# A4.pdf グリッド実測調査
+.agents/docs/research/grid-reference-findings.md:2:
+.agents/docs/research/grid-reference-findings.md:3:調査日: 2026-10-16。対象: `.agents/docs/research/A4.pdf` の全 1 ページ。目的は実装計画の根拠収集であり、以下の測定値を文字配置仕様として確定したものではない。
+.agents/docs/research/grid-reference-findings.md:4:
+.agents/docs/research/grid-reference-findings.md:5:## 検証方法と保存
+.agents/docs/research/grid-reference-findings.md:6:
+.agents/docs/research/grid-reference-findings.md:7:- PDF の MediaBox、描画命令、文字情報を PyMuPDF で抽出した。
+.agents/docs/research/grid-reference-findings.md:8:- 描画命令中の数値を Decimal で読み、浮動小数点抽出誤差を避けて格子間隔を確認した。
+.agents/docs/research/grid-reference-findings.md:9:- 全ページを 144 dpi で PNG 化し、罫線のみの一様グリッドであることを目視した。
+.agents/docs/research/grid-reference-findings.md:10:- Poppler は PATH と `C:/Users/sasai/.codex` 内から見つからなかったため、隔離した `uv --with pymupdf` 環境を使用した。製品依存の採用を意味しない。
+.agents/docs/research/grid-reference-findings.md:11:- 調査前後 SHA-256 は同一: `eb6176ec32e60e494605da9e1e0481149eed89183d5ac306245db13ced603f60`。
+.agents/docs/research/grid-reference-findings.md:12:- 再実行: `uv run --no-project --with pymupdf python tmp/pdfs/grid-reference/inspect_grid.py`。
+.agents/docs/research/grid-reference-findings.md:13:- 測定スクリプト: `tmp/pdfs/grid-reference/inspect_grid.py`。生データ: `tmp/pdfs/grid-reference/measurements.json`。目視画像: `tmp/pdfs/grid-reference/A4-page-1.png`。
+.agents/docs/research/grid-reference-findings.md:14:
+.agents/docs/research/grid-reference-findings.md:15:## 確認済み事実
+.agents/docs/research/grid-reference-findings.md:16:
+.agents/docs/research/grid-reference-findings.md:17:以降の座標は特記しない限りページ左上原点、右向き x、下向き y、単位 pt とする。1 pt = 25.4 / 72 mm。
+.agents/docs/research/grid-reference-findings.md:18:
+.agents/docs/research/grid-reference-findings.md:19:| 項目 | 実測値 | 備考 |
+.agents/docs/research/grid-reference-findings.md:20:|---|---|---|
+.agents/docs/research/grid-reference-findings.md:21:| ページ数 | 1 | ページ 1 を全体確認 |
+.agents/docs/research/grid-reference-findings.md:22:| MediaBox / CropBox | `[0, 0, 595, 842]` | 約 209.903 × 297.039 mm。厳密な 210 × 297 mm ではない |
+.agents/docs/research/grid-reference-findings.md:23:| 回転 | 0° | 左上基準への変換に回転補正は不要 |
+.agents/docs/research/grid-reference-findings.md:24:| 縦罫線 | 31 本 | 30 列を形成 |
+.agents/docs/research/grid-reference-findings.md:25:| 横罫線 | 48 本 | 47 行を形成 |
+.agents/docs/research/grid-reference-findings.md:26:| 横ピッチ | 16.08 pt | 約 5.672667 mm、全間隔が一致 |
+.agents/docs/research/grid-reference-findings.md:27:| 縦ピッチ | 15.48 pt | 5.461 mm、全間隔が一致 |
+.agents/docs/research/grid-reference-findings.md:28:| 罫線の厚み | 0.96 pt | 約 0.338667 mm、すべて黒塗りの長方形 |
+.agents/docs/research/grid-reference-findings.md:29:| 中心線グリッド原点 | `(50.88, 54.598)` | 最上・最左の罫線中心の交点 |
+.agents/docs/research/grid-reference-findings.md:30:| 中心線グリッド右下 | `(533.28, 782.158)` | 中心線間の幅 482.4 pt、高さ 727.56 pt |
+.agents/docs/research/grid-reference-findings.md:31:| 外側の描画範囲 | `(50.4, 54.118) - (533.76, 782.638)` | 線幅を含む bbox |
+.agents/docs/research/grid-reference-findings.md:32:| 外縁までの余白 L / T / R / B | `50.4 / 54.118 / 61.24 / 59.362` pt | 約 `17.780 / 19.092 / 21.604 / 20.942` mm。左右上下は非対称 |
+.agents/docs/research/grid-reference-findings.md:33:| マス内の白い領域 | 幅 15.12 pt × 高さ 14.52 pt | ピッチから罫線厚みを引いた値 |
+.agents/docs/research/grid-reference-findings.md:34:| 文字、ラベル、フォント | なし | 抽出 text.blocks と fonts はともに空。画像でも文字なし |
+.agents/docs/research/grid-reference-findings.md:35:
+.agents/docs/research/grid-reference-findings.md:36:**30 × 47 の長方形セルからなるグリッドであり、正方形の 5 mm 方眼ではない。**
+.agents/docs/research/grid-reference-findings.md:37:
+.agents/docs/research/grid-reference-findings.md:38:PDF の生ストリームは左下原点。最初の縦罫線は `50.4 59.362 .96 728.52 re f`、次の縦罫線は `66.48 59.362 .96 727.56 re f`。最上部の横罫線は `51.36 786.922 482.4 .96 re f`、次は `51.36 771.442 482.4 .96 re f`。中心座標への変換で上表の値が得られる。左端線だけが上辺まで延び、横線が左端線の内側端から始まるため、描画命令の長さをそのまま「グリッド領域」に使わず中心線基準と外縁基準を区別する。
+.agents/docs/research/grid-reference-findings.md:39:
+.agents/docs/research/grid-reference-findings.md:40:## 数値モデル案（未確定）
+.agents/docs/research/grid-reference-findings.md:41:
+.agents/docs/research/grid-reference-findings.md:42:PDF の実測を保持する `reference_exact` プロファイル案:
+.agents/docs/research/grid-reference-findings.md:43:
+.agents/docs/research/grid-reference-findings.md:44:```text
+.agents/docs/research/grid-reference-findings.md:45:page_size_pt = (595, 842)
+.agents/docs/research/grid-reference-findings.md:46:origin_pt = (50.88, 54.598)       # outer grid-line center intersection
+.agents/docs/research/grid-reference-findings.md:47:pitch_pt = (16.08, 15.48)
+.agents/docs/research/grid-reference-findings.md:48:columns = 30
+.agents/docs/research/grid-reference-findings.md:49:rows = 47
+.agents/docs/research/grid-reference-findings.md:50:debug_line_width_pt = 0.96
+.agents/docs/research/grid-reference-findings.md:51:x_boundary(c) = 50.88 + c * 16.08     # c = 0..30
+.agents/docs/research/grid-reference-findings.md:52:y_boundary(r) = 54.598 + r * 15.48    # r = 0..47
+.agents/docs/research/grid-reference-findings.md:53:```
+.agents/docs/research/grid-reference-findings.md:54:
+.agents/docs/research/grid-reference-findings.md:55:これは PDF を再現する座標の一案であり、文字原点を罫線中心に置くという意味ではない。文字の配置原点、マス内余白、文字送り、基線は別の Typography / TextPlacement 設定とするのが妥当。正式な A4 サイズ 210 × 297 mm に合わせる場合は、ページだけ変更するかグリッドを再配置するかを明示する必要がある。参照値を無言で標準寸法や等間隔余白へ丸めない。
+.agents/docs/research/grid-reference-findings.md:56:
+.agents/docs/research/grid-reference-findings.md:57:## 資料から決められない点
+.agents/docs/research/grid-reference-findings.md:58:
+.agents/docs/research/grid-reference-findings.md:59:1. **1 マスに全角何文字を割り当てるか。** 文字がないため「大マス = 全角 1 文字」は導けない。半角 / 全角の送り比、任意の細分位置の使用可否も未確定。
+.agents/docs/research/grid-reference-findings.md:60:2. 文字サイズ、フォント、CJK / 欧文 / 数字 / 記号それぞれの送り、添字・分数・根号の組み方。
+.agents/docs/research/grid-reference-findings.md:61:3. グリッド線に対する基線 offset と、文字外接矩形をどこで揃えるか。行の上端・中心・下端と baseline は区別が必要。
+.agents/docs/research/grid-reference-findings.md:62:4. 計算式の等号をグリフ左端・中心・送り枠のどれで揃えるか。等号位置は数式グループごとに設定するか、文書全体で固定するか。
+.agents/docs/research/grid-reference-findings.md:63:5. 文字をグリッドへ合わせる操作の詳細。ユーザーの「文字サイズを維持して開始位置・送り・行位置を合わせる」方針を受けても、文字送りの変更許容値と禁則処理は別途定義する必要がある。
+.agents/docs/research/grid-reference-findings.md:64:6. 全 47 行を本文に使うか、ヘッダー / フッターをこの領域内に確保するか。グリッドを完成 PDF に印刷するか、開発時のガイドに限るか。
+.agents/docs/research/grid-reference-findings.md:65:7. 参照の非対称余白をそのまま標準にするか。A4 の物理寸法を厳密化するか。
+.agents/docs/research/grid-reference-findings.md:66:
+.agents/docs/research/grid-reference-findings.md:67:## 計画・検証への含意
+.agents/docs/research/grid-reference-findings.md:68:
+.agents/docs/research/grid-reference-findings.md:69:- グリッドの幾何とタイポグラフィの役割を分離し、等号の基準位置を数式部品の明示的な anchor として扱う。
+.agents/docs/research/grid-reference-findings.md:70:- 「グリッドに収めるため文字サイズを自動縮小」を暗黙の解決策にしない。長文・長い式の折返し、行占有、溢れの報告を計画に含める。
+.agents/docs/research/grid-reference-findings.md:71:- 30 列 × 47 行の格子再現試験と、文字・数式配置試験を別々に行う。後者の基準は A4.pdf 単独では作れず、`tests/output/*.pdf` とユーザーの配置規則を必要とする。
+.agents/docs/research/grid-reference-findings.md:72:- 画像差分だけでは文字基線や等号位置の保証が弱い。レイアウト計算結果に grid row / column、基線、glyph x / y、equal anchor を出し、座標の数値検証と描画の目視を併用する。
+.agents/docs/research/grid-reference-findings.md:73:
+.agents/docs/research/grid-reference-findings.md:74:以上は資料調査と設計上の論点であり、製品コード・製品 API の実装は行っていない。
+.agents/docs/research/grid-reference-findings.md:75:
+.agents/docs/research/grid-reference-findings.md:76:## 追加調査: A3.pdf と混在ページ（2026-10-16）
+.agents/docs/research/grid-reference-findings.md:77:
+.agents/docs/research/grid-reference-findings.md:78:ユーザーが初期版で A4 縦を標準とし、A3・横向き・同一 PDF 内の用紙設定混在を認めたため、`.agents/docs/research/A3.pdf` を追加実測した。以下は A3 の確認済み事実であり、A3 縦や A4 横の具体的な配置プロファイルを確定するものではない。
+.agents/docs/research/grid-reference-findings.md:79:
+.agents/docs/research/grid-reference-findings.md:80:### A3 の検証方法
+.agents/docs/research/grid-reference-findings.md:81:
+.agents/docs/research/grid-reference-findings.md:82:- A4 と同じ方法で MediaBox、全描画命令、フォント・テキスト情報を抽出し、Decimal で寸法を測定した。
+.agents/docs/research/grid-reference-findings.md:83:- 全 1 ページを 144 dpi でレンダリングし、横向きの一様グリッドであることを目視確認した。
+.agents/docs/research/grid-reference-findings.md:84:- 調査前後 SHA-256 は同一: `3ef244c1085416746b0392fc2ef8898004bb1be49fc35a0f56335482425d9e16`。
+.agents/docs/research/grid-reference-findings.md:85:- 再実行: `uv run --no-project --with pymupdf python tmp/pdfs/grid-reference-a3/inspect_grid.py`。
+.agents/docs/research/grid-reference-findings.md:86:- 生データ: `tmp/pdfs/grid-reference-a3/measurements.json`。目視画像: `tmp/pdfs/grid-reference-a3/A3-page-1.png`。
+.agents/docs/research/grid-reference-findings.md:87:
+.agents/docs/research/grid-reference-findings.md:88:### A3 の確認済み事実
+.agents/docs/research/grid-reference-findings.md:89:
+.agents/docs/research/grid-reference-findings.md:90:座標系は A4 と同じページ左上原点、右向き x、下向き y、単位 pt。
+.agents/docs/research/grid-reference-findings.md:91:
+.agents/docs/research/grid-reference-findings.md:92:| 項目 | A3.pdf 実測値 | A4 との比較 |
+.agents/docs/research/grid-reference-findings.md:93:|---|---|---|
+.agents/docs/research/grid-reference-findings.md:94:| ページ数・方向 | 1 ページ、横向き | A4 は縦向き |
+.agents/docs/research/grid-reference-findings.md:95:| MediaBox / CropBox | `[0, 0, 1191, 842]` | 約 420.158 × 297.039 mm。厳密な 420 × 297 mm ではない |
+.agents/docs/research/grid-reference-findings.md:96:| PDF 回転属性 | 0° | 横長 MediaBox であり、`/Rotate=90` による横向きではない |
+.agents/docs/research/grid-reference-findings.md:97:| 縦罫線 / 横罫線 | 68 / 48 本 | 67 列 × 47 行、A4 より 37 列多い |
+.agents/docs/research/grid-reference-findings.md:98:| 横ピッチ / 縦ピッチ | `16.08 / 15.48` pt | A4 と完全同一、全間隔が一様 |
+.agents/docs/research/grid-reference-findings.md:99:| 罫線の厚み | 0.96 pt | A4 と同一、116 個の黒塗り長方形 |
+.agents/docs/research/grid-reference-findings.md:100:| 中心線グリッド原点 | `(50.88, 54.598)` | A4 と同一 |
+.agents/docs/research/grid-reference-findings.md:101:| 中心線グリッド右下 | `(1128.24, 782.158)` | 幅 1077.36 pt × 高さ 727.56 pt |
+.agents/docs/research/grid-reference-findings.md:102:| 外側の描画範囲 | `(50.4, 54.118) - (1128.72, 782.638)` | A4 と左・上・下が同一 |
+.agents/docs/research/grid-reference-findings.md:103:| 外縁までの余白 L / T / R / B | `50.4 / 54.118 / 62.28 / 59.362` pt | 右余白のみ A4 より 1.04 pt 大きい |
+.agents/docs/research/grid-reference-findings.md:104:| マス内の白い領域 | 幅 15.12 pt × 高さ 14.52 pt | A4 と同一 |
+.agents/docs/research/grid-reference-findings.md:105:| 文字、ラベル、フォント | なし | A4 と同様、文字組仕様は導出できない |
+.agents/docs/research/grid-reference-findings.md:106:
+.agents/docs/research/grid-reference-findings.md:107:生ストリーム最左線は A4 と同じ `50.4 59.362 .96 728.52 re f`。最右線は `1127.76 59.362 .96 727.56 re f`、最上横線は `51.36 786.922 1077.36 .96 re f`。
+.agents/docs/research/grid-reference-findings.md:108:
+.agents/docs/research/grid-reference-findings.md:109:**A3 横の参照は、A4 縦と同じ物理ピッチ・左上原点・47 行を維持し、横方向を 30 列から 67 列へ拡張した構成である。** 用紙幅の差は 596 pt、グリッド中心線間幅の差は 594.96 pt（37 × 16.08）なので、残り 1.04 pt が右余白の差となる。A4 を拡大した構成ではない。
+.agents/docs/research/grid-reference-findings.md:110:
+.agents/docs/research/grid-reference-findings.md:111:```text
+.agents/docs/research/grid-reference-findings.md:112:# A3 landscape reference_exact profile proposal
+.agents/docs/research/grid-reference-findings.md:113:page_size_pt = (1191, 842)
+.agents/docs/research/grid-reference-findings.md:114:origin_pt = (50.88, 54.598)
+.agents/docs/research/grid-reference-findings.md:115:pitch_pt = (16.08, 15.48)
+.agents/docs/research/grid-reference-findings.md:116:columns = 67
+.agents/docs/research/grid-reference-findings.md:117:rows = 47
+.agents/docs/research/grid-reference-findings.md:118:debug_line_width_pt = 0.96
+.agents/docs/research/grid-reference-findings.md:119:```
+.agents/docs/research/grid-reference-findings.md:120:
+.agents/docs/research/grid-reference-findings.md:121:### 向き変更と混在ページの注意点（設計への提案）
+.agents/docs/research/grid-reference-findings.md:122:
+.agents/docs/research/grid-reference-findings.md:123:1. A4 縦と A3 横は測定済みの独立したプロファイルにする。A4 横と A3 縦の元資料は今回測定していないため、測定済みと記載しない。
+.agents/docs/research/grid-reference-findings.md:124:2. **プロファイル全体の 90° 回転と、用紙向き変更後の再配置を区別する。** A3 横のグリッドを幾何学的に回転すると、47 列 × 67 行、横 15.48 pt × 縦 16.08 pt になり、余白も回る。これは文書を縦向きへ組み直す動作とは異なる。
+.agents/docs/research/grid-reference-findings.md:125:3. 通常の縦横切替では、読み方向に対する横 16.08 pt・縦 15.48 pt の物理ピッチと文字サイズを維持し、収容可能な列数・行数を整数で求める方式を提案する。余りは明示した余白規則で扱う。用紙全体に収めるためにピッチや文字を暗黙に伸縮しない。
+.agents/docs/research/grid-reference-findings.md:126:4. 「ページ寸法 / 向き」「グリッド原点・ピッチ・行列数」「ヘッダー / フッター領域」「文字組」を区別し、各ページへ解決済みの設定を持たせる。PDF の `/Rotate` 属性だけで切替えたことにしない。
+.agents/docs/research/grid-reference-findings.md:127:5. 混在 PDF では、ページ切替時に使える列数・行数と局所 anchor を更新する。異なる用紙の同じ列番号は左端からの同じ距離として扱えるが、同じ相対比率・中央位置を意味しない。ページ中央 / 右端からの位置指定は別に解決する。
+.agents/docs/research/grid-reference-findings.md:128:6. 受入検証には各ページの MediaBox・方向・座標範囲の検証と、A4 縦 → A3 横 → A4 縦で文字サイズ・グリッドピッチが維持されるケースを含める。字送り、基線、等号位置のタイポグラフィ検証は別途必要。
+.agents/docs/research/grid-reference-findings.md:129:
+.agents/docs/research/grid-reference-findings.md:130:追記時点の共有設計では「1マスは部品の配置単位であり文字数と独立」「文字サイズを保持」「元 PDF の位置完全一致ではなくグリッドに沿って同等の体裁へ統一」がユーザー確認済み。先の「資料から決められない点」は PDF 単独の情報限界を示したもので、これらの対話による決定を取り消すものではない。
+.agents/docs/research/sample-report-findings.md:1:# 計算書 PDF の体裁調査
+.agents/docs/research/sample-report-findings.md:2:
+.agents/docs/research/sample-report-findings.md:3:調査日: 2026-10-16。対象は `tests/output/*.pdf`。本書は参照資料からの観察と、実装計画への提案を分けて記す。PDF の計算内容・工学的妥当性は検証していない。製品のコードは実装していない。
+.agents/docs/research/sample-report-findings.md:4:
+.agents/docs/research/sample-report-findings.md:5:## 調査方法と範囲
+.agents/docs/research/sample-report-findings.md:6:
+.agents/docs/research/sample-report-findings.md:7:- 全 10 ファイル・251 ページについて用紙寸法、フォント資源、文字サイズ、文字・等号座標、画像・描画オブジェクト、ページテキストを抽出した。
+.agents/docs/research/sample-report-findings.md:8:- 全ファイルから選んだ 14 ページを PNG に描画して目視確認した。目視対象は下表の「確認ページ」。251 ページ全部を目視したという意味ではない。
+.agents/docs/research/sample-report-findings.md:9:- 座標は PDF ページ左上を原点とする pt。本文の `origin.y` は文字基線、`bbox` は抽出エンジンが示す文字ボックスであり、実際の黒画素輪郭とは区別する。
+.agents/docs/research/sample-report-findings.md:10:- 抽出・描画は一時的な `uv run --no-project --with pymupdf` 環境を使用。Poppler は PATH と探索した Codex/local/WinGet ディレクトリには見つからず、MuPDF で代替描画した。これは開発用調査手段であり、製品依存の採用決定ではない。
+.agents/docs/research/sample-report-findings.md:11:- 詳細抽出結果は `tmp/pdfs/sample-reports/inventory.json`、ページテキストと確認用 PNG は同ディレクトリにある。一時資料に依存せず判断できる主要値を本書に残す。
+.agents/docs/research/sample-report-findings.md:12:- 参照 PDF の SHA-256 を採取し、終了時に同一であることを確認した。値は末尾に記す。
+.agents/docs/research/sample-report-findings.md:13:
+.agents/docs/research/sample-report-findings.md:14:## 現在のリポジトリ
+.agents/docs/research/sample-report-findings.md:15:
+.agents/docs/research/sample-report-findings.md:16:スキル・共有設定・調査文書を除くと、現時点の資産は参照 PDF である。製品 Python コード、`pyproject.toml`、実行可能な製品テストは見つからない。`tests/output` という名前だけから「テストが既に成功している」とは判断できない。
+.agents/docs/research/sample-report-findings.md:17:
+.agents/docs/research/sample-report-findings.md:18:以下に示す `src/gridlayoutpdf/`、`tests/unit/` などはすべて新設案であり、既存パスではない。
+.agents/docs/research/sample-report-findings.md:19:
+.agents/docs/research/sample-report-findings.md:20:## ファイル一覧
+.agents/docs/research/sample-report-findings.md:21:
+.agents/docs/research/sample-report-findings.md:22:| 参照 PDF | ページ数 | 用紙寸法 pt | 主な本文書体・サイズ | 目視確認ページ |
+.agents/docs/research/sample-report-findings.md:23:|---|---:|---|---|---|
+.agents/docs/research/sample-report-findings.md:24:| `04_地盤のモデル化.pdf` | 3 | 595 × 842 | MS-Mincho / MS-Gothic、9.94 pt | 1 |
+.agents/docs/research/sample-report-findings.md:25:| `06_照査の前提.pdf` | 13 | 595 × 842 | MS-Mincho / MS-Gothic、9.94 pt | 1 |
+.agents/docs/research/sample-report-findings.md:26:| `07_荷重計算.pdf` | 18 | 595 × 842 | MS-Mincho / MS-Gothic、9.94〜10.00 pt | 1、2 |
+.agents/docs/research/sample-report-findings.md:27:| `08_線路.pdf` | 32 | 595 × 842 | MS-Mincho / MS-Gothic、9.94〜9.96 pt | 2、3 |
+.agents/docs/research/sample-report-findings.md:28:| `09_直角.pdf` | 29 | 595 × 842 | MS-Mincho / MS-Gothic、9.94〜9.96 pt | 6 |
+.agents/docs/research/sample-report-findings.md:29:| `10_線路(耐震).pdf` | 26 | p1〜24: 595 × 842、p25〜26: 1191 × 842 | 本文に9.94 pt、外部出力に5.7 / 7.9 / 9.74 ptなど | 25 |
+.agents/docs/research/sample-report-findings.md:30:| `11_直角(耐震).pdf` | 27 | p1〜25: 595 × 842、p26〜27: 1191 × 842 | 本文に9.94 pt、外部出力に5.7 / 7.9 / 9.74 ptなど | 8 |
+.agents/docs/research/sample-report-findings.md:31:| `12_フーチング.pdf` | 24 | 595 × 842 | MS-Mincho中心、9.5 / 9.91 / 10.00 ptなど | 1 |
+.agents/docs/research/sample-report-findings.md:32:| `13_片持ち梁照査.pdf` | 67 | 595 × 842 | MS-Mincho / MS-Gothic、9.94〜9.96 pt | 1、54 |
+.agents/docs/research/sample-report-findings.md:33:| `14_桁座補強●.pdf` | 12 | 595 × 842 | MS-Mincho中心、9.94 pt | 1、11 |
+.agents/docs/research/sample-report-findings.md:34:
+.agents/docs/research/sample-report-findings.md:35:247 ページが丸められた A4 縦相当、4 ページが A3 横相当。全ファイルの Producer は `DocuWorks PDF Build 7.0.15.1`。すべてのページに抽出可能な文字があるが、図の中まで文字が抽出できることは意味しない。例えば `06` p1 の配筋図は画像である。
+.agents/docs/research/sample-report-findings.md:36:
+.agents/docs/research/sample-report-findings.md:37:主な書体は MS-Mincho と MS-Gothic。補助書体として MS-PMincho、TimesNewRomanPS-ItalicMT、外部出力には MicrosoftSansSerif / SimSun / MS-UIGothic も現れる。添字・指数は約6.64 pt、ページ番号には11.5 ptが使われる例が多い。PDF から書体を観察できても、その書体をライブラリに再配布できるという根拠にはならない。
+.agents/docs/research/sample-report-findings.md:38:
+.agents/docs/research/sample-report-findings.md:39:## GridLayout との関係で重要な測定
+.agents/docs/research/sample-report-findings.md:40:
+.agents/docs/research/sample-report-findings.md:41:### 文字送りはフォントサイズと別の概念
+.agents/docs/research/sample-report-findings.md:42:
+.agents/docs/research/sample-report-findings.md:43:`08_線路.pdf` p2 の本文「フーチングはすべて剛域とする」は MS-Mincho、抽出サイズ9.9398 ptである。基線 y=260.398 pt、文字開始 x は117.96、128.04、138.12、148.20…となり、全角の送りは **10.08 pt**。各文字ボックス幅は10.00 pt。
+.agents/docs/research/sample-report-findings.md:44:
+.agents/docs/research/sample-report-findings.md:45:同じページの数値「12.150」は基線 y=181.918 pt、開始 x は435.36、440.40、445.44、450.48…で、半角の送りは **5.04 pt**。各文字ボックス幅は5.00 pt。
+.agents/docs/research/sample-report-findings.md:46:
+.agents/docs/research/sample-report-findings.md:47:別途 A4 グリッド調査で報告された16.08 ptの列ピッチ、15.48 ptの行ピッチに対して、この本文の送り・行間がそのまま一致するわけではない。特に16.08/2=8.04 ptの枠に10 pt幅の全角文字を連続配置すると、文字ボックスが約1.96 pt重なる。参照計算書から「全角も半セルでよい」とは判断できない。
+.agents/docs/research/sample-report-findings.md:48:
+.agents/docs/research/sample-report-findings.md:49:**提案:** `font_size`、文字の送り規則、ブロック開始位置のグリッド、行基線のグリッドを別の設定にする。フォントサイズを維持してグリッドの間隔へ文字送りを広げる方式と、自然な文字送りを維持してブロック境界だけを揃える方式は、見た目と1行の収容文字数が変わる。ユーザーの GridLayout の意図に合わせて選ぶ必要がある。参照 PDF の文字間隔から自動的に決めない。
+.agents/docs/research/sample-report-findings.md:50:
+.agents/docs/research/sample-report-findings.md:51:### 等号は文字列の中央揃えではなく、意味を持つ列の共通アンカー
+.agents/docs/research/sample-report-findings.md:52:
+.agents/docs/research/sample-report-findings.md:53:`08_線路.pdf` p2 の断面積・断面二次モーメントは以下の座標を持つ。
+.agents/docs/research/sample-report-findings.md:54:
+.agents/docs/research/sample-report-findings.md:55:| 対象 | 基線 y | 第1等号 x | 結果前等号 x | 数値右端 x | 単位開始 x |
+.agents/docs/research/sample-report-findings.md:56:|---|---:|---:|---:|---:|---:|
+.agents/docs/research/sample-report-findings.md:57:| 断面積 `A = 4.50 × 2.70 = 12.150 m²` | 181.918 | 214.08 | 402.24 | 465.56 | 474.24 |
+.agents/docs/research/sample-report-findings.md:58:| 断面二次モーメント `I = … = 7.38113 m⁴` | 196.798 | 214.08 | 402.24 | 465.56 | 474.24 |
+.agents/docs/research/sample-report-findings.md:59:
+.agents/docs/research/sample-report-findings.md:60:基線差は14.88 pt。数値は桁数が違っても右端が揃い、等号と単位は独立した列に載る。p2 の重心位置・弾性係数も第1等号 x=214.08 ptを共有する。
+.agents/docs/research/sample-report-findings.md:61:
+.agents/docs/research/sample-report-findings.md:62:`07_荷重計算.pdf` p1 の4本の反力式は、第1等号 x=154.56 pt、結果前等号 x=391.32 ptを共有する。基線 y=568.798、597.598、635.038、672.478 pt。2本目の代入式は途中で次行に折り返すが、結果前の等号列は維持される。等号の左右を別々に測り、式の継続行と結果列を管理する必要がある。
+.agents/docs/research/sample-report-findings.md:63:
+.agents/docs/research/sample-report-findings.md:64:`08_線路.pdf` p3 の結果前の全角等号は x=435.48 ptを繰り返し使う一方、左側の等号はx=165.00 / 176.76 / 200.28 ptと用途に応じて異なる。文書全体のすべての等号を1列に強制するという参照ではない。**ブロックまたは名前付きグループごとのアンカー共有**が合う。
+.agents/docs/research/sample-report-findings.md:65:
+.agents/docs/research/sample-report-findings.md:66:半角 `=` と全角 `＝` が混在する。アンカーを字形の左端・中心・数式軸のどれに合わせるかを定義しないと、同じ座標を指定しても見た目がずれる。新 API は関係演算子を文字列から推測せず、`relation` のような構造を持たせるのがよい。
+.agents/docs/research/sample-report-findings.md:67:
+.agents/docs/research/sample-report-findings.md:68:## 代表的な帳票構成
+.agents/docs/research/sample-report-findings.md:69:
+.agents/docs/research/sample-report-findings.md:70:| 根拠 | 観察 | 必要となるレイアウト能力の提案 |
+.agents/docs/research/sample-report-findings.md:71:|---|---|---|
+.agents/docs/research/sample-report-findings.md:72:| `07` p1、`13` p1 | 見出し、結合セルの荷重表、寸法付き荷重図、4本の反力式が同じページに並ぶ | 見出し、表、図、数式の縦フローと個別固定枠を組み合わせる |
+.agents/docs/research/sample-report-findings.md:73:| `07` p2 | 荷重修正係数の割り算と連鎖等号、左右2群の衝撃係数 | 複数の等号列、横並びの局所グリッド |
+.agents/docs/research/sample-report-findings.md:74:| `08` p2 | 日本語ラベル、変数、代入、結果、単位、上付き指数、下付き添字 | ラベル列と数式列、基線計測、結果の右揃え、単位列 |
+.agents/docs/research/sample-report-findings.md:75:| `08` p3、`09` p6、`11` p8 | 罫線が少ない数値表、式を持つ行、鉛直力/アーム/モーメント列、Σ・合計行 | 表セル内の数式、列ごとの配置、数値書式・小数点揃えの拡張余地 |
+.agents/docs/research/sample-report-findings.md:76:| `04` p1 | 根号と横線、下付き変数、-1/2などの指数、変数の説明 | `Root`、`Script`、変数定義一覧。指数はベースライングリッドの対象と分ける |
+.agents/docs/research/sample-report-findings.md:77:| `13` p54 | 段分数、分数を含む括弧、ギリシャ文字、分数の指数、指数表記、複数段の導出 | 数式内部の幅/高さ/数式軸の計測。数式全体の占有行数を整数行へ切り上げる |
+.agents/docs/research/sample-report-findings.md:78:| `14` p1 | 鉛直力の一般式が複数の分数を含み、下に「ここに」の定義一覧が続く | 一般式と定義ブロック。式を途中で分断しない設定 |
+.agents/docs/research/sample-report-findings.md:79:| `14` p11 | 係数定義、根号、指数、せん断破壊面の図 | テキスト主体の数学記号と独立したベクトル図の共存 |
+.agents/docs/research/sample-report-findings.md:80:| `06` p1 | 本文の下に大きな既存配筋図画像2点 | 画像をアスペクト比維持で枠に収める |
+.agents/docs/research/sample-report-findings.md:81:| `12` p1 | 1ページ近くを占める多段ヘッダー・縦結合セルの照査表 | ヘッダー/本文/結合のモデル、表の分割方針と繰り返しヘッダー |
+.agents/docs/research/sample-report-findings.md:82:| `10` p25 | A3横ページに外部ソフトの縦長帳票が配置される | 将来のページごとの用紙設定・外部PDF挿入。A4のみのMVPとは区別する |
+.agents/docs/research/sample-report-findings.md:83:
+.agents/docs/research/sample-report-findings.md:84:段分数や根号は参照に実在するため、計画で未対応とする場合はそのまま再現できないページを明示する。一般式・代入・結果を1つの等号つき文字列に連結するだけでは、これらの高さとアンカーを扱いにくい。
+.agents/docs/research/sample-report-findings.md:85:
+.agents/docs/research/sample-report-findings.md:86:## ページ・余白・改ページ
+.agents/docs/research/sample-report-findings.md:87:
+.agents/docs/research/sample-report-findings.md:88:多くのサンプルは右上にページ番号を持つ。`07` p1 の `7 - 1` と `08` p2 の `8 - 2` は x=523.32、基線 y=52.318 pt、11.5 pt。`12` p1 の `244` は x=534.84、y=52.318 pt。`14` p1 の `326` は x=543.48、y=43.678 pt。番号の形式と位置は完全に統一されていない。ページ番号テンプレートと予約領域は設定可能にする。
+.agents/docs/research/sample-report-findings.md:89:
+.agents/docs/research/sample-report-findings.md:90:サンプルにはページ末尾の大きな余白を持つページもある。`08` p2 は上半分で小節が終わる。これだけから、自動改ページ・強制改ページ・意図した章境界のどれかは判別できない。
+.agents/docs/research/sample-report-findings.md:91:
+.agents/docs/research/sample-report-findings.md:92:**提案:** `keep_with_next`（見出しと次の内容）、`keep_together`（数式導出等）、明示改ページ、表の行単位分割を別々の規則として定義する。1ページを超える分割禁止ブロックは、無限に次ページへ送ることなく、測定情報とブロックIDを持つエラーにする。原稿と見本のページ数一致を既定の合格条件にしない。
+.agents/docs/research/sample-report-findings.md:93:
+.agents/docs/research/sample-report-findings.md:94:## 見本をそのまま正解画像にしない理由
+.agents/docs/research/sample-report-findings.md:95:
+.agents/docs/research/sample-report-findings.md:96:- A4 グリッドとは異なる文字送り・行間が確認される。新ライブラリで書式統一する以上、すべての既存座標の一致を要求すると目的と衝突する。
+.agents/docs/research/sample-report-findings.md:97:- `14` p1 とp11 の右端に青い矩形と影があり、ページ端で切れている。由来は確認していない。これを共通帳票の標準装飾として再現しない。
+.agents/docs/research/sample-report-findings.md:98:- `14` のファイル名と本文見出し番号（§11）が一致しない。番号をテスト期待値として機械的に採用しない。
+.agents/docs/research/sample-report-findings.md:99:- 段分数・図・表の詳細などは、抽出テキストの並びが見た目の読み順と一致しない場合がある。文字列抽出のみで目視確認を置き換えない。
+.agents/docs/research/sample-report-findings.md:100:- PDF Producer、フォントの埋め込み、アンチエイリアスの違いによりバイト列や画素の完全一致は期待できない。
+.agents/docs/research/sample-report-findings.md:101:
+.agents/docs/research/sample-report-findings.md:102:## テストと fixture の新設案
+.agents/docs/research/sample-report-findings.md:103:
+.agents/docs/research/sample-report-findings.md:104:参照原本は移動・書き換えをせず、`tests/output` をそのまま保持する。生成物は別ディレクトリに出す。
+.agents/docs/research/sample-report-findings.md:105:
+.agents/docs/research/sample-report-findings.md:106:1. `tests/fixtures/layout_cases/` に手書きの小さな部品データを用意する。例: `mixed_japanese_latin`、`two_anchor_equations`、`wrapped_substitution`、`fraction_and_scripts`、`unit_column`、`page_boundary_table`。参照の工学計算を再実装せず、表示用文字・数値を使用する。
+.agents/docs/research/sample-report-findings.md:107:2. `tests/fixtures/reference_manifest.json` に今回の原本ハッシュ・代表ページと目的を記録する。これを新しい生成 PDF の期待ハッシュに転用しない。
+.agents/docs/research/sample-report-findings.md:108:3. `tests/unit/test_grid.py` にグリッド座標・用紙座標変換・整数行の占有・端数処理を置く。フォントサイズと送りを混同しないこと、文字ボックスが枠を超える場合を検証する。
+.agents/docs/research/sample-report-findings.md:109:4. `tests/unit/test_equations.py` にグループ内の等号アンカー一致、式/結果/単位列の非重複、上下付き・分数の高さを置く。半角/全角等号・日本語とASCIIの混在を含める。
+.agents/docs/research/sample-report-findings.md:110:5. `tests/unit/test_pagination.py` にページ下端ちょうど/1行不足、見出し孤立、分割禁止の超過、繰り返し表見出しを置く。
+.agents/docs/research/sample-report-findings.md:111:6. `tests/integration/test_pdf_layout.py` で PDF を独立に抽出し、ページ寸法・文字の存在・アンカー座標・本文枠の内包を確認する。例えば等号位置の許容差0.1 ptは新たな提案値であり、参照から得た要求ではない。
+.agents/docs/research/sample-report-findings.md:112:7. `tests/visual/` に固定フォントと固定描画環境で生成した代表 fixture の承認済み画像を置く。初回は `07` p1、`08` p2、`13` p54 の構成を参考にした小さなページを目視承認し、既存251ページの丸ごと再現を先に目標にしない。
+.agents/docs/research/sample-report-findings.md:113:8. グリッド、文字枠、基線、等号アンカーを重ねるデバッグ描画と、配置結果を座標JSONで確認する仕組みを用意する。通常の出力はグリッドを表示しない設定を持たせる。
+.agents/docs/research/sample-report-findings.md:114:
+.agents/docs/research/sample-report-findings.md:115:製品コードの分割候補は `src/gridlayoutpdf/geometry.py`、`grid.py`、`text.py`、`equations.py`、`blocks.py`、`pagination.py`、`rendering/`。最終的なモジュール境界は主計画で決定する。
+.agents/docs/research/sample-report-findings.md:116:
+.agents/docs/research/sample-report-findings.md:117:## 実装前に確定が必要な点
+.agents/docs/research/sample-report-findings.md:118:
+.agents/docs/research/sample-report-findings.md:119:- A4 の1セルに全角1文字・半角2文字を置くのか、開始位置だけをグリッドへ合わせるのか。基準フォントサイズ維持との関係。
+.agents/docs/research/sample-report-findings.md:120:- 文字基線のセル内位置、上下付きや分数などの内部組版をグリッド制約からどこまで除外するか。
+.agents/docs/research/sample-report-findings.md:121:- 等号アンカーを固定列で指定するか、グループ内の左辺最大幅から計算するか。複数の等号・結果列の扱い。
+.agents/docs/research/sample-report-findings.md:122:- 幅不足時の改行・エラーの規則。フォントサイズ維持が要件なら、無言の縮小はしない。
+.agents/docs/research/sample-report-findings.md:123:- 複雑な数式は構造 API で扱うか、外部の数式組版を部品として埋め込むか。式内部のアンカーを保持できるかを実験する。
+.agents/docs/research/sample-report-findings.md:124:- A3ページや外部PDFの挿入を初期範囲に含めるか。参照にはあるが、初期要件としての承認は別に必要。
+.agents/docs/research/sample-report-findings.md:125:
+.agents/docs/research/sample-report-findings.md:126:## 原本 SHA-256
+.agents/docs/research/sample-report-findings.md:127:
+.agents/docs/research/sample-report-findings.md:128:| ファイル | SHA-256 |
+.agents/docs/research/sample-report-findings.md:129:|---|---|
+.agents/docs/research/sample-report-findings.md:130:| `04_地盤のモデル化.pdf` | `f89ea249e4f9a9998821de7a7309af9bd41019841fa2feef6d0496af43183e3c` |
+.agents/docs/research/sample-report-findings.md:131:| `06_照査の前提.pdf` | `ca7436bb4364db6437acb4aa79b6c1e3aed87c23601d54cb00a58b1e4767ec55` |
+.agents/docs/research/sample-report-findings.md:132:| `07_荷重計算.pdf` | `23a6358c5a5b8966789668dc80a140095a0d2fe22e6d29943691f900213c3f1b` |
+.agents/docs/research/sample-report-findings.md:133:| `08_線路.pdf` | `91e288880677f6e121afa887314d183000371478852b96663a6c753f76806706` |
+.agents/docs/research/sample-report-findings.md:134:| `09_直角.pdf` | `b6a7f5658b9f98ee8a7d6b29691edcb0209bc7455fa8309d4e3a2e16605474de` |
+.agents/docs/research/sample-report-findings.md:135:| `10_線路(耐震).pdf` | `933dec57e79330f44d07ed38adb89f8d2aa1ffd1c3e87b987ba3e20515f4063c` |
+.agents/docs/research/sample-report-findings.md:136:| `11_直角(耐震).pdf` | `809a09f126daee89128ea991de35d50a4633151fccb7c50378af60d14965b838` |
+.agents/docs/research/sample-report-findings.md:137:| `12_フーチング.pdf` | `f14c3fd062d13a0109ac809eda6a3468fc6ebfdc1e527b43c89ef7b55175ddf6` |
+.agents/docs/research/sample-report-findings.md:138:| `13_片持ち梁照査.pdf` | `e56bf3ddbe3314ed95517099bedb0e68005df1567b0b3e8f52a2a4066d03393e` |
+.agents/docs/research/sample-report-findings.md:139:| `14_桁座補強●.pdf` | `448811731bc0afd5d8dbfc3297e44b014e22a947d545391f4b549d937d8f7c56` |
+.agents/rules/project.md:1:# GridLayoutPdf の作業ルール
+.agents/rules/project.md:2:
+.agents/rules/project.md:3:## 言語と実行環境
+.agents/rules/project.md:4:
+.agents/rules/project.md:5:ユーザーへの報告と設計文書は日本語を基本とする。現在の作業環境は Windows / PowerShell。製品は Python による計算書の共通化を目的としており、採用ライブラリ、対応 Python バージョン、製品の実行・テストコマンドは未決定。
+.agents/rules/project.md:6:
+.agents/rules/project.md:7:共有スキルの標準ライブラリだけを使う Python スクリプトは、リポジトリルートから `uv run --no-project python <script> ...` で実行する。スキルに残る `--project FrameWeb --locked --extra dev` は別プロジェクトの指定であり、このリポジトリのコマンドとして使用しない。製品の依存定義を追加した時点で、実際の manifest に合わせて実行方法を更新する。
+.agents/rules/project.md:8:
+.agents/rules/project.md:9:## 文書の責務
+.agents/rules/project.md:10:
+.agents/rules/project.md:11:- 目的、要件、設計、未決定事項は `.agents/docs/DESIGN.md` に記録する。内容更新には `.agents/skills/_shared/update_design.py` の型付き入力、プレビュー、適用を使う。
+.agents/rules/project.md:12:- Repository Identity と作業状態は `.agents/STATE.md` に置き、対応する型付きライターを使う。Main Agent と Progress Tracker を保持する。
+.agents/rules/project.md:13:- `PROGRESS.md` の履歴は `/checkpointing` で生成する。初期雛形はチェックポイント実施済みを意味しない。
+.agents/rules/project.md:14:- `AGENTS.md` は薄い起動案内に留める。
+.agents/rules/project.md:15:
+.agents/rules/project.md:16:## 根拠と検証
+.agents/rules/project.md:17:
+.agents/rules/project.md:18:実装、要件、検討案を区別する。`.agents/docs/research/` と `tests/output/` の既存 PDF は、内容を検証するまでは要件や成功したテストの証拠としない。既存ファイルとユーザーによる変更を保持する。
+.agents/rules/project.md:19:
+.agents/rules/project.md:20:`.agents/check.ps1` はスタック検出・文書契約の検証用であり、製品の機能試験ではない。製品の検証方法は実装と依存定義に合わせて決める。
+CONTEXT.md:1:# GridLayoutPdf
+CONTEXT.md:2:
+CONTEXT.md:3:計算書の文字や式の配置を共通の基準で揃えるための用語集。
+CONTEXT.md:4:
+CONTEXT.md:5:## Language
+CONTEXT.md:6:
+CONTEXT.md:7:**数式の折り返し**:
+CONTEXT.md:8:式の意味とまとまりを保つ区切りで、長い数式を複数の行に分けること。分数や根号の内部を途中で分断することは含まない。
+CONTEXT.md:9:_Avoid_: 数式の縮小、任意の文字位置での分割
+CONTEXT.md:10:
+CONTEXT.md:11:**数式部品**:
+CONTEXT.md:12:記号・分数・根号・添字など、計算書に表示する数式を構成する要素。組み合わせによって式の構造を表す。
+CONTEXT.md:13:_Avoid_: 式全体を一枚の画像として扱うこと、計算処理そのもの
+CONTEXT.md:14:
+CONTEXT.md:15:**体裁統一**:
+CONTEXT.md:16:見本と同等の数式・表・図の表現と読みやすさを、共通の配置グリッドと書式で整えること。元の見本の文字座標やページ割りをそのまま複製することは意味しない。
+CONTEXT.md:17:_Avoid_: 元PDFの完全複製
+CONTEXT.md:18:
+CONTEXT.md:19:**配置グリッド**:
+CONTEXT.md:20:計算書の文章・式・表の位置と占有領域を表す基準となるマス目。マス数と文字数は独立しており、文字列は複数のマスにまたがる。
+CONTEXT.md:21:_Avoid_: 原稿用紙の文字マス、全角1文字分のマス
+CONTEXT.md:22:
+CONTEXT.md:23:**グリッド調整**:
+CONTEXT.md:24:文字の大きさを保ったまま、文字列の開始位置・字送り・行位置をグリッドに合わせること。
+CONTEXT.md:25:_Avoid_: 文字の自動縮小、字形の横方向伸縮
+.agents/docs/DESIGN.md:1:# GridLayoutPdf — Design
+.agents/docs/DESIGN.md:2:
+.agents/docs/DESIGN.md:3:## 背景・目的 (Background & Purpose)
+.agents/docs/DESIGN.md:4:
+.agents/docs/DESIGN.md:5:Python の自作 PDF 計算書ライブラリを設計する。A4.pdf の GridLayout に従って文字配置を調整し、計算書の書式と計算式の等号位置を統一する。
+.agents/docs/DESIGN.md:6:
+.agents/docs/DESIGN.md:7:## スコープ (Scope)
+.agents/docs/DESIGN.md:8:
+.agents/docs/DESIGN.md:9:今回の成果物は資料調査と実装計画。対象資料は `.agents/docs/research/A4.pdf` と `tests/output/*.pdf`。ライブラリ実装と既存 P7 アプリへの移行は後続作業。
+.agents/docs/DESIGN.md:10:
+.agents/docs/DESIGN.md:11:数式の初期入力形式は構造化したPython部品とする。TeX文字列パーサーは初期版の必須機能に含めない。
+.agents/docs/DESIGN.md:12:
+.agents/docs/DESIGN.md:13:初期版の用紙設定はA4縦を標準とし、A3・横向き・同一PDF内の混在を含める（FR-011）。外部PDFページの読み込み・合成の要否はこの回答だけからは追加せず、実装計画で境界を明示する。
+.agents/docs/DESIGN.md:14:
+.agents/docs/DESIGN.md:15:## 機能要件 (Functional Requirements)
+.agents/docs/DESIGN.md:16:
+.agents/docs/DESIGN.md:17:| ID | Requirement | Priority | Notes |
+.agents/docs/DESIGN.md:18:|---|---|---|---|
+.agents/docs/DESIGN.md:19:| FR-001 | A4.pdf の GridLayout に基づく文字位置調整 | Must | ユーザー指定 |
+.agents/docs/DESIGN.md:20:| FR-002 | 複数行の計算式の等号位置を揃える | Must | ユーザー指定 |
+.agents/docs/DESIGN.md:21:| FR-003 | 余白・フォント・改ページを共通コンポーネントで扱う | Must | 会話で確認した目的 |
+.agents/docs/DESIGN.md:22:| FR-004 | 初期版は Python コードから文章・表・計算式を組み立てるライブラリ | Must | 2026-10-16 ユーザー回答。GUI 帳票デザイナは初期版に含めない。 |
+.agents/docs/DESIGN.md:23:| FR-005 | 文字サイズを保ち、開始位置・字送り・行位置をグリッドに合わせる | Must | 2026-10-16 ユーザー回答。自動縮小・字形の横方向伸縮を基本動作にしない。 |
+.agents/docs/DESIGN.md:24:| FR-006 | グリッドの1マスは文章・式・表を配置する単位とし、文字数と独立させる | Must | 2026-10-16 grill-with-docs 第1問で選択肢1をユーザーが選択。文章は複数マスにまたがり、等号は指定列に揃えられる。 |
+.agents/docs/DESIGN.md:25:| FR-007 | 上から自動配置し、必要な箇所のみ位置指定する方式を基本候補とする | Must | 2026-10-16 ユーザーは選択肢1を支持し、tests/output/*.pdf の体裁を実現できるか確認した。参考体裁の表現能力を検証して採用を確定する。 |
+.agents/docs/DESIGN.md:26:| FR-008 | A4グリッド上で見本と同等の表現・読みやすさへ体裁を統一する | Must | 2026-10-16 ユーザーが再現基準の選択肢1を選択。等号揃え・数式・表の構成を再現し、余白・ページ割りは新規則に合わせる。元PDFの文字座標・改ページの完全一致は合格条件にしない。 |
+.agents/docs/DESIGN.md:27:| FR-009 | 計算式をPythonの数式部品の組み合わせで記述できる | Must | 2026-10-16 ユーザーが選択肢1を選択。Equation(lhs=..., rhs=Fraction(...)) は概念例であり、最終API名・引数は実装計画で定義する。 |
+.agents/docs/DESIGN.md:28:| FR-010 | 幅を超える数式は適切な区切りで自動折り返しし、明示改行も指定できる | Must | 2026-10-16 ユーザーが選択肢1を選択。分数・根号の内部を分断せず、継続行・等号の配置を揃える。分割できず収まらない場合は自動縮小せずエラーとする。 |
+.agents/docs/DESIGN.md:29:| FR-011 | A4縦を標準に、A3・横向きのページと同一PDF内の用紙混在に対応する | Must | 2026-10-16 ユーザーが選択肢1を選択。ページごとに用紙とグリッドを設定する。大きな表・図の横向きページへの配置を扱う。 |
+.agents/docs/DESIGN.md:30:
+.agents/docs/DESIGN.md:31:## 非機能要件 (Non-Functional Requirements)
+.agents/docs/DESIGN.md:32:
+.agents/docs/DESIGN.md:33:| Category | Requirement | Metric / Target |
+.agents/docs/DESIGN.md:34:|---|---|---|
+.agents/docs/DESIGN.md:35:| 保守性 | 余白・フォント・改ページ処理を共通部品として再利用し、帳票ごとの重複定義を減らす。 | 定量的な評価基準は未設定。 |
+.agents/docs/DESIGN.md:36:| 責務の分離 | 構造計算と帳票のレイアウト・描画を分離する。 | `.agents/rules/project-scope.md` の方針。具体的な構成は設計時に定める。 |
+.agents/docs/DESIGN.md:37:
+.agents/docs/DESIGN.md:38:## アーキテクチャ (Architecture)
+.agents/docs/DESIGN.md:39:
+.agents/docs/DESIGN.md:40:### Agent Roles
+.agents/docs/DESIGN.md:41:
+.agents/docs/DESIGN.md:42:| Agent | Role | Responsibilities |
+.agents/docs/DESIGN.md:43:|---|---|---|
+.agents/docs/DESIGN.md:44:| Codex | Main Agent | ユーザーとの作業調整、共有コンテキストの維持、依頼された作業の実行と検証。 |
+.agents/docs/DESIGN.md:45:
+.agents/docs/DESIGN.md:46:検討案（未実装）：文章・数式・表・図を部品単位で上から配置し、部品の開始位置と占有行数を配置グリッドへ合わせる。部品内には等号列・結果列・単位列、数式の基線、分数・添字の局所配置を持たせる。自動配置の採用は、参照にある代表的な構成を表現できることを検証条件とする。
+.agents/docs/DESIGN.md:47:
+.agents/docs/DESIGN.md:48:## 技術選定 (Tech Stack & Rationale)
+.agents/docs/DESIGN.md:49:
+.agents/docs/DESIGN.md:50:| Area | Technology | Rationale | Alternatives Considered |
+.agents/docs/DESIGN.md:51:|---|---|---|---|
+.agents/docs/DESIGN.md:52:| 帳票部品 | Pythonによる自作ライブラリ（設計段階） | 既存のKey DecisionsとFR-001〜003に基づき、A4グリッド、等号位置、共通レイアウトを扱う。 | 既存のKey Decisionsに記載。 |
+.agents/docs/DESIGN.md:53:| 描画バックエンド | 未選定 | 帳票部品を自作する決定と、描画など下位機能のライブラリ選定を区別する。 | 資料調査・実装計画で比較する。 |
+.agents/docs/DESIGN.md:54:| 共有スクリプトの実行 | uv run --no-project python | 初期化時点で製品のmanifestがなく、同コマンドで共有スクリプトを実行できた。 | FrameWeb指定のコマンドは、このリポジトリの構成に一致しない。 |
+.agents/docs/DESIGN.md:55:| 現在の作業環境 | Windows / PowerShell | ユーザーから提示された作業環境。製品の対応OSを決めるものではない。 | 製品の対応OSは未決定。 |
+.agents/docs/DESIGN.md:56:
+.agents/docs/DESIGN.md:57:## 制約 (Constraints)
+.agents/docs/DESIGN.md:58:
+.agents/docs/DESIGN.md:59:参照 PDF は読み取り専用で保持する。グリッド寸法は PDF から検証し、確認済み事実と提案値を区別する。
+.agents/docs/DESIGN.md:60:
+.agents/docs/DESIGN.md:61:2026-10-16 の初期化時点で、製品コード、依存関係のmanifest、ロックファイル、製品の実行・テストコマンドは未作成。共有スキルに残る FrameWeb 等の別プロジェクト用の設定は、GridLayoutPdf の採用技術の証拠としない。
+.agents/docs/DESIGN.md:62:
+.agents/docs/DESIGN.md:63:`.agents/check.ps1` はスタック検出とDESIGN・STATEの文書契約を検証する。製品の機能や参照PDFの再現性は、別途検証する。
+.agents/docs/DESIGN.md:64:
+.agents/docs/DESIGN.md:65:## Key Decisions
+.agents/docs/DESIGN.md:66:
+.agents/docs/DESIGN.md:67:| Decision | Rationale | Alternatives Considered | Date |
+.agents/docs/DESIGN.md:68:|---|---|---|---|
+.agents/docs/DESIGN.md:69:| Custom Python component library | ユーザーが自作を選択し、A4 グリッドへの文字配置調整を独自性として指定した。 | ReportLab Platypus, ReportBro, borb, fpdf2, WeasyPrint を調査済み。描画など下位機能のライブラリ利用は未決定。 | 2026-10-16 |
+.agents/docs/DESIGN.md:70:| Python library first | ユーザーが初期版の利用形態として選択。 | GUI 帳票デザイナを初期版から含める。 | 2026-10-16 |
+.agents/docs/DESIGN.md:71:| Preserve font size during grid adjustment | ユーザーが文字サイズ保持と開始位置・字送り・行位置の調整を選択。 | 枠に収まるよう文字サイズや字形の横幅を自動変更する。 | 2026-10-16 |
+.agents/docs/DESIGN.md:72:| Grid cells represent placement units | ユーザーは文章・式・表の配置単位を選択。文字送りを全角1マス・半角半マスに固定しない。 | 原稿用紙のように1マスを文字送りの単位とする。 | 2026-10-16 |
+.agents/docs/DESIGN.md:73:| Use grid-normalized appearance as acceptance criterion | ユーザーはA4グリッド上で見本と同等の表現・読みやすさへ統一する基準を選択。内容量に応じた自動配置・改ページと両立させる。 | 元PDFの文字位置・余白・改ページまで一致させる。 | 2026-10-16 |
+.agents/docs/DESIGN.md:74:| Author equations with structured Python components | ユーザーがPython部品を組み合わせる方式を選択。等号・分数・添字を個別に計測・配置できる構造を採る。 | TeX風の文字列を初期版の主要入力形式にする。 | 2026-10-16 |
+.agents/docs/DESIGN.md:75:| Wrap equations at valid structural boundaries | ユーザーが自動折り返し＋明示改行を選択。可変長の式を文字サイズを保って表示する。 | 呼び出し側が全改行位置を指定し、未指定の幅超過を即時エラーとする。 | 2026-10-16 |
+.agents/docs/DESIGN.md:76:| Support mixed page and grid profiles in the first release | ユーザーがA4縦標準＋A3・横向き・混在対応を選択。参考PDFにはA3横のページがある。 | 初期版をA4縦に限定する。 | 2026-10-16 |
+.agents/docs/DESIGN.md:77:
+.agents/docs/DESIGN.md:78:## TODO / Open Questions
+.agents/docs/DESIGN.md:79:
+.agents/docs/DESIGN.md:80:- GridLayout の正確な寸法、文字基線、余白を資料で確認する。
+.agents/docs/DESIGN.md:81:- 描画バックエンド、初期 API、検証条件は計画内で提案する。
+.agents/docs/DESIGN.md:82:
+.agents/docs/DESIGN.md:83:- 実装開始時に、対応OS・Pythonバージョン、依存定義と製品の検証コマンドを整える。
+.agents/docs/DESIGN.md:84:
+.agents/docs/DESIGN.md:85:- grill-with-docs の対話で、グリッド1マスと文字の関係を最初に確定する。A4.pdf は文字を含まないため、この意味は実測から推定しない。
+.agents/docs/DESIGN.md:86:
+.agents/docs/DESIGN.md:87:2026-10-16 解決済み：上記の『グリッド1マスと文字の関係』は、FR-006 と用語集 CONTEXT.md の『配置グリッド』で確定。1マスは部品の配置単位であり、文字数とは独立する。A4 の実測寸法・余白は research/grid-reference-findings.md に記録済み。文字基線は未決定。
+.agents/docs/DESIGN.md:88:
+.agents/docs/DESIGN.md:89:2026-10-16 追加調査：research/sample-report-findings.md に10 PDF・251ページの構造調査と14ページの目視結果を記録。08_線路 p2 の列揃え、13_片持ち梁照査 p54 の段分数・添字・複数段導出、12_フーチング p1 の結合セル表を初期の再現検証候補とする。元PDFは文字送り・行間がA4グリッドと異なるため、受入基準を『元の座標・改ページまで一致』とするか『A4グリッドで同等の体裁へ統一』とするかは次の対話で確認する。
+.agents/docs/DESIGN.md:90:
+.agents/docs/DESIGN.md:91:2026-10-16 解決済み：上記の参照PDF再現基準はFR-008で確定。元PDFの座標・ページ割りの完全一致を求めず、A4グリッドに基づく体裁統一を合格基準とする。上から自動配置＋必要箇所のみ位置指定を計画の基本方針とし、代表構成の出力検証は実装の受入工程として残す。
+.agents/docs/DESIGN.md:92:
+.agents/docs/DESIGN.md:93:2026-10-16 解決済み：数式の入力形式はFR-009のPython部品方式。次に、幅を超える式の折り返し方針を確認する。
+.agents/docs/DESIGN.md:94:
+.agents/docs/DESIGN.md:95:2026-10-16 解決済み：数式の幅超過はFR-010の自動折り返し＋明示改行で扱う。分割できない式の幅超過はエラーとし、自動縮小しない。具体的な分割候補・優先順位・継続行配置は実装計画で定義する。
+
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command 'rg -n "''^" '"'.agents/docs/research/sample-report-findings.md'" in C:\Users\sasai\Documents\GridLayoutPdf
+ succeeded in 436ms:
+1:# 計算書 PDF の体裁調査
+2:
+3:調査日: 2026-10-16。対象は `tests/output/*.pdf`。本書は参照資料からの観察と、実装計画への提案を分けて記す。PDF の計算内容・工学的妥当性は検証していない。製品のコードは実装していない。
+4:
+5:## 調査方法と範囲
+6:
+7:- 全 10 ファイル・251 ページについて用紙寸法、フォント資源、文字サイズ、文字・等号座標、画像・描画オブジェクト、ページテキストを抽出した。
+8:- 全ファイルから選んだ 14 ページを PNG に描画して目視確認した。目視対象は下表の「確認ページ」。251 ページ全部を目視したという意味ではない。
+9:- 座標は PDF ページ左上を原点とする pt。本文の `origin.y` は文字基線、`bbox` は抽出エンジンが示す文字ボックスであり、実際の黒画素輪郭とは区別する。
+10:- 抽出・描画は一時的な `uv run --no-project --with pymupdf` 環境を使用。Poppler は PATH と探索した Codex/local/WinGet ディレクトリには見つからず、MuPDF で代替描画した。これは開発用調査手段であり、製品依存の採用決定ではない。
+11:- 詳細抽出結果は `tmp/pdfs/sample-reports/inventory.json`、ページテキストと確認用 PNG は同ディレクトリにある。一時資料に依存せず判断できる主要値を本書に残す。
+12:- 参照 PDF の SHA-256 を採取し、終了時に同一であることを確認した。値は末尾に記す。
+13:
+14:## 現在のリポジトリ
+15:
+16:スキル・共有設定・調査文書を除くと、現時点の資産は参照 PDF である。製品 Python コード、`pyproject.toml`、実行可能な製品テストは見つからない。`tests/output` という名前だけから「テストが既に成功している」とは判断できない。
+17:
+18:以下に示す `src/gridlayoutpdf/`、`tests/unit/` などはすべて新設案であり、既存パスではない。
+19:
+20:## ファイル一覧
+21:
+22:| 参照 PDF | ページ数 | 用紙寸法 pt | 主な本文書体・サイズ | 目視確認ページ |
+23:|---|---:|---|---|---|
+24:| `04_地盤のモデル化.pdf` | 3 | 595 × 842 | MS-Mincho / MS-Gothic、9.94 pt | 1 |
+25:| `06_照査の前提.pdf` | 13 | 595 × 842 | MS-Mincho / MS-Gothic、9.94 pt | 1 |
+26:| `07_荷重計算.pdf` | 18 | 595 × 842 | MS-Mincho / MS-Gothic、9.94〜10.00 pt | 1、2 |
+27:| `08_線路.pdf` | 32 | 595 × 842 | MS-Mincho / MS-Gothic、9.94〜9.96 pt | 2、3 |
+28:| `09_直角.pdf` | 29 | 595 × 842 | MS-Mincho / MS-Gothic、9.94〜9.96 pt | 6 |
+29:| `10_線路(耐震).pdf` | 26 | p1〜24: 595 × 842、p25〜26: 1191 × 842 | 本文に9.94 pt、外部出力に5.7 / 7.9 / 9.74 ptなど | 25 |
+30:| `11_直角(耐震).pdf` | 27 | p1〜25: 595 × 842、p26〜27: 1191 × 842 | 本文に9.94 pt、外部出力に5.7 / 7.9 / 9.74 ptなど | 8 |
+31:| `12_フーチング.pdf` | 24 | 595 × 842 | MS-Mincho中心、9.5 / 9.91 / 10.00 ptなど | 1 |
+32:| `13_片持ち梁照査.pdf` | 67 | 595 × 842 | MS-Mincho / MS-Gothic、9.94〜9.96 pt | 1、54 |
+33:| `14_桁座補強●.pdf` | 12 | 595 × 842 | MS-Mincho中心、9.94 pt | 1、11 |
+34:
+35:247 ページが丸められた A4 縦相当、4 ページが A3 横相当。全ファイルの Producer は `DocuWorks PDF Build 7.0.15.1`。すべてのページに抽出可能な文字があるが、図の中まで文字が抽出できることは意味しない。例えば `06` p1 の配筋図は画像である。
+36:
+37:主な書体は MS-Mincho と MS-Gothic。補助書体として MS-PMincho、TimesNewRomanPS-ItalicMT、外部出力には MicrosoftSansSerif / SimSun / MS-UIGothic も現れる。添字・指数は約6.64 pt、ページ番号には11.5 ptが使われる例が多い。PDF から書体を観察できても、その書体をライブラリに再配布できるという根拠にはならない。
+38:
+39:## GridLayout との関係で重要な測定
+40:
+41:### 文字送りはフォントサイズと別の概念
+42:
+43:`08_線路.pdf` p2 の本文「フーチングはすべて剛域とする」は MS-Mincho、抽出サイズ9.9398 ptである。基線 y=260.398 pt、文字開始 x は117.96、128.04、138.12、148.20…となり、全角の送りは **10.08 pt**。各文字ボックス幅は10.00 pt。
+44:
+45:同じページの数値「12.150」は基線 y=181.918 pt、開始 x は435.36、440.40、445.44、450.48…で、半角の送りは **5.04 pt**。各文字ボックス幅は5.00 pt。
+46:
+47:別途 A4 グリッド調査で報告された16.08 ptの列ピッチ、15.48 ptの行ピッチに対して、この本文の送り・行間がそのまま一致するわけではない。特に16.08/2=8.04 ptの枠に10 pt幅の全角文字を連続配置すると、文字ボックスが約1.96 pt重なる。参照計算書から「全角も半セルでよい」とは判断できない。
+48:
+49:**提案:** `font_size`、文字の送り規則、ブロック開始位置のグリッド、行基線のグリッドを別の設定にする。フォントサイズを維持してグリッドの間隔へ文字送りを広げる方式と、自然な文字送りを維持してブロック境界だけを揃える方式は、見た目と1行の収容文字数が変わる。ユーザーの GridLayout の意図に合わせて選ぶ必要がある。参照 PDF の文字間隔から自動的に決めない。
+50:
+51:### 等号は文字列の中央揃えではなく、意味を持つ列の共通アンカー
+52:
+53:`08_線路.pdf` p2 の断面積・断面二次モーメントは以下の座標を持つ。
+54:
+55:| 対象 | 基線 y | 第1等号 x | 結果前等号 x | 数値右端 x | 単位開始 x |
+56:|---|---:|---:|---:|---:|---:|
+57:| 断面積 `A = 4.50 × 2.70 = 12.150 m²` | 181.918 | 214.08 | 402.24 | 465.56 | 474.24 |
+58:| 断面二次モーメント `I = … = 7.38113 m⁴` | 196.798 | 214.08 | 402.24 | 465.56 | 474.24 |
+59:
+60:基線差は14.88 pt。数値は桁数が違っても右端が揃い、等号と単位は独立した列に載る。p2 の重心位置・弾性係数も第1等号 x=214.08 ptを共有する。
+61:
+62:`07_荷重計算.pdf` p1 の4本の反力式は、第1等号 x=154.56 pt、結果前等号 x=391.32 ptを共有する。基線 y=568.798、597.598、635.038、672.478 pt。2本目の代入式は途中で次行に折り返すが、結果前の等号列は維持される。等号の左右を別々に測り、式の継続行と結果列を管理する必要がある。
+63:
+64:`08_線路.pdf` p3 の結果前の全角等号は x=435.48 ptを繰り返し使う一方、左側の等号はx=165.00 / 176.76 / 200.28 ptと用途に応じて異なる。文書全体のすべての等号を1列に強制するという参照ではない。**ブロックまたは名前付きグループごとのアンカー共有**が合う。
+65:
+66:半角 `=` と全角 `＝` が混在する。アンカーを字形の左端・中心・数式軸のどれに合わせるかを定義しないと、同じ座標を指定しても見た目がずれる。新 API は関係演算子を文字列から推測せず、`relation` のような構造を持たせるのがよい。
+67:
+68:## 代表的な帳票構成
+69:
+70:| 根拠 | 観察 | 必要となるレイアウト能力の提案 |
+71:|---|---|---|
+72:| `07` p1、`13` p1 | 見出し、結合セルの荷重表、寸法付き荷重図、4本の反力式が同じページに並ぶ | 見出し、表、図、数式の縦フローと個別固定枠を組み合わせる |
+73:| `07` p2 | 荷重修正係数の割り算と連鎖等号、左右2群の衝撃係数 | 複数の等号列、横並びの局所グリッド |
+74:| `08` p2 | 日本語ラベル、変数、代入、結果、単位、上付き指数、下付き添字 | ラベル列と数式列、基線計測、結果の右揃え、単位列 |
+75:| `08` p3、`09` p6、`11` p8 | 罫線が少ない数値表、式を持つ行、鉛直力/アーム/モーメント列、Σ・合計行 | 表セル内の数式、列ごとの配置、数値書式・小数点揃えの拡張余地 |
+76:| `04` p1 | 根号と横線、下付き変数、-1/2などの指数、変数の説明 | `Root`、`Script`、変数定義一覧。指数はベースライングリッドの対象と分ける |
+77:| `13` p54 | 段分数、分数を含む括弧、ギリシャ文字、分数の指数、指数表記、複数段の導出 | 数式内部の幅/高さ/数式軸の計測。数式全体の占有行数を整数行へ切り上げる |
+78:| `14` p1 | 鉛直力の一般式が複数の分数を含み、下に「ここに」の定義一覧が続く | 一般式と定義ブロック。式を途中で分断しない設定 |
+79:| `14` p11 | 係数定義、根号、指数、せん断破壊面の図 | テキスト主体の数学記号と独立したベクトル図の共存 |
+80:| `06` p1 | 本文の下に大きな既存配筋図画像2点 | 画像をアスペクト比維持で枠に収める |
+81:| `12` p1 | 1ページ近くを占める多段ヘッダー・縦結合セルの照査表 | ヘッダー/本文/結合のモデル、表の分割方針と繰り返しヘッダー |
+82:| `10` p25 | A3横ページに外部ソフトの縦長帳票が配置される | 将来のページごとの用紙設定・外部PDF挿入。A4のみのMVPとは区別する |
+83:
+84:段分数や根号は参照に実在するため、計画で未対応とする場合はそのまま再現できないページを明示する。一般式・代入・結果を1つの等号つき文字列に連結するだけでは、これらの高さとアンカーを扱いにくい。
+85:
+86:## ページ・余白・改ページ
+87:
+88:多くのサンプルは右上にページ番号を持つ。`07` p1 の `7 - 1` と `08` p2 の `8 - 2` は x=523.32、基線 y=52.318 pt、11.5 pt。`12` p1 の `244` は x=534.84、y=52.318 pt。`14` p1 の `326` は x=543.48、y=43.678 pt。番号の形式と位置は完全に統一されていない。ページ番号テンプレートと予約領域は設定可能にする。
+89:
+90:サンプルにはページ末尾の大きな余白を持つページもある。`08` p2 は上半分で小節が終わる。これだけから、自動改ページ・強制改ページ・意図した章境界のどれかは判別できない。
+91:
+92:**提案:** `keep_with_next`（見出しと次の内容）、`keep_together`（数式導出等）、明示改ページ、表の行単位分割を別々の規則として定義する。1ページを超える分割禁止ブロックは、無限に次ページへ送ることなく、測定情報とブロックIDを持つエラーにする。原稿と見本のページ数一致を既定の合格条件にしない。
+93:
+94:## 見本をそのまま正解画像にしない理由
+95:
+96:- A4 グリッドとは異なる文字送り・行間が確認される。新ライブラリで書式統一する以上、すべての既存座標の一致を要求すると目的と衝突する。
+97:- `14` p1 とp11 の右端に青い矩形と影があり、ページ端で切れている。由来は確認していない。これを共通帳票の標準装飾として再現しない。
+98:- `14` のファイル名と本文見出し番号（§11）が一致しない。番号をテスト期待値として機械的に採用しない。
+99:- 段分数・図・表の詳細などは、抽出テキストの並びが見た目の読み順と一致しない場合がある。文字列抽出のみで目視確認を置き換えない。
+100:- PDF Producer、フォントの埋め込み、アンチエイリアスの違いによりバイト列や画素の完全一致は期待できない。
+101:
+102:## テストと fixture の新設案
+103:
+104:参照原本は移動・書き換えをせず、`tests/output` をそのまま保持する。生成物は別ディレクトリに出す。
+105:
+106:1. `tests/fixtures/layout_cases/` に手書きの小さな部品データを用意する。例: `mixed_japanese_latin`、`two_anchor_equations`、`wrapped_substitution`、`fraction_and_scripts`、`unit_column`、`page_boundary_table`。参照の工学計算を再実装せず、表示用文字・数値を使用する。
+107:2. `tests/fixtures/reference_manifest.json` に今回の原本ハッシュ・代表ページと目的を記録する。これを新しい生成 PDF の期待ハッシュに転用しない。
+108:3. `tests/unit/test_grid.py` にグリッド座標・用紙座標変換・整数行の占有・端数処理を置く。フォントサイズと送りを混同しないこと、文字ボックスが枠を超える場合を検証する。
+109:4. `tests/unit/test_equations.py` にグループ内の等号アンカー一致、式/結果/単位列の非重複、上下付き・分数の高さを置く。半角/全角等号・日本語とASCIIの混在を含める。
+110:5. `tests/unit/test_pagination.py` にページ下端ちょうど/1行不足、見出し孤立、分割禁止の超過、繰り返し表見出しを置く。
+111:6. `tests/integration/test_pdf_layout.py` で PDF を独立に抽出し、ページ寸法・文字の存在・アンカー座標・本文枠の内包を確認する。例えば等号位置の許容差0.1 ptは新たな提案値であり、参照から得た要求ではない。
+112:7. `tests/visual/` に固定フォントと固定描画環境で生成した代表 fixture の承認済み画像を置く。初回は `07` p1、`08` p2、`13` p54 の構成を参考にした小さなページを目視承認し、既存251ページの丸ごと再現を先に目標にしない。
+113:8. グリッド、文字枠、基線、等号アンカーを重ねるデバッグ描画と、配置結果を座標JSONで確認する仕組みを用意する。通常の出力はグリッドを表示しない設定を持たせる。
+114:
+115:製品コードの分割候補は `src/gridlayoutpdf/geometry.py`、`grid.py`、`text.py`、`equations.py`、`blocks.py`、`pagination.py`、`rendering/`。最終的なモジュール境界は主計画で決定する。
+116:
+117:## 実装前に確定が必要な点
+118:
+119:- A4 の1セルに全角1文字・半角2文字を置くのか、開始位置だけをグリッドへ合わせるのか。基準フォントサイズ維持との関係。
+120:- 文字基線のセル内位置、上下付きや分数などの内部組版をグリッド制約からどこまで除外するか。
+121:- 等号アンカーを固定列で指定するか、グループ内の左辺最大幅から計算するか。複数の等号・結果列の扱い。
+122:- 幅不足時の改行・エラーの規則。フォントサイズ維持が要件なら、無言の縮小はしない。
+123:- 複雑な数式は構造 API で扱うか、外部の数式組版を部品として埋め込むか。式内部のアンカーを保持できるかを実験する。
+124:- A3ページや外部PDFの挿入を初期範囲に含めるか。参照にはあるが、初期要件としての承認は別に必要。
+125:
+126:## 原本 SHA-256
+127:
+128:| ファイル | SHA-256 |
+129:|---|---|
+130:| `04_地盤のモデル化.pdf` | `f89ea249e4f9a9998821de7a7309af9bd41019841fa2feef6d0496af43183e3c` |
+131:| `06_照査の前提.pdf` | `ca7436bb4364db6437acb4aa79b6c1e3aed87c23601d54cb00a58b1e4767ec55` |
+132:| `07_荷重計算.pdf` | `23a6358c5a5b8966789668dc80a140095a0d2fe22e6d29943691f900213c3f1b` |
+133:| `08_線路.pdf` | `91e288880677f6e121afa887314d183000371478852b96663a6c753f76806706` |
+134:| `09_直角.pdf` | `b6a7f5658b9f98ee8a7d6b29691edcb0209bc7455fa8309d4e3a2e16605474de` |
+135:| `10_線路(耐震).pdf` | `933dec57e79330f44d07ed38adb89f8d2aa1ffd1c3e87b987ba3e20515f4063c` |
+136:| `11_直角(耐震).pdf` | `809a09f126daee89128ea991de35d50a4633151fccb7c50378af60d14965b838` |
+137:| `12_フーチング.pdf` | `f14c3fd062d13a0109ac809eda6a3468fc6ebfdc1e527b43c89ef7b55175ddf6` |
+138:| `13_片持ち梁照査.pdf` | `e56bf3ddbe3314ed95517099bedb0e68005df1567b0b3e8f52a2a4066d03393e` |
+139:| `14_桁座補強●.pdf` | `448811731bc0afd5d8dbfc3297e44b014e22a947d545391f4b549d937d8f7c56` |
+
+codex
+No files were changed and no agents or recursive consultations were invoked.
+
+Recommended architecture: immutable semantic components → deterministic measurement → page layout/pagination → backend-neutral scene commands → a narrow ReportLab Canvas adapter. Internally, all coordinates use a top-left origin; only the renderer converts to PDF’s bottom-left coordinates.
+
+## Implementation Steps (ordered by dependency)
+
+1. **Bootstrap the package and protect reference evidence**
+
+   Create:
+
+   - `pyproject.toml`, `uv.lock`
+   - `src/gridlayoutpdf/__init__.py`
+   - `src/gridlayoutpdf/errors.py`
+   - `tests/fixtures/reference_manifest.json`
+   - `tests/unit/test_reference_integrity.py`
+
+   Use ReportLab as the provisional runtime backend, pytest for tests, and PyMuPDF only as a development/integration-test dependency. Record SHA-256 values for A4, A3, and every `tests/output/*.pdf`; generated PDFs must go under `build/test-output/`, never beside the references. The repository currently has no product package, manifest, or executable product tests, so every product path above is new ([sample-report-findings.md:16](C:/Users/sasai/Documents/GridLayoutPdf/.agents/docs/research/sample-report-findings.md:16)). Reference hashes are evidence-preservation checks, not generated-output golden hashes ([sample-report-findings.md:104](C:/Users/sasai/Documents/GridLayoutPdf/.agents/docs/research/sample-report-findings.md:104)).
+
+2. **Prove geometry, font metrics, and the PDF adapter before designing the public API**
+
+   Create:
+
+   - `src/gridlayoutpdf/geometry.py`
+   - `src/gridlayoutpdf/profiles.py`
+   - `src/gridlayoutpdf/fonts.py`
+   - `src/gridlayoutpdf/scene.py`
+   - `src/gridlayoutpdf/rendering/base.py`
+   - `src/gridlayoutpdf/rendering/reportlab.py`
+   - `tests/unit/test_geometry.py`
+   - `tests/integration/test_reportlab_typography.py`
+
+   Implement immutable `Point`, `Box`, `GridSpec`, `PageProfile`, `FontFace`, `FontMetrics`, and scene commands such as `TextRun`, `Line`, `Rect`, `Path`, and `Image`. Add the measured profiles:
+
+   - A4 portrait: 595×842 pt, 30×47, origin `(50.88, 54.598)`, pitch `(16.08, 15.48)` ([grid-reference-findings.md:22](C:/Users/sasai/Documents/GridLayoutPdf/.agents/docs/research/grid-reference-findings.md:22)).
+   - A3 landscape: 1191×842 pt, 67×47 with the same origin and pitch ([grid-reference-findings.md:95](C:/Users/sasai/Documents/GridLayoutPdf/.agents/docs/research/grid-reference-findings.md:95)).
+
+   The backend must return advance width, ascent, descent, baseline, and glyph bounding boxes. Render a proof sheet containing Japanese, Latin, digits, Greek, half/full-width equals, and intentional script sizes. If glyph coverage, baseline recovery, or output/extracted coordinates cannot be made deterministic, stop here and reassess the backend or font—not the semantic model.
+
+3. **Implement text measurement and deterministic mixed-language wrapping**
+
+   Create:
+
+   - `src/gridlayoutpdf/styles.py`
+   - `src/gridlayoutpdf/text.py`
+   - `src/gridlayoutpdf/linebreak.py`
+   - `src/gridlayoutpdf/diagnostics.py`
+   - `tests/unit/test_text.py`
+   - `tests/integration/test_text_pdf_geometry.py`
+
+   Keep font size, natural glyph metrics, optional tracking, block-grid position, and line baseline as separate concepts. Default to natural advance; allow explicit tracking or target advance without horizontally scaling glyphs. Add documented CJK break opportunities and Japanese line-start/line-end punctuation rules, while Latin breaks at whitespace or explicit hints.
+
+   The reference text uses 10.08 pt full-width and 5.04 pt half-width advances, neither of which equals the grid pitch ([sample-report-findings.md:43](C:/Users/sasai/Documents/GridLayoutPdf/.agents/docs/research/sample-report-findings.md:43), [sample-report-findings.md:47](C:/Users/sasai/Documents/GridLayoutPdf/.agents/docs/research/sample-report-findings.md:47)). Therefore, grid cells remain placement units rather than character cells, as required by [CONTEXT.md:19](C:/Users/sasai/Documents/GridLayoutPdf/CONTEXT.md:19).
+
+4. **Build the structured mathematical box model**
+
+   Create:
+
+   - `src/gridlayoutpdf/math/nodes.py`
+   - `src/gridlayoutpdf/math/measure.py`
+   - `src/gridlayoutpdf/math/layout.py`
+   - `tests/unit/test_math_layout.py`
+
+   Provide immutable semantic nodes such as `Text`, `Identifier`, `Number`, `Operator`, `Relation`, `Sequence`, `Group`, `Fraction`, `Root`, `Script`, and `BreakHint`. Every measured `MathBox` must expose width, ascent, descent, mathematical axis, child positions, and named anchors.
+
+   Fractions, roots, and scripts use local sub-row geometry; only the containing block’s start and occupied extent snap to document rows. Script font sizes are intentional styles, never an overflow-shrinking mechanism. The risk proof should reproduce the structural features of `tests/output/13_片持ち梁照査.pdf` p.54: stacked fractions, roots, brackets, Greek characters, and scripts ([sample-report-findings.md:77](C:/Users/sasai/Documents/GridLayoutPdf/.agents/docs/research/sample-report-findings.md:77)).
+
+5. **Add equation alignment groups and semantic wrapping**
+
+   Create:
+
+   - `src/gridlayoutpdf/equations.py`
+   - `src/gridlayoutpdf/math/wrap.py`
+   - `tests/unit/test_equation_alignment.py`
+   - `tests/unit/test_equation_wrap.py`
+
+   Implement locally scoped `AlignmentGroup`s with named slots such as label, definition relation, substitution, result relation, result, and unit. Resolve shared columns from the widest measured member, while permitting explicit grid anchors. Align relation glyphs by the center of their advance box so half/full-width equals do not align by unrelated left edges.
+
+   Support:
+
+   - Multiple relation columns.
+   - Right-aligned results and left-aligned units.
+   - Long labels, results, and units with explicit wrap/atomic policies.
+   - Automatic breaks at relations, low-precedence operators, and manual hints.
+   - Atomic fractions and roots.
+   - Continuation-line alignment.
+   - An `UnbreakableOverflowError` containing the semantic path, available width, measured width, font/style, and candidate breakpoints.
+
+   The primary cases are `08_線路.pdf` p.2, where two equation columns, result-right, and unit-left alignment coexist ([sample-report-findings.md:57](C:/Users/sasai/Documents/GridLayoutPdf/.agents/docs/research/sample-report-findings.md:57)), and `07_荷重計算.pdf` p.1, where a substitution wraps without losing its result column ([sample-report-findings.md:62](C:/Users/sasai/Documents/GridLayoutPdf/.agents/docs/research/sample-report-findings.md:62)).
+
+6. **Create the first usable vertical slice: blocks, flow, and pagination**
+
+   Create:
+
+   - `src/gridlayoutpdf/blocks.py`
+   - `src/gridlayoutpdf/pagination.py`
+   - `src/gridlayoutpdf/document.py`
+   - `tests/unit/test_flow.py`
+   - `tests/unit/test_pagination.py`
+   - `tests/integration/test_basic_document.py`
+
+   Define a strict block contract: `measure()`, `place()`, and—only where legal—`split()`. Start with paragraph, equation, spacer, and explicit page-break blocks. Measurement must happen before placement; wrapped continuation lines must be included before positioning the following block.
+
+   Pagination must guarantee progress: every iteration either consumes content, creates a page once, or raises a diagnostic error. Implement `keep_with_next`, `keep_together`, exact-bottom fit, forced break, orphan-heading prevention, and impossible-block detection. A block taller than an empty page must fail instead of being moved to new pages indefinitely, matching the documented recommendation ([sample-report-findings.md:92](C:/Users/sasai/Documents/GridLayoutPdf/.agents/docs/research/sample-report-findings.md:92)).
+
+7. **Add merged-cell tables and a defined cross-page rowspan policy**
+
+   Create:
+
+   - `src/gridlayoutpdf/tables.py`
+   - `tests/unit/test_tables.py`
+   - `tests/integration/test_table_pagination.py`
+
+   Support fixed, grid-column, and measured column widths; horizontal/vertical merges; multirow headers; cell padding; alignment; and paragraph/equation cell content. Split tables only between legal row groups and repeat headers.
+
+   First-release policy: a rowspan group is indivisible across a page boundary. Move the complete group to the next page; if it cannot fit on an empty page, raise a measured `UnbreakableTableRegionError`. Do not silently duplicate or truncate a spanning cell. Validate against the structure of `12_フーチング.pdf` p.1 ([sample-report-findings.md:81](C:/Users/sasai/Documents/GridLayoutPdf/.agents/docs/research/sample-report-findings.md:81)).
+
+8. **Support mixed page profiles, templates, and total page counts**
+
+   Create:
+
+   - `src/gridlayoutpdf/templates.py`
+   - `tests/unit/test_profiles.py`
+   - `tests/integration/test_mixed_pages.py`
+   - `tests/integration/test_page_templates.py`
+
+   Make page-template changes explicit in the document tree; never switch to a larger sheet merely to hide overflow. Ship the measured A4 portrait and A3 landscape profiles. Derived A4 landscape or A3 portrait profiles should retain the physical pitch and top-left origin, use only complete rows/columns, and be marked `derived`, not `reference_exact`.
+
+   Complete layout for every page before rendering so `{page_number}` and `{page_count}` can be resolved without mutating an already-rendered PDF. Header/footer reservations are part of usable-grid calculation. Verify A4 → A3 landscape → A4, repeated template selection, page-number formats, unchanged font sizes, and unchanged pitch. The A3 reference is wider rather than scaled A4 ([grid-reference-findings.md:109](C:/Users/sasai/Documents/GridLayoutPdf/.agents/docs/research/grid-reference-findings.md:109)).
+
+9. **Add figures and collision-safe explicit placement**
+
+   Create:
+
+   - `src/gridlayoutpdf/figures.py`
+   - `src/gridlayoutpdf/placement.py`
+   - `tests/unit/test_placement.py`
+   - `tests/integration/test_figures.py`
+
+   Provide aspect-preserving raster-image placement and backend-neutral vector figure commands. Explicitly positioned blocks must reserve page rectangles and participate in collision detection; overlap is an error unless a future API adds an explicit overlay mode. Flow placement must account for reservations before choosing the next row.
+
+   External PDF page import remains out of scope: mixed-size reference pages justify page profiles, not PDF composition ([DESIGN.md:13](C:/Users/sasai/Documents/GridLayoutPdf/.agents/docs/DESIGN.md:13)).
+
+10. **Stabilize the narrow public API and diagnostic trace**
+
+   Create:
+
+   - `src/gridlayoutpdf/api.py`
+   - `examples/basic_report.py`
+   - `tests/unit/test_public_api.py`
+   - `tests/integration/test_layout_trace.py`
+
+   Export only stable semantic concepts: `Document`, page/template selection, styles, paragraphs, equations, tables, figures, and page breaks. Keep backend and layout internals private. Engineering calculations enter as already-computed values and labels; they never become a responsibility of this library.
+
+   Emit an optional layout trace containing page/profile, block path, grid row/column, occupied rows, baseline, glyph boxes, math anchors, splits, and scene bounds. This is essential because image comparison alone cannot prove baselines and anchors ([grid-reference-findings.md:72](C:/Users/sasai/Documents/GridLayoutPdf/.agents/docs/research/grid-reference-findings.md:72)).
+
+11. **Run the acceptance suite and freeze release behavior**
+
+   Add the representative fixtures and acceptance tooling:
+
+   - `tests/fixtures/layout_cases/`
+   - `tests/integration/test_pdf_geometry.py`
+   - `tests/visual/`
+   - `tools/render_visual_cases.py`
+
+   Cover:
+
+   - `08_線路.pdf` p.2: equation/result/unit columns.
+   - `13_片持ち梁照査.pdf` p.54: complex mathematical boxes.
+   - `12_フーチング.pdf` p.1: merged and multirow table.
+   - `07_荷重計算.pdf` p.1: heading, table, figure, and wrapped equations.
+   - A4 → A3 landscape → A4 profile changes.
+
+   Acceptance means comparable expression and readability on the new grid—not original coordinates, page breaks, bytes, or pixels ([DESIGN.md:26](C:/Users/sasai/Documents/GridLayoutPdf/.agents/docs/DESIGN.md:26)).
+
+## Verification per Step
+
+| Step | Required verification |
+|---|---|
+| 1 | `uv run pytest tests/unit/test_reference_integrity.py -q`; lockfile resolves from a clean environment; all source hashes match. |
+| 2 | `uv run pytest tests/unit/test_geometry.py tests/integration/test_reportlab_typography.py -q`; independently inspect MediaBox, text origins, and font sizes with PyMuPDF. |
+| 3 | `uv run pytest tests/unit/test_text.py tests/integration/test_text_pdf_geometry.py -q`; check CJK punctuation, mixed scripts, baseline positions, natural/tracked advances, and no glyph scaling. |
+| 4 | `uv run pytest tests/unit/test_math_layout.py -q`; compare box dimensions and child coordinates against hand-calculated fixtures. |
+| 5 | `uv run pytest tests/unit/test_equation_alignment.py tests/unit/test_equation_wrap.py -q`; assert anchor equality, non-overlap, atomicity, and exact diagnostic fields. |
+| 6 | `uv run pytest tests/unit/test_flow.py tests/unit/test_pagination.py tests/integration/test_basic_document.py -q`; include a watchdog/property test proving pagination makes progress. |
+| 7 | `uv run pytest tests/unit/test_tables.py tests/integration/test_table_pagination.py -q`; verify repeated headers, legal split rows, preserved spans, and impossible-span failure. |
+| 8 | `uv run pytest tests/unit/test_profiles.py tests/integration/test_mixed_pages.py tests/integration/test_page_templates.py -q`; independently extract all MediaBoxes and page labels. |
+| 9 | `uv run pytest tests/unit/test_placement.py tests/integration/test_figures.py -q`; assert aspect ratio, reservation behavior, and collision errors. |
+| 10 | `uv run pytest tests/unit/test_public_api.py tests/integration/test_layout_trace.py -q`; generate `examples/basic_report.py` using only documented imports. |
+| 11 | Run `uv run pytest -q`, then `uv run python tools/render_visual_cases.py --out build/visual-review`; inspect rendered pages and layout traces manually. Finally run `& .agents/check.ps1`, noting that this repository gate does not replace product tests ([project.md:20](C:/Users/sasai/Documents/GridLayoutPdf/.agents/rules/project.md:20)). |
+
+## Risks and Mitigations
+
+- **Japanese font licensing or host-font substitution:** require explicit font registration, use one redistributable fixed test font, embed/subset where permitted, and fail on missing glyphs rather than silently substituting.
+- **ReportLab measurement differs from emitted PDF geometry:** keep a narrow backend protocol and compare emitted coordinates independently with PyMuPDF before committing to the adapter.
+- **CJK wrapping becomes an incomplete homemade Unicode engine:** document the supported first-release rules and isolate them in `linebreak.py`; expand through fixtures rather than hidden renderer behavior.
+- **Math alignment becomes circular when group widths affect wrapping:** measure semantic segments first, solve group columns second, then wrap against the resolved regions; reject unsatisfiable groups.
+- **Pagination loops on unsplittable content:** enforce a monotonic content cursor and distinguish “retry on fresh page once” from “impossible on an empty page.”
+- **Rowspans cross page boundaries ambiguously:** keep the entire rowspan group together in the first release and report impossible groups explicitly.
+- **Mixed orientations accidentally scale content:** page profiles change usable geometry only; font sizes, pitch, and figure scaling policies remain independent.
+- **Golden-image tests become environment-sensitive:** use numeric geometry checks as the mechanical gate and visual images as controlled-environment approval evidence, never PDF byte equality.
+- **Public API hardens too early:** defer top-level exports until typography, math, wrapping, pagination, and tables have passed their risk proofs.
+- **Reference PDFs are accidentally modified:** validate their hashes before and after the complete suite and write all generated output outside reference directories.
+
+## Open Questions
+
+1. **Release-blocking font policy:** which Japanese font may be distributed with the library? If none, the public contract must require callers to register a font family, while tests use a separately licensed fixture font.
+2. **Visual acceptance:** the generated typography proof must establish the default body font, baseline offset, tracking policy, and visual center for relation operators. These cannot be derived from the grid-only PDFs.
+3. **Cross-page rowspans:** the recommended first-release behavior is “move the complete span group or fail.” Supporting a visually continuous rowspan split across pages would be a separate, materially larger feature.
+4. **Non-blocking defaults:** proceed with Python 3.12+, ReportLab Canvas, PyMuPDF as development-only tooling, natural text advances by default, and origin-locked derived profiles unless a known consumer requires different compatibility or margin rules.
+tokens used
+79,621

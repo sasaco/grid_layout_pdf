@@ -1,0 +1,11 @@
+{
+  "requirements": [
+    {"id":"FR-006","requirement":"グリッドの1マスは文章・式・表を配置する単位とし、文字数と独立させる","priority":"Must","notes":"2026-10-16 grill-with-docs 第1問で選択肢1をユーザーが選択。文章は複数マスにまたがり、等号は指定列に揃えられる。"}
+  ],
+  "decisions": [
+    {"decision":"Grid cells represent placement units","rationale":"ユーザーは文章・式・表の配置単位を選択。文字送りを全角1マス・半角半マスに固定しない。","alternatives":"原稿用紙のように1マスを文字送りの単位とする。","date":"2026-10-16"}
+  ],
+  "section_updates": [
+    {"heading":"## TODO / Open Questions","content":"2026-10-16 解決済み：上記の『グリッド1マスと文字の関係』は、FR-006 と用語集 CONTEXT.md の『配置グリッド』で確定。1マスは部品の配置単位であり、文字数とは独立する。A4 の実測寸法・余白は research/grid-reference-findings.md に記録済み。文字基線は未決定。"}
+  ]
+}

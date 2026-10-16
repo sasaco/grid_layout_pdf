@@ -10,7 +10,7 @@ foreach ($check in $checks) {
     try {
         $scriptPath = Join-Path $PSScriptRoot $check.script
         $checkArguments = $check.arguments
-        $outputLines = & uv run --no-project python $scriptPath @checkArguments
+        $outputLines = & uv run --no-project python -X utf8 $scriptPath @checkArguments
         $checkExitCode = $LASTEXITCODE
         $verdict = ($outputLines -join "`n") | ConvertFrom-Json
         $results += [pscustomobject]@{ name = $check.name; exit_code = $checkExitCode; verdict = $verdict }
