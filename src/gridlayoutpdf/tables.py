@@ -171,28 +171,7 @@ class Table:
         row_heights = [1] * len(self.rows)
         for placed in self._cells:
             cell = placed.cell
-            cell_width = self._cell_width(placed, context.profile.grid.pitch_x)
-            path = self._path(placed)
-            available = cell_width - 2 * cell.padding
-            if available <= 0:
-                raise LayoutOverflowError(
-                    f"{path}: padding leaves no content width", block_id=path,
-                    needed=2 * cell.padding, available=cell_width,
-                )
-            align = cell.align or ("right" if cell.colspan == 1 and placed.col in self.numeric_columns else "left")
-            block = Paragraph(cell.content, style=cell.style, align=align, block_id=path) if isinstance(cell.content, str) else cell.content
-            try:
-                content = measure_block(block, context, available)
-            except FontError as exc:
-                raise FontError(f"{path}: {exc}") from exc
-            except LayoutOverflowError as exc:
-                raise LayoutOverflowError(
-                    f"{path}: {exc}", block_id=path, needed=exc.needed, available=exc.available,
-                ) from exc
-            except (ValueError, TypeError) as exc:
-                raise ValueError(
-                    f"{path}: {exc}; content requires Block.measure(context, width); mathematical nodes require MathBlock"
-                ) from exc
+            content, align = self._measure_cell(context, placed)
             measured.append((placed, content, align))
             if cell.rowspan == 1:
                 row_heights[placed.row] = max(row_heights[placed.row], context.rows_for(content.height + 2 * cell.padding))
@@ -204,6 +183,42 @@ class Table:
                 deficit = required - sum(row_heights[placed.row:stop])
                 if deficit > 0:
                     row_heights[stop - 1] += deficit
+        parts = tuple(self._make_part(context, start, stop, row_heights, column_edges, measured)
+                      for start, stop in self._row_groups())
+        if self.header_rows and self.header_rows < len(self.rows):
+            prefix, body = parts[:1], parts[1:]
+        else:
+            prefix, body = (), parts
+        return MeasuredBlock(width, pitch, body, prefix=prefix, block_id=self.block_id)
+
+    def _measure_cell(self, context: LayoutContext, placed: _PlacedCell) -> tuple[MeasuredBlock, str]:
+        cell = placed.cell
+        cell_width = self._cell_width(placed, context.profile.grid.pitch_x)
+        path = self._path(placed)
+        available = cell_width - 2 * cell.padding
+        if available <= 0:
+            raise LayoutOverflowError(
+                f"{path}: padding leaves no content width", block_id=path,
+                needed=2 * cell.padding, available=cell_width,
+            )
+        align = cell.align or ("right" if cell.colspan == 1 and placed.col in self.numeric_columns else "left")
+        block = Paragraph(cell.content, style=cell.style, align=align, block_id=path) if isinstance(cell.content, str) else cell.content
+        try:
+            content = measure_block(block, context, available)
+        except FontError as exc:
+            raise FontError(f"{path}: {exc}") from exc
+        except LayoutOverflowError as exc:
+            raise LayoutOverflowError(
+                f"{path}: {exc}", block_id=path, needed=exc.needed, available=exc.available,
+            ) from exc
+        except (ValueError, TypeError) as exc:
+            raise ValueError(
+                f"{path}: {exc}; content requires Block.measure(context, width); mathematical nodes require MathBlock"
+            ) from exc
+        return content, align
+
+    def _row_groups(self) -> list[tuple[int, int]]:
+        """Return the header and body intervals without cutting a rowspan."""
         groups = []
         if self.header_rows:
             groups.append((0, self.header_rows))
@@ -212,13 +227,7 @@ class Table:
             if not any(placed.row < stop < placed.row + placed.cell.rowspan for placed in self._cells):
                 groups.append((start, stop))
                 start = stop
-        parts = tuple(self._make_part(context, start, stop, row_heights, column_edges, measured)
-                      for start, stop in groups)
-        if self.header_rows and self.header_rows < len(self.rows):
-            prefix, body = parts[:1], parts[1:]
-        else:
-            prefix, body = (), parts
-        return MeasuredBlock(width, pitch, body, prefix=prefix, block_id=self.block_id)
+        return groups
 
     def _path(self, placed):
         return f"{self.block_id or 'Table'}.rows[{placed.row}].cells[{placed.col}]"

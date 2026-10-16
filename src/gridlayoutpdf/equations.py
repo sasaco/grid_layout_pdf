@@ -198,28 +198,33 @@ def _wrap_rhs(item: _EquationMeasure, context: LayoutContext, normal_width: floa
             if item.result is None:
                 raise
     if full_width <= 0:
-        rhs = item.equation.rhs
-        atoms = enumerate(rhs.items) if isinstance(rhs, Row) else ((None, rhs),)
-        for index, atom in atoms:
-            if isinstance(atom, BreakHint):
-                continue
-            path = item.path + ".rhs" + (f"[{index}]" if index is not None else "")
-            box = _measure(atom, context.fonts, item.style, path)
-            if box.width:
-                _overflow(box.width, 0, path)
-        # Zero-width atoms can still have gaps or forced display lines. Run the
-        # normal parser so hints retain their validation and ordering semantics.
-        try:
-            lines = wrap_math(rhs, context.fonts, item.style,
-                              context.profile.body_rect.width, block_id=item.path)
-        except LayoutOverflowError as exc:
-            _overflow(exc.needed, 0, exc.block_id)
-        needed = max(-full_width, max((line.width for line in lines), default=0))
-        if needed:
-            _overflow(needed, 0, item.path + ".rhs")
-        return lines, False
+        return _wrap_without_rhs_space(item, context, full_width), False
     return wrap_math(item.equation.rhs, context.fonts, item.style,
                      full_width, block_id=item.path), item.result is not None
+
+
+def _wrap_without_rhs_space(item: _EquationMeasure, context: LayoutContext,
+                            full_width: float) -> tuple[MathBox, ...]:
+    rhs = item.equation.rhs
+    atoms = enumerate(rhs.items) if isinstance(rhs, Row) else ((None, rhs),)
+    for index, atom in atoms:
+        if isinstance(atom, BreakHint):
+            continue
+        path = item.path + ".rhs" + (f"[{index}]" if index is not None else "")
+        box = _measure(atom, context.fonts, item.style, path)
+        if box.width:
+            _overflow(box.width, 0, path)
+    # Zero-width atoms can still have gaps or forced display lines. Run the
+    # normal parser so hints retain their validation and ordering semantics.
+    try:
+        lines = wrap_math(rhs, context.fonts, item.style,
+                          context.profile.body_rect.width, block_id=item.path)
+    except LayoutOverflowError as exc:
+        _overflow(exc.needed, 0, exc.block_id)
+    needed = max(-full_width, max((line.width for line in lines), default=0))
+    if needed:
+        _overflow(needed, 0, item.path + ".rhs")
+    return lines
 
 
 def _relation(text: str, context: LayoutContext, style: TextStyle, path: str) -> _Relation:
@@ -435,34 +440,7 @@ def wrap_math(
         return (box,)
 
     Row().measure(fonts, style)  # Validate the context even for an empty row.
-    atoms: list[MathNode] = []
-    source_indices: list[int] = []
-    candidates: dict[int, int] = {}
-    forced_ends: list[int] = []
-    if node.items and isinstance(node.items[-1], BreakHint):
-        raise ValueError("break hint requires a following atom (no trailing empty line)")
-    for source_index, item in enumerate(node.items):
-        position = len(atoms)
-        if isinstance(item, BreakHint):
-            if item.mode == "forced":
-                if position == (forced_ends[-1] if forced_ends else 0):
-                    raise ValueError("forced break would create an empty line")
-                forced_ends.append(position)
-            else:
-                priority = 1 if item.mode == "preferred" else 4
-                candidates[position] = min(priority, candidates.get(position, priority))
-            continue
-        if isinstance(item, Operator):
-            if item.text in ("=", "＝", "<", ">", "≦", "≧", "≤", "≥", "≈", "≠"):
-                priority = 2
-            elif item.text in ("+", "-", "−"):
-                priority = 3
-            else:
-                priority = None
-            if priority is not None:
-                candidates[position] = min(priority, candidates.get(position, priority))
-        atoms.append(item)
-        source_indices.append(source_index)
+    atoms, source_indices, candidates, forced_ends = _parse_wrap_row(node)
     boxes = tuple(
         _measure(item, fonts, style, f"{path}[{source_index}]")
         for item, source_index in zip(atoms, source_indices)
@@ -497,6 +475,39 @@ def wrap_math(
             lines.append(Row(*atoms[start:end], gap=node.gap).measure(fonts, style))
             start = end
     return tuple(lines)
+
+
+def _parse_wrap_row(node: Row) -> tuple[list[MathNode], list[int], dict[int, int], list[int]]:
+    """Separate atoms from hints, retaining source indices and break priorities."""
+    atoms: list[MathNode] = []
+    source_indices: list[int] = []
+    candidates: dict[int, int] = {}
+    forced_ends: list[int] = []
+    if node.items and isinstance(node.items[-1], BreakHint):
+        raise ValueError("break hint requires a following atom (no trailing empty line)")
+    for source_index, item in enumerate(node.items):
+        position = len(atoms)
+        if isinstance(item, BreakHint):
+            if item.mode == "forced":
+                if position == (forced_ends[-1] if forced_ends else 0):
+                    raise ValueError("forced break would create an empty line")
+                forced_ends.append(position)
+            else:
+                priority = 1 if item.mode == "preferred" else 4
+                candidates[position] = min(priority, candidates.get(position, priority))
+            continue
+        if isinstance(item, Operator):
+            if item.text in ("=", "＝", "<", ">", "≦", "≧", "≤", "≥", "≈", "≠"):
+                priority = 2
+            elif item.text in ("+", "-", "−"):
+                priority = 3
+            else:
+                priority = None
+            if priority is not None:
+                candidates[position] = min(priority, candidates.get(position, priority))
+        atoms.append(item)
+        source_indices.append(source_index)
+    return atoms, source_indices, candidates, forced_ends
 
 
 def _measure(node: MathNode, fonts: FontRegistry, style: TextStyle, path: str) -> MathBox:

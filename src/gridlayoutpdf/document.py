@@ -120,23 +120,28 @@ def _events(blocks, document: Document, profile: PageProfile, prefix: str):
                 yield from children
                 yield _Event("boundary", profile, path)
         elif isinstance(block, At):
-            source = block.block_id or path
-            if not profile.body_start_row <= block.row <= profile.body_end_row:
-                raise LayoutError(f"{source}: At row {block.row} is outside the body")
-            if block.col + block.col_span > profile.grid.columns:
-                raise LayoutOverflowError(
-                    f"{source}: At columns exceed the page grid", block_id=source,
-                    needed=block.col_span * profile.grid.pitch_x,
-                    available=max(0, profile.grid.columns - block.col) * profile.grid.pitch_x,
-                )
-            measured = _measure_source(block.block, context, block.col_span * profile.grid.pitch_x, path + ".block")
-            if block.block_id:
-                measured = replace(measured, block_id=block.block_id)
-            if measured.rows > profile.body_end_row - block.row:
-                _row_overflow(measured.block_id or source, measured.rows, profile.body_end_row - block.row)
-            yield _Event("at", profile, path, measured, block)
+            yield _at_event(block, context, profile, path)
         else:
             yield _Event("block", profile, path, _measure_source(block, context, profile.body_rect.width, path))
+
+
+def _at_event(block: At, context: LayoutContext, profile: PageProfile, path: str) -> _Event:
+    """Validate an explicit frame and measure its atomic child before pagination."""
+    source = block.block_id or path
+    if not profile.body_start_row <= block.row <= profile.body_end_row:
+        raise LayoutError(f"{source}: At row {block.row} is outside the body")
+    if block.col + block.col_span > profile.grid.columns:
+        raise LayoutOverflowError(
+            f"{source}: At columns exceed the page grid", block_id=source,
+            needed=block.col_span * profile.grid.pitch_x,
+            available=max(0, profile.grid.columns - block.col) * profile.grid.pitch_x,
+        )
+    measured = _measure_source(block.block, context, block.col_span * profile.grid.pitch_x, path + ".block")
+    if block.block_id:
+        measured = replace(measured, block_id=block.block_id)
+    if measured.rows > profile.body_end_row - block.row:
+        _row_overflow(measured.block_id or source, measured.rows, profile.body_end_row - block.row)
+    return _Event("at", profile, path, measured, block)
 
 
 def _measure_source(block, context: LayoutContext, width: float, path: str) -> MeasuredBlock:
@@ -300,42 +305,45 @@ def _minimum_visible_rows(measured: MeasuredBlock) -> int:
 
 
 def _decorate_pages(pages: tuple[ScenePage, ...], document: Document) -> tuple[ScenePage, ...]:
-    decorated = []
-    for number, page in enumerate(pages, start=1):
-        profile = page.profile
-        body, pitch = profile.body_rect, profile.grid.pitch_y
-        commands = list(page.commands)
-        decorations = {}
-        for side, decoration in (("header", document.header), ("footer", document.footer)):
-            if decoration is None:
-                continue
-            source = f"page[{number}].{side}"
-            required = decoration.rows + decoration.gap_rows
-            if side == "header":
-                top = body.y - required * pitch
-            else:
-                top = body.y + body.height + decoration.gap_rows * pitch
-            if top < 0 or top + decoration.rows * pitch > profile.height:
-                available = (_whole_rows(0, body.y, pitch) if side == "header" else
-                             decoration.gap_rows + _whole_rows(top, profile.height, pitch))
-                _row_overflow(source, required, max(0, available))
-            text = decoration.text.format(page=number, pages=len(pages))
-            style = decoration.style or replace(document.style.body, size=9)
-            context = LayoutContext(document.fonts, profile, document.style)
-            block = Paragraph(text, style=style, align=decoration.align, block_id=source,
-                              min_first=1, min_last=1)
-            measured = _measure_source(block, context, body.width, source)
-            if measured.rows > decoration.rows:
-                _row_overflow(source, measured.rows, decoration.rows)
-            commands.extend(measured.translated(body.x, top))
-            decorations[side] = {"text": text, "x_pt": body.x, "y_pt": top,
-                                 "width": body.width, "height": decoration.rows * pitch,
-                                 "rows": decoration.rows}
-        metadata = dict(page.metadata)
-        if decorations:
-            metadata["decorations"] = decorations
-        decorated.append(ScenePage(profile, tuple(commands), metadata))
-    return tuple(decorated)
+    return tuple(_decorate_page(page, number, len(pages), document)
+                 for number, page in enumerate(pages, start=1))
+
+
+def _decorate_page(page: ScenePage, number: int, total: int, document: Document) -> ScenePage:
+    """Add fixed-frame decorations after the final page count is known."""
+    profile = page.profile
+    body, pitch = profile.body_rect, profile.grid.pitch_y
+    commands = list(page.commands)
+    decorations = {}
+    for side, decoration in (("header", document.header), ("footer", document.footer)):
+        if decoration is None:
+            continue
+        source = f"page[{number}].{side}"
+        required = decoration.rows + decoration.gap_rows
+        if side == "header":
+            top = body.y - required * pitch
+        else:
+            top = body.y + body.height + decoration.gap_rows * pitch
+        if top < 0 or top + decoration.rows * pitch > profile.height:
+            available = (_whole_rows(0, body.y, pitch) if side == "header" else
+                         decoration.gap_rows + _whole_rows(top, profile.height, pitch))
+            _row_overflow(source, required, max(0, available))
+        text = decoration.text.format(page=number, pages=total)
+        style = decoration.style or replace(document.style.body, size=9)
+        context = LayoutContext(document.fonts, profile, document.style)
+        block = Paragraph(text, style=style, align=decoration.align, block_id=source,
+                          min_first=1, min_last=1)
+        measured = _measure_source(block, context, body.width, source)
+        if measured.rows > decoration.rows:
+            _row_overflow(source, measured.rows, decoration.rows)
+        commands.extend(measured.translated(body.x, top))
+        decorations[side] = {"text": text, "x_pt": body.x, "y_pt": top,
+                             "width": body.width, "height": decoration.rows * pitch,
+                             "rows": decoration.rows}
+    metadata = dict(page.metadata)
+    if decorations:
+        metadata["decorations"] = decorations
+    return ScenePage(profile, tuple(commands), metadata)
 
 
 def _whole_rows(start: float, end: float, pitch: float) -> int:
