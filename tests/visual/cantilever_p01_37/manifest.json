@@ -70,7 +70,7 @@
     "src/gridlayoutpdf/cell_content.py": "8c5db4db053379e35e8deeb889e0cf2fa1ceb12653353beba3111a3f22abfa34",
     "src/gridlayoutpdf/containers.py": "4e853ebbf9d84b3391709b11fda5e72cff3a73149d625e9113b07ab6e0ef33ee",
     "src/gridlayoutpdf/diagnostics.py": "01a50fa4a2845eb2585f2c7b7e6e512265f0f809c0099eb352d3bebad168074d",
-    "src/gridlayoutpdf/document.py": "a4762e0c305c3a543cbfbd722f2419ea5ec18d157d321224199ce9142f415714",
+    "src/gridlayoutpdf/document.py": "63d6058fd985b2a6d8f50b4f7364acb3ac3cba0bb3a18f62051f743185fe06fe",
     "src/gridlayoutpdf/equations.py": "47a9e2f2bcdb70b5755a80cfc05721f05917193e176b9861b869a23a822b3bf1",
     "src/gridlayoutpdf/errors.py": "250817ba0cfea3e1ca7cb1f83ae5d9c4f68bbb0f57831d01036805257f27f027",
     "src/gridlayoutpdf/figures.py": "58692d7673a2c437368005c757184d74f4a6209cabf4c520758dd88aad7f644a",
@@ -81,7 +81,7 @@
     "src/gridlayoutpdf/metadata.py": "fadee71e9b3247c168b3aa3be3231145d1fd3ebe91d31b9fc5236d53d2426856",
     "src/gridlayoutpdf/profiles.py": "a71b6859f63b2e7923c77c3d2a6add817d5ae39afd4c034e043781f5ec8d61e0",
     "src/gridlayoutpdf/renderers/__init__.py": "4766ca2cc70f82efed5d16d6cb3cb9174bff252eb999e809223ca410730789c7",
-    "src/gridlayoutpdf/renderers/reportlab.py": "66bae56074265af28d29c15a2d5674d4d3afcc44a586473b901e9d5e4014fa0a",
+    "src/gridlayoutpdf/renderers/reportlab.py": "ab13d0ad0f90edd02c72685051285a77b89db9d33fc569a33a686ad4c576c411",
     "src/gridlayoutpdf/rotation.py": "7995dd418780b81e77b75a0afbbd1a0ff671cf49f2bd549489815b53d03e8ac6",
     "src/gridlayoutpdf/scene.py": "87aa746be2bb3ca3b5897a969c0c9ab0f2f94607389ffc1253ad1dca8f2dd78b",
     "src/gridlayoutpdf/styles.py": "e46a202fbd2f5a57154dbb3a05011d3c26eda69ab5b7200704529cb71d0c5073",
@@ -409,7 +409,8 @@
       "The Q01 source-region pin and Q02 structured overflow diagnostics changes do not change any of these 74 images.",
       "Both final PDFs pass original-PDF source order, generated content, and source appearance checks for 37 pages, 3345 items, and 16 figures. CCW90 native tables and omitted page numbers are preserved.",
       "No new clipping, missing content, collisions, or page changes. Source placeholders and page-17 truncated heading remain unchanged.",
-      "All 37 golden PNGs and their hashes remain unchanged; only source input pins and this approval record are refreshed."
+      "All 37 golden PNGs and their hashes remain unchanged; only source input pins and this approval record are refreshed.",
+      "2026-10-17: opt-in render_pdf/Document.render invariant flag added; the default path is unchanged. Only the document.py and renderers/reportlab.py pins are refreshed; the pixel comparison of all 37 pages decides whether images are unchanged."
     ]
   },
   "pages": [
