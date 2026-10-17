@@ -102,6 +102,10 @@ report = Document(
 | `Stack(*blocks)` | 縦に並べる。通常フローでは子の分割規則を維持する |
 | `Columns(*blocks, col_spans=(...), gap_cols=1)` | 整数グリッド列幅で横に並べる。全体は分割せず、高さは子の最大値 |
 | `KeepTogether(block)` | 子の途中で改ページしない |
+| `KeepWithNext(block)` | Headingと同様に、次の可視部品の最小fragmentと同じページに置く。子の分割規則は変えない |
+| `PreferKeepTogether(block)` | 空ページに収まれば次ページへ送って分割を避け、1ページを超えるときだけ合法な位置で分割する |
+| `Indent(block, left)` | 子をleft pt狭く計測し、右へleft pt移す。各partに`indent_pt`を記録する |
+| `Leading(block, rows, *, minimum=False)` | 本文の各part（表示行）をrows行にそろえる。不足する行は`LayoutOverflowError`、`minimum=True`では短い行だけ伸ばす。繰返しprefixは拒否 |
 
 `Paragraph.align`はleft/right/center/justify。justifyは最終行と明示改行の直前を自然な字間にし、それ以外の行だけ追加字間を試す。既定上限は1間隔0.05em。上限内で幅を埋められなければ合法な折り返し位置と自然な字間を使う。字形を横へ伸縮しない。
 
@@ -209,7 +213,15 @@ dense = Table(
 )
 ```
 
-`CellLines(lines, *, style=None, line_styles=None, line_advance=12.8, min_height=0, inner_padding=0, align='left', block_id='')`は文字列またはMathNodeの明示行を組むBlock。自動改行はせず、各行をpt単位で配置した後、内側余白・最低高を含む高さを一度だけ整数グリッド行へ切り上げる。空行を消さず、全空行でも正の領域を予約する。行別styleを指定する場合は行数を一致させる。alignは各行を部品内で揃える指定で、Cell.alignによる部品全体の配置とは別。
+列幅を合計グリッド数の比で配分するには`proportional_spans(weights, total)`を使う。境界を累積比の丸めで決めるため、合計は常にtotalと一致し、丸め誤差は列をまたいで蓄積しない。1単位未満の列が生じる場合は`ValueError`。
+
+```python
+from gridlayoutpdf import Table, proportional_spans
+
+Table(proportional_spans((2, 1, 1), 30), [["名称", "値", "単位"]])
+```
+
+`CellLines(lines, *, style=None, line_styles=None, line_advance=12.8, min_height=0, inner_padding=0, align='left', wrap=False, block_id='')`は文字列またはMathNodeの明示行を組むBlock。既定では自動改行せず、`wrap=True`の場合だけ文字列行を左右の内側余白を除いた幅で`wrap_text`により折り返す（追加字間なし、空文字列は行を作らない、MathNodeと行別styleはそのまま）。各行をpt単位で配置した後、内側余白・最低高を含む高さを一度だけ整数グリッド行へ切り上げる。空行を消さず、全空行でも正の領域を予約する。行別styleを指定する場合は行数を一致させる。alignは各行を部品内で揃える指定で、Cell.alignによる部品全体の配置とは別。
 
 密なセルでは`Cell(..., padding=0)`とし、`CellLines.inner_padding`へ必要な余白を含めると、子の丸め後に再び上下余白を足すことを避けられる。外側paddingを指定した場合も無視せず加算する。幅不足、指定行間での字形接触、枠外へのはみ出しは部品IDと行番号を含むエラーになる。文字サイズ・行間を自動で縮める機能はない。
 
@@ -237,7 +249,7 @@ turned_table = QuarterTurn(
 
 ## 図・画像
 
-`Figure(col_span, rows, *items)`の外枠はグリッド単位、内部だけは左上原点のpt座標で記述する。Line/Polyline/Rectangle/Textと、矢印Arrow・文字Labelを置ける。図は分割せず、実字形と線幅を含めた枠内検査を行う。
+`Figure(col_span, rows, *items)`の外枠はグリッド単位、内部だけは左上原点のpt座標で記述する。Line/Polyline/Rectangle/Circle/Textと、矢印Arrow・文字Labelを置ける。図は分割せず、実字形と線幅を含めた枠内検査を行う。
 
 ```python
 from gridlayoutpdf import Arrow, Figure, Image, Label, Rectangle
@@ -250,6 +262,19 @@ diagram = Figure(
     Label(140, 95, "L = 4.50 m", align="center"),
 )
 photo = Image("detail.png", col_span=20, rows=10)
+```
+
+LineとPolylineは`dash=(on, off, ...)`でpt単位の破線になる（始点から位相0、Polylineは頂点をまたいで継続）。Rectangleと`Circle(x, y, radius, *, stroke_width=.5, color=(0,0,0), fill=None, stroke=True)`は`fill`で塗り、`stroke=False`なら塗りだけを描く。線も塗りもない図形は拒否する。線なしの図形の範囲は線幅を含まない正確な外形になる。
+
+```python
+from gridlayoutpdf import Circle, Figure, Line, Rectangle
+
+marks = Figure(
+    10, 4,
+    Line(10, 10, 130, 10, .35, dash=(2, 2)),
+    Rectangle(20, 20, 30, 12, fill=(1, 1, 1), stroke=False),
+    Circle(80, 30, 1.7, fill=(0, 0, 0), stroke=False),
+)
 ```
 
 Labelのyは基線、xはleft/center/rightのアンカー。Arrowは終点に開いた矢印を付ける。ゼロ長の矢印や枠外の文字・線は拒否する。

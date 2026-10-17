@@ -8,7 +8,7 @@ from .errors import FontError
 from .fonts import FontRegistry
 from .geometry import Rect
 from .metadata import json_value
-from .scene import Line, Polyline, RasterImage, Rectangle, ScenePage, Text, _text_rotation
+from .scene import Circle, Line, Polyline, RasterImage, Rectangle, ScenePage, Text, _text_rotation
 
 
 def _rect(rect: Rect) -> dict:
@@ -43,6 +43,17 @@ def _command(command, fonts: FontRegistry, index: int, location: str) -> dict:
     elif isinstance(command, Rectangle):
         trace.update(x=command.x, y=command.y, width=command.width, height=command.height,
                      stroke_width=command.stroke_width, color=list(command.color))
+    elif isinstance(command, Circle):
+        trace.update(x=command.x, y=command.y, radius=command.radius,
+                     stroke_width=command.stroke_width, color=list(command.color))
+    # Optional paint is listed only when used, so solid outlines trace as before.
+    if getattr(command, "dash", ()):
+        trace["dash"] = list(command.dash)
+    if isinstance(command, (Rectangle, Circle)):
+        if command.fill is not None:
+            trace["fill"] = list(command.fill)
+        if not command.stroke or isinstance(command, Circle):
+            trace["stroke"] = command.stroke
     elif isinstance(command, RasterImage):
         trace.update(x=command.x, y=command.y, width=command.width, height=command.height,
                      sha256=sha256(command.data).hexdigest(), byte_count=len(command.data))

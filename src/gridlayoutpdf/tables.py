@@ -32,6 +32,27 @@ def _rule_widths(values, count, name):
     return widths
 
 
+def proportional_spans(weights, total: int) -> tuple[int, ...]:
+    """Divide ``total`` grid units among columns in proportion to ``weights``.
+
+    Each boundary is the rounded cumulative share, so the spans always sum to
+    ``total`` and rounding never accumulates across columns. Every resulting
+    column must receive at least one unit.
+    """
+    try:
+        values = tuple(_finite_number(weight, "weights") for weight in weights)
+    except TypeError as exc:
+        raise ValueError("weights must be a sequence of nonnegative numbers") from exc
+    _integer(total, "total", 1)
+    if not values or any(value < 0 for value in values) or not sum(values) > 0:
+        raise ValueError("weights must be nonnegative with a positive sum")
+    boundaries = [round(total * sum(values[:index]) / sum(values)) for index in range(len(values) + 1)]
+    spans = tuple(right - left for left, right in zip(boundaries, boundaries[1:]))
+    if any(span < 1 for span in spans):
+        raise ValueError(f"total {total} leaves a column without a grid unit")
+    return spans
+
+
 @dataclass(frozen=True, slots=True)
 class Cell:
     content: str | Block = ""

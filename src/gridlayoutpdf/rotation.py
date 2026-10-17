@@ -10,7 +10,7 @@ from .layout import (
     block_trace, measure_child, measurement_inputs, require_block,
 )
 from .profiles import PageProfile
-from .scene import Line, Polyline, Rectangle, Text
+from .scene import Circle, Line, Polyline, Rectangle, Text
 from .validation import TOLERANCE, _identifier, _integer
 
 
@@ -34,6 +34,9 @@ def _rotate_command(command, turns, width, height):
                    for y in (command.y, command.y + command.height)]
         return replace(command, x=min(x for x, _ in corners), y=min(y for _, y in corners),
                        width=command.height, height=command.width)
+    if isinstance(command, Circle):
+        x, y = point(command.x, command.y)
+        return replace(command, x=x, y=y)
     raise ValueError(f"QuarterTurn does not support {type(command).__name__} commands")
 
 

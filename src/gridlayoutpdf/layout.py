@@ -11,7 +11,7 @@ from .errors import FontError, LayoutOverflowError
 from .fonts import FontRegistry
 from .metadata import freeze_metadata
 from .profiles import PageProfile
-from .scene import Command, Line, Polyline, RasterImage, Rectangle, Text
+from .scene import COMMAND_TYPES, Command, Text
 from .styles import ReportStyle, _finite_number
 from .validation import TOLERANCE, _integer
 
@@ -89,7 +89,7 @@ class LayoutPart:
             commands = tuple(self.commands)
         except TypeError as exc:
             raise ValueError("commands must be an iterable of drawing commands") from exc
-        if any(not isinstance(command, (Text, Line, Polyline, Rectangle, RasterImage)) for command in commands):
+        if any(not isinstance(command, COMMAND_TYPES) for command in commands):
             raise ValueError("commands must contain supported drawing commands")
         if not isinstance(self.metadata, Mapping):
             raise ValueError("metadata must be a mapping")

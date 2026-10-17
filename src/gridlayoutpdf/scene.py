@@ -1,7 +1,7 @@
 """Immutable drawing commands, expressed in top-origin point coordinates."""
 
 from collections.abc import Mapping
-from dataclasses import dataclass, field, replace
+from dataclasses import KW_ONLY, dataclass, field, replace
 
 from .geometry import Point
 from .metadata import freeze_metadata
@@ -21,13 +21,41 @@ def _stroke(command, width_name: str) -> None:
     _coordinates(command, width_name)
     if getattr(command, width_name) <= 0:
         raise ValueError(f"{width_name} must be positive")
+    object.__setattr__(command, "color", _color(command.color, "color"))
+
+
+def _color(value, name: str) -> Color:
     try:
-        color = tuple(_finite_number(value, "color") for value in command.color)
+        color = tuple(_finite_number(component, name) for component in value)
     except TypeError as exc:
-        raise ValueError("color must contain three numeric components") from exc
-    if len(color) != 3 or any(value < 0 or value > 1 for value in color):
-        raise ValueError("color must contain three components between 0 and 1")
-    object.__setattr__(command, "color", color)
+        raise ValueError(f"{name} must contain three numeric components") from exc
+    if len(color) != 3 or any(component < 0 or component > 1 for component in color):
+        raise ValueError(f"{name} must contain three components between 0 and 1")
+    return color
+
+
+def _dash(command) -> None:
+    """Snapshot on/off lengths in pt; an empty pattern draws a solid stroke."""
+    if isinstance(command.dash, (str, bytes)):
+        raise ValueError("dash must be a sequence of positive finite lengths")
+    try:
+        lengths = tuple(_finite_number(length, "dash") for length in command.dash)
+    except (TypeError, ValueError) as exc:
+        raise ValueError("dash must be a sequence of positive finite lengths") from exc
+    if any(length <= 0 for length in lengths):
+        raise ValueError("dash lengths must be positive")
+    object.__setattr__(command, "dash", lengths)
+
+
+def _paint(command) -> None:
+    """Validate an area's outline stroke and optional fill."""
+    _stroke(command, "stroke_width")
+    if not isinstance(command.stroke, bool):
+        raise ValueError("stroke must be a boolean")
+    if command.fill is not None:
+        object.__setattr__(command, "fill", _color(command.fill, "fill"))
+    if not command.stroke and command.fill is None:
+        raise ValueError("a shape must have a stroke or fill")
 
 
 def _offset(dx: float, dy: float) -> tuple[float, float]:
@@ -79,16 +107,21 @@ class Text:
 
 @dataclass(frozen=True, slots=True)
 class Line:
+    """A butt-capped segment; ``dash`` lists on/off lengths in pt from (x1, y1)."""
+
     x1: float
     y1: float
     x2: float
     y2: float
     width: float = 0.5
     color: Color = (0, 0, 0)
+    _: KW_ONLY
+    dash: tuple[float, ...] = ()
 
     def __post_init__(self) -> None:
         _coordinates(self, "x1", "y1", "x2", "y2")
         _stroke(self, "width")
+        _dash(self)
 
     def translated(self, dx: float, dy: float) -> "Line":
         dx, dy = _offset(dx, dy)
@@ -98,10 +131,14 @@ class Line:
 
 @dataclass(frozen=True, slots=True)
 class Polyline:
+    """Connected segments; a dash pattern continues across the vertices."""
+
     points: tuple[Point, ...]
     width: float = 0.5
     color: Color = (0, 0, 0)
     closed: bool = False
+    _: KW_ONLY
+    dash: tuple[float, ...] = ()
 
     def __post_init__(self) -> None:
         try:
@@ -117,6 +154,7 @@ class Polyline:
             raise ValueError(f"Polyline requires at least {minimum} points")
         object.__setattr__(self, "points", points)
         _stroke(self, "width")
+        _dash(self)
 
     def translated(self, dx: float, dy: float) -> "Polyline":
         dx, dy = _offset(dx, dy)
@@ -125,12 +163,20 @@ class Polyline:
 
 @dataclass(frozen=True, slots=True)
 class Rectangle:
+    """An axis-aligned box stroked in ``color`` and optionally filled.
+
+    ``stroke=False`` paints only ``fill``; the bounds are then the exact box.
+    """
+
     x: float
     y: float
     width: float
     height: float
     stroke_width: float = 0.5
     color: Color = (0, 0, 0)
+    _: KW_ONLY
+    fill: Color | None = None
+    stroke: bool = True
 
     def __post_init__(self) -> None:
         _coordinates(self, "x", "y", "width", "height")
@@ -139,9 +185,36 @@ class Rectangle:
                 raise ValueError(f"{name} must be nonnegative")
         _finite_number(self.x + self.width, "right")
         _finite_number(self.y + self.height, "bottom")
-        _stroke(self, "stroke_width")
+        _paint(self)
 
     def translated(self, dx: float, dy: float) -> "Rectangle":
+        dx, dy = _offset(dx, dy)
+        return replace(self, x=self.x + dx, y=self.y + dy)
+
+
+@dataclass(frozen=True, slots=True)
+class Circle:
+    """A circle centered at (x, y), stroked in ``color`` and optionally filled."""
+
+    x: float
+    y: float
+    radius: float
+    _: KW_ONLY
+    stroke_width: float = 0.5
+    color: Color = (0, 0, 0)
+    fill: Color | None = None
+    stroke: bool = True
+
+    def __post_init__(self) -> None:
+        _coordinates(self, "x", "y", "radius")
+        if self.radius <= 0:
+            raise ValueError("radius must be positive")
+        for extent in (self.x - self.radius, self.x + self.radius,
+                       self.y - self.radius, self.y + self.radius):
+            _finite_number(extent, "radius extent")
+        _paint(self)
+
+    def translated(self, dx: float, dy: float) -> "Circle":
         dx, dy = _offset(dx, dy)
         return replace(self, x=self.x + dx, y=self.y + dy)
 
@@ -173,7 +246,8 @@ class RasterImage:
         return replace(self, x=self.x + dx, y=self.y + dy)
 
 
-Command = Text | Line | Polyline | Rectangle | RasterImage
+Command = Text | Line | Polyline | Rectangle | Circle | RasterImage
+COMMAND_TYPES = (Text, Line, Polyline, Rectangle, Circle, RasterImage)
 
 
 @dataclass(frozen=True, slots=True)
@@ -191,7 +265,7 @@ class ScenePage:
             commands = tuple(self.commands)
         except TypeError as exc:
             raise ValueError("commands must be a sequence of drawing commands") from exc
-        if any(not isinstance(command, (Text, Line, Polyline, Rectangle, RasterImage)) for command in commands):
+        if any(not isinstance(command, COMMAND_TYPES) for command in commands):
             raise ValueError("commands must contain only supported drawing commands")
         if not isinstance(self.metadata, Mapping):
             raise ValueError("metadata must be a mapping")

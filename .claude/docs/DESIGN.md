@@ -123,6 +123,7 @@ Python の自作 PDF 計算書ライブラリを設計する。A4.pdf の GridLa
 | Treat P7 equation anchors as relation text origins and translate them to public center anchors | 見本の等号座標はglyph左端、EquationAnchorsは中心であり単純転用では約2.5ptずれた。共通層は各式の実font/relation幅の半分を加え、0.12pt Gridの最寄り中心へ変換する。原本5役割と実PDFの差は0.045pt以下で、中心を誤って左端として扱う負例を検出。添字は原本実測の上付き4.92pt/下付き1.92ptを明示する。 | 中心/左端の意味を混同する、許容差を拡大する、式ごとに手作業の座標補正を散在させる。 | 2026-10-17 |
 | Report the short axis in table clearance diagnostics | 2026-10-17のレビュー指摘を承認して修正。罫線に接触した内容のneeded/availableを不足している軸の値にし、メッセージへ(horizontal)/(vertical)を付けた。CellLinesの既存表記に合わせ、利用者が変更すべき寸法と数値を一致させる。 | 常に横方向の幅と余地を報告する従来形式を維持する。 | 2026-10-17 |
 | Keep one validation and metadata module for every boundary | 2026-10-17のレビュー指摘を承認して修正。許容誤差1e-7、整数・識別子検証、グリッド丸め、metadataの凍結とJSON化を validation.py と metadata.py に集約し、計測引数・子部品計測・部品traceの重複を layout.py の共通関数へ寄せた。丸めは whole_units_ceil / whole_units_in の2関数に統一し、同値を数値で確認した。 | 各モジュールが独自の検証と丸めを持つ従来構成を維持する。 | 2026-10-17 |
+| Provide generic flow wrappers, cell wrapping, column spans and vector paint for client reports | WebPier（橋脚帳票）が局所実装していた汎用機能をライブラリへ移した。KeepWithNext・PreferKeepTogether（1頁に収まれば次頁へ送り、超えれば合法位置で分割）・Indent（子をpt単位で狭めて右へ移す）・Leading（各表示行を整数グリッド行へ固定、minimum=Trueは下限）・CellLines(wrap=True)・proportional_spans（累積比の丸めで合計を保つ列配分）、Line/Polylineのdash、Rectangleのfill/stroke、Circleを追加。既定値では描画命令・trace・PDFバイトが従来と同一で、片持ち梁37頁の画素も一致した。 | 利用側でのLine重ね塗り・短線分割による擬似塗り/破線、およびMeasuredBlockのフラグを直接置換する利用側ラッパーを維持する。 | 2026-10-18 |
 
 ## TODO / Open Questions
 

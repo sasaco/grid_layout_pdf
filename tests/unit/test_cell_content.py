@@ -180,3 +180,37 @@ def test_cell_lines_and_insets_fit_exact_row_height_without_expansion(context):
     assert table.measure(context, 100).rows == 2
     with pytest.raises(LayoutOverflowError, match="row_heights"):
         replace(table, row_heights=(1,)).measure(context, 100)
+
+
+def test_wrap_breaks_string_lines_inside_the_horizontal_padding(context):
+    style = TextStyle()
+    text = "あいうえおかきくけこさしすせそ"
+    padding = Insets(1, 2, 1, 3)
+    width = context.fonts.measure("あいうえお", style).width + 5
+    from gridlayoutpdf import wrap_text
+    expected = tuple(line.text for line in wrap_text(text, context.fonts, style, width - 5, max_tracking_em=0))
+    assert len(expected) > 1
+    wrapped = measure_block(lines((text,), wrap=True, inner_padding=padding, line_advance=14), context, width)
+    explicit = measure_block(lines(expected, inner_padding=padding, line_advance=14), context, width)
+    assert wrapped == explicit
+    assert [c.text for c in wrapped.commands if isinstance(c, Text)] == list(expected)
+
+
+def test_wrap_keeps_math_lines_alignment_and_per_source_line_styles(context):
+    large = TextStyle(size=14)
+    math = Script("A", subscript="s")
+    width = context.fonts.measure("あいう", large).width + .5
+    wrapped = measure_block(lines(("あいうえお", math, ""), wrap=True, align="center",
+                                  line_styles=(large, None, None)), context, width)
+    texts = [c for c in wrapped.commands if isinstance(c, Text)]
+    assert [c.text for c in texts[:2]] == ["あいう", "えお"]
+    assert all(c.style == large for c in texts[:2])
+    assert wrapped.parts[0].metadata["line_count"] == 3  # Two wrapped lines and math; "" yields none.
+    assert texts[1].x > texts[0].x  # Centered within the widest wrapped line.
+
+
+def test_wrap_flag_must_be_boolean_and_default_does_not_wrap(context):
+    with pytest.raises(ValueError, match="wrap"):
+        lines(("a",), wrap=1)
+    with pytest.raises(LayoutOverflowError, match="exceeds available width"):
+        measure_block(lines(("あいうえおかきくけこ",)), context, 30)

@@ -10,7 +10,7 @@ from .bounds import command_bounds, transformed_text_bounds
 from .errors import LayoutError
 from .fonts import FontRegistry, TextMetrics
 from .geometry import Point, Rect
-from .scene import Command, Line, Polyline, Rectangle, Text
+from .scene import Circle, Command, Line, Polyline, Rectangle, Text
 from .styles import TextStyle, _finite_number
 
 
@@ -45,7 +45,7 @@ class MathBox:
             commands = tuple(self.commands)
         except TypeError as exc:
             raise ValueError("commands must be a sequence of drawing commands") from exc
-        if any(not isinstance(command, (Text, Line, Polyline, Rectangle)) for command in commands):
+        if any(not isinstance(command, (Text, Line, Polyline, Rectangle, Circle)) for command in commands):
             raise ValueError("commands must contain supported drawing commands")
         object.__setattr__(self, "commands", commands)
 

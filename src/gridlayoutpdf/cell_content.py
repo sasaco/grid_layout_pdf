@@ -9,6 +9,7 @@ from .layout import LayoutContext, LayoutPart, MeasuredBlock, measurement_inputs
 from .math import MathBox, MathNode, as_math
 from .scene import Command, Text
 from .styles import Insets, TextStyle, _finite_number, _resolve_insets
+from .text import wrap_text
 from .validation import TOLERANCE, _identifier
 
 
@@ -27,7 +28,10 @@ def _ink_bounds(command: Command, context: LayoutContext) -> Rect | None:
 
 @dataclass(frozen=True, slots=True)
 class CellLines:
-    """Explicit string/math lines, without wrapping, scaling or baseline repair.
+    """Explicit string/math lines, without scaling or baseline repair.
+
+    ``wrap=True`` first breaks string lines with wrap_text inside the width
+    left by the horizontal inner padding; otherwise lines are never wrapped.
 
     Lines share a fixed point advance. Their conservative math envelopes, edge
     padding and minimum height are combined before a single grid rounding.
@@ -45,6 +49,7 @@ class CellLines:
     min_height: float = 0.0
     inner_padding: float | Insets = 0.0
     align: str = "left"
+    wrap: bool = False
     block_id: str = ""
 
     def __post_init__(self) -> None:
@@ -77,7 +82,26 @@ class CellLines:
             object.__setattr__(self, "inner_padding", padding.top)
         if self.align not in ("left", "center", "right"):
             raise ValueError("align must be left, center or right")
+        if not isinstance(self.wrap, bool):
+            raise ValueError("wrap must be a boolean")
         _identifier(self.block_id)
+
+    def _display_lines(self, context: LayoutContext, content_width: float):
+        """Pair each display line with its style, wrapping strings if requested.
+
+        Wrapping follows wrap_text without tracking: an empty string yields no
+        display line and every explicit newline starts one. Math lines and
+        their styles pass through unchanged.
+        """
+        default_style = self.style or context.style.body
+        for index, line in enumerate(self.lines):
+            style = (self.line_styles[index] if self.line_styles else None) or default_style
+            if not self.wrap or not isinstance(line, str):
+                yield line, style
+                continue
+            for wrapped in wrap_text(line, context.fonts, style, content_width,
+                                     align=self.align, max_tracking_em=0, block_id=self.block_id):
+                yield wrapped.text, style
 
     def measure(self, context: LayoutContext, available_width: float) -> MeasuredBlock:
         available_width = measurement_inputs(context, available_width)
@@ -88,9 +112,7 @@ class CellLines:
             raise LayoutOverflowError(f"{identifier}: inner_padding leaves no content width",
                                       block_id=identifier, needed=horizontal, available=available_width)
         boxes: list[MathBox] = []
-        default_style = self.style or context.style.body
-        for index, line in enumerate(self.lines):
-            style = (self.line_styles[index] if self.line_styles else None) or default_style
+        for index, (line, style) in enumerate(self._display_lines(context, available_width - horizontal)):
             try:
                 box = as_math(line).measure(context.fonts, style)
             except FontError as exc:

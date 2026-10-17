@@ -384,3 +384,39 @@ def test_rotated_text_preflight_preserves_existing_pdf(fonts, tmp_path, monkeypa
         backend().render_pdf([ScenePage(A4, (command,))], output, fonts)
     assert output.read_bytes() == b"previous completed PDF"
     assert list(tmp_path.iterdir()) == [output]
+
+
+def test_dash_patterns_fills_and_circles_render_as_native_vector_paint(fonts, tmp_path):
+    from gridlayoutpdf.scene import Circle
+
+    output = tmp_path / "paint.pdf"
+    page = ScenePage(A4, (
+        Line(60, 80, 100, 80, width=.35, dash=(2, 2)),
+        Polyline((Point(60, 90), Point(80, 90), Point(80, 110)), width=.5, dash=(3, 1)),
+        Rectangle(120, 80, 30, 20, fill=(1, 1, 1), stroke=False),
+        Rectangle(160, 80, 30, 20, stroke_width=.75, fill=(0, 0, 0)),
+        Circle(220, 90, 1.7, fill=(0, 0, 0), stroke=False),
+        Circle(240, 90, 5, stroke_width=.5),
+        Line(60, 120, 100, 120),
+    ))
+    backend().render_pdf([page], output, fonts)
+    with pymupdf.open(output) as pdf:
+        drawings = pdf[0].get_drawings()
+        assert [drawing["type"] for drawing in drawings] == ["s", "s", "f", "fs", "f", "s", "s"]
+        assert [drawing["dashes"] for drawing in (drawings[0], drawings[1], drawings[6])] == [
+            "[ 2 2 ] 0", "[ 3 1 ] 0", "[] 0"]
+        assert drawings[2]["fill"] == (1, 1, 1) and tuple(drawings[2]["rect"]) == pytest.approx((120, 80, 150, 100))
+        assert drawings[3]["fill"] == (0, 0, 0) and drawings[3]["color"] == (0, 0, 0)
+        assert tuple(drawings[4]["rect"]) == pytest.approx((218.3, 88.3, 221.7, 91.7), abs=.01)
+        assert drawings[4]["fill"] == (0, 0, 0)
+        assert tuple(drawings[5]["rect"]) == pytest.approx((235, 85, 245, 95), abs=.01)
+        assert drawings[5]["fill"] is None
+
+
+def test_undashed_unfilled_vectors_keep_their_existing_pdf_operators(fonts, tmp_path):
+    output = tmp_path / "plain.pdf"
+    page = ScenePage(A4, (Line(60, 80, 100, 80), Rectangle(120, 80, 30, 20)))
+    backend().render_pdf([page], output, fonts, invariant=True)
+    with pymupdf.open(output) as pdf:
+        stream = pdf[0].read_contents().decode("latin-1")
+    assert " rg" not in stream and " f\n" not in stream and "[] 0 d" in stream

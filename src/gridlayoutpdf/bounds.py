@@ -2,7 +2,7 @@
 
 from .fonts import FontRegistry
 from .geometry import Rect
-from .scene import Line, Polyline, RasterImage, Rectangle, Text, _text_matrix
+from .scene import Circle, Line, Polyline, RasterImage, Rectangle, Text, _text_matrix
 
 
 def transformed_text_bounds(command: Text, bounds: Rect) -> Rect:
@@ -45,7 +45,11 @@ def command_bounds(command, fonts: FontRegistry) -> Rect:
     elif isinstance(command, Rectangle):
         left, right = command.x, command.x + command.width
         top, bottom = command.y, command.y + command.height
-        radius = command.stroke_width / 2
+        radius = command.stroke_width / 2 if command.stroke else 0
+    elif isinstance(command, Circle):
+        left, right = command.x - command.radius, command.x + command.radius
+        top, bottom = command.y - command.radius, command.y + command.radius
+        radius = command.stroke_width / 2 if command.stroke else 0
     else:
         raise ValueError(f"Unsupported drawing command: {type(command).__name__}")
     return Rect(left - radius, top - radius,

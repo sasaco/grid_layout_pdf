@@ -3,7 +3,7 @@
 from .blocks import Heading, PageBreak, Paragraph, Spacer
 from .bounds import command_bounds
 from .cell_content import CellLines
-from .containers import At, Columns, KeepTogether, Stack
+from .containers import At, Columns, Indent, KeepTogether, KeepWithNext, Leading, PreferKeepTogether, Stack
 from .diagnostics import layout_trace
 from .document import Document, PageDecoration, PageSection
 from .equations import Equation, EquationAnchors, EquationGroup, MathBlock, wrap_math
@@ -21,9 +21,9 @@ from .profiles import (
 )
 from .renderers.reportlab import render_pdf
 from .rotation import QuarterTurn
-from .scene import Color, Command, Line, Polyline, RasterImage, Rectangle, ScenePage, Text
+from .scene import Circle, Color, Command, Line, Polyline, RasterImage, Rectangle, ScenePage, Text
 from .styles import Insets, ReportStyle, TextStyle
-from .tables import Cell, Table
+from .tables import Cell, Table, proportional_spans
 from .text import TextLine, fit_tracking, wrap_text
 
 
@@ -33,10 +33,11 @@ __all__ = [
     "FontRegistry", "FontFace", "TextMetrics", "FontError", "LayoutError", "LayoutOverflowError",
     "Block", "LayoutContext", "LayoutPart", "MeasuredBlock", "measure_block",
     "Document", "PageDecoration", "PageSection", "Paragraph", "Heading", "Spacer", "PageBreak",
-    "Stack", "Columns", "KeepTogether", "At", "QuarterTurn", "Cell", "CellLines", "Table", "Figure", "Image", "Arrow", "Label",
+    "Stack", "Columns", "KeepTogether", "KeepWithNext", "PreferKeepTogether", "Indent", "Leading",
+    "At", "QuarterTurn", "Cell", "CellLines", "Table", "proportional_spans", "Figure", "Image", "Arrow", "Label",
     "MathNode", "MathBox", "Literal", "Symbol", "Operator", "Row", "Fraction", "Root", "Script",
     "Delimited", "BreakHint", "as_math", "MathBlock", "Equation", "EquationGroup", "EquationAnchors",
     "wrap_math", "TextLine", "wrap_text", "fit_tracking",
-    "Color", "Command", "Text", "Line", "Polyline", "Rectangle", "RasterImage", "ScenePage",
+    "Color", "Command", "Text", "Line", "Polyline", "Rectangle", "Circle", "RasterImage", "ScenePage",
     "command_bounds", "render_pdf", "layout_trace",
 ]

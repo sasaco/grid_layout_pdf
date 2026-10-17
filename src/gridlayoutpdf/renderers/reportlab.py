@@ -13,7 +13,7 @@ from ..bounds import command_bounds
 from ..fonts import FontRegistry
 from ..errors import FontError, LayoutOverflowError
 from ..geometry import Rect
-from ..scene import Line, Polyline, RasterImage, Rectangle, ScenePage, Text, _text_matrix
+from ..scene import Circle, Line, Polyline, RasterImage, Rectangle, ScenePage, Text, _text_matrix
 
 
 def _grid_commands(page: ScenePage) -> tuple[Line, ...]:
@@ -51,18 +51,24 @@ def _draw(canvas: Canvas, command, height: float, fonts: FontRegistry) -> None:
             text.textOut(fonts.normalize_text(command.text))
             canvas.drawText(text)
             return
-        if not isinstance(command, (Line, Polyline, Rectangle)):
+        if not isinstance(command, (Line, Polyline, Rectangle, Circle)):
             raise ValueError(f"Unsupported drawing command: {type(command).__name__}")
+        area = isinstance(command, (Rectangle, Circle))
         canvas.setStrokeColorRGB(*command.color)
-        canvas.setLineWidth(command.stroke_width if isinstance(command, Rectangle) else command.width)
+        canvas.setLineWidth(command.stroke_width if area else command.width)
         canvas.setLineCap(0)
         canvas.setLineJoin(1)
-        canvas.setDash([])
+        canvas.setDash(list(getattr(command, "dash", ())))
+        if area and command.fill is not None:
+            canvas.setFillColorRGB(*command.fill)
+        paint = {"stroke": int(command.stroke), "fill": int(command.fill is not None)} if area else {}
         if isinstance(command, Line):
             canvas.line(command.x1, height - command.y1, command.x2, height - command.y2)
         elif isinstance(command, Rectangle):
             canvas.rect(command.x, height - command.y - command.height,
-                        command.width, command.height, stroke=1, fill=0)
+                        command.width, command.height, **paint)
+        elif isinstance(command, Circle):
+            canvas.circle(command.x, height - command.y, command.radius, **paint)
         else:
             path = canvas.beginPath()
             path.moveTo(command.points[0].x, height - command.points[0].y)

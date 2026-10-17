@@ -10,7 +10,7 @@ from PIL import Image as PILImage, ImageOps
 from .bounds import command_bounds
 from .errors import FontError, LayoutOverflowError
 from .layout import LayoutContext, LayoutPart, MeasuredBlock, measurement_inputs
-from .scene import Color, Line, Polyline, RasterImage, Rectangle, Text
+from .scene import Circle, Color, Line, Polyline, RasterImage, Rectangle, Text
 from .styles import TextStyle, _finite_number
 from .validation import TOLERANCE, _identifier, _integer
 
@@ -111,7 +111,7 @@ class Figure:
 
     def __init__(self, col_span, rows, *items, block_id=""):
         _frame(col_span, rows, block_id)
-        if any(not isinstance(item, (Line, Polyline, Rectangle, Text, Arrow, Label)) for item in items):
+        if any(not isinstance(item, (Line, Polyline, Rectangle, Circle, Text, Arrow, Label)) for item in items):
             raise ValueError("items must contain drawing commands, Arrow or Label")
         object.__setattr__(self, "col_span", col_span)
         object.__setattr__(self, "rows", rows)
