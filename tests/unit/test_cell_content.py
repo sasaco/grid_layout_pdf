@@ -214,3 +214,34 @@ def test_wrap_flag_must_be_boolean_and_default_does_not_wrap(context):
         lines(("a",), wrap=1)
     with pytest.raises(LayoutOverflowError, match="exceeds available width"):
         measure_block(lines(("あいうえおかきくけこ",)), context, 30)
+
+
+def test_first_baseline_puts_plain_and_scripted_cells_of_a_row_on_one_baseline(context):
+    # Centring each envelope moves a line with a subscript up against a plain line;
+    # a shared first baseline keeps the cells of a table row on one baseline.
+    padding = Insets(1, 1, 1, 1)
+    # The same minimum height gives both cells the same rows, so a row places them alike.
+    plain = lines(("5740.00",), inner_padding=padding, min_height=28, first_baseline=10.5)
+    scripted = lines((Script("R", subscript="B"),), inner_padding=padding, min_height=28, first_baseline=10.5)
+    centred = lines((Script("R", subscript="B"),), inner_padding=padding, min_height=28)
+    baselines = [measure_block(block, context, 60).parts[0].metadata["baselines_pt"][0]
+                 for block in (plain, scripted, centred)]
+    assert baselines[0] == baselines[1] == pytest.approx(10.5)
+    assert baselines[2] != pytest.approx(10.5)
+    table = Table((4, 4), ((Cell(plain, padding=0), Cell(scripted, padding=0)),))
+    texts = [c for c in table.measure(context, 200).commands if isinstance(c, Text)]
+    assert len({round(c.y, 9) for c in texts if c.text in ("5740.00", "R")}) == 1
+    two = measure_block(lines(("a", "b"), first_baseline=10.5, line_advance=12), context, 60)
+    assert two.parts[0].metadata["baselines_pt"] == pytest.approx([10.5, 22.5])
+    assert two.parts[0].metadata["first_baseline_pt"] == 10.5
+
+
+def test_first_baseline_reserves_the_descent_and_rejects_no_room_above(context):
+    deep = measure_block(lines((Script("R", subscript="B"),), first_baseline=30), context, 60)
+    box = Script("R", subscript="B").measure(context.fonts, context.style.body)
+    assert deep.rows * context.profile.grid.pitch_y >= 30 + box.descent
+    with pytest.raises(LayoutOverflowError, match="first_baseline"):
+        measure_block(lines(("A",), first_baseline=2, inner_padding=1), context, 60)
+    for value in (0, -1, float("nan"), True, "10"):
+        with pytest.raises(ValueError, match="first_baseline"):
+            lines(("a",), first_baseline=value)

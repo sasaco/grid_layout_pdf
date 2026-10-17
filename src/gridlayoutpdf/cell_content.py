@@ -35,8 +35,12 @@ class CellLines:
 
     Lines share a fixed point advance. Their conservative math envelopes, edge
     padding and minimum height are combined before a single grid rounding.
-    Remaining vertical space is centered between the top and bottom padding.
-    ``align`` positions each line within the widest line, independently of a
+    Remaining vertical space is centered between the top and bottom padding,
+    unless ``first_baseline`` gives the first baseline in pt from the top of
+    the reserved height: then lines are not centred, so cells of one table row
+    that share it share their baseline whatever the math extent of their
+    lines (a subscript no longer moves its line), and the reservation grows to
+    hold the descent below it. ``align`` positions each line within the widest line, independently of a
     containing Cell's alignment. Use outer Cell.padding=0 to avoid a second
     height rounding. Empty lines and even an empty sequence reserve space.
     """
@@ -50,6 +54,7 @@ class CellLines:
     inner_padding: float | Insets = 0.0
     align: str = "left"
     wrap: bool = False
+    first_baseline: float | None = None
     block_id: str = ""
 
     def __post_init__(self) -> None:
@@ -72,6 +77,14 @@ class CellLines:
             if len(styles) != len(lines) or any(value is not None and not isinstance(value, TextStyle) for value in styles):
                 raise ValueError("line_styles must match lines and contain TextStyle or None")
             object.__setattr__(self, "line_styles", styles)
+        if self.first_baseline is not None:
+            try:
+                value = _finite_number(self.first_baseline, "first_baseline")
+            except (TypeError, ValueError) as exc:
+                raise ValueError("first_baseline must be a positive finite number or None") from exc
+            if value <= 0:
+                raise ValueError("first_baseline must be a positive finite number or None")
+            object.__setattr__(self, "first_baseline", value)
         for name, positive in (("line_advance", True), ("min_height", False)):
             value = _finite_number(getattr(self, name), name)
             if value < 0 or (positive and value == 0):
@@ -128,10 +141,21 @@ class CellLines:
         baseline = boxes[0].ascent if boxes else 0
         top = min((baseline + index * self.line_advance - box.ascent for index, box in enumerate(boxes)), default=0)
         bottom = max((baseline + index * self.line_advance + box.descent for index, box in enumerate(boxes)), default=0)
-        required = max(self.min_height, bottom - top + padding.top + padding.bottom)
-        rows = max(1, context.rows_for(required))
-        height = rows * context.profile.grid.pitch_y
-        offset = padding.top + (height - (padding.top + padding.bottom) - (bottom - top)) / 2 - top
+        if self.first_baseline is None:
+            required = max(self.min_height, bottom - top + padding.top + padding.bottom)
+            rows = max(1, context.rows_for(required))
+            height = rows * context.profile.grid.pitch_y
+            offset = padding.top + (height - (padding.top + padding.bottom) - (bottom - top)) / 2 - top
+        else:
+            above = baseline - top
+            if self.first_baseline - above < padding.top - TOLERANCE:
+                raise LayoutOverflowError(
+                    f"{identifier}: first_baseline {self.first_baseline:g} leaves no room for the ascent {above:g}",
+                    block_id=identifier, needed=above + padding.top, available=self.first_baseline)
+            required = max(self.min_height, self.first_baseline + bottom - baseline + padding.bottom)
+            rows = max(1, context.rows_for(required))
+            height = rows * context.profile.grid.pitch_y
+            offset = self.first_baseline - baseline
         commands: list[Command] = []
         ink_by_line: list[list[Rect]] = []
         baselines = []
@@ -168,6 +192,7 @@ class CellLines:
             "line_count": len(boxes), "line_advance": self.line_advance, "baselines_pt": baselines,
             "height_rounding": "single", "required_height_pt": required,
             "minimum_height_pt": self.min_height, "rounding_added_pt": height - required,
+            "first_baseline_pt": self.first_baseline,
             "inner_padding_pt": {edge: getattr(padding, edge) for edge in ("top", "right", "bottom", "left")},
         }
         return MeasuredBlock(width, context.profile.grid.pitch_y,

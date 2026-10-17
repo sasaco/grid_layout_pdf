@@ -67,7 +67,7 @@
     "src/gridlayoutpdf/__init__.py": "4b84e34a05dce05257d7ffccf5f50411e843b3d50fd2fa53a5244c10f2045dee",
     "src/gridlayoutpdf/blocks.py": "c71488ae52d06425cf2c12cc7fe1452fd40687d934a945715f48920d815ba511",
     "src/gridlayoutpdf/bounds.py": "ca2dcd4de164e0002d832432b56cc800378b41039c88d5b340e97a662a50bc35",
-    "src/gridlayoutpdf/cell_content.py": "e7f0d50a485dcff6c546f766a58f9ecb20acfd07d15d28b0544cfbc26b28ad0c",
+    "src/gridlayoutpdf/cell_content.py": "2f657e7f0ddc89395ae503c0bf1027a5bebab1e85acb65ae28f6fd80a02ddff7",
     "src/gridlayoutpdf/containers.py": "e3f107a30ef8c7f20ad9844e37c7a75869a89ae59cae55aa1677d3391403f81e",
     "src/gridlayoutpdf/diagnostics.py": "037908399191bc638a6af71d6427b08e48827fcb2cd6ca1599f8d7da930bbef6",
     "src/gridlayoutpdf/document.py": "63d6058fd985b2a6d8f50b4f7364acb3ac3cba0bb3a18f62051f743185fe06fe",
