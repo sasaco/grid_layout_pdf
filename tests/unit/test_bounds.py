@@ -47,3 +47,14 @@ def test_missing_fonts_glyphs_and_unsupported_commands_fail_explicitly(fonts):
         command_bounds(Text(20, 30, "\U0010ffff", TextStyle()), fonts)
     with pytest.raises(ValueError, match="Unsupported.*object"):
         command_bounds(object(), fonts)
+
+
+@pytest.mark.parametrize("turns,expected", [
+    (1, Rect(10.849609375, 19.3984375, 11.1376953125, 11.1435546875)),
+    (2, Rect(9.3984375, 28.0126953125, 11.1435546875, 11.1376953125)),
+    (3, Rect(18.0126953125, 29.4580078125, 11.1376953125, 11.1435546875)),
+])
+def test_text_rotates_all_asymmetric_ink_corners_about_baseline(fonts, turns, expected):
+    assert "quarter_turns" in Text.__dataclass_fields__
+    command = Text(20, 30, "jÅ", TextStyle(tracking=0.25), quarter_turns=turns)
+    assert command_bounds(command, fonts) == expected

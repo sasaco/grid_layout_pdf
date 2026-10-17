@@ -1,0 +1,162 @@
+{
+  "schema_version": 1,
+  "source_page": 10,
+  "blocks": [
+    {
+      "id": "p10-subtitle",
+      "type": "paragraph",
+      "text": "(b)Ｃ支点最大の場合",
+      "size": 10
+    },
+    {
+      "id": "p10-subtitle-gap",
+      "type": "spacer",
+      "rows": 1
+    },
+    {
+      "id": "p10-beam-figure",
+      "type": "image",
+      "image_id": "p10-load-c"
+    },
+    {
+      "id": "p10-beam-gap",
+      "type": "spacer",
+      "rows": 1
+    },
+    {
+      "id": "p10-forces",
+      "type": "equations",
+      "size": 10,
+      "gap": 1.2,
+      "anchors": {
+        "first_equal": 6,
+        "second_equal": 22,
+        "result_right": 27,
+        "unit_start": 28
+      },
+      "equations": [
+        {
+          "lhs": {
+            "type": "row",
+            "items": [
+              "水平力",
+              {
+                "type": "script",
+                "base": "Ｈ",
+                "sub": "C"
+              }
+            ],
+            "gap": 3
+          },
+          "rhs": {
+            "type": "row",
+            "items": [
+              "32.00",
+              "×",
+              "(9.625＋7.425＋4.625＋2.425)",
+              "/",
+              "9.250"
+            ],
+            "gap": 1.2
+          },
+          "relation": "＝",
+          "result_relation": "＝",
+          "result": "83.37",
+          "unit": "kN"
+        },
+        {
+          "lhs": {
+            "type": "row",
+            "items": [
+              "作用位置",
+              {
+                "type": "script",
+                "base": "ｙ",
+                "sub": "C"
+              }
+            ],
+            "gap": 3
+          },
+          "rhs": "",
+          "relation": "＝",
+          "result_relation": "＝",
+          "result": "3.850",
+          "unit": "m"
+        },
+        {
+          "lhs": {
+            "type": "row",
+            "items": [
+              "モーメント",
+              {
+                "type": "script",
+                "base": "Ｍ",
+                "sub": "C"
+              }
+            ],
+            "gap": 3
+          },
+          "rhs": {
+            "type": "row",
+            "items": [
+              "83.37",
+              "x",
+              "3.850"
+            ],
+            "gap": 3
+          },
+          "relation": "＝",
+          "result_relation": "＝",
+          "result": "320.97",
+          "unit": "kN･m"
+        }
+      ]
+    },
+    {
+      "id": "p10-forces-gap",
+      "type": "spacer",
+      "rows": 1
+    },
+    {
+      "id": "p10-torque-title",
+      "type": "paragraph",
+      "text": "トルクによる鉛直力",
+      "size": 10
+    },
+    {
+      "id": "p10-cross-figure",
+      "type": "image",
+      "image_id": "p10-torque-end"
+    },
+    {
+      "id": "p10-reactions",
+      "type": "equations",
+      "size": 10,
+      "gap": 1.2,
+      "anchors": {
+        "first_equal": 7,
+        "second_equal": 22,
+        "result_right": 27,
+        "unit_start": 28
+      },
+      "equations": [
+        {
+          "lhs": "Ｇ1桁 Ｇ2桁",
+          "rhs": {
+            "type": "row",
+            "items": [
+              "320.97",
+              "／",
+              "5.9000"
+            ],
+            "gap": 3
+          },
+          "relation": " ",
+          "result_relation": "＝±",
+          "result": "54.40",
+          "unit": "kN"
+        }
+      ]
+    }
+  ]
+}

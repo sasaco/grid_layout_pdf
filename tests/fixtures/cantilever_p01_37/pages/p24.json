@@ -1,0 +1,849 @@
+{
+  "schema_version": 1,
+  "source_page": 24,
+  "blocks": [
+    {
+      "id": "p24-title",
+      "type": "paragraph",
+      "text": "(4) 荷重設計の集計",
+      "size": 10
+    },
+    {
+      "id": "p24-figures",
+      "type": "columns",
+      "col_spans": [
+        15,
+        15
+      ],
+      "gap_cols": 0,
+      "children": [
+        {
+          "id": "p24-figure-side",
+          "type": "image",
+          "image_id": "p24-load-section"
+        },
+        {
+          "id": "p24-front-aligned",
+          "type": "stack",
+          "children": [
+            {
+              "id": "p24-front-top-gap",
+              "type": "spacer",
+              "rows": 3
+            },
+            {
+              "id": "p24-figure-front",
+              "type": "image",
+              "image_id": "p24-load-front"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "p24-figures-gap",
+      "type": "spacer",
+      "rows": 1
+    },
+    {
+      "id": "p24-dead1-title",
+      "type": "math",
+      "content": {
+        "type": "row",
+        "items": [
+          "1) 固定死荷重",
+          {
+            "type": "script",
+            "base": "D",
+            "sub": "1"
+          }
+        ],
+        "gap": 1.2
+      },
+      "size": 10
+    },
+    {
+      "id": "p24-dead1-table",
+      "type": "table",
+      "columns": [
+        5,
+        3,
+        3,
+        3,
+        5,
+        3,
+        3,
+        5
+      ],
+      "header_rows": 1,
+      "padding": 0,
+      "border_width": 0.5,
+      "horizontal_rules": [
+        1,
+        0.12,
+        0,
+        0,
+        0,
+        1
+      ],
+      "vertical_rules": [
+        0,
+        0,
+        0.12,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "rows": [
+        [
+          {
+            "lines": [
+              "作用種別"
+            ],
+            "colspan": 2
+          },
+          {
+            "lines": [
+              "N",
+              "(KN)"
+            ]
+          },
+          {
+            "lines": [
+              "X",
+              "(m)"
+            ]
+          },
+          {
+            "lines": [
+              "Md",
+              "(KN・m)"
+            ]
+          },
+          {
+            "lines": [
+              "H",
+              "(KN)"
+            ]
+          },
+          {
+            "lines": [
+              "e",
+              "(m)"
+            ]
+          },
+          {
+            "lines": [
+              "Mt",
+              "(KN・m)"
+            ]
+          }
+        ],
+        [
+          {
+            "lines": [
+              "片持梁自重"
+            ],
+            "align": "center"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "center"
+          },
+          {
+            "lines": [
+              "349.77"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "373.96"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          }
+        ],
+        [
+          {
+            "lines": [
+              "上部工　反力"
+            ],
+            "align": "center"
+          },
+          {
+            "lines": [
+              "起点側"
+            ],
+            "align": "center"
+          },
+          {
+            "lines": [
+              "1530.00"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "1.550"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "2371.50"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "-0.325"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "-497.25"
+            ],
+            "align": "right"
+          }
+        ],
+        [
+          {
+            "lines": [
+              ""
+            ],
+            "align": "center"
+          },
+          {
+            "lines": [
+              "終点側"
+            ],
+            "align": "center"
+          },
+          {
+            "lines": [
+              "930.00"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "0.645"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "599.85"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "0.675"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "627.75"
+            ],
+            "align": "right"
+          }
+        ],
+        [
+          {
+            "lines": [
+              ""
+            ],
+            "align": "center"
+          },
+          {
+            "lines": [
+              "合計"
+            ],
+            "align": "center"
+          },
+          {
+            "lines": [
+              "2809.77"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "－"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "3345.31"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "－"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "－"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "130.50"
+            ],
+            "align": "right"
+          }
+        ]
+      ]
+    },
+    {
+      "id": "p24-dead1-gap",
+      "type": "spacer",
+      "rows": 1
+    },
+    {
+      "id": "p24-dead2-title",
+      "type": "math",
+      "content": {
+        "type": "row",
+        "items": [
+          "2) 付加死荷重",
+          {
+            "type": "script",
+            "base": "D",
+            "sub": "2"
+          }
+        ],
+        "gap": 1.2
+      },
+      "size": 10
+    },
+    {
+      "id": "p24-dead2-table",
+      "type": "table",
+      "columns": [
+        5,
+        3,
+        3,
+        3,
+        5,
+        3,
+        3,
+        5
+      ],
+      "header_rows": 1,
+      "padding": 0,
+      "border_width": 0.5,
+      "horizontal_rules": [
+        1,
+        0.12,
+        0,
+        0,
+        1
+      ],
+      "vertical_rules": [
+        0,
+        0,
+        0.12,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "rows": [
+        [
+          {
+            "lines": [
+              "作用種別"
+            ],
+            "colspan": 2
+          },
+          {
+            "lines": [
+              "N",
+              "(KN)"
+            ]
+          },
+          {
+            "lines": [
+              "X",
+              "(m)"
+            ]
+          },
+          {
+            "lines": [
+              "Md",
+              "(KN・m)"
+            ]
+          },
+          {
+            "lines": [
+              "H",
+              "(KN)"
+            ]
+          },
+          {
+            "lines": [
+              "e",
+              "(m)"
+            ]
+          },
+          {
+            "lines": [
+              "Mt",
+              "(KN・m)"
+            ]
+          }
+        ],
+        [
+          {
+            "lines": [
+              "上部工　反力"
+            ],
+            "align": "center"
+          },
+          {
+            "lines": [
+              "起点側"
+            ],
+            "align": "center"
+          },
+          {
+            "lines": [
+              "160.00"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "1.550"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "248.00"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "-0.325"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "-52.00"
+            ],
+            "align": "right"
+          }
+        ],
+        [
+          {
+            "lines": [
+              ""
+            ],
+            "align": "center"
+          },
+          {
+            "lines": [
+              "終点側"
+            ],
+            "align": "center"
+          },
+          {
+            "lines": [
+              "130.00"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "0.645"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "83.85"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "0.675"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "87.75"
+            ],
+            "align": "right"
+          }
+        ],
+        [
+          {
+            "lines": [
+              ""
+            ],
+            "align": "center"
+          },
+          {
+            "lines": [
+              "合計"
+            ],
+            "align": "center"
+          },
+          {
+            "lines": [
+              "290.00"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "－"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "331.85"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "－"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "－"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "35.75"
+            ],
+            "align": "right"
+          }
+        ]
+      ]
+    },
+    {
+      "id": "p24-dead2-gap",
+      "type": "spacer",
+      "rows": 1
+    },
+    {
+      "id": "p24-snow-title",
+      "type": "paragraph",
+      "text": "3) 雪荷重S",
+      "size": 10
+    },
+    {
+      "id": "p24-snow2-title",
+      "type": "paragraph",
+      "text": "(a) 2年確率",
+      "size": 10
+    },
+    {
+      "id": "p24-snow2-table",
+      "type": "table",
+      "columns": [
+        5,
+        3,
+        3,
+        3,
+        5,
+        3,
+        3,
+        5
+      ],
+      "header_rows": 1,
+      "padding": 0,
+      "border_width": 0.5,
+      "horizontal_rules": [
+        1,
+        0.12,
+        0,
+        0,
+        1
+      ],
+      "vertical_rules": [
+        0,
+        0,
+        0.12,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "rows": [
+        [
+          {
+            "lines": [
+              "作用種別"
+            ],
+            "colspan": 2
+          },
+          {
+            "lines": [
+              "N",
+              "(KN)"
+            ]
+          },
+          {
+            "lines": [
+              "X",
+              "(m)"
+            ]
+          },
+          {
+            "lines": [
+              "Md",
+              "(KN・m)"
+            ]
+          },
+          {
+            "lines": [
+              "H",
+              "(KN)"
+            ]
+          },
+          {
+            "lines": [
+              "e",
+              "(m)"
+            ]
+          },
+          {
+            "lines": [
+              "Mt",
+              "(KN・m)"
+            ]
+          }
+        ],
+        [
+          {
+            "lines": [
+              "上部工　反力"
+            ],
+            "align": "center"
+          },
+          {
+            "lines": [
+              "起点側"
+            ],
+            "align": "center"
+          },
+          {
+            "lines": [
+              "200.00"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "1.550"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "310.00"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "-0.325"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "-65.00"
+            ],
+            "align": "right"
+          }
+        ],
+        [
+          {
+            "lines": [
+              ""
+            ],
+            "align": "center"
+          },
+          {
+            "lines": [
+              "終点側"
+            ],
+            "align": "center"
+          },
+          {
+            "lines": [
+              "125.00"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "0.645"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "80.63"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "0.675"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "84.38"
+            ],
+            "align": "right"
+          }
+        ],
+        [
+          {
+            "lines": [
+              ""
+            ],
+            "align": "center"
+          },
+          {
+            "lines": [
+              "合計"
+            ],
+            "align": "center"
+          },
+          {
+            "lines": [
+              "325.00"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "－"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "390.63"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "－"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "－"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "19.38"
+            ],
+            "align": "right"
+          }
+        ]
+      ]
+    }
+  ]
+}

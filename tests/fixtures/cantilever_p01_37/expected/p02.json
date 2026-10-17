@@ -1,0 +1,178 @@
+{
+  "schema_version": 1,
+  "source_page": 2,
+  "source_sha256": "e56bf3ddbe3314ed95517099bedb0e68005df1567b0b3e8f52a2a4066d03393e",
+  "provenance": {
+    "author": "oracle",
+    "method": "independent source glyph transcription and visual comparison",
+    "reviewed_source_image": "source-survey/p02.png",
+    "review_status": "source-reviewed"
+  },
+  "omitted_page_number": "13 - 2",
+  "source_character_inventory": {
+    "(": 4,
+    ")": 6,
+    "+": 1,
+    "-": 6,
+    ".": 38,
+    "/": 4,
+    "0": 33,
+    "1": 21,
+    "2": 30,
+    "3": 4,
+    "4": 18,
+    "5": 23,
+    "6": 22,
+    "7": 12,
+    "8": 7,
+    "9": 9,
+    "=": 16,
+    "A": 2,
+    "B": 3,
+    "C": 4,
+    "D": 2,
+    "N": 8,
+    "b": 1,
+    "c": 1,
+    "k": 8,
+    "×": 8,
+    "大": 2,
+    "支": 2,
+    "最": 2,
+    "点": 2,
+    "＋": 10,
+    "Ｒ": 8
+  },
+  "marker_count": 0,
+  "hash_placeholder_count": 0,
+  "blocks": [
+    {
+      "id": "p02-c-title",
+      "source_bbox": [
+        0,
+        65,
+        595,
+        90
+      ],
+      "text": "b) C支点最大",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p02-c-reactions",
+      "source_bbox": [
+        0,
+        235,
+        595,
+        360
+      ],
+      "text": "ＲA=160.00×4-102.71=537.29kN\nＲB=160.00×(6.625＋4.425＋1.625＋-0.575)/18.850=102.71kN\nＲC=160.00×(2.425＋4.625＋7.425＋9.625)/9.250=416.86kN\nＲD=160.00×4-416.86=223.14kN",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [
+        {
+          "text": "A",
+          "size": 6.639,
+          "character_index": 1,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        },
+        {
+          "text": "B",
+          "size": 6.639,
+          "character_index": 28,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        },
+        {
+          "text": "C",
+          "size": 6.639,
+          "character_index": 80,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        },
+        {
+          "text": "D",
+          "size": 6.639,
+          "character_index": 130,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        }
+      ],
+      "kind": "text",
+      "source_reading": "physical baseline order: top-to-bottom, then left-to-right including the result column"
+    },
+    {
+      "id": "p02-bc-title",
+      "source_bbox": [
+        0,
+        382,
+        595,
+        400
+      ],
+      "text": "c) B+C支点最大",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p02-bc-reactions",
+      "source_bbox": [
+        0,
+        550,
+        595,
+        675
+      ],
+      "text": "ＲA=160.00×4-272.47=367.53kN\nＲB=160.00×(16.625＋14.425＋1.625＋-=272.47kN\n0.575)/18.850\nＲC=160.00×(7.425＋9.625)/9.250=294.92kN\nＲD=160.00×2-294.92=25.08kN",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [
+        {
+          "text": "A",
+          "size": 6.639,
+          "character_index": 1,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        },
+        {
+          "text": "B",
+          "size": 6.639,
+          "character_index": 28,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        },
+        {
+          "text": "C",
+          "size": 6.639,
+          "character_index": 82,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        },
+        {
+          "text": "D",
+          "size": 6.639,
+          "character_index": 120,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        }
+      ],
+      "kind": "text",
+      "source_reading": "physical baseline order: top-to-bottom, then left-to-right including the result column"
+    }
+  ]
+}

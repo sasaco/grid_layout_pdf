@@ -1,0 +1,2269 @@
+{
+  "schema_version": 1,
+  "source_page": 24,
+  "source_sha256": "e56bf3ddbe3314ed95517099bedb0e68005df1567b0b3e8f52a2a4066d03393e",
+  "provenance": {
+    "author": "oracle",
+    "method": "independent source glyph transcription and visual comparison",
+    "reviewed_source_image": "source-survey/p24.png",
+    "review_status": "source-reviewed"
+  },
+  "omitted_page_number": "13 - 24",
+  "source_character_inventory": {
+    "(": 20,
+    ")": 23,
+    "-": 6,
+    ".": 41,
+    "0": 50,
+    "1": 15,
+    "2": 16,
+    "3": 26,
+    "4": 9,
+    "5": 32,
+    "6": 12,
+    "7": 15,
+    "8": 11,
+    "9": 10,
+    "D": 2,
+    "H": 3,
+    "K": 12,
+    "M": 6,
+    "N": 15,
+    "S": 1,
+    "X": 3,
+    "a": 1,
+    "d": 3,
+    "e": 3,
+    "m": 12,
+    "t": 3,
+    "の": 1,
+    "・": 6,
+    "上": 3,
+    "付": 1,
+    "作": 3,
+    "側": 6,
+    "別": 3,
+    "力": 3,
+    "加": 1,
+    "反": 3,
+    "合": 3,
+    "固": 1,
+    "定": 1,
+    "工": 3,
+    "年": 1,
+    "持": 1,
+    "梁": 1,
+    "死": 2,
+    "点": 6,
+    "片": 1,
+    "率": 1,
+    "用": 3,
+    "確": 1,
+    "種": 3,
+    "終": 3,
+    "自": 1,
+    "荷": 4,
+    "計": 5,
+    "設": 1,
+    "起": 3,
+    "部": 3,
+    "重": 5,
+    "集": 1,
+    "雪": 1,
+    "－": 9
+  },
+  "marker_count": 0,
+  "hash_placeholder_count": 0,
+  "blocks": [
+    {
+      "id": "p24-title",
+      "source_bbox": [
+        0,
+        70.93112640380859,
+        595,
+        81.2709457397461
+      ],
+      "text": "(4) 荷重設計の集計",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p24-dead1-title",
+      "source_bbox": [
+        0,
+        412.93116455078126,
+        595,
+        424.7284423828125
+      ],
+      "text": "1) 固定死荷重D1",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [
+        {
+          "text": "1",
+          "size": 6.639,
+          "character_index": 8,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        }
+      ],
+      "kind": "text"
+    },
+    {
+      "id": "p24-dead2-title",
+      "source_bbox": [
+        0,
+        548.8911254882812,
+        595,
+        560.6884033203125
+      ],
+      "text": "2) 付加死荷重D2",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [
+        {
+          "text": "2",
+          "size": 6.639,
+          "character_index": 8,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        }
+      ],
+      "kind": "text"
+    },
+    {
+      "id": "p24-snow-title",
+      "source_bbox": [
+        0,
+        671.2910888671875,
+        595,
+        681.630908203125
+      ],
+      "text": "3) 雪荷重S",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p24-snow2-title",
+      "source_bbox": [
+        0,
+        693.0111206054687,
+        595,
+        703.3509399414063
+      ],
+      "text": "(a) 2年確率",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p24-dead1-table",
+      "kind": "table",
+      "direction": [
+        1,
+        0
+      ],
+      "cells": [
+        {
+          "id": "p24-dead1-table.r0.c0",
+          "source_bbox": [
+            95.28,
+            432.84,
+            211.5,
+            461.94
+          ],
+          "text": "作用種別",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 2
+        },
+        {
+          "id": "p24-dead1-table.r0.c2",
+          "source_bbox": [
+            211.5,
+            432.84,
+            255.06,
+            461.94
+          ],
+          "text": "N\n(KN)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead1-table.r0.c3",
+          "source_bbox": [
+            255.06,
+            432.84,
+            298.62,
+            461.94
+          ],
+          "text": "X\n(m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead1-table.r0.c4",
+          "source_bbox": [
+            298.62,
+            432.84,
+            342.18,
+            461.94
+          ],
+          "text": "Md\n(KN・m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead1-table.r0.c5",
+          "source_bbox": [
+            342.18,
+            432.84,
+            385.74,
+            461.94
+          ],
+          "text": "H\n(KN)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead1-table.r0.c6",
+          "source_bbox": [
+            385.74,
+            432.84,
+            429.29999999999995,
+            461.94
+          ],
+          "text": "e\n(m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead1-table.r0.c7",
+          "source_bbox": [
+            429.29999999999995,
+            432.84,
+            472.91999999999996,
+            461.94
+          ],
+          "text": "Mt\n(KN・m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead1-table.r1.c0",
+          "source_bbox": [
+            95.28,
+            461.94,
+            177.96,
+            476.21999999999997
+          ],
+          "text": "片持梁自重",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead1-table.r1.c1",
+          "source_bbox": [
+            177.96,
+            461.94,
+            211.5,
+            476.21999999999997
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead1-table.r1.c2",
+          "source_bbox": [
+            211.5,
+            461.94,
+            255.06,
+            476.21999999999997
+          ],
+          "text": "349.77",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead1-table.r1.c3",
+          "source_bbox": [
+            255.06,
+            461.94,
+            298.62,
+            476.21999999999997
+          ],
+          "text": " ",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead1-table.r1.c4",
+          "source_bbox": [
+            298.62,
+            461.94,
+            342.18,
+            476.21999999999997
+          ],
+          "text": "373.96",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead1-table.r1.c5",
+          "source_bbox": [
+            342.18,
+            461.94,
+            385.74,
+            476.21999999999997
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead1-table.r1.c6",
+          "source_bbox": [
+            385.74,
+            461.94,
+            429.29999999999995,
+            476.21999999999997
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead1-table.r1.c7",
+          "source_bbox": [
+            429.29999999999995,
+            461.94,
+            472.91999999999996,
+            476.21999999999997
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead1-table.r2.c0",
+          "source_bbox": [
+            95.28,
+            476.21999999999997,
+            177.96,
+            490.5
+          ],
+          "text": "上部工　反力",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead1-table.r2.c1",
+          "source_bbox": [
+            177.96,
+            476.21999999999997,
+            211.5,
+            490.5
+          ],
+          "text": "起点側",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead1-table.r2.c2",
+          "source_bbox": [
+            211.5,
+            476.21999999999997,
+            255.06,
+            490.5
+          ],
+          "text": "1530.00",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead1-table.r2.c3",
+          "source_bbox": [
+            255.06,
+            476.21999999999997,
+            298.62,
+            490.5
+          ],
+          "text": "1.550",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead1-table.r2.c4",
+          "source_bbox": [
+            298.62,
+            476.21999999999997,
+            342.18,
+            490.5
+          ],
+          "text": "2371.50",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead1-table.r2.c5",
+          "source_bbox": [
+            342.18,
+            476.21999999999997,
+            385.74,
+            490.5
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead1-table.r2.c6",
+          "source_bbox": [
+            385.74,
+            476.21999999999997,
+            429.29999999999995,
+            490.5
+          ],
+          "text": "-0.325",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead1-table.r2.c7",
+          "source_bbox": [
+            429.29999999999995,
+            476.21999999999997,
+            472.91999999999996,
+            490.5
+          ],
+          "text": "-497.25",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead1-table.r3.c0",
+          "source_bbox": [
+            95.28,
+            490.5,
+            177.96,
+            504.78
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead1-table.r3.c1",
+          "source_bbox": [
+            177.96,
+            490.5,
+            211.5,
+            504.78
+          ],
+          "text": "終点側",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead1-table.r3.c2",
+          "source_bbox": [
+            211.5,
+            490.5,
+            255.06,
+            504.78
+          ],
+          "text": "930.00",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead1-table.r3.c3",
+          "source_bbox": [
+            255.06,
+            490.5,
+            298.62,
+            504.78
+          ],
+          "text": "0.645",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead1-table.r3.c4",
+          "source_bbox": [
+            298.62,
+            490.5,
+            342.18,
+            504.78
+          ],
+          "text": "599.85",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead1-table.r3.c5",
+          "source_bbox": [
+            342.18,
+            490.5,
+            385.74,
+            504.78
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead1-table.r3.c6",
+          "source_bbox": [
+            385.74,
+            490.5,
+            429.29999999999995,
+            504.78
+          ],
+          "text": "0.675",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead1-table.r3.c7",
+          "source_bbox": [
+            429.29999999999995,
+            490.5,
+            472.91999999999996,
+            504.78
+          ],
+          "text": "627.75",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead1-table.r4.c0",
+          "source_bbox": [
+            95.28,
+            504.78,
+            177.96,
+            519.06
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 4,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead1-table.r4.c1",
+          "source_bbox": [
+            177.96,
+            504.78,
+            211.5,
+            519.06
+          ],
+          "text": "合計",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 4,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead1-table.r4.c2",
+          "source_bbox": [
+            211.5,
+            504.78,
+            255.06,
+            519.06
+          ],
+          "text": "2809.77",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 4,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead1-table.r4.c3",
+          "source_bbox": [
+            255.06,
+            504.78,
+            298.62,
+            519.06
+          ],
+          "text": "－",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 4,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead1-table.r4.c4",
+          "source_bbox": [
+            298.62,
+            504.78,
+            342.18,
+            519.06
+          ],
+          "text": "3345.31",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 4,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead1-table.r4.c5",
+          "source_bbox": [
+            342.18,
+            504.78,
+            385.74,
+            519.06
+          ],
+          "text": "－",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 4,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead1-table.r4.c6",
+          "source_bbox": [
+            385.74,
+            504.78,
+            429.29999999999995,
+            519.06
+          ],
+          "text": "－",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 4,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead1-table.r4.c7",
+          "source_bbox": [
+            429.29999999999995,
+            504.78,
+            472.91999999999996,
+            519.06
+          ],
+          "text": "130.50",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 4,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        }
+      ],
+      "header_rows": 1,
+      "body_rows": 4,
+      "columns": 8,
+      "selective_rules": {
+        "horizontal_boundaries": [
+          0,
+          1,
+          5
+        ],
+        "vertical_boundaries": [
+          2
+        ]
+      }
+    },
+    {
+      "id": "p24-dead2-table",
+      "kind": "table",
+      "direction": [
+        1,
+        0
+      ],
+      "cells": [
+        {
+          "id": "p24-dead2-table.r0.c0",
+          "source_bbox": [
+            95.28,
+            568.8,
+            211.5,
+            597.9
+          ],
+          "text": "作用種別",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 2
+        },
+        {
+          "id": "p24-dead2-table.r0.c2",
+          "source_bbox": [
+            211.5,
+            568.8,
+            255.06,
+            597.9
+          ],
+          "text": "N\n(KN)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead2-table.r0.c3",
+          "source_bbox": [
+            255.06,
+            568.8,
+            298.62,
+            597.9
+          ],
+          "text": "X\n(m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead2-table.r0.c4",
+          "source_bbox": [
+            298.62,
+            568.8,
+            342.18,
+            597.9
+          ],
+          "text": "Md\n(KN・m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead2-table.r0.c5",
+          "source_bbox": [
+            342.18,
+            568.8,
+            385.74,
+            597.9
+          ],
+          "text": "H\n(KN)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead2-table.r0.c6",
+          "source_bbox": [
+            385.74,
+            568.8,
+            429.29999999999995,
+            597.9
+          ],
+          "text": "e\n(m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead2-table.r0.c7",
+          "source_bbox": [
+            429.29999999999995,
+            568.8,
+            472.91999999999996,
+            597.9
+          ],
+          "text": "Mt\n(KN・m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead2-table.r1.c0",
+          "source_bbox": [
+            95.28,
+            597.9,
+            177.96,
+            612.18
+          ],
+          "text": "上部工　反力",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead2-table.r1.c1",
+          "source_bbox": [
+            177.96,
+            597.9,
+            211.5,
+            612.18
+          ],
+          "text": "起点側",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead2-table.r1.c2",
+          "source_bbox": [
+            211.5,
+            597.9,
+            255.06,
+            612.18
+          ],
+          "text": "160.00",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead2-table.r1.c3",
+          "source_bbox": [
+            255.06,
+            597.9,
+            298.62,
+            612.18
+          ],
+          "text": "1.550",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead2-table.r1.c4",
+          "source_bbox": [
+            298.62,
+            597.9,
+            342.18,
+            612.18
+          ],
+          "text": "248.00",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead2-table.r1.c5",
+          "source_bbox": [
+            342.18,
+            597.9,
+            385.74,
+            612.18
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead2-table.r1.c6",
+          "source_bbox": [
+            385.74,
+            597.9,
+            429.29999999999995,
+            612.18
+          ],
+          "text": "-0.325",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead2-table.r1.c7",
+          "source_bbox": [
+            429.29999999999995,
+            597.9,
+            472.91999999999996,
+            612.18
+          ],
+          "text": "-52.00",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead2-table.r2.c0",
+          "source_bbox": [
+            95.28,
+            612.18,
+            177.96,
+            626.4599999999999
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead2-table.r2.c1",
+          "source_bbox": [
+            177.96,
+            612.18,
+            211.5,
+            626.4599999999999
+          ],
+          "text": "終点側",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead2-table.r2.c2",
+          "source_bbox": [
+            211.5,
+            612.18,
+            255.06,
+            626.4599999999999
+          ],
+          "text": "130.00",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead2-table.r2.c3",
+          "source_bbox": [
+            255.06,
+            612.18,
+            298.62,
+            626.4599999999999
+          ],
+          "text": "0.645",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead2-table.r2.c4",
+          "source_bbox": [
+            298.62,
+            612.18,
+            342.18,
+            626.4599999999999
+          ],
+          "text": "83.85",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead2-table.r2.c5",
+          "source_bbox": [
+            342.18,
+            612.18,
+            385.74,
+            626.4599999999999
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead2-table.r2.c6",
+          "source_bbox": [
+            385.74,
+            612.18,
+            429.29999999999995,
+            626.4599999999999
+          ],
+          "text": "0.675",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead2-table.r2.c7",
+          "source_bbox": [
+            429.29999999999995,
+            612.18,
+            472.91999999999996,
+            626.4599999999999
+          ],
+          "text": "87.75",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead2-table.r3.c0",
+          "source_bbox": [
+            95.28,
+            626.4599999999999,
+            177.96,
+            640.74
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead2-table.r3.c1",
+          "source_bbox": [
+            177.96,
+            626.4599999999999,
+            211.5,
+            640.74
+          ],
+          "text": "合計",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead2-table.r3.c2",
+          "source_bbox": [
+            211.5,
+            626.4599999999999,
+            255.06,
+            640.74
+          ],
+          "text": "290.00",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead2-table.r3.c3",
+          "source_bbox": [
+            255.06,
+            626.4599999999999,
+            298.62,
+            640.74
+          ],
+          "text": "－",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead2-table.r3.c4",
+          "source_bbox": [
+            298.62,
+            626.4599999999999,
+            342.18,
+            640.74
+          ],
+          "text": "331.85",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead2-table.r3.c5",
+          "source_bbox": [
+            342.18,
+            626.4599999999999,
+            385.74,
+            640.74
+          ],
+          "text": "－",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead2-table.r3.c6",
+          "source_bbox": [
+            385.74,
+            626.4599999999999,
+            429.29999999999995,
+            640.74
+          ],
+          "text": "－",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-dead2-table.r3.c7",
+          "source_bbox": [
+            429.29999999999995,
+            626.4599999999999,
+            472.91999999999996,
+            640.74
+          ],
+          "text": "35.75",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        }
+      ],
+      "header_rows": 1,
+      "body_rows": 3,
+      "columns": 8,
+      "selective_rules": {
+        "horizontal_boundaries": [
+          0,
+          1,
+          4
+        ],
+        "vertical_boundaries": [
+          2
+        ]
+      }
+    },
+    {
+      "id": "p24-snow2-table",
+      "kind": "table",
+      "direction": [
+        1,
+        0
+      ],
+      "cells": [
+        {
+          "id": "p24-snow2-table.r0.c0",
+          "source_bbox": [
+            109.8,
+            712.2,
+            226.01999999999998,
+            741.3000000000001
+          ],
+          "text": "作用種別",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 2
+        },
+        {
+          "id": "p24-snow2-table.r0.c2",
+          "source_bbox": [
+            226.01999999999998,
+            712.2,
+            269.58,
+            741.3000000000001
+          ],
+          "text": "N\n(KN)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-snow2-table.r0.c3",
+          "source_bbox": [
+            269.58,
+            712.2,
+            313.14,
+            741.3000000000001
+          ],
+          "text": "X\n(m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-snow2-table.r0.c4",
+          "source_bbox": [
+            313.14,
+            712.2,
+            356.7,
+            741.3000000000001
+          ],
+          "text": "Md\n(KN・m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-snow2-table.r0.c5",
+          "source_bbox": [
+            356.7,
+            712.2,
+            400.26,
+            741.3000000000001
+          ],
+          "text": "H\n(KN)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-snow2-table.r0.c6",
+          "source_bbox": [
+            400.26,
+            712.2,
+            443.82,
+            741.3000000000001
+          ],
+          "text": "e\n(m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-snow2-table.r0.c7",
+          "source_bbox": [
+            443.82,
+            712.2,
+            487.44,
+            741.3000000000001
+          ],
+          "text": "Mt\n(KN・m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-snow2-table.r1.c0",
+          "source_bbox": [
+            109.8,
+            741.3000000000001,
+            192.48000000000002,
+            755.58
+          ],
+          "text": "上部工　反力",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-snow2-table.r1.c1",
+          "source_bbox": [
+            192.48000000000002,
+            741.3000000000001,
+            226.01999999999998,
+            755.58
+          ],
+          "text": "起点側",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-snow2-table.r1.c2",
+          "source_bbox": [
+            226.01999999999998,
+            741.3000000000001,
+            269.58,
+            755.58
+          ],
+          "text": "200.00",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-snow2-table.r1.c3",
+          "source_bbox": [
+            269.58,
+            741.3000000000001,
+            313.14,
+            755.58
+          ],
+          "text": "1.550",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-snow2-table.r1.c4",
+          "source_bbox": [
+            313.14,
+            741.3000000000001,
+            356.7,
+            755.58
+          ],
+          "text": "310.00",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-snow2-table.r1.c5",
+          "source_bbox": [
+            356.7,
+            741.3000000000001,
+            400.26,
+            755.58
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-snow2-table.r1.c6",
+          "source_bbox": [
+            400.26,
+            741.3000000000001,
+            443.82,
+            755.58
+          ],
+          "text": "-0.325",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-snow2-table.r1.c7",
+          "source_bbox": [
+            443.82,
+            741.3000000000001,
+            487.44,
+            755.58
+          ],
+          "text": "-65.00",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-snow2-table.r2.c0",
+          "source_bbox": [
+            109.8,
+            755.58,
+            192.48000000000002,
+            769.86
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-snow2-table.r2.c1",
+          "source_bbox": [
+            192.48000000000002,
+            755.58,
+            226.01999999999998,
+            769.86
+          ],
+          "text": "終点側",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-snow2-table.r2.c2",
+          "source_bbox": [
+            226.01999999999998,
+            755.58,
+            269.58,
+            769.86
+          ],
+          "text": "125.00",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-snow2-table.r2.c3",
+          "source_bbox": [
+            269.58,
+            755.58,
+            313.14,
+            769.86
+          ],
+          "text": "0.645",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-snow2-table.r2.c4",
+          "source_bbox": [
+            313.14,
+            755.58,
+            356.7,
+            769.86
+          ],
+          "text": "80.63",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-snow2-table.r2.c5",
+          "source_bbox": [
+            356.7,
+            755.58,
+            400.26,
+            769.86
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-snow2-table.r2.c6",
+          "source_bbox": [
+            400.26,
+            755.58,
+            443.82,
+            769.86
+          ],
+          "text": "0.675",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-snow2-table.r2.c7",
+          "source_bbox": [
+            443.82,
+            755.58,
+            487.44,
+            769.86
+          ],
+          "text": "84.38",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-snow2-table.r3.c0",
+          "source_bbox": [
+            109.8,
+            769.86,
+            192.48000000000002,
+            784.1400000000001
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-snow2-table.r3.c1",
+          "source_bbox": [
+            192.48000000000002,
+            769.86,
+            226.01999999999998,
+            784.1400000000001
+          ],
+          "text": "合計",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-snow2-table.r3.c2",
+          "source_bbox": [
+            226.01999999999998,
+            769.86,
+            269.58,
+            784.1400000000001
+          ],
+          "text": "325.00",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-snow2-table.r3.c3",
+          "source_bbox": [
+            269.58,
+            769.86,
+            313.14,
+            784.1400000000001
+          ],
+          "text": "－",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-snow2-table.r3.c4",
+          "source_bbox": [
+            313.14,
+            769.86,
+            356.7,
+            784.1400000000001
+          ],
+          "text": "390.63",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-snow2-table.r3.c5",
+          "source_bbox": [
+            356.7,
+            769.86,
+            400.26,
+            784.1400000000001
+          ],
+          "text": "－",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-snow2-table.r3.c6",
+          "source_bbox": [
+            400.26,
+            769.86,
+            443.82,
+            784.1400000000001
+          ],
+          "text": "－",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p24-snow2-table.r3.c7",
+          "source_bbox": [
+            443.82,
+            769.86,
+            487.44,
+            784.1400000000001
+          ],
+          "text": "19.38",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        }
+      ],
+      "header_rows": 1,
+      "body_rows": 3,
+      "columns": 8,
+      "selective_rules": {
+        "horizontal_boundaries": [
+          0,
+          1,
+          4
+        ],
+        "vertical_boundaries": [
+          2
+        ]
+      }
+    }
+  ]
+}

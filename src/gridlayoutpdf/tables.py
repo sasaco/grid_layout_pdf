@@ -19,6 +19,18 @@ def _integer(value, name, minimum=0):
         raise ValueError(f"{name} must be an integer >= {minimum}")
 
 
+def _rule_widths(values, count, name):
+    if values is None:
+        return None
+    try:
+        widths = tuple(_finite_number(value, name) for value in values)
+    except TypeError as exc:
+        raise ValueError(f"{name} must be a sequence of rule widths or None") from exc
+    if len(widths) != count or any(width < 0 for width in widths):
+        raise ValueError(f"{name} must contain {count} finite nonnegative rule widths")
+    return widths
+
+
 @dataclass(frozen=True, slots=True)
 class Cell:
     content: str | Block = ""
@@ -61,20 +73,31 @@ class _PlacedCell:
 
 @dataclass(frozen=True, slots=True)
 class Table:
-    """A table whose merged row groups and headers each have a closed frame.
+    """A table with independently contained merged row groups and headers.
 
-    border_width is the stroke width of each part edge. Adjacent closed groups
-    place both edges inside their own bounds, so their shared seam can appear
-    twice as thick. This also keeps every page fragment independently closed.
+    None rules use border_width on every edge, preserving closed fragments.
+    Explicit horizontal_rules/vertical_rules address original row/column
+    boundaries; zero omits an edge. Spans suppress interior edges. Widths are
+    per stroke: adjacent groups draw their shared edge independently inside
+    their own bounds, so a shared seam can appear twice as thick. Splitting
+    retains source boundary indices and does not invent fragment frames.
+
+    row_heights optionally fixes each source row's height in local grid rows.
+    Content and padding must fit those exact allocations, including rowspans;
+    insufficient space raises instead of expanding rows or shrinking content.
+    None preserves automatic row allocation.
     """
 
     columns: tuple[int, ...]
     rows: tuple[tuple[Cell, ...], ...]
     _: KW_ONLY
     header_rows: int = 0
+    row_heights: tuple[int, ...] | None = None
     numeric_columns: tuple[int, ...] = ()
     border_width: float = 0.5
     border_color: tuple[float, float, float] = (0, 0, 0)
+    horizontal_rules: tuple[float, ...] | None = None
+    vertical_rules: tuple[float, ...] | None = None
     block_id: str = ""
     _cells: tuple[_PlacedCell, ...] = field(init=False, repr=False)
 
@@ -102,6 +125,17 @@ class Table:
         except TypeError as exc:
             raise ValueError("rows must be sequences of cells") from exc
         object.__setattr__(self, "rows", tuple(rows))
+        if self.row_heights is not None:
+            try:
+                heights = tuple(self.row_heights)
+            except TypeError as exc:
+                raise ValueError("row_heights must be a sequence of positive integers or None") from exc
+            if len(heights) != len(rows):
+                raise ValueError("row_heights must contain one height per table row")
+            for height in heights:
+                _integer(height, "row_heights", 1)
+                _finite_number(height, "row_heights")
+            object.__setattr__(self, "row_heights", heights)
         _integer(self.header_rows, "header_rows")
         if self.header_rows > len(rows):
             raise ValueError("header_rows must not exceed the number of rows")
@@ -125,6 +159,8 @@ class Table:
         if len(color) != 3 or any(c < 0 or c > 1 for c in color):
             raise ValueError("border_color must have three components between 0 and 1")
         object.__setattr__(self, "border_color", color)
+        object.__setattr__(self, "horizontal_rules", _rule_widths(self.horizontal_rules, len(rows) + 1, "horizontal_rules"))
+        object.__setattr__(self, "vertical_rules", _rule_widths(self.vertical_rules, len(columns) + 1, "vertical_rules"))
         if not isinstance(self.block_id, str):
             raise ValueError("block_id must be a string")
         object.__setattr__(self, "_cells", self._place_cells())
@@ -168,17 +204,26 @@ class Table:
         column_edges = [sum(self.columns[:index]) * context.profile.grid.pitch_x
                         for index in range(len(self.columns) + 1)]
         measured = []
-        row_heights = [1] * len(self.rows)
+        row_heights = [1] * len(self.rows) if self.row_heights is None else list(self.row_heights)
         for placed in self._cells:
             cell = placed.cell
             content, align = self._measure_cell(context, placed)
             measured.append((placed, content, align))
-            if cell.rowspan == 1:
+            if self.row_heights is None and cell.rowspan == 1:
                 row_heights[placed.row] = max(row_heights[placed.row], context.rows_for(content.height + 2 * cell.padding))
         for placed, content, _ in sorted(measured, key=lambda item: (item[0].cell.rowspan, item[0].row, item[0].col)):
             cell = placed.cell
-            if cell.rowspan > 1:
-                stop = placed.row + cell.rowspan
+            stop = placed.row + cell.rowspan
+            if self.row_heights is not None:
+                needed = content.height + 2 * cell.padding
+                available = sum(row_heights[placed.row:stop]) * pitch
+                if needed > available + _ROUNDING_TOLERANCE:
+                    raise LayoutOverflowError(
+                        f"{self._path(placed)}: content and padding require {needed} pt "
+                        f"but row_heights provide {available} pt",
+                        block_id=self._path(placed), needed=needed, available=available,
+                    )
+            elif cell.rowspan > 1:
                 required = context.rows_for(content.height + 2 * cell.padding)
                 deficit = required - sum(row_heights[placed.row:stop])
                 if deficit > 0:
@@ -240,14 +285,14 @@ class Table:
         pitch = context.profile.grid.pitch_y
         row_edges = {r: sum(row_heights[start:r]) * pitch for r in range(start, stop + 1)}
         width, height = column_edges[-1], row_edges[stop]
-        if self.border_width >= min(width, height):
+        uniform = self.horizontal_rules is None and self.vertical_rules is None
+        if uniform and self.border_width >= min(width, height):
             raise LayoutOverflowError(
                 f"{self.block_id or 'Table'}: border_width exceeds part dimensions",
                 block_id=self.block_id or "Table", needed=self.border_width, available=min(width, height),
             )
         horizontal, vertical = {}, {}
         commands, cells = [], []
-        half = self.border_width / 2
         for placed, content, align in measured:
             if not start <= placed.row < stop:
                 continue
@@ -255,22 +300,47 @@ class Table:
             x0, x1 = column_edges[placed.col], column_edges[placed.col + cell.colspan]
             cell_width = self._cell_width(placed, context.profile.grid.pitch_x)
             y0, y1 = row_edges[placed.row], row_edges[placed.row + cell.rowspan]
-            if self.border_width >= min(cell_width, y1 - y0):
+            left_width = self.border_width if self.vertical_rules is None else self.vertical_rules[placed.col]
+            right_width = self.border_width if self.vertical_rules is None else self.vertical_rules[placed.col + cell.colspan]
+            top_width = self.border_width if self.horizontal_rules is None else self.horizontal_rules[placed.row]
+            bottom_width = self.border_width if self.horizontal_rules is None else self.horizontal_rules[placed.row + cell.rowspan]
+            if uniform and self.border_width >= min(cell_width, y1 - y0):
                 raise LayoutOverflowError(
                     f"{self._path(placed)}: border_width exceeds cell dimensions",
                     block_id=self._path(placed), needed=self.border_width,
                     available=min(cell_width, y1 - y0),
                 )
+            if not uniform:
+                # Each line's conservative envelope expands at its endpoints,
+                # too. A surviving edge of a small cell must fit before it is
+                # merged with neighbors; spans may leave that edge isolated.
+                available = min(cell_width, y1 - y0)
+                for stroke in (left_width, right_width, top_width, bottom_width):
+                    if stroke and stroke >= available:
+                        raise LayoutOverflowError(
+                            f"{self._path(placed)}: rule width exceeds cell or part dimensions",
+                            block_id=self._path(placed), needed=stroke, available=available,
+                        )
             content_x = x0 + cell.padding + (cell_width - 2 * cell.padding - content.width) * {"left": 0, "center": 0.5, "right": 1}[align]
             content_y = y0 + cell.padding + (y1 - y0 - 2 * cell.padding - content.height) * {"top": 0, "middle": 0.5, "bottom": 1}[cell.valign]
             translated = content.translated(content_x, content_y)
-            left = x0 + (self.border_width if x0 == 0 else half)
-            right = x1 - (self.border_width if x1 == width else half)
-            top = y0 + (self.border_width if y0 == 0 else half)
-            bottom = y1 - (self.border_width if y1 == height else half)
+            left = x0 + (left_width if x0 == 0 else left_width / 2)
+            right = x1 - (right_width if x1 == width else right_width / 2)
+            top = y0 + (top_width if y0 == 0 else top_width / 2)
+            bottom = y1 - (bottom_width if y1 == height else bottom_width / 2)
+            if not uniform and (left >= right or top >= bottom):
+                raise LayoutOverflowError(
+                    f"{self._path(placed)}: opposing rules consume the cell frame",
+                    block_id=self._path(placed),
+                    needed=(left - x0) + (x1 - right) if left >= right else (top - y0) + (y1 - bottom),
+                    available=cell_width if left >= right else y1 - y0,
+                )
             for command in translated:
                 bounds = command_bounds(command, context.fonts)
-                if bounds.x <= left or bounds.right >= right or bounds.y <= top or bounds.bottom >= bottom:
+                if ((bounds.x <= left if left_width else bounds.x < x0 - _ROUNDING_TOLERANCE)
+                        or (bounds.right >= right if right_width else bounds.right > x1 + _ROUNDING_TOLERANCE)
+                        or (bounds.y <= top if top_width else bounds.y < y0 - _ROUNDING_TOLERANCE)
+                        or (bounds.bottom >= bottom if bottom_width else bounds.bottom > y1 + _ROUNDING_TOLERANCE)):
                     raise LayoutOverflowError(
                         f"{self._path(placed)}: content lacks clearance from border strokes",
                         block_id=self._path(placed), needed=bounds.width, available=max(0, right - left),
@@ -281,16 +351,20 @@ class Table:
                 "frame": {"x_pt": x0, "y_pt": y0, "width": cell_width, "height": y1 - y0},
                 "content": _content_trace(content, content_x, content_y),
             })
-            left_line, right_line = max(half, x0), min(width - half, x1)
-            top_line, bottom_line = max(half, y0), min(height - half, y1)
-            horizontal.setdefault(top_line, []).append((left_line, right_line))
-            horizontal.setdefault(bottom_line, []).append((left_line, right_line))
-            vertical.setdefault(left_line, []).append((top_line, bottom_line))
-            vertical.setdefault(right_line, []).append((top_line, bottom_line))
-        for y, intervals in sorted(horizontal.items()):
-            commands.extend(Line(a, y, b, y, self.border_width, self.border_color) for a, b in _merged(intervals))
-        for x, intervals in sorted(vertical.items()):
-            commands.extend(Line(x, a, x, b, self.border_width, self.border_color) for a, b in _merged(intervals))
+            for edge, stroke in ((y0, top_width), (y1, bottom_width)):
+                if stroke:
+                    half = stroke / 2
+                    y = max(half, min(height - half, edge))
+                    horizontal.setdefault((y, stroke), []).append((max(half, x0), min(width - half, x1)))
+            for edge, stroke in ((x0, left_width), (x1, right_width)):
+                if stroke:
+                    half = stroke / 2
+                    x = max(half, min(width - half, edge))
+                    vertical.setdefault((x, stroke), []).append((max(half, y0), min(height - half, y1)))
+        for (y, stroke), intervals in sorted(horizontal.items()):
+            commands.extend(Line(a, y, b, y, stroke, self.border_color) for a, b in _merged(intervals))
+        for (x, stroke), intervals in sorted(vertical.items()):
+            commands.extend(Line(x, a, x, b, stroke, self.border_color) for a, b in _merged(intervals))
         return LayoutPart(sum(row_heights[start:stop]), tuple(commands), {
             "columns_pt": tuple(columns * context.profile.grid.pitch_x for columns in self.columns),
             "source_rows": tuple(range(start, stop)), "row_heights": tuple(row_heights[start:stop]), "cells": cells,

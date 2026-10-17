@@ -1,0 +1,393 @@
+{
+  "schema_version": 1,
+  "source_page": 13,
+  "blocks": [
+    {
+      "id": "p13-title",
+      "type": "paragraph",
+      "text": "7) 地震時上部工慣性力のトルクによる鉛直反力",
+      "size": 10
+    },
+    {
+      "id": "p13-response",
+      "type": "math",
+      "content": {
+        "type": "row",
+        "items": [
+          "最大応答震度　Kh＝0.552　(ρm = 1.0, αf = 1.0)"
+        ],
+        "gap": 1.2
+      },
+      "size": 10
+    },
+    {
+      "id": "p13-origin-title",
+      "type": "paragraph",
+      "text": "(b) 起点側",
+      "size": 10
+    },
+    {
+      "id": "p13-origin-forces",
+      "type": "equations",
+      "size": 10,
+      "gap": 1.2,
+      "anchors": {
+        "first_equal": 6,
+        "second_equal": 22,
+        "result_right": 27,
+        "unit_start": 28
+      },
+      "equations": [
+        {
+          "lhs": {
+            "type": "row",
+            "items": [
+              "水平力",
+              {
+                "type": "script",
+                "base": "Ｈ",
+                "sub": "B"
+              }
+            ],
+            "gap": 3
+          },
+          "rhs": {
+            "type": "row",
+            "items": [
+              "0.552",
+              "×",
+              "5520.00"
+            ],
+            "gap": 3
+          },
+          "relation": "＝",
+          "result_relation": "＝",
+          "result": "3047.04",
+          "unit": "kN"
+        },
+        {
+          "lhs": {
+            "type": "row",
+            "items": [
+              "作用位置",
+              {
+                "type": "script",
+                "base": "ｙ",
+                "sub": "B"
+              }
+            ],
+            "gap": 3
+          },
+          "rhs": "",
+          "relation": "＝",
+          "result_relation": "＝",
+          "result": "2.750",
+          "unit": "m"
+        },
+        {
+          "lhs": {
+            "type": "row",
+            "items": [
+              "モーメント",
+              {
+                "type": "script",
+                "base": "Ｍ",
+                "sub": "B"
+              }
+            ],
+            "gap": 3
+          },
+          "rhs": {
+            "type": "row",
+            "items": [
+              "3047.04",
+              "x",
+              "2.750"
+            ],
+            "gap": 3
+          },
+          "relation": "＝",
+          "result_relation": "＝",
+          "result": "#######",
+          "unit": "kN･m"
+        }
+      ]
+    },
+    {
+      "id": "p13-origin-cross-figure",
+      "type": "image",
+      "image_id": "p13-inertia-origin"
+    },
+    {
+      "id": "p13-origin-torque-title",
+      "type": "paragraph",
+      "text": "トルクによる鉛直力",
+      "size": 10
+    },
+    {
+      "id": "p13-origin-reactions",
+      "type": "equations",
+      "size": 10,
+      "gap": 1.2,
+      "anchors": {
+        "first_equal": 3,
+        "second_equal": 23,
+        "result_right": 28,
+        "unit_start": 29
+      },
+      "equations": [
+        {
+          "lhs": "Ｇ１桁",
+          "rhs": {
+            "type": "row",
+            "items": [
+              "8379.36",
+              "x",
+              "-3.80",
+              "／",
+              "33.3800",
+              "＋",
+              "#######",
+              "×",
+              "0.552"
+            ],
+            "gap": 2
+          },
+          "relation": " ",
+          "result_relation": "＝",
+          "result": "-1246.47",
+          "unit": "kN"
+        },
+        {
+          "lhs": "Ｇ２桁",
+          "rhs": {
+            "type": "row",
+            "items": [
+              "8379.36",
+              "x",
+              "-1.50",
+              "／",
+              "33.3800",
+              "＋",
+              "#######",
+              "×",
+              "0.552"
+            ],
+            "gap": 2
+          },
+          "relation": " ",
+          "result_relation": "＝",
+          "result": "-492.46",
+          "unit": "kN"
+        },
+        {
+          "lhs": "Ｇ３桁",
+          "rhs": {
+            "type": "row",
+            "items": [
+              "8379.36",
+              "x",
+              "1.50",
+              "／",
+              "33.3800",
+              "＋",
+              "210.00",
+              "×",
+              "0.552"
+            ],
+            "gap": 2
+          },
+          "relation": " ",
+          "result_relation": "＝",
+          "result": "492.46",
+          "unit": "kN"
+        },
+        {
+          "lhs": "Ｇ４桁",
+          "rhs": {
+            "type": "row",
+            "items": [
+              "8379.36",
+              "x",
+              "3.80",
+              "／",
+              "33.3800",
+              "＋",
+              "530.00",
+              "×",
+              "0.552"
+            ],
+            "gap": 2
+          },
+          "relation": " ",
+          "result_relation": "＝",
+          "result": "1246.47",
+          "unit": "kN"
+        }
+      ]
+    },
+    {
+      "id": "p13-between-sides",
+      "type": "spacer",
+      "rows": 1
+    },
+    {
+      "id": "p13-end-title",
+      "type": "paragraph",
+      "text": "(c) 終点側",
+      "size": 10
+    },
+    {
+      "id": "p13-end-forces",
+      "type": "equations",
+      "size": 10,
+      "gap": 1.2,
+      "anchors": {
+        "first_equal": 6,
+        "second_equal": 22,
+        "result_right": 27,
+        "unit_start": 28
+      },
+      "equations": [
+        {
+          "lhs": {
+            "type": "row",
+            "items": [
+              "水平力",
+              {
+                "type": "script",
+                "base": "Ｈ",
+                "sub": "C"
+              }
+            ],
+            "gap": 3
+          },
+          "rhs": {
+            "type": "row",
+            "items": [
+              "0.552",
+              "×",
+              "1720.00"
+            ],
+            "gap": 3
+          },
+          "relation": "＝",
+          "result_relation": "＝",
+          "result": "949.44",
+          "unit": "kN"
+        },
+        {
+          "lhs": {
+            "type": "row",
+            "items": [
+              "作用位置",
+              {
+                "type": "script",
+                "base": "ｙ",
+                "sub": "C"
+              }
+            ],
+            "gap": 3
+          },
+          "rhs": "",
+          "relation": "＝",
+          "result_relation": "＝",
+          "result": "2.750",
+          "unit": "m"
+        },
+        {
+          "lhs": {
+            "type": "row",
+            "items": [
+              "モーメント",
+              {
+                "type": "script",
+                "base": "Ｍ",
+                "sub": "C"
+              }
+            ],
+            "gap": 3
+          },
+          "rhs": {
+            "type": "row",
+            "items": [
+              "949.44",
+              "x",
+              "2.750"
+            ],
+            "gap": 3
+          },
+          "relation": "＝",
+          "result_relation": "＝",
+          "result": "#######",
+          "unit": "kN･m"
+        }
+      ]
+    },
+    {
+      "id": "p13-end-cross-figure",
+      "type": "image",
+      "image_id": "p13-inertia-end"
+    },
+    {
+      "id": "p13-end-torque-title",
+      "type": "paragraph",
+      "text": "トルクによる鉛直力",
+      "size": 10
+    },
+    {
+      "id": "p13-end-reactions",
+      "type": "equations",
+      "size": 10,
+      "gap": 1.2,
+      "anchors": {
+        "first_equal": 3,
+        "second_equal": 23,
+        "result_right": 28,
+        "unit_start": 29
+      },
+      "equations": [
+        {
+          "lhs": "Ｇ１桁",
+          "rhs": {
+            "type": "row",
+            "items": [
+              "#######",
+              "／",
+              "5.9000",
+              "＋",
+              "#######",
+              "x",
+              "0.552"
+            ],
+            "gap": 2
+          },
+          "relation": " ",
+          "result_relation": "＝",
+          "result": "#######",
+          "unit": "kN"
+        },
+        {
+          "lhs": "Ｇ２桁",
+          "rhs": {
+            "type": "row",
+            "items": [
+              "2610.96",
+              "／",
+              "5.9000",
+              "＋",
+              "430.00",
+              "x",
+              "0.552"
+            ],
+            "gap": 2
+          },
+          "relation": " ",
+          "result_relation": "＝",
+          "result": "679.90",
+          "unit": "kN"
+        }
+      ]
+    }
+  ]
+}

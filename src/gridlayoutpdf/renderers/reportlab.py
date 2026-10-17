@@ -13,7 +13,7 @@ from ..bounds import command_bounds
 from ..fonts import FontRegistry
 from ..errors import FontError, LayoutOverflowError
 from ..geometry import Rect
-from ..scene import Line, Polyline, RasterImage, Rectangle, ScenePage, Text
+from ..scene import Line, Polyline, RasterImage, Rectangle, ScenePage, Text, _text_matrix
 
 
 def _grid_commands(page: ScenePage) -> tuple[Line, ...]:
@@ -39,6 +39,10 @@ def _draw(canvas: Canvas, command, height: float, fonts: FontRegistry) -> None:
         if isinstance(command, Text):
             canvas.setFillColorRGB(0, 0, 0)
             text = canvas.beginText(command.x, height - command.y)
+            if command.quarter_turns or command.shear_x:
+                # PDF text matrices use y upwards; the scene uses y downwards.
+                a, b, c, d = _text_matrix(command.quarter_turns, command.shear_x)
+                text.setTextTransform(a, -b, -c, d, command.x, height - command.y)
             text.setFont(fonts.resolve(command.style.font).pdf_name, command.style.size)
             text.setCharSpace(command.style.tracking)
             text.setHorizScale(100)

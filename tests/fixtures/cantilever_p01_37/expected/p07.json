@@ -1,0 +1,583 @@
+{
+  "schema_version": 1,
+  "source_page": 7,
+  "source_sha256": "e56bf3ddbe3314ed95517099bedb0e68005df1567b0b3e8f52a2a4066d03393e",
+  "provenance": {
+    "author": "oracle",
+    "method": "independent source glyph transcription and visual comparison",
+    "reviewed_source_image": "source-survey/p07.png",
+    "review_status": "source-reviewed"
+  },
+  "omitted_page_number": "13 - 7",
+  "source_character_inventory": {
+    ")": 1,
+    ".": 72,
+    "0": 60,
+    "1": 36,
+    "2": 18,
+    "3": 30,
+    "4": 40,
+    "5": 14,
+    "6": 22,
+    "7": 28,
+    "8": 22,
+    "9": 18,
+    "B": 1,
+    "C": 1,
+    "N": 24,
+    "b": 1,
+    "k": 24,
+    "×": 24,
+    "①": 1,
+    "②": 1,
+    "・": 4,
+    "使": 1,
+    "単": 2,
+    "大": 2,
+    "性": 1,
+    "支": 2,
+    "最": 2,
+    "桁": 24,
+    "点": 2,
+    "用": 1,
+    "線": 4,
+    "複": 2,
+    "１": 8,
+    "２": 8,
+    "３": 4,
+    "４": 4,
+    "＝": 24,
+    "Ｇ": 24
+  },
+  "marker_count": 0,
+  "hash_placeholder_count": 0,
+  "blocks": [
+    {
+      "id": "p07-title",
+      "source_bbox": [
+        0,
+        69.7511703491211,
+        595,
+        80.29098968505859
+      ],
+      "text": "b) 使用性",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p07-b",
+      "source_bbox": [
+        0,
+        97.8311264038086,
+        595,
+        108.37094573974609
+      ],
+      "text": "① B支点最大",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p07-b-single-title",
+      "source_bbox": [
+        0,
+        124.9511215209961,
+        595,
+        135.49094848632814
+      ],
+      "text": "・単線",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p07-equation-001",
+      "source_bbox": [
+        0,
+        150.6311828613281,
+        595,
+        161.65098266601564
+      ],
+      "text": "Ｇ１桁243.87×0.184＝44.87kN",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "equation"
+    },
+    {
+      "id": "p07-equation-002",
+      "source_bbox": [
+        0,
+        164.19118041992186,
+        595,
+        175.2109802246094
+      ],
+      "text": "Ｇ２桁193.13×0.184＝35.54kN",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "equation"
+    },
+    {
+      "id": "p07-equation-003",
+      "source_bbox": [
+        0,
+        177.7511779785156,
+        595,
+        188.77097778320314
+      ],
+      "text": "Ｇ３桁193.13×0.184＝35.54kN",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "equation"
+    },
+    {
+      "id": "p07-equation-004",
+      "source_bbox": [
+        0,
+        191.31117553710936,
+        595,
+        202.3309753417969
+      ],
+      "text": "Ｇ４桁243.87×0.184＝44.87kN",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "equation"
+    },
+    {
+      "id": "p07-equation-005",
+      "source_bbox": [
+        0,
+        218.43117065429686,
+        595,
+        229.4509704589844
+      ],
+      "text": "Ｇ１桁0.00×0.410＝0.00kN",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "equation"
+    },
+    {
+      "id": "p07-equation-006",
+      "source_bbox": [
+        0,
+        231.9911682128906,
+        595,
+        243.01096801757814
+      ],
+      "text": "Ｇ２桁0.00×0.410＝0.00kN",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "equation"
+    },
+    {
+      "id": "p07-b-double-title",
+      "source_bbox": [
+        0,
+        260.55116577148436,
+        595,
+        271.0909851074219
+      ],
+      "text": "・複線",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p07-equation-007",
+      "source_bbox": [
+        0,
+        286.2311584472656,
+        595,
+        297.25095825195314
+      ],
+      "text": "Ｇ１桁233.52×0.167＝39.00kN",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "equation"
+    },
+    {
+      "id": "p07-equation-008",
+      "source_bbox": [
+        0,
+        299.79115600585936,
+        595,
+        310.8109558105469
+      ],
+      "text": "Ｇ２桁284.26×0.167＝47.47kN",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "equation"
+    },
+    {
+      "id": "p07-equation-009",
+      "source_bbox": [
+        0,
+        313.3511535644531,
+        595,
+        324.37095336914064
+      ],
+      "text": "Ｇ３桁284.26×0.167＝47.47kN",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "equation"
+    },
+    {
+      "id": "p07-equation-010",
+      "source_bbox": [
+        0,
+        326.91115112304686,
+        595,
+        337.9309814453125
+      ],
+      "text": "Ｇ４桁233.52×0.167＝39.00kN",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "equation"
+    },
+    {
+      "id": "p07-equation-011",
+      "source_bbox": [
+        0,
+        354.03114624023436,
+        595,
+        365.0509765625
+      ],
+      "text": "Ｇ１桁0.00×0.391＝0.00kN",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "equation"
+    },
+    {
+      "id": "p07-equation-012",
+      "source_bbox": [
+        0,
+        367.5911437988281,
+        595,
+        378.61097412109376
+      ],
+      "text": "Ｇ２桁0.00×0.391＝0.00kN",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "equation"
+    },
+    {
+      "id": "p07-c",
+      "source_bbox": [
+        0,
+        409.71116943359374,
+        595,
+        420.25098876953126
+      ],
+      "text": "② C支点最大",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p07-c-single-title",
+      "source_bbox": [
+        0,
+        436.83116455078124,
+        595,
+        447.37098388671876
+      ],
+      "text": "・単線",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p07-equation-013",
+      "source_bbox": [
+        0,
+        462.5111572265625,
+        595,
+        473.53098754882814
+      ],
+      "text": "Ｇ１桁48.37×0.184＝8.90kN",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "equation"
+    },
+    {
+      "id": "p07-equation-014",
+      "source_bbox": [
+        0,
+        476.07115478515624,
+        595,
+        487.0909851074219
+      ],
+      "text": "Ｇ２桁38.31×0.184＝7.05kN",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "equation"
+    },
+    {
+      "id": "p07-equation-015",
+      "source_bbox": [
+        0,
+        489.63115234375,
+        595,
+        500.65098266601564
+      ],
+      "text": "Ｇ３桁38.31×0.184＝7.05kN",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "equation"
+    },
+    {
+      "id": "p07-equation-016",
+      "source_bbox": [
+        0,
+        503.1911193847656,
+        595,
+        514.2109497070312
+      ],
+      "text": "Ｇ４桁48.37×0.184＝8.90kN",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "equation"
+    },
+    {
+      "id": "p07-equation-017",
+      "source_bbox": [
+        0,
+        530.311083984375,
+        595,
+        541.3309448242187
+      ],
+      "text": "Ｇ１桁357.25×0.410＝146.47kN",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "equation"
+    },
+    {
+      "id": "p07-equation-018",
+      "source_bbox": [
+        0,
+        543.871142578125,
+        595,
+        554.8909423828125
+      ],
+      "text": "Ｇ２桁357.25×0.410＝146.47kN",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "equation"
+    },
+    {
+      "id": "p07-c-double-title",
+      "source_bbox": [
+        0,
+        572.4311401367188,
+        595,
+        582.9709594726562
+      ],
+      "text": "・複線",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p07-equation-019",
+      "source_bbox": [
+        0,
+        598.1111328125,
+        595,
+        609.1309326171875
+      ],
+      "text": "Ｇ１桁46.32×0.167＝7.74kN",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "equation"
+    },
+    {
+      "id": "p07-equation-020",
+      "source_bbox": [
+        0,
+        611.6711303710938,
+        595,
+        622.6909301757812
+      ],
+      "text": "Ｇ２桁56.39×0.167＝9.42kN",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "equation"
+    },
+    {
+      "id": "p07-equation-021",
+      "source_bbox": [
+        0,
+        625.2311279296875,
+        595,
+        636.250927734375
+      ],
+      "text": "Ｇ３桁56.39×0.167＝9.42kN",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "equation"
+    },
+    {
+      "id": "p07-equation-022",
+      "source_bbox": [
+        0,
+        638.7911254882813,
+        595,
+        649.8109252929687
+      ],
+      "text": "Ｇ４桁46.32×0.167＝7.74kN",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "equation"
+    },
+    {
+      "id": "p07-equation-023",
+      "source_bbox": [
+        0,
+        665.9111206054688,
+        595,
+        676.9309814453125
+      ],
+      "text": "Ｇ１桁416.86×0.391＝162.99kN",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "equation"
+    },
+    {
+      "id": "p07-equation-024",
+      "source_bbox": [
+        0,
+        679.4711181640625,
+        595,
+        690.49091796875
+      ],
+      "text": "Ｇ２桁416.86×0.391＝162.99kN",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "equation"
+    }
+  ]
+}

@@ -1,0 +1,378 @@
+{
+  "schema_version": 1,
+  "source_page": 20,
+  "source_sha256": "e56bf3ddbe3314ed95517099bedb0e68005df1567b0b3e8f52a2a4066d03393e",
+  "provenance": {
+    "author": "oracle",
+    "method": "independent source glyph transcription and visual comparison",
+    "reviewed_source_image": "source-survey/p20.png",
+    "review_status": "source-reviewed"
+  },
+  "omitted_page_number": "13 - 20",
+  "source_character_inventory": {
+    "#": 21,
+    "(": 1,
+    ")": 1,
+    "+": 8,
+    ".": 13,
+    "/": 2,
+    "0": 17,
+    "1": 7,
+    "2": 8,
+    "3": 4,
+    "4": 9,
+    "5": 4,
+    "6": 7,
+    "7": 2,
+    "8": 11,
+    "9": 6,
+    "D": 2,
+    "H": 4,
+    "L": 1,
+    "N": 7,
+    "R": 1,
+    "S": 1,
+    "T": 3,
+    "b": 3,
+    "d": 4,
+    "k": 7,
+    "m": 1,
+    "n": 1,
+    "s": 2,
+    "※": 4,
+    "く": 5,
+    "に": 5,
+    "ゴ": 2,
+    "ス": 2,
+    "ッ": 2,
+    "ト": 2,
+    "パ": 2,
+    "ム": 2,
+    "ー": 2,
+    "働": 5,
+    "力": 1,
+    "動": 1,
+    "可": 1,
+    "地": 1,
+    "平": 4,
+    "性": 1,
+    "慣": 1,
+    "承": 3,
+    "支": 3,
+    "時": 1,
+    "水": 4,
+    "直": 1,
+    "荷": 5,
+    "重": 5,
+    "鉛": 1,
+    "震": 1,
+    "＝": 13
+  },
+  "marker_count": 4,
+  "hash_placeholder_count": 3,
+  "blocks": [
+    {
+      "id": "p20-title",
+      "source_bbox": [
+        0,
+        70.9111312866211,
+        595,
+        81.05095062255859
+      ],
+      "text": "(b) 地震時慣性力",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p20-t1",
+      "source_bbox": [
+        0,
+        98.0311264038086,
+        595,
+        108.17094573974609
+      ],
+      "text": " T1 ＝5 241.88+ 128.00＝5 369.88kN",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p20-movable",
+      "source_bbox": [
+        0,
+        125.1511215209961,
+        595,
+        135.29094848632812
+      ],
+      "text": "可動支承に働く鉛直荷重",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p20-movable-rm",
+      "source_bbox": [
+        0,
+        137.51117553710938,
+        595,
+        175.97100219726562
+      ],
+      "text": "Rm ＝D1 + D2 + L+ S2\n＝5 740.00+#######+#######+#######\n＝7 040.00kN",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [
+        {
+          "text": "1",
+          "size": 6.639,
+          "character_index": 4,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        },
+        {
+          "text": "2",
+          "size": 6.639,
+          "character_index": 7,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        },
+        {
+          "text": "2",
+          "size": 6.639,
+          "character_index": 12,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        }
+      ],
+      "kind": "text"
+    },
+    {
+      "id": "p20-movable-hbd-title",
+      "source_bbox": [
+        0,
+        192.95117797851563,
+        595,
+        203.09099731445312
+      ],
+      "text": "ゴム支承に働く水平荷重",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p20-movable-hbd-equation",
+      "source_bbox": [
+        0,
+        205.31116333007813,
+        595,
+        217.37096557617187
+      ],
+      "text": "Hbd ＝ 0.00kN",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [
+        {
+          "text": "b",
+          "size": 6.639,
+          "character_index": 1,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        },
+        {
+          "text": "d",
+          "size": 6.639,
+          "character_index": 2,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        }
+      ],
+      "kind": "text"
+    },
+    {
+      "id": "p20-movable-hsd-title",
+      "source_bbox": [
+        0,
+        233.63117065429688,
+        595,
+        243.77098999023437
+      ],
+      "text": "ストッパーに働く水平荷重",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p20-movable-hsd-equation",
+      "source_bbox": [
+        0,
+        245.99115600585938,
+        595,
+        258.05095825195315
+      ],
+      "text": "Hsd ＝T / n ＝5 369.88/2 ＝2 684.94kN",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [
+        {
+          "text": "s",
+          "size": 6.639,
+          "character_index": 1,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        },
+        {
+          "text": "d",
+          "size": 6.639,
+          "character_index": 2,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        }
+      ],
+      "kind": "text"
+    },
+    {
+      "id": "p20-t2",
+      "source_bbox": [
+        0,
+        287.8678039550781,
+        595,
+        298.0109802246094
+      ],
+      "text": " T2 ＝1 829.64+ 64.00＝1 893.64kN",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p20-fixed-hbd-title",
+      "source_bbox": [
+        0,
+        314.99115600585935,
+        595,
+        325.1309753417969
+      ],
+      "text": "ゴム支承に働く水平荷重",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p20-fixed-hbd-equation",
+      "source_bbox": [
+        0,
+        327.35114135742185,
+        595,
+        339.4109741210938
+      ],
+      "text": "Hbd ＝ 0.00kN",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [
+        {
+          "text": "b",
+          "size": 6.639,
+          "character_index": 1,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        },
+        {
+          "text": "d",
+          "size": 6.639,
+          "character_index": 2,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        }
+      ],
+      "kind": "text"
+    },
+    {
+      "id": "p20-fixed-hsd-title",
+      "source_bbox": [
+        0,
+        355.6711486816406,
+        595,
+        365.81096801757815
+      ],
+      "text": "ストッパーに働く水平荷重",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p20-fixed-hsd-equation",
+      "source_bbox": [
+        0,
+        368.0311645507812,
+        595,
+        380.090966796875
+      ],
+      "text": "Hsd ＝1 893.64kN",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [
+        {
+          "text": "s",
+          "size": 6.639,
+          "character_index": 1,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        },
+        {
+          "text": "d",
+          "size": 6.639,
+          "character_index": 2,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        }
+      ],
+      "kind": "text"
+    }
+  ]
+}

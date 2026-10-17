@@ -1,0 +1,544 @@
+{
+  "schema_version": 1,
+  "source_page": 12,
+  "blocks": [
+    {
+      "id": "p12-title",
+      "type": "paragraph",
+      "text": "6) 風荷重のトルクによる鉛直反力",
+      "size": 10
+    },
+    {
+      "id": "p12-title-gap",
+      "type": "spacer",
+      "rows": 1
+    },
+    {
+      "id": "p12-with-train-title",
+      "type": "paragraph",
+      "text": "(a) 列車荷重がある場合",
+      "size": 10
+    },
+    {
+      "id": "p12-with-origin-title",
+      "type": "paragraph",
+      "text": "・起点側",
+      "size": 10
+    },
+    {
+      "id": "p12-with-origin-moment",
+      "type": "equations",
+      "size": 10,
+      "gap": 1.2,
+      "anchors": {
+        "first_equal": 7,
+        "second_equal": 22,
+        "result_right": 27,
+        "unit_start": 28
+      },
+      "equations": [
+        {
+          "lhs": {
+            "type": "row",
+            "items": [
+              "モーメント",
+              {
+                "type": "script",
+                "base": "Ｍ",
+                "sub": "B"
+              }
+            ],
+            "gap": 3
+          },
+          "rhs": {
+            "type": "row",
+            "items": [
+              "116.85",
+              "kN･m"
+            ],
+            "gap": 3
+          },
+          "relation": "＝",
+          "result_relation": "＝"
+        }
+      ]
+    },
+    {
+      "id": "p12-with-origin-torque-title",
+      "type": "paragraph",
+      "text": "トルクによる鉛直力",
+      "size": 10
+    },
+    {
+      "id": "p12-with-origin-reactions",
+      "type": "equations",
+      "size": 10,
+      "gap": 1.2,
+      "anchors": {
+        "first_equal": 3,
+        "second_equal": 23,
+        "result_right": 28,
+        "unit_start": 29
+      },
+      "equations": [
+        {
+          "lhs": "Ｇ１桁",
+          "rhs": {
+            "type": "row",
+            "items": [
+              "116.85",
+              "x",
+              "-3.80",
+              "／",
+              "33.3800",
+              "＋",
+              "#######",
+              "x",
+              "1/2"
+            ],
+            "gap": 2
+          },
+          "relation": " ",
+          "result_relation": "＝",
+          "result": "-73.30",
+          "unit": "kN"
+        },
+        {
+          "lhs": "Ｇ２桁",
+          "rhs": {
+            "type": "row",
+            "items": [
+              "116.85",
+              "x",
+              "-1.50",
+              "／",
+              "33.3800",
+              "＋",
+              "-50.00",
+              "x",
+              "1/2"
+            ],
+            "gap": 2
+          },
+          "relation": " ",
+          "result_relation": "＝",
+          "result": "-30.25",
+          "unit": "kN"
+        },
+        {
+          "lhs": "Ｇ３桁",
+          "rhs": {
+            "type": "row",
+            "items": [
+              "116.85",
+              "x",
+              "1.50",
+              "／",
+              "33.3800",
+              "＋",
+              "50.00",
+              "x",
+              "1/2"
+            ],
+            "gap": 2
+          },
+          "relation": " ",
+          "result_relation": "＝",
+          "result": "30.25",
+          "unit": "kN"
+        },
+        {
+          "lhs": "Ｇ４桁",
+          "rhs": {
+            "type": "row",
+            "items": [
+              "116.85",
+              "x",
+              "3.80",
+              "／",
+              "33.3800",
+              "＋",
+              "120.00",
+              "x",
+              "1/2"
+            ],
+            "gap": 2
+          },
+          "relation": " ",
+          "result_relation": "＝",
+          "result": "73.30",
+          "unit": "kN"
+        }
+      ]
+    },
+    {
+      "id": "p12-with-origin-gap",
+      "type": "spacer",
+      "rows": 1
+    },
+    {
+      "id": "p12-with-end-title",
+      "type": "paragraph",
+      "text": "・終点側",
+      "size": 10
+    },
+    {
+      "id": "p12-with-end-moment",
+      "type": "equations",
+      "size": 10,
+      "gap": 1.2,
+      "anchors": {
+        "first_equal": 7,
+        "second_equal": 22,
+        "result_right": 27,
+        "unit_start": 28
+      },
+      "equations": [
+        {
+          "lhs": {
+            "type": "row",
+            "items": [
+              "モーメント",
+              {
+                "type": "script",
+                "base": "Ｍ",
+                "sub": "B"
+              }
+            ],
+            "gap": 3
+          },
+          "rhs": {
+            "type": "row",
+            "items": [
+              "58.48",
+              "kN･m"
+            ],
+            "gap": 3
+          },
+          "relation": "＝",
+          "result_relation": "＝"
+        }
+      ]
+    },
+    {
+      "id": "p12-with-end-torque-title",
+      "type": "paragraph",
+      "text": "トルクによる鉛直力",
+      "size": 10
+    },
+    {
+      "id": "p12-with-end-reactions",
+      "type": "equations",
+      "size": 10,
+      "gap": 1.2,
+      "anchors": {
+        "first_equal": 3,
+        "second_equal": 23,
+        "result_right": 28,
+        "unit_start": 29
+      },
+      "equations": [
+        {
+          "lhs": "Ｇ１桁",
+          "rhs": {
+            "type": "row",
+            "items": [
+              "-58.48",
+              "／",
+              "5.9000",
+              "＋",
+              "#######",
+              "x",
+              "1/2"
+            ],
+            "gap": 2
+          },
+          "relation": " ",
+          "result_relation": "＝",
+          "result": "-59.91",
+          "unit": "kN"
+        },
+        {
+          "lhs": "Ｇ２桁",
+          "rhs": {
+            "type": "row",
+            "items": [
+              "58.48",
+              "／",
+              "5.9000",
+              "＋",
+              "100.00",
+              "x",
+              "1/2"
+            ],
+            "gap": 2
+          },
+          "relation": " ",
+          "result_relation": "＝",
+          "result": "59.91",
+          "unit": "kN"
+        }
+      ]
+    },
+    {
+      "id": "p12-with-end-gap",
+      "type": "spacer",
+      "rows": 1
+    },
+    {
+      "id": "p12-without-train-title",
+      "type": "paragraph",
+      "text": "(b) 列車荷重がない場合",
+      "size": 10
+    },
+    {
+      "id": "p12-without-origin-title",
+      "type": "paragraph",
+      "text": "・起点側",
+      "size": 10
+    },
+    {
+      "id": "p12-without-origin-moment",
+      "type": "equations",
+      "size": 10,
+      "gap": 1.2,
+      "anchors": {
+        "first_equal": 7,
+        "second_equal": 22,
+        "result_right": 27,
+        "unit_start": 28
+      },
+      "equations": [
+        {
+          "lhs": {
+            "type": "row",
+            "items": [
+              "モーメント",
+              {
+                "type": "script",
+                "base": "Ｍ",
+                "sub": "B"
+              }
+            ],
+            "gap": 3
+          },
+          "rhs": {
+            "type": "row",
+            "items": [
+              "233.70",
+              "kN･m"
+            ],
+            "gap": 3
+          },
+          "relation": "＝",
+          "result_relation": "＝"
+        }
+      ]
+    },
+    {
+      "id": "p12-without-origin-torque-title",
+      "type": "paragraph",
+      "text": "トルクによる鉛直力",
+      "size": 10
+    },
+    {
+      "id": "p12-without-origin-reactions",
+      "type": "equations",
+      "size": 10,
+      "gap": 1.2,
+      "anchors": {
+        "first_equal": 3,
+        "second_equal": 23,
+        "result_right": 28,
+        "unit_start": 29
+      },
+      "equations": [
+        {
+          "lhs": "Ｇ１桁",
+          "rhs": {
+            "type": "row",
+            "items": [
+              "233.70",
+              "x",
+              "-3.80",
+              "／",
+              "33.3800",
+              "＋",
+              "#######"
+            ],
+            "gap": 2
+          },
+          "relation": " ",
+          "result_relation": "＝",
+          "result": "#######",
+          "unit": "kN"
+        },
+        {
+          "lhs": "Ｇ２桁",
+          "rhs": {
+            "type": "row",
+            "items": [
+              "233.70",
+              "x",
+              "-1.50",
+              "／",
+              "33.3800",
+              "＋",
+              "-50.00"
+            ],
+            "gap": 2
+          },
+          "relation": " ",
+          "result_relation": "＝",
+          "result": "-60.50",
+          "unit": "kN"
+        },
+        {
+          "lhs": "Ｇ３桁",
+          "rhs": {
+            "type": "row",
+            "items": [
+              "233.70",
+              "x",
+              "1.50",
+              "／",
+              "33.3800",
+              "＋",
+              "50.00"
+            ],
+            "gap": 2
+          },
+          "relation": " ",
+          "result_relation": "＝",
+          "result": "60.50",
+          "unit": "kN"
+        },
+        {
+          "lhs": "Ｇ４桁",
+          "rhs": {
+            "type": "row",
+            "items": [
+              "233.70",
+              "x",
+              "3.80",
+              "／",
+              "33.3800",
+              "＋",
+              "120.00"
+            ],
+            "gap": 2
+          },
+          "relation": " ",
+          "result_relation": "＝",
+          "result": "146.60",
+          "unit": "kN"
+        }
+      ]
+    },
+    {
+      "id": "p12-without-origin-gap",
+      "type": "spacer",
+      "rows": 1
+    },
+    {
+      "id": "p12-without-end-title",
+      "type": "paragraph",
+      "text": "・終点側",
+      "size": 10
+    },
+    {
+      "id": "p12-without-end-moment",
+      "type": "equations",
+      "size": 10,
+      "gap": 1.2,
+      "anchors": {
+        "first_equal": 7,
+        "second_equal": 22,
+        "result_right": 27,
+        "unit_start": 28
+      },
+      "equations": [
+        {
+          "lhs": {
+            "type": "row",
+            "items": [
+              "モーメント",
+              {
+                "type": "script",
+                "base": "Ｍ",
+                "sub": "B"
+              }
+            ],
+            "gap": 3
+          },
+          "rhs": {
+            "type": "row",
+            "items": [
+              "116.94",
+              "kN･m"
+            ],
+            "gap": 3
+          },
+          "relation": "＝",
+          "result_relation": "＝"
+        }
+      ]
+    },
+    {
+      "id": "p12-without-end-torque-title",
+      "type": "paragraph",
+      "text": "トルクによる鉛直力",
+      "size": 10
+    },
+    {
+      "id": "p12-without-end-reactions",
+      "type": "equations",
+      "size": 10,
+      "gap": 1.2,
+      "anchors": {
+        "first_equal": 3,
+        "second_equal": 23,
+        "result_right": 28,
+        "unit_start": 29
+      },
+      "equations": [
+        {
+          "lhs": "Ｇ１桁",
+          "rhs": {
+            "type": "row",
+            "items": [
+              "-116.94",
+              "／",
+              "5.9000",
+              "＋",
+              "#######"
+            ],
+            "gap": 2
+          },
+          "relation": " ",
+          "result_relation": "＝",
+          "result": "#######",
+          "unit": "kN"
+        },
+        {
+          "lhs": "Ｇ２桁",
+          "rhs": {
+            "type": "row",
+            "items": [
+              "116.94",
+              "／",
+              "5.9000",
+              "＋",
+              "100.00"
+            ],
+            "gap": 2
+          },
+          "relation": " ",
+          "result_relation": "＝",
+          "result": "119.82",
+          "unit": "kN"
+        }
+      ]
+    }
+  ]
+}

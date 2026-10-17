@@ -1,0 +1,1407 @@
+{
+  "schema_version": 1,
+  "source_page": 26,
+  "blocks": [
+    {
+      "id": "p26-title",
+      "type": "paragraph",
+      "text": "5) 衝撃荷重I"
+    },
+    {
+      "id": "p26-title-gap",
+      "type": "spacer",
+      "rows": 1
+    },
+    {
+      "id": "p26-safety",
+      "type": "paragraph",
+      "text": "(a) 安全性(破壊)"
+    },
+    {
+      "id": "p26-safety-b-title",
+      "type": "paragraph",
+      "text": "a) B支点最大の場合"
+    },
+    {
+      "id": "p26-safety-b",
+      "type": "table",
+      "columns": [
+        5,
+        3,
+        3,
+        3,
+        5,
+        3,
+        3,
+        5
+      ],
+      "header_rows": 1,
+      "padding": 0,
+      "border_width": 0.5,
+      "horizontal_rules": [
+        1,
+        0.12,
+        0,
+        0,
+        1
+      ],
+      "vertical_rules": [
+        0,
+        0,
+        0.12,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "rows": [
+        [
+          {
+            "lines": [
+              "作用種別"
+            ],
+            "colspan": 2
+          },
+          {
+            "lines": [
+              "N",
+              "(KN)"
+            ]
+          },
+          {
+            "lines": [
+              "X",
+              "(m)"
+            ]
+          },
+          {
+            "lines": [
+              "Md",
+              "(KN・m)"
+            ]
+          },
+          {
+            "lines": [
+              "H",
+              "(KN)"
+            ]
+          },
+          {
+            "lines": [
+              "e",
+              "(m)"
+            ]
+          },
+          {
+            "lines": [
+              "Mt",
+              "(KN・m)"
+            ]
+          }
+        ],
+        [
+          {
+            "lines": [
+              "上部工　反力"
+            ]
+          },
+          {
+            "lines": [
+              "起点側"
+            ]
+          },
+          {
+            "lines": [
+              "59.75"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "1.550"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "92.61"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "-0.325"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "-19.42"
+            ],
+            "align": "right"
+          }
+        ],
+        [
+          {
+            "lines": []
+          },
+          {
+            "lines": [
+              "終点側"
+            ]
+          },
+          {
+            "lines": [
+              "0.00"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "0.645"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "0.00"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "0.675"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "0.00"
+            ],
+            "align": "right"
+          }
+        ],
+        [
+          {
+            "lines": []
+          },
+          {
+            "lines": [
+              "合計"
+            ]
+          },
+          {
+            "lines": [
+              "59.75"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "－"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "92.61"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "－"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "－"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "-19.42"
+            ],
+            "align": "right"
+          }
+        ]
+      ]
+    },
+    {
+      "id": "p26-safety-b-gap",
+      "type": "spacer",
+      "rows": 1
+    },
+    {
+      "id": "p26-safety-c-title",
+      "type": "paragraph",
+      "text": "b) C支点最大の場合"
+    },
+    {
+      "id": "p26-safety-c",
+      "type": "table",
+      "columns": [
+        5,
+        3,
+        3,
+        3,
+        5,
+        3,
+        3,
+        5
+      ],
+      "header_rows": 1,
+      "padding": 0,
+      "border_width": 0.5,
+      "horizontal_rules": [
+        1,
+        0.12,
+        0,
+        0,
+        1
+      ],
+      "vertical_rules": [
+        0,
+        0,
+        0.12,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "rows": [
+        [
+          {
+            "lines": [
+              "作用種別"
+            ],
+            "colspan": 2
+          },
+          {
+            "lines": [
+              "N",
+              "(KN)"
+            ]
+          },
+          {
+            "lines": [
+              "X",
+              "(m)"
+            ]
+          },
+          {
+            "lines": [
+              "Md",
+              "(KN・m)"
+            ]
+          },
+          {
+            "lines": [
+              "H",
+              "(KN)"
+            ]
+          },
+          {
+            "lines": [
+              "e",
+              "(m)"
+            ]
+          },
+          {
+            "lines": [
+              "Mt",
+              "(KN・m)"
+            ]
+          }
+        ],
+        [
+          {
+            "lines": [
+              "上部工　反力"
+            ]
+          },
+          {
+            "lines": [
+              "起点側"
+            ]
+          },
+          {
+            "lines": [
+              "11.85"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "1.550"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "18.37"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "-0.325"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "-3.85"
+            ],
+            "align": "right"
+          }
+        ],
+        [
+          {
+            "lines": []
+          },
+          {
+            "lines": [
+              "終点側"
+            ]
+          },
+          {
+            "lines": [
+              "217.19"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "0.645"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "140.09"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "0.675"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "146.60"
+            ],
+            "align": "right"
+          }
+        ],
+        [
+          {
+            "lines": []
+          },
+          {
+            "lines": [
+              "合計"
+            ]
+          },
+          {
+            "lines": [
+              "229.04"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "－"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "158.46"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "－"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "－"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "142.75"
+            ],
+            "align": "right"
+          }
+        ]
+      ]
+    },
+    {
+      "id": "p26-safety-c-gap",
+      "type": "spacer",
+      "rows": 1
+    },
+    {
+      "id": "p26-safety-bc-title",
+      "type": "paragraph",
+      "text": "c) B+C支点最大の場合"
+    },
+    {
+      "id": "p26-safety-bc",
+      "type": "table",
+      "columns": [
+        5,
+        3,
+        3,
+        3,
+        5,
+        3,
+        3,
+        5
+      ],
+      "header_rows": 1,
+      "padding": 0,
+      "border_width": 0.5,
+      "horizontal_rules": [
+        1,
+        0.12,
+        0,
+        0,
+        1
+      ],
+      "vertical_rules": [
+        0,
+        0,
+        0.12,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "rows": [
+        [
+          {
+            "lines": [
+              "作用種別"
+            ],
+            "colspan": 2
+          },
+          {
+            "lines": [
+              "N",
+              "(KN)"
+            ]
+          },
+          {
+            "lines": [
+              "X",
+              "(m)"
+            ]
+          },
+          {
+            "lines": [
+              "Md",
+              "(KN・m)"
+            ]
+          },
+          {
+            "lines": [
+              "H",
+              "(KN)"
+            ]
+          },
+          {
+            "lines": [
+              "e",
+              "(m)"
+            ]
+          },
+          {
+            "lines": [
+              "Mt",
+              "(KN・m)"
+            ]
+          }
+        ],
+        [
+          {
+            "lines": [
+              "上部工　反力"
+            ]
+          },
+          {
+            "lines": [
+              "起点側"
+            ]
+          },
+          {
+            "lines": [
+              "31.44"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "1.550"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "48.73"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "-0.325"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "-10.22"
+            ],
+            "align": "right"
+          }
+        ],
+        [
+          {
+            "lines": []
+          },
+          {
+            "lines": [
+              "終点側"
+            ]
+          },
+          {
+            "lines": [
+              "153.65"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "0.645"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "99.11"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "0.675"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "103.72"
+            ],
+            "align": "right"
+          }
+        ],
+        [
+          {
+            "lines": []
+          },
+          {
+            "lines": [
+              "合計"
+            ]
+          },
+          {
+            "lines": [
+              "185.09"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "－"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "147.84"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "－"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "－"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "93.50"
+            ],
+            "align": "right"
+          }
+        ]
+      ]
+    },
+    {
+      "id": "p26-between-performance",
+      "type": "spacer",
+      "rows": 1
+    },
+    {
+      "id": "p26-service",
+      "type": "paragraph",
+      "text": "(b) 使用性"
+    },
+    {
+      "id": "p26-service-b-title",
+      "type": "paragraph",
+      "text": "a) B支点最大の場合"
+    },
+    {
+      "id": "p26-service-b",
+      "type": "table",
+      "columns": [
+        5,
+        3,
+        3,
+        3,
+        5,
+        3,
+        3,
+        5
+      ],
+      "header_rows": 1,
+      "padding": 0,
+      "border_width": 0.5,
+      "horizontal_rules": [
+        1,
+        0.12,
+        0,
+        0,
+        1
+      ],
+      "vertical_rules": [
+        0,
+        0,
+        0.12,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "rows": [
+        [
+          {
+            "lines": [
+              "作用種別"
+            ],
+            "colspan": 2
+          },
+          {
+            "lines": [
+              "N",
+              "(KN)"
+            ]
+          },
+          {
+            "lines": [
+              "X",
+              "(m)"
+            ]
+          },
+          {
+            "lines": [
+              "Md",
+              "(KN・m)"
+            ]
+          },
+          {
+            "lines": [
+              "H",
+              "(KN)"
+            ]
+          },
+          {
+            "lines": [
+              "e",
+              "(m)"
+            ]
+          },
+          {
+            "lines": [
+              "Mt",
+              "(KN・m)"
+            ]
+          }
+        ],
+        [
+          {
+            "lines": [
+              "上部工　反力"
+            ]
+          },
+          {
+            "lines": [
+              "起点側"
+            ]
+          },
+          {
+            "lines": [
+              "59.75"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "1.550"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "92.61"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "-0.325"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "-19.42"
+            ],
+            "align": "right"
+          }
+        ],
+        [
+          {
+            "lines": []
+          },
+          {
+            "lines": [
+              "終点側"
+            ]
+          },
+          {
+            "lines": [
+              "0.00"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "0.645"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "0.00"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "0.675"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "0.00"
+            ],
+            "align": "right"
+          }
+        ],
+        [
+          {
+            "lines": []
+          },
+          {
+            "lines": [
+              "合計"
+            ]
+          },
+          {
+            "lines": [
+              "59.75"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "－"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "92.61"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "－"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "－"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "-19.42"
+            ],
+            "align": "right"
+          }
+        ]
+      ]
+    },
+    {
+      "id": "p26-service-b-gap",
+      "type": "spacer",
+      "rows": 1
+    },
+    {
+      "id": "p26-service-c-title",
+      "type": "paragraph",
+      "text": "b) C支点最大の場合"
+    },
+    {
+      "id": "p26-service-c",
+      "type": "table",
+      "columns": [
+        5,
+        3,
+        3,
+        3,
+        5,
+        3,
+        3,
+        5
+      ],
+      "header_rows": 1,
+      "padding": 0,
+      "border_width": 0.5,
+      "horizontal_rules": [
+        1,
+        0.12,
+        0,
+        0,
+        1
+      ],
+      "vertical_rules": [
+        0,
+        0,
+        0.12,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "rows": [
+        [
+          {
+            "lines": [
+              "作用種別"
+            ],
+            "colspan": 2
+          },
+          {
+            "lines": [
+              "N",
+              "(KN)"
+            ]
+          },
+          {
+            "lines": [
+              "X",
+              "(m)"
+            ]
+          },
+          {
+            "lines": [
+              "Md",
+              "(KN・m)"
+            ]
+          },
+          {
+            "lines": [
+              "H",
+              "(KN)"
+            ]
+          },
+          {
+            "lines": [
+              "e",
+              "(m)"
+            ]
+          },
+          {
+            "lines": [
+              "Mt",
+              "(KN・m)"
+            ]
+          }
+        ],
+        [
+          {
+            "lines": [
+              "上部工　反力"
+            ]
+          },
+          {
+            "lines": [
+              "起点側"
+            ]
+          },
+          {
+            "lines": [
+              "11.85"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "1.550"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "18.37"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "-0.325"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "-3.85"
+            ],
+            "align": "right"
+          }
+        ],
+        [
+          {
+            "lines": []
+          },
+          {
+            "lines": [
+              "終点側"
+            ]
+          },
+          {
+            "lines": [
+              "217.19"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "0.645"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "140.09"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "0.675"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "146.60"
+            ],
+            "align": "right"
+          }
+        ],
+        [
+          {
+            "lines": []
+          },
+          {
+            "lines": [
+              "合計"
+            ]
+          },
+          {
+            "lines": [
+              "229.04"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "－"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "158.46"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "－"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "－"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "142.75"
+            ],
+            "align": "right"
+          }
+        ]
+      ]
+    },
+    {
+      "id": "p26-service-c-gap",
+      "type": "spacer",
+      "rows": 1
+    },
+    {
+      "id": "p26-service-bc-title",
+      "type": "paragraph",
+      "text": "c) B+C支点最大の場合"
+    },
+    {
+      "id": "p26-service-bc",
+      "type": "table",
+      "columns": [
+        5,
+        3,
+        3,
+        3,
+        5,
+        3,
+        3,
+        5
+      ],
+      "header_rows": 1,
+      "padding": 0,
+      "border_width": 0.5,
+      "horizontal_rules": [
+        1,
+        0.12,
+        0,
+        0,
+        1
+      ],
+      "vertical_rules": [
+        0,
+        0,
+        0.12,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "rows": [
+        [
+          {
+            "lines": [
+              "作用種別"
+            ],
+            "colspan": 2
+          },
+          {
+            "lines": [
+              "N",
+              "(KN)"
+            ]
+          },
+          {
+            "lines": [
+              "X",
+              "(m)"
+            ]
+          },
+          {
+            "lines": [
+              "Md",
+              "(KN・m)"
+            ]
+          },
+          {
+            "lines": [
+              "H",
+              "(KN)"
+            ]
+          },
+          {
+            "lines": [
+              "e",
+              "(m)"
+            ]
+          },
+          {
+            "lines": [
+              "Mt",
+              "(KN・m)"
+            ]
+          }
+        ],
+        [
+          {
+            "lines": [
+              "上部工　反力"
+            ]
+          },
+          {
+            "lines": [
+              "起点側"
+            ]
+          },
+          {
+            "lines": [
+              "31.44"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "1.550"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "48.73"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "-0.325"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "-10.22"
+            ],
+            "align": "right"
+          }
+        ],
+        [
+          {
+            "lines": []
+          },
+          {
+            "lines": [
+              "終点側"
+            ]
+          },
+          {
+            "lines": [
+              "153.65"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "0.645"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "99.11"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "0.675"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "103.72"
+            ],
+            "align": "right"
+          }
+        ],
+        [
+          {
+            "lines": []
+          },
+          {
+            "lines": [
+              "合計"
+            ]
+          },
+          {
+            "lines": [
+              "185.09"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "－"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "147.84"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "－"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "－"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "93.50"
+            ],
+            "align": "right"
+          }
+        ]
+      ]
+    }
+  ]
+}

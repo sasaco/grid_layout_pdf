@@ -1,0 +1,229 @@
+{
+  "schema_version": 1,
+  "source_page": 23,
+  "blocks": [
+    {
+      "id": "p23-title",
+      "type": "paragraph",
+      "text": "(3) 片持梁の自重",
+      "size": 10
+    },
+    {
+      "id": "p23-title-gap",
+      "type": "spacer",
+      "rows": 1
+    },
+    {
+      "id": "p23-figures",
+      "type": "columns",
+      "col_spans": [
+        15,
+        15
+      ],
+      "gap_cols": 0,
+      "children": [
+        {
+          "id": "p23-side-aligned",
+          "type": "stack",
+          "children": [
+            {
+              "id": "p23-side-top-gap",
+              "type": "spacer",
+              "rows": 1
+            },
+            {
+              "id": "p23-figure-side",
+              "type": "image",
+              "image_id": "p23-weight-section"
+            }
+          ]
+        },
+        {
+          "id": "p23-figure-front",
+          "type": "image",
+          "image_id": "p23-weight-front"
+        }
+      ]
+    },
+    {
+      "id": "p23-figures-gap",
+      "type": "spacer",
+      "rows": 1
+    },
+    {
+      "id": "p23-weight-table",
+      "type": "table",
+      "columns": [
+        2,
+        15,
+        5,
+        4,
+        4
+      ],
+      "padding": 0,
+      "header_rows": 1,
+      "horizontal_rules": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "vertical_rules": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "rows": [
+        [
+          {
+            "lines": [
+              ""
+            ]
+          },
+          {
+            "lines": [
+              "算　式"
+            ]
+          },
+          {
+            "lines": [
+              "鉛直力",
+              "(kN)"
+            ]
+          },
+          {
+            "lines": [
+              "アーム",
+              "(m)"
+            ]
+          },
+          {
+            "lines": [
+              "ﾓｰﾒﾝﾄ",
+              "(kN・m)"
+            ]
+          }
+        ],
+        [
+          {
+            "lines": [
+              "①"
+            ]
+          },
+          {
+            "lines": [
+              {
+                "type": "row",
+                "items": [
+                  "24.5",
+                  "×",
+                  "2.70",
+                  "×",
+                  "2.00",
+                  "×",
+                  "2.25"
+                ],
+                "gap": 3
+              }
+            ]
+          },
+          {
+            "lines": [
+              "297.68"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "1.125"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "334.89"
+            ],
+            "align": "right"
+          }
+        ],
+        [
+          {
+            "lines": [
+              "②"
+            ]
+          },
+          {
+            "lines": [
+              {
+                "type": "row",
+                "items": [
+                  "24.5",
+                  "×",
+                  "2.70",
+                  "×",
+                  "0.70",
+                  "×",
+                  "2.25",
+                  "×",
+                  "1/2"
+                ],
+                "gap": 3
+              }
+            ]
+          },
+          {
+            "lines": [
+              "52.09"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "0.750"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "39.07"
+            ],
+            "align": "right"
+          }
+        ],
+        [
+          {
+            "lines": [
+              ""
+            ]
+          },
+          {
+            "lines": [
+              ""
+            ]
+          },
+          {
+            "lines": [
+              "349.77"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "―"
+            ]
+          },
+          {
+            "lines": [
+              "373.96"
+            ],
+            "align": "right"
+          }
+        ]
+      ]
+    }
+  ]
+}

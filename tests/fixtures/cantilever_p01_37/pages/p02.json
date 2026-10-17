@@ -1,0 +1,337 @@
+{
+  "schema_version": 1,
+  "source_page": 2,
+  "blocks": [
+    {
+      "id": "p02-c-title",
+      "type": "paragraph",
+      "text": "b) C支点最大"
+    },
+    {
+      "id": "p02-c-before-figure",
+      "type": "spacer",
+      "rows": 1
+    },
+    {
+      "id": "p02-load-c-figure",
+      "type": "image",
+      "image_id": "p02-load-c"
+    },
+    {
+      "id": "p02-c-before-reactions",
+      "type": "spacer",
+      "rows": 1
+    },
+    {
+      "id": "p02-c-reactions",
+      "type": "equations",
+      "anchors": {
+        "first_equal": 3,
+        "second_equal": 22,
+        "result_right": 27,
+        "unit_start": 28
+      },
+      "equations": [
+        {
+          "lhs": {
+            "type": "script",
+            "base": "Ｒ",
+            "sub": "A"
+          },
+          "rhs": {
+            "type": "row",
+            "items": [
+              "160.00",
+              {
+                "type": "operator",
+                "text": "×"
+              },
+              "4",
+              {
+                "type": "operator",
+                "text": "-"
+              },
+              "102.71"
+            ],
+            "gap": 1.5
+          },
+          "result": "537.29",
+          "unit": "kN"
+        },
+        {
+          "lhs": {
+            "type": "script",
+            "base": "Ｒ",
+            "sub": "B"
+          },
+          "rhs": {
+            "type": "row",
+            "items": [
+              "160.00",
+              {
+                "type": "operator",
+                "text": "×"
+              },
+              "(",
+              "6.625",
+              {
+                "type": "operator",
+                "text": "＋"
+              },
+              "4.425",
+              {
+                "type": "operator",
+                "text": "＋"
+              },
+              "1.625",
+              {
+                "type": "operator",
+                "text": "＋"
+              },
+              {
+                "type": "operator",
+                "text": "-"
+              },
+              "0.575",
+              ")",
+              "/",
+              "18.850"
+            ],
+            "gap": 1.5
+          },
+          "result": "102.71",
+          "unit": "kN"
+        },
+        {
+          "lhs": {
+            "type": "script",
+            "base": "Ｒ",
+            "sub": "C"
+          },
+          "rhs": {
+            "type": "row",
+            "items": [
+              "160.00",
+              {
+                "type": "operator",
+                "text": "×"
+              },
+              "(",
+              "2.425",
+              {
+                "type": "operator",
+                "text": "＋"
+              },
+              "4.625",
+              {
+                "type": "operator",
+                "text": "＋"
+              },
+              "7.425",
+              {
+                "type": "operator",
+                "text": "＋"
+              },
+              "9.625",
+              ")",
+              "/",
+              "9.250"
+            ],
+            "gap": 1.5
+          },
+          "result": "416.86",
+          "unit": "kN"
+        },
+        {
+          "lhs": {
+            "type": "script",
+            "base": "Ｒ",
+            "sub": "D"
+          },
+          "rhs": {
+            "type": "row",
+            "items": [
+              "160.00",
+              {
+                "type": "operator",
+                "text": "×"
+              },
+              "4",
+              {
+                "type": "operator",
+                "text": "-"
+              },
+              "416.86"
+            ],
+            "gap": 1.5
+          },
+          "result": "223.14",
+          "unit": "kN"
+        }
+      ]
+    },
+    {
+      "id": "p02-between-cases",
+      "type": "spacer",
+      "rows": 2
+    },
+    {
+      "id": "p02-bc-title",
+      "type": "paragraph",
+      "text": "c) B+C支点最大"
+    },
+    {
+      "id": "p02-bc-before-figure",
+      "type": "spacer",
+      "rows": 1
+    },
+    {
+      "id": "p02-load-bc-figure",
+      "type": "image",
+      "image_id": "p02-load-bc"
+    },
+    {
+      "id": "p02-bc-before-reactions",
+      "type": "spacer",
+      "rows": 1
+    },
+    {
+      "id": "p02-bc-reactions",
+      "type": "equations",
+      "anchors": {
+        "first_equal": 3,
+        "second_equal": 22,
+        "result_right": 27,
+        "unit_start": 28
+      },
+      "equations": [
+        {
+          "lhs": {
+            "type": "script",
+            "base": "Ｒ",
+            "sub": "A"
+          },
+          "rhs": {
+            "type": "row",
+            "items": [
+              "160.00",
+              {
+                "type": "operator",
+                "text": "×"
+              },
+              "4",
+              {
+                "type": "operator",
+                "text": "-"
+              },
+              "272.47"
+            ],
+            "gap": 1.5
+          },
+          "result": "367.53",
+          "unit": "kN"
+        },
+        {
+          "lhs": {
+            "type": "script",
+            "base": "Ｒ",
+            "sub": "B"
+          },
+          "rhs": {
+            "type": "row",
+            "items": [
+              "160.00",
+              {
+                "type": "operator",
+                "text": "×"
+              },
+              "(",
+              "16.625",
+              {
+                "type": "operator",
+                "text": "＋"
+              },
+              "14.425",
+              {
+                "type": "operator",
+                "text": "＋"
+              },
+              "1.625",
+              {
+                "type": "operator",
+                "text": "＋"
+              },
+              {
+                "type": "operator",
+                "text": "-"
+              },
+              "0.575",
+              ")",
+              "/",
+              "18.850"
+            ],
+            "gap": 1.5
+          },
+          "result": "272.47",
+          "unit": "kN"
+        },
+        {
+          "lhs": {
+            "type": "script",
+            "base": "Ｒ",
+            "sub": "C"
+          },
+          "rhs": {
+            "type": "row",
+            "items": [
+              "160.00",
+              {
+                "type": "operator",
+                "text": "×"
+              },
+              "(",
+              "7.425",
+              {
+                "type": "operator",
+                "text": "＋"
+              },
+              "9.625",
+              ")",
+              "/",
+              "9.250"
+            ],
+            "gap": 1.5
+          },
+          "result": "294.92",
+          "unit": "kN"
+        },
+        {
+          "lhs": {
+            "type": "script",
+            "base": "Ｒ",
+            "sub": "D"
+          },
+          "rhs": {
+            "type": "row",
+            "items": [
+              "160.00",
+              {
+                "type": "operator",
+                "text": "×"
+              },
+              "2",
+              {
+                "type": "operator",
+                "text": "-"
+              },
+              "294.92"
+            ],
+            "gap": 1.5
+          },
+          "result": "25.08",
+          "unit": "kN"
+        }
+      ]
+    }
+  ]
+}

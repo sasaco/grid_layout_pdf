@@ -7,7 +7,7 @@ from .bounds import command_bounds
 from .errors import FontError
 from .fonts import FontRegistry
 from .geometry import Rect
-from .scene import Line, Polyline, RasterImage, Rectangle, ScenePage, Text
+from .scene import Line, Polyline, RasterImage, Rectangle, ScenePage, Text, _text_rotation
 
 
 def _json_value(value):
@@ -37,6 +37,11 @@ def _command(command, fonts: FontRegistry, index: int, location: str) -> dict:
             x=command.x, baseline_y=command.y,
             style={"font": command.style.font, "size": command.style.size, "tracking": command.style.tracking},
         )
+        if command.quarter_turns:
+            a, b, _, _ = _text_rotation(command.quarter_turns)
+            trace.update(quarter_turns=command.quarter_turns, direction=[a, b])
+        if command.shear_x:
+            trace["shear_x"] = command.shear_x
     elif isinstance(command, Line):
         trace.update(x1=command.x1, y1=command.y1, x2=command.x2, y2=command.y2,
                      width=command.width, color=list(command.color))

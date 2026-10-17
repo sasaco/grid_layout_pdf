@@ -2,7 +2,7 @@
 
 from .fonts import FontRegistry
 from .geometry import Rect
-from .scene import Line, Polyline, RasterImage, Rectangle, Text
+from .scene import Line, Polyline, RasterImage, Rectangle, Text, _text_matrix
 
 
 def command_bounds(command, fonts: FontRegistry) -> Rect:
@@ -15,8 +15,15 @@ def command_bounds(command, fonts: FontRegistry) -> Rect:
         return Rect(command.x, command.y, command.width, command.height)
     if isinstance(command, Text):
         bounds = fonts.measure(fonts.normalize_text(command.text), command.style).bounds
-        return Rect(command.x + bounds.x, command.y + bounds.y,
-                    bounds.width, bounds.height)
+        a, b, c, d = _text_matrix(command.quarter_turns, command.shear_x)
+        if command.quarter_turns == 0 and command.shear_x == 0:
+            return Rect(command.x + bounds.x, command.y + bounds.y,
+                        bounds.width, bounds.height)
+        corners = [(a * x + c * y, b * x + d * y)
+                   for x in (bounds.x, bounds.right) for y in (bounds.y, bounds.bottom)]
+        left, right = min(x for x, _ in corners), max(x for x, _ in corners)
+        top, bottom = min(y for _, y in corners), max(y for _, y in corners)
+        return Rect(command.x + left, command.y + top, right - left, bottom - top)
     if isinstance(command, Line):
         left, right = sorted((command.x1, command.x2))
         top, bottom = sorted((command.y1, command.y2))

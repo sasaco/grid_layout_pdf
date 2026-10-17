@@ -1,0 +1,234 @@
+{
+  "schema_version": 1,
+  "reviewer": "root",
+  "date": "2026-10-17",
+  "result": "pass",
+  "scope": "16 figure crops only; not complete PDF page review",
+  "source_sha256": "e56bf3ddbe3314ed95517099bedb0e68005df1567b0b3e8f52a2a4066d03393e",
+  "images": [
+    {
+      "id": "p01-load-b",
+      "file": "assets/p01-load-b.png",
+      "sha256": "294ec2681ec1773b18ff2c218bf403548621a96429d136787128f18eb594880c",
+      "source_bbox": [
+        122,
+        441,
+        504,
+        555
+      ],
+      "labels_confirmed": true,
+      "no_clipping": true,
+      "no_body_equations_tables": true
+    },
+    {
+      "id": "p02-load-c",
+      "file": "assets/p02-load-c.png",
+      "sha256": "58673a45649998216eaee2d5ef8fb5214058bfc7e7509db62380fe6fec645292",
+      "source_bbox": [
+        122,
+        100,
+        504,
+        214
+      ],
+      "labels_confirmed": true,
+      "no_clipping": true,
+      "no_body_equations_tables": true
+    },
+    {
+      "id": "p02-load-bc",
+      "file": "assets/p02-load-bc.png",
+      "sha256": "05b5ecfc3e1ea631f01a1a3def88c78c3dba37797fe6c5eb4e8d16f1f409de51",
+      "source_bbox": [
+        122,
+        414,
+        504,
+        528
+      ],
+      "labels_confirmed": true,
+      "no_clipping": true,
+      "no_body_equations_tables": true
+    },
+    {
+      "id": "p09-load-b",
+      "file": "assets/p09-load-b.png",
+      "sha256": "f9ae2f6c08a9ba68c965821a875e3e8b9096852ba929b370b4f175aca68457bd",
+      "source_bbox": [
+        122,
+        128,
+        504,
+        242
+      ],
+      "labels_confirmed": true,
+      "no_clipping": true,
+      "no_body_equations_tables": true
+    },
+    {
+      "id": "p09-torque-origin",
+      "file": "assets/p09-torque-origin.png",
+      "sha256": "67812bef2ab9078a5233ebdd580f50939ddde434289c5bd0c147cceefe197fef",
+      "source_bbox": [
+        122,
+        360,
+        534,
+        523
+      ],
+      "labels_confirmed": true,
+      "no_clipping": true,
+      "no_body_equations_tables": true
+    },
+    {
+      "id": "p10-load-c",
+      "file": "assets/p10-load-c.png",
+      "sha256": "ae42e8da4fd4bed1f2bb117e58ca6085f16b1ff3a02f7ccead0984503579e5e7",
+      "source_bbox": [
+        122,
+        102,
+        504,
+        216
+      ],
+      "labels_confirmed": true,
+      "no_clipping": true,
+      "no_body_equations_tables": true
+    },
+    {
+      "id": "p10-torque-end",
+      "file": "assets/p10-torque-end.png",
+      "sha256": "e25b5850fdee6e0359b31143d9519d063bb48dbed85e89e9251bff44e734f684",
+      "source_bbox": [
+        122,
+        335,
+        534,
+        498
+      ],
+      "labels_confirmed": true,
+      "no_clipping": true,
+      "no_body_equations_tables": true
+    },
+    {
+      "id": "p11-load-bc",
+      "file": "assets/p11-load-bc.png",
+      "sha256": "dcaee42c3f263e300666278a6ba33fab26969c09baae0d3f6b1459a7338dee40",
+      "source_bbox": [
+        122,
+        96,
+        480,
+        226
+      ],
+      "labels_confirmed": true,
+      "no_clipping": true,
+      "no_body_equations_tables": true
+    },
+    {
+      "id": "p13-inertia-origin",
+      "file": "assets/p13-inertia-origin.png",
+      "sha256": "41c3faea5d9e7ee3efa3312ef717ddba17bf45266c00a3762656fcf3b8df3f57",
+      "source_bbox": [
+        122,
+        210,
+        534,
+        348
+      ],
+      "labels_confirmed": true,
+      "no_clipping": true,
+      "no_body_equations_tables": true
+    },
+    {
+      "id": "p13-inertia-end",
+      "file": "assets/p13-inertia-end.png",
+      "sha256": "48a274bab13adf3c1535200aebc58cae830bce353479fd60dd33ddd251555ee1",
+      "source_bbox": [
+        122,
+        546,
+        534,
+        702
+      ],
+      "labels_confirmed": true,
+      "no_clipping": true,
+      "no_body_equations_tables": true
+    },
+    {
+      "id": "p14-train-origin",
+      "file": "assets/p14-train-origin.png",
+      "sha256": "c508845aad36ff34b51b4548959899bee9d08dacd7f1339a83d8f43e722dc3f4",
+      "source_bbox": [
+        155,
+        194,
+        432,
+        350
+      ],
+      "labels_confirmed": true,
+      "no_clipping": true,
+      "no_body_equations_tables": true
+    },
+    {
+      "id": "p14-train-end",
+      "file": "assets/p14-train-end.png",
+      "sha256": "fa952e655006ed7683d242ed21d41987e37dddc1644a8cac3747333a98209268",
+      "source_bbox": [
+        155,
+        546,
+        432,
+        704
+      ],
+      "labels_confirmed": true,
+      "no_clipping": true,
+      "no_body_equations_tables": true
+    },
+    {
+      "id": "p23-weight-section",
+      "file": "assets/p23-weight-section.png",
+      "sha256": "2ef27623f8a35e857e45d286efb5d1671e94b89d108ed4d5846a57dc3d312518",
+      "source_bbox": [
+        93,
+        109,
+        273,
+        300
+      ],
+      "labels_confirmed": true,
+      "no_clipping": true,
+      "no_body_equations_tables": true
+    },
+    {
+      "id": "p23-weight-front",
+      "file": "assets/p23-weight-front.png",
+      "sha256": "b0ad31f55fed92d6958ffd45cedbd83ef28995d9767b164c2289e2151b0db69f",
+      "source_bbox": [
+        310,
+        95,
+        491,
+        286
+      ],
+      "labels_confirmed": true,
+      "no_clipping": true,
+      "no_body_equations_tables": true
+    },
+    {
+      "id": "p24-load-section",
+      "file": "assets/p24-load-section.png",
+      "sha256": "2b5725883cff1e45af5af81a14226bc395f7de08da949bb14197171ff4046fb9",
+      "source_bbox": [
+        93,
+        99,
+        273,
+        384
+      ],
+      "labels_confirmed": true,
+      "no_clipping": true,
+      "no_body_equations_tables": true
+    },
+    {
+      "id": "p24-load-front",
+      "file": "assets/p24-load-front.png",
+      "sha256": "1fd6f91d61c790c2eed7c024cc272cafaef373a3b062ac3e1c5c3a2c8e02a71b",
+      "source_bbox": [
+        310,
+        141,
+        491,
+        384
+      ],
+      "labels_confirmed": true,
+      "no_clipping": true,
+      "no_body_equations_tables": true
+    }
+  ]
+}

@@ -35,21 +35,43 @@ def _offset(dx: float, dy: float) -> tuple[float, float]:
     return _finite_number(dx, "dx"), _finite_number(dy, "dy")
 
 
+def _text_rotation(quarter_turns: int) -> tuple[int, int, int, int]:
+    """Return a rigid top-origin matrix (a, b, c, d), counterclockwise."""
+    if isinstance(quarter_turns, bool) or not isinstance(quarter_turns, int) or not 0 <= quarter_turns <= 3:
+        raise ValueError("quarter_turns must be an integer between 0 and 3")
+    return ((1, 0, 0, 1), (0, -1, 1, 0), (-1, 0, 0, -1), (0, 1, -1, 0))[quarter_turns]
+
+
+def _text_matrix(quarter_turns: int, shear_x: float) -> tuple[float, float, float, float]:
+    """Shear glyphs about their baseline, then rotate, in top-origin pt."""
+    a, b, c, d = _text_rotation(quarter_turns)
+    return a, b, c - a * shear_x, d - b * shear_x
+
+
 @dataclass(frozen=True, slots=True)
 class Text:
-    """A text run whose y coordinate denotes its baseline."""
+    """A text run at its baseline origin, turned counterclockwise in 90° steps.
+
+    ``shear_x`` is a finite coefficient, not an angle: positive values lean
+    the glyph tops to the right before rotation. In baseline-local coordinates
+    (y downwards), x' = x - shear_x*y and y' = y. Baseline advances and tracking
+    stay unchanged; the ink envelope can grow beyond the original advance.
+    """
 
     x: float
     y: float
     text: str
     style: TextStyle
+    quarter_turns: int = 0
+    shear_x: float = 0.0
 
     def __post_init__(self) -> None:
-        _coordinates(self, "x", "y")
+        _coordinates(self, "x", "y", "shear_x")
         if not isinstance(self.text, str):
             raise ValueError("text must be a string")
         if not isinstance(self.style, TextStyle):
             raise ValueError("style must be a TextStyle")
+        _text_rotation(self.quarter_turns)
 
     def translated(self, dx: float, dy: float) -> "Text":
         dx, dy = _offset(dx, dy)

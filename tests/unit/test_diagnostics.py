@@ -139,3 +139,17 @@ def test_trace_rejects_invalid_pages_with_clear_diagnostic(fonts, pages):
 def test_trace_rejects_invalid_font_registry():
     with pytest.raises(ValueError, match="fonts"):
         api().layout_trace((), None)
+
+
+def test_rotated_text_trace_records_orientation_without_changing_horizontal_shape(fonts):
+    assert "quarter_turns" in Text.__dataclass_fields__
+    page = ScenePage(A4_PORTRAIT_REFERENCE, (
+        Text(20, 30, "jÅ", TextStyle(tracking=0.25), quarter_turns=1),
+        Text(20, 40, "jÅ", TextStyle(tracking=0.25)),
+    ))
+    rotated, horizontal = api().layout_trace((page,), fonts)["pages"][0]["commands"]
+    assert rotated["quarter_turns"] == 1
+    assert rotated["direction"] == [0, -1]
+    assert rotated["bounds"] == {"x": 10.849609375, "y": 19.3984375,
+                                  "width": 11.1376953125, "height": 11.1435546875}
+    assert "quarter_turns" not in horizontal and "direction" not in horizontal

@@ -56,6 +56,7 @@ Windowsの検証ではPopplerが配置されていないため、PyMuPDFを画�
 | FR-009 構造化数式 | math / MathBlock。`test_math.py`、分数・根号・添字・括弧と表セル内の数式 |
 | FR-010 式の折返し | wrap_math / EquationGroup。`test_equation_wrap.py`、項・演算子の保存、強制改行、結果行 |
 | FR-011 用紙混在 | PageSection / derived_profile。A4→A3→A4、ネスト・空セクション、MediaBoxと文字サイズ |
+| FR-014 片持ち梁の固定37頁再現 | cantilever_p01_37 fixture。原本1頁=出力1頁、A4縦、頁番号省略、CCW90表、全文・セル・図の独立照合、追加頁拒否 |
 
 ## 範囲と制約
 
@@ -97,3 +98,29 @@ Python 3.12.12／3.13.11の新規仮想環境へwheelを通常インストール
 tracemalloc自体の負荷があるため、時間とメモリを別実行で記録しています。ピークはPythonの割当メモリで、プロセスのRSSではありません。入力行リストの作成とPDF抽出は計測範囲外です。表示内容や書体・環境に依存する実測であり、性能保証値や合否の上限ではありません。
 
 実行スクリプトは `.agents/logs/benchmark_300.py`、結果は `build/reports/performance-300{,-time}.json`、PDFは同じstemで保存しています。これらはローカル受入の生成物で、配布パッケージには入りません。
+
+### 片持ち梁の原本p01〜37
+
+ユーザーが指摘した書体・インデント・等号位置・表行高を修正し、原本PDFから直接取得した情報で外観を検査しています。旧goldenの一致だけを原本との外観一致の証拠にはしません。今回の最終検証は **1738 passed（107.30秒）**、製品の行カバレッジ **98.92%（2693行中2664行）** です（`cantilever-appearance-final-full`）。
+
+`tests/fixtures/cantilever_p01_37/` は `tests/output/13_片持ち梁照査.pdf` の物理p1〜37を再現する表示用原稿です。本文・数式・表を公開部品で組み、16点の図だけは出典とhashを持つ画像素材として原寸配置します。構造計算の再計算や原本の表示値の訂正は行いません。
+
+原本1頁を出力1頁へ固定し、全頁595×842pt・PDF Rotate0とします。p30〜37の表は`QuarterTurn`で反時計回り90度に配置し、全頁の右上番号を省略します。`KeepTogether`と頁ID検査により、容量不足、内容の別頁移動、追加頁は「原本再現できず」のエラーです。文字の自動縮小や余剰頁の切捨ては行いません。
+
+```powershell
+uv run --locked --extra dev python -X utf8 tests/fixtures/cantilever_p01_37/render.py --output build/reports/cantilever-p01-37
+```
+
+このコマンドは一意の`.staging/<bundle-id>/`へ通常/grid PDF、配置trace、原本対応表、各37枚のpreviewを生成し、両PDFの内容と外観を検証します。検証後も自動でcurrentにはしません。全74画像の目視記録が成果物hashと一致した場合だけ、`--activate <staging-dir> --visual-review <review.json>`で不変の`versions/<bundle-id>/`へ移し、最後に`current.json`を原子的に切り替えます。途中失敗時に旧currentが残ることを失敗注入で検査します。先行5頁などのsubsetはcurrent化できません。
+
+照合用`expected/`は組立用`pages/`と別担当が原本から作成しています。全項目・空セル・結合・罫線・文字方向・添字・字形サイズ・画像の配置と画素を実PDFから検査します。114算式、124ケース、63箇所の`#######`の総量確認は、項目ごとの照合を補う検査です。生成後画像の回帰手順は[画像回帰の説明](../tests/visual/README.md)、不足機能と改善候補は[改善項目一覧](../.agents/docs/research/cantilever-p01-37-improvements.md)を参照してください。
+
+2026-10-17の外観修正後全件実測は原本12PDFのhash、既存golden、新しい通常37頁goldenの再生成画素一致を含みます。通常/grid各3345項目と全37頁の外観検査が合格。外観107件、旧内容127件、builder25件、固定頁/保存24件の計283件もrootが個別に再実行しました。基線21,204字の最大差は0.043419pt、等号335件は0.0000611pt、表罫線21,312検査は0.002ptです。全体coverageの実数は`.agents/logs/cantilever-appearance-final-coverage.json`に保存しています。
+
+rootは再生成した最終候補の通常37枚/grid37枚を個別表示し、原本の書体・インデント・等号・行高、添字・括弧の接触、切断、セル結合、罫線、回転方向、頁番号不在を確認しました。記録は`build/reports/cantilever-p01-37/appearance-correction-visual-review.json`、登録画像とhashは`tests/visual/cantilever_p01_37/manifest.json`です。128入力・78成果物・全74目視画像を結び付けています。原本との全画素一致は主張しません。細罫の塗り矩形とstrokeには描画時のアンチエイリアス差が残り、書体の微小な変形も独立した許容範囲で検査します。
+
+独立レビューで見つかった最適化Python起動時の検査消失、添字や意味runの基線ずれ、未対応ASTの黙示省略、relationの別文字への置換、行/style数不一致による行欠落を修正し、負例を追加しました。原本に対する非空白文字の一回被覆・方向・読み順も検査します。検証器は`-O`/`-OO`/`PYTHONOPTIMIZE`を明示拒否します。
+
+追加APIを含むsdist→wheelも、リポジトリ外の新規Python3.12.12/3.13.11で受入済みです。21製品moduleを含み、原本・書体・検証コードを配布物へ含めません。PyMuPDF未導入でQuarterTurn±1、選択罫線、Table.row_heightsと過小高の拒否、Text.shear_x、後続の水平文字を検証し、両環境の画素一致を確認しました。証拠は`build/reports/cantilever-p01-37/wheel-acceptance.json`です。
+
+初回1508件の検証と`20261017T005753Z-7952a1f3f915474c8a478f77d40cf9da`は外観修正前の履歴です。今回の完成版は`versions/20261017T023053Z-a954761644604bd1a289b5fcdd9f20d1/`で、独立レビュー未解決0・全ゲート通過後に有効化しました。`build/reports/cantilever-p01-37/current.json`の解決先、128入力・78成果物のhash、両PDF37頁・A4縦・Rotate0をrootが再確認済みです。記録は同rootの`appearance-correction-current-audit.json`です。

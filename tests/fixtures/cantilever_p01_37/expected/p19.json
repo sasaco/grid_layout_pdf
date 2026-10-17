@@ -1,0 +1,447 @@
+{
+  "schema_version": 1,
+  "source_page": 19,
+  "source_sha256": "e56bf3ddbe3314ed95517099bedb0e68005df1567b0b3e8f52a2a4066d03393e",
+  "provenance": {
+    "author": "oracle",
+    "method": "independent source glyph transcription and visual comparison",
+    "reviewed_source_image": "source-survey/p19.png",
+    "review_status": "source-reviewed"
+  },
+  "omitted_page_number": "13 - 19",
+  "source_character_inventory": {
+    "#": 70,
+    "+": 11,
+    "-": 2,
+    ".": 30,
+    "/": 4,
+    "0": 46,
+    "1": 31,
+    "2": 15,
+    "3": 3,
+    "4": 2,
+    "5": 4,
+    "6": 2,
+    "7": 5,
+    "8": 7,
+    "9": 1,
+    "D": 6,
+    "H": 4,
+    "L": 2,
+    "N": 10,
+    "R": 6,
+    "S": 3,
+    "T": 4,
+    "[": 1,
+    "]": 1,
+    "b": 2,
+    "d": 4,
+    "k": 10,
+    "m": 4,
+    "n": 1,
+    "s": 2,
+    "×": 11,
+    "μ": 2,
+    "※": 4,
+    "∴": 1,
+    "く": 6,
+    "せ": 1,
+    "に": 6,
+    "の": 1,
+    "み": 1,
+    "わ": 1,
+    "ゴ": 2,
+    "ス": 2,
+    "ッ": 2,
+    "ト": 2,
+    "パ": 2,
+    "ム": 2,
+    "・": 3,
+    "ー": 2,
+    "働": 6,
+    "動": 1,
+    "可": 1,
+    "合": 1,
+    "固": 1,
+    "定": 1,
+    "平": 4,
+    "承": 4,
+    "支": 4,
+    "水": 4,
+    "直": 2,
+    "組": 1,
+    "荷": 6,
+    "重": 6,
+    "鉛": 2,
+    "＝": 20
+  },
+  "marker_count": 4,
+  "hash_placeholder_count": 10,
+  "blocks": [
+    {
+      "id": "p19-condition",
+      "source_bbox": [
+        0,
+        69.71111907958985,
+        595,
+        81.30846557617187
+      ],
+      "text": "・1.0 LR[1.1D1 + 1.2D2+ 1.0LR + S30 の組み合わせ]",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [
+        {
+          "text": "R",
+          "size": 6.639,
+          "character_index": 5,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        },
+        {
+          "text": "1",
+          "size": 6.639,
+          "character_index": 11,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        },
+        {
+          "text": "2",
+          "size": 6.639,
+          "character_index": 17,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        },
+        {
+          "text": "R",
+          "size": 6.639,
+          "character_index": 23,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        },
+        {
+          "text": "3",
+          "size": 6.639,
+          "character_index": 26,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        },
+        {
+          "text": "0",
+          "size": 6.639,
+          "character_index": 27,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        }
+      ],
+      "kind": "text"
+    },
+    {
+      "id": "p19-t1",
+      "source_bbox": [
+        0,
+        98.0311264038086,
+        595,
+        108.17094573974609
+      ],
+      "text": " T1 ＝1.0×#######＝ 400.00kN",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p19-movable",
+      "source_bbox": [
+        0,
+        125.1511215209961,
+        595,
+        135.29094848632812
+      ],
+      "text": "可動支承に働く鉛直荷重",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p19-movable-rm",
+      "source_bbox": [
+        0,
+        137.51117553710938,
+        595,
+        175.97100219726562
+      ],
+      "text": "Rm ＝1.1D1 + 1.2D2 + S30\n＝1.1×5 740.00+1.2×#######+1.0×#######\n＝7 758.00kN",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [
+        {
+          "text": "1",
+          "size": 6.639,
+          "character_index": 7,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        },
+        {
+          "text": "2",
+          "size": 6.639,
+          "character_index": 13,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        },
+        {
+          "text": "3",
+          "size": 6.639,
+          "character_index": 16,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        },
+        {
+          "text": "0",
+          "size": 6.639,
+          "character_index": 17,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        }
+      ],
+      "kind": "text"
+    },
+    {
+      "id": "p19-movable-hbd",
+      "source_bbox": [
+        0,
+        192.95117797851563,
+        595,
+        217.37096557617187
+      ],
+      "text": "ゴム支承に働く水平荷重\nHbd ＝μ・Rm＝0.1×7 758.00＝#######kN",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [
+        {
+          "text": "b",
+          "size": 6.639,
+          "character_index": 12,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        },
+        {
+          "text": "d",
+          "size": 6.639,
+          "character_index": 13,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        }
+      ],
+      "kind": "text"
+    },
+    {
+      "id": "p19-movable-hsd",
+      "source_bbox": [
+        0,
+        233.63117065429688,
+        595,
+        258.05095825195315
+      ],
+      "text": "ストッパーに働く水平荷重\nHsd ＝ 0.00kN",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [
+        {
+          "text": "s",
+          "size": 6.639,
+          "character_index": 13,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        },
+        {
+          "text": "d",
+          "size": 6.639,
+          "character_index": 14,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        }
+      ],
+      "kind": "text"
+    },
+    {
+      "id": "p19-t2",
+      "source_bbox": [
+        0,
+        301.4271301269531,
+        595,
+        311.57097778320315
+      ],
+      "text": " T2 ＝1.0×#######＝ 200.00kN",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p19-fixed",
+      "source_bbox": [
+        0,
+        328.5511535644531,
+        595,
+        338.69097290039065
+      ],
+      "text": "固定支承に働く鉛直荷重",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p19-fixed-rm",
+      "source_bbox": [
+        0,
+        340.9111694335937,
+        595,
+        379.3709655761719
+      ],
+      "text": "Rm ＝1.1D1 + 1.2D2 + S30\n＝1.1×1 860.00+1.2×#######+1.0×#######\n＝2 808.00kN",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [
+        {
+          "text": "1",
+          "size": 6.639,
+          "character_index": 7,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        },
+        {
+          "text": "2",
+          "size": 6.639,
+          "character_index": 13,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        },
+        {
+          "text": "3",
+          "size": 6.639,
+          "character_index": 16,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        },
+        {
+          "text": "0",
+          "size": 6.639,
+          "character_index": 17,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        }
+      ],
+      "kind": "text"
+    },
+    {
+      "id": "p19-fixed-hbd",
+      "source_bbox": [
+        0,
+        396.35114135742185,
+        595,
+        420.7709899902344
+      ],
+      "text": "ゴム支承に働く水平荷重\nHbd ＝ 0.00kN",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [
+        {
+          "text": "b",
+          "size": 6.639,
+          "character_index": 12,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        },
+        {
+          "text": "d",
+          "size": 6.639,
+          "character_index": 13,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        }
+      ],
+      "kind": "text"
+    },
+    {
+      "id": "p19-stopper",
+      "source_bbox": [
+        0,
+        437.0311645507812,
+        595,
+        487.8509765625
+      ],
+      "text": "ストッパーに働く水平荷重\nT - 1/2μ・Rm ＝#######-1/2×0.1×2 808.00\n＝ 59.60kN\nT / n＝#######/2＝ 100.00kN",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p19-hsd",
+      "source_bbox": [
+        0,
+        503.63117065429685,
+        595,
+        515.6909423828125
+      ],
+      "text": "∴Hsd ＝#######kN",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [
+        {
+          "text": "s",
+          "size": 6.639,
+          "character_index": 2,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        },
+        {
+          "text": "d",
+          "size": 6.639,
+          "character_index": 3,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        }
+      ],
+      "kind": "text"
+    }
+  ]
+}

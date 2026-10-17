@@ -1,0 +1,239 @@
+{
+  "schema_version": 1,
+  "source_page": 9,
+  "source_sha256": "e56bf3ddbe3314ed95517099bedb0e68005df1567b0b3e8f52a2a4066d03393e",
+  "provenance": {
+    "author": "oracle",
+    "method": "independent source glyph transcription and visual comparison",
+    "reviewed_source_image": "source-survey/p09.png",
+    "review_status": "source-reviewed"
+  },
+  "omitted_page_number": "13 - 9",
+  "source_character_inventory": {
+    "#": 7,
+    "(": 3,
+    ")": 4,
+    "+": 1,
+    ".": 21,
+    "/": 1,
+    "0": 19,
+    "1": 12,
+    "2": 8,
+    "3": 19,
+    "4": 2,
+    "5": 15,
+    "6": 6,
+    "7": 4,
+    "8": 15,
+    "9": 4,
+    "B": 3,
+    "N": 4,
+    "a": 1,
+    "i": 1,
+    "k": 4,
+    "m": 3,
+    "x": 4,
+    "±": 2,
+    "×": 1,
+    "Σ": 1,
+    "に": 2,
+    "の": 2,
+    "よ": 2,
+    "る": 2,
+    "ク": 2,
+    "ト": 3,
+    "メ": 1,
+    "モ": 1,
+    "ル": 2,
+    "ン": 1,
+    "ー": 1,
+    "両": 1,
+    "位": 1,
+    "作": 1,
+    "力": 2,
+    "合": 1,
+    "場": 1,
+    "大": 1,
+    "平": 1,
+    "支": 1,
+    "最": 1,
+    "桁": 4,
+    "横": 1,
+    "水": 1,
+    "点": 1,
+    "用": 1,
+    "直": 2,
+    "置": 1,
+    "荷": 2,
+    "車": 1,
+    "重": 2,
+    "鉛": 2,
+    "＋": 3,
+    "／": 2,
+    "＝": 10,
+    "Ｂ": 1,
+    "Ｇ": 4,
+    "Ｈ": 1,
+    "Ｍ": 1,
+    "Ｘ": 1,
+    "ｙ": 1,
+    "･": 1
+  },
+  "marker_count": 0,
+  "hash_placeholder_count": 1,
+  "blocks": [
+    {
+      "id": "p09-title",
+      "source_bbox": [
+        0,
+        68.39117279052735,
+        595,
+        78.53099212646484
+      ],
+      "text": "5) 車両横荷重のトルクによる鉛直荷重",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p09-subtitle",
+      "source_bbox": [
+        0,
+        96.23113861083985,
+        595,
+        106.37095794677734
+      ],
+      "text": "(a) Ｂ支点最大の場合",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p09-forces",
+      "source_bbox": [
+        0,
+        267.35114135742185,
+        595,
+        323.69097290039065
+      ],
+      "text": "水平力ＨB＝32.00×(18.850＋16.650＋13.850＋11.650)/18.850\n＝103.55kN\n作用位置ｙB＝＝3.850m\nモーメントＭB＝103.55x3.850＝398.67kN･m",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [
+        {
+          "text": "B",
+          "size": 6.639,
+          "character_index": 4,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        },
+        {
+          "text": "B",
+          "size": 6.639,
+          "character_index": 62,
+          "baseline_delta": 2.52,
+          "role": "subscript"
+        },
+        {
+          "text": "B",
+          "size": 6.639,
+          "character_index": 77,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        }
+      ],
+      "kind": "text"
+    },
+    {
+      "id": "p09-torque-title",
+      "source_bbox": [
+        0,
+        334.5511535644531,
+        595,
+        344.69097290039065
+      ],
+      "text": "トルクによる鉛直力",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p09-sum-x2",
+      "source_bbox": [
+        0,
+        535.5090087890625,
+        595,
+        548.4509521484375
+      ],
+      "text": "ΣＸi2＝(1.502+3.802)x2＝#######m2",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [
+        {
+          "text": "2",
+          "size": 6.639,
+          "character_index": 3,
+          "baseline_delta": -4.92,
+          "role": "superscript"
+        },
+        {
+          "text": "2",
+          "size": 6.639,
+          "character_index": 10,
+          "baseline_delta": -4.2,
+          "role": "superscript"
+        },
+        {
+          "text": "2",
+          "size": 6.639,
+          "character_index": 16,
+          "baseline_delta": -4.2,
+          "role": "superscript"
+        },
+        {
+          "text": "2",
+          "size": 6.639,
+          "character_index": 29,
+          "baseline_delta": -4.2,
+          "role": "superscript"
+        }
+      ],
+      "kind": "text"
+    },
+    {
+      "id": "p09-reactions",
+      "source_bbox": [
+        0,
+        559.3111328125,
+        595,
+        590.4509521484375
+      ],
+      "text": "Ｇ1桁 Ｇ4桁398.67x3.80／33.3800＝±45.38kN\nＧ2桁 Ｇ3桁398.67x1.50／33.3800＝±17.92kN",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    }
+  ]
+}

@@ -1,0 +1,365 @@
+{
+  "schema_version": 1,
+  "source_page": 20,
+  "blocks": [
+    {
+      "id": "p20-title",
+      "type": "paragraph",
+      "text": "(b) 地震時慣性力",
+      "size": 10
+    },
+    {
+      "id": "p20-title-gap",
+      "type": "spacer",
+      "rows": 1
+    },
+    {
+      "id": "p20-t1",
+      "type": "equations",
+      "size": 10,
+      "gap": 1.2,
+      "anchors": {
+        "first_equal": 4,
+        "second_equal": 23,
+        "result_right": 28,
+        "unit_start": 29
+      },
+      "equations": [
+        {
+          "lhs": "※ T1",
+          "rhs": {
+            "type": "row",
+            "items": [
+              "5 241.88",
+              "+",
+              "128.00"
+            ],
+            "gap": 3
+          },
+          "relation": "＝",
+          "result_relation": "＝",
+          "result": "5 369.88",
+          "unit": "kN"
+        }
+      ]
+    },
+    {
+      "id": "p20-movable-with-rule",
+      "type": "columns",
+      "col_spans": [
+        1,
+        29
+      ],
+      "gap_cols": 0,
+      "children": [
+        {
+          "id": "p20-movable-rule",
+          "type": "rule",
+          "rows": 12
+        },
+        {
+          "id": "p20-movable-derivation",
+          "type": "stack",
+          "children": [
+            {
+              "id": "p20-movable",
+              "type": "paragraph",
+              "text": "可動支承に働く鉛直荷重",
+              "size": 10
+            },
+            {
+              "id": "p20-movable-rm",
+              "type": "equations",
+              "size": 10,
+              "gap": 1.2,
+              "anchors": {
+                "first_equal": 3,
+                "second_equal": 22,
+                "result_right": 27,
+                "unit_start": 28
+              },
+              "equations": [
+                {
+                  "lhs": "Rm",
+                  "rhs": {
+                    "type": "row",
+                    "items": [
+                      {
+                        "type": "script",
+                        "base": "D",
+                        "sub": "1"
+                      },
+                      "+",
+                      {
+                        "type": "script",
+                        "base": "D",
+                        "sub": "2"
+                      },
+                      "+ L +",
+                      {
+                        "type": "script",
+                        "base": "S",
+                        "sub": "2"
+                      }
+                    ],
+                    "gap": 1.2
+                  },
+                  "relation": "＝",
+                  "result_relation": "＝"
+                },
+                {
+                  "lhs": "",
+                  "rhs": {
+                    "type": "row",
+                    "items": [
+                      "5 740.00",
+                      "+",
+                      "#######",
+                      "+",
+                      "#######",
+                      "+",
+                      "#######"
+                    ],
+                    "gap": 3
+                  },
+                  "relation": "＝",
+                  "result_relation": "＝"
+                },
+                {
+                  "lhs": "",
+                  "rhs": "",
+                  "relation": "＝",
+                  "result_relation": " ",
+                  "result": "7 040.00",
+                  "unit": "kN"
+                }
+              ]
+            },
+            {
+              "id": "p20-movable-rm-gap",
+              "type": "spacer",
+              "rows": 1
+            },
+            {
+              "id": "p20-movable-hbd-title",
+              "type": "paragraph",
+              "text": "ゴム支承に働く水平荷重",
+              "size": 10
+            },
+            {
+              "id": "p20-movable-hbd-equation",
+              "type": "equations",
+              "size": 10,
+              "gap": 1.2,
+              "anchors": {
+                "first_equal": 3,
+                "second_equal": 22,
+                "result_right": 27,
+                "unit_start": 28
+              },
+              "equations": [
+                {
+                  "lhs": {
+                    "type": "script",
+                    "base": "H",
+                    "sub": "bd"
+                  },
+                  "rhs": "",
+                  "relation": "＝",
+                  "result_relation": " ",
+                  "result": "0.00",
+                  "unit": "kN"
+                }
+              ]
+            },
+            {
+              "id": "p20-movable-hbd-gap",
+              "type": "spacer",
+              "rows": 1
+            },
+            {
+              "id": "p20-movable-hsd-title",
+              "type": "paragraph",
+              "text": "ストッパーに働く水平荷重",
+              "size": 10
+            },
+            {
+              "id": "p20-movable-hsd-equation",
+              "type": "equations",
+              "size": 10,
+              "gap": 1.2,
+              "anchors": {
+                "first_equal": 3,
+                "second_equal": 22,
+                "result_right": 27,
+                "unit_start": 28
+              },
+              "equations": [
+                {
+                  "lhs": {
+                    "type": "script",
+                    "base": "H",
+                    "sub": "sd"
+                  },
+                  "rhs": {
+                    "type": "row",
+                    "items": [
+                      "T / n",
+                      "＝",
+                      "5 369.88",
+                      "/",
+                      "2"
+                    ],
+                    "gap": 3
+                  },
+                  "relation": "＝",
+                  "result_relation": "＝",
+                  "result": "2 684.94",
+                  "unit": "kN"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "p20-movable-closing-mark",
+      "type": "paragraph",
+      "text": "※",
+      "size": 10
+    },
+    {
+      "id": "p20-between-bearings",
+      "type": "spacer",
+      "rows": 1
+    },
+    {
+      "id": "p20-t2",
+      "type": "equations",
+      "size": 10,
+      "gap": 1.2,
+      "anchors": {
+        "first_equal": 4,
+        "second_equal": 23,
+        "result_right": 28,
+        "unit_start": 29
+      },
+      "equations": [
+        {
+          "lhs": "※ T2",
+          "rhs": {
+            "type": "row",
+            "items": [
+              "1 829.64",
+              "+",
+              "64.00"
+            ],
+            "gap": 3
+          },
+          "relation": "＝",
+          "result_relation": "＝",
+          "result": "1 893.64",
+          "unit": "kN"
+        }
+      ]
+    },
+    {
+      "id": "p20-fixed-with-rule",
+      "type": "columns",
+      "col_spans": [
+        1,
+        29
+      ],
+      "gap_cols": 0,
+      "children": [
+        {
+          "id": "p20-fixed-rule",
+          "type": "rule",
+          "rows": 7
+        },
+        {
+          "id": "p20-fixed-derivation",
+          "type": "stack",
+          "children": [
+            {
+              "id": "p20-fixed-hbd-title",
+              "type": "paragraph",
+              "text": "ゴム支承に働く水平荷重",
+              "size": 10
+            },
+            {
+              "id": "p20-fixed-hbd-equation",
+              "type": "equations",
+              "size": 10,
+              "gap": 1.2,
+              "anchors": {
+                "first_equal": 3,
+                "second_equal": 22,
+                "result_right": 27,
+                "unit_start": 28
+              },
+              "equations": [
+                {
+                  "lhs": {
+                    "type": "script",
+                    "base": "H",
+                    "sub": "bd"
+                  },
+                  "rhs": "",
+                  "relation": "＝",
+                  "result_relation": " ",
+                  "result": "0.00",
+                  "unit": "kN"
+                }
+              ]
+            },
+            {
+              "id": "p20-fixed-hbd-gap",
+              "type": "spacer",
+              "rows": 1
+            },
+            {
+              "id": "p20-fixed-hsd-title",
+              "type": "paragraph",
+              "text": "ストッパーに働く水平荷重",
+              "size": 10
+            },
+            {
+              "id": "p20-fixed-hsd-equation",
+              "type": "equations",
+              "size": 10,
+              "gap": 1.2,
+              "anchors": {
+                "first_equal": 3,
+                "second_equal": 22,
+                "result_right": 27,
+                "unit_start": 28
+              },
+              "equations": [
+                {
+                  "lhs": {
+                    "type": "script",
+                    "base": "H",
+                    "sub": "sd"
+                  },
+                  "rhs": "",
+                  "relation": "＝",
+                  "result_relation": " ",
+                  "result": "1 893.64",
+                  "unit": "kN"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "p20-fixed-closing-mark",
+      "type": "paragraph",
+      "text": "※",
+      "size": 10
+    }
+  ]
+}

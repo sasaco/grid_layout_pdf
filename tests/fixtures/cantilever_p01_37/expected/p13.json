@@ -1,0 +1,314 @@
+{
+  "schema_version": 1,
+  "source_page": 13,
+  "source_sha256": "e56bf3ddbe3314ed95517099bedb0e68005df1567b0b3e8f52a2a4066d03393e",
+  "provenance": {
+    "author": "oracle",
+    "method": "independent source glyph transcription and visual comparison",
+    "reviewed_source_image": "source-survey/p13.png",
+    "review_status": "source-reviewed"
+  },
+  "omitted_page_number": "13 - 13",
+  "source_character_inventory": {
+    "#": 49,
+    "(": 3,
+    ")": 4,
+    ",": 1,
+    "-": 4,
+    ".": 44,
+    "0": 54,
+    "1": 9,
+    "2": 21,
+    "3": 26,
+    "4": 19,
+    "5": 29,
+    "6": 11,
+    "7": 15,
+    "8": 10,
+    "9": 15,
+    "=": 2,
+    "B": 3,
+    "C": 3,
+    "K": 1,
+    "N": 10,
+    "b": 1,
+    "c": 1,
+    "f": 1,
+    "h": 1,
+    "k": 10,
+    "m": 5,
+    "x": 8,
+    "×": 6,
+    "α": 1,
+    "ρ": 1,
+    "に": 3,
+    "の": 1,
+    "よ": 3,
+    "る": 3,
+    "ク": 3,
+    "ト": 5,
+    "メ": 2,
+    "モ": 2,
+    "ル": 3,
+    "ン": 2,
+    "ー": 2,
+    "上": 1,
+    "位": 2,
+    "作": 2,
+    "側": 2,
+    "力": 6,
+    "反": 1,
+    "地": 1,
+    "大": 1,
+    "工": 1,
+    "平": 2,
+    "度": 1,
+    "応": 1,
+    "性": 1,
+    "慣": 1,
+    "時": 1,
+    "最": 1,
+    "桁": 6,
+    "水": 2,
+    "点": 2,
+    "用": 2,
+    "直": 3,
+    "答": 1,
+    "終": 1,
+    "置": 2,
+    "起": 1,
+    "部": 1,
+    "鉛": 3,
+    "震": 2,
+    "＋": 6,
+    "／": 6,
+    "１": 2,
+    "２": 2,
+    "３": 1,
+    "４": 1,
+    "＝": 19,
+    "Ｇ": 6,
+    "Ｈ": 2,
+    "Ｍ": 2,
+    "ｙ": 2,
+    "･": 2
+  },
+  "marker_count": 0,
+  "hash_placeholder_count": 7,
+  "blocks": [
+    {
+      "id": "p13-title",
+      "source_bbox": [
+        0,
+        71.0311264038086,
+        595,
+        81.17094573974609
+      ],
+      "text": "7) 地震時上部工慣性力のトルクによる鉛直反力",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p13-response",
+      "source_bbox": [
+        0,
+        99.11114349365235,
+        595,
+        109.73094329833984
+      ],
+      "text": "最大応答震度Kh＝0.552(ρm = 1.0, αf = 1.0)",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p13-origin-title",
+      "source_bbox": [
+        0,
+        128.15112915039063,
+        595,
+        138.29094848632812
+      ],
+      "text": "(b) 起点側",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p13-origin-forces",
+      "source_bbox": [
+        0,
+        141.59113159179688,
+        595,
+        183.65099487304687
+      ],
+      "text": "水平力ＨB＝0.552×5520.00＝3047.04kN\n作用位置ｙB＝＝2.750m\nモーメントＭB＝3047.04x2.750＝#######kN･m",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [
+        {
+          "text": "B",
+          "size": 6.639,
+          "character_index": 4,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        },
+        {
+          "text": "B",
+          "size": 6.639,
+          "character_index": 34,
+          "baseline_delta": 2.52,
+          "role": "subscript"
+        },
+        {
+          "text": "B",
+          "size": 6.639,
+          "character_index": 49,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        }
+      ],
+      "kind": "text"
+    },
+    {
+      "id": "p13-origin-torque-title",
+      "source_bbox": [
+        0,
+        362.99115600585935,
+        595,
+        373.1309753417969
+      ],
+      "text": "トルクによる鉛直力",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p13-origin-reactions",
+      "source_bbox": [
+        0,
+        382.6711486816406,
+        595,
+        436.9709716796875
+      ],
+      "text": "Ｇ１桁8379.36x-3.80／33.3800＋#######×0.552＝-1246.47kN\nＧ２桁8379.36x-1.50／33.3800＋#######×0.552＝-492.46kN\nＧ３桁8379.36x1.50／33.3800＋210.00×0.552＝492.46kN\nＧ４桁8379.36x3.80／33.3800＋530.00×0.552＝1246.47kN",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p13-end-title",
+      "source_bbox": [
+        0,
+        468.35114135742185,
+        595,
+        478.4909606933594
+      ],
+      "text": "(c) 終点側",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p13-end-forces",
+      "source_bbox": [
+        0,
+        481.7911437988281,
+        595,
+        523.8509765625
+      ],
+      "text": "水平力ＨC＝0.552×1720.00＝949.44kN\n作用位置ｙC＝＝2.750m\nモーメントＭC＝949.44x2.750＝#######kN･m",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [
+        {
+          "text": "C",
+          "size": 6.639,
+          "character_index": 4,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        },
+        {
+          "text": "C",
+          "size": 6.639,
+          "character_index": 33,
+          "baseline_delta": 2.52,
+          "role": "subscript"
+        },
+        {
+          "text": "C",
+          "size": 6.639,
+          "character_index": 48,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        }
+      ],
+      "kind": "text"
+    },
+    {
+      "id": "p13-end-torque-title",
+      "source_bbox": [
+        0,
+        717.4711059570312,
+        595,
+        727.6109252929688
+      ],
+      "text": "トルクによる鉛直力",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p13-end-reactions",
+      "source_bbox": [
+        0,
+        737.1510986328125,
+        595,
+        762.8909545898438
+      ],
+      "text": "Ｇ１桁#######／5.9000＋#######x0.552＝#######kN\nＧ２桁2610.96／5.9000＋430.00x0.552＝679.90kN",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    }
+  ]
+}

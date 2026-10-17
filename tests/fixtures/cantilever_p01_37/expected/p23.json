@@ -1,0 +1,493 @@
+{
+  "schema_version": 1,
+  "source_page": 23,
+  "source_sha256": "e56bf3ddbe3314ed95517099bedb0e68005df1567b0b3e8f52a2a4066d03393e",
+  "provenance": {
+    "author": "oracle",
+    "method": "independent source glyph transcription and visual comparison",
+    "reviewed_source_image": "source-survey/p23.png",
+    "review_status": "source-reviewed"
+  },
+  "omitted_page_number": "13 - 23",
+  "source_character_inventory": {
+    "(": 4,
+    ")": 4,
+    ".": 16,
+    "/": 1,
+    "0": 10,
+    "1": 3,
+    "2": 13,
+    "3": 7,
+    "4": 4,
+    "5": 7,
+    "6": 2,
+    "7": 9,
+    "8": 2,
+    "9": 6,
+    "N": 2,
+    "k": 2,
+    "m": 2,
+    "×": 7,
+    "―": 1,
+    "①": 1,
+    "②": 1,
+    "の": 1,
+    "ア": 1,
+    "ム": 1,
+    "・": 1,
+    "ー": 1,
+    "力": 1,
+    "式": 1,
+    "持": 1,
+    "梁": 1,
+    "片": 1,
+    "直": 1,
+    "算": 1,
+    "自": 1,
+    "重": 1,
+    "鉛": 1,
+    "ｰ": 1,
+    "ﾄ": 1,
+    "ﾒ": 1,
+    "ﾓ": 1,
+    "ﾝ": 1
+  },
+  "marker_count": 0,
+  "hash_placeholder_count": 0,
+  "blocks": [
+    {
+      "id": "p23-title",
+      "source_bbox": [
+        0,
+        70.93112640380859,
+        595,
+        81.2709457397461
+      ],
+      "text": "(3) 片持梁の自重",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p23-weight-table",
+      "kind": "table",
+      "direction": [
+        1,
+        0
+      ],
+      "cells": [
+        {
+          "id": "p23-weight-table.r0.c0",
+          "source_bbox": [
+            109,
+            326,
+            125,
+            355
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p23-weight-table.r0.c1",
+          "source_bbox": [
+            125,
+            326,
+            336,
+            355
+          ],
+          "text": "算　式",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p23-weight-table.r0.c2",
+          "source_bbox": [
+            336,
+            326,
+            395,
+            355
+          ],
+          "text": "鉛直力\n(kN)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p23-weight-table.r0.c3",
+          "source_bbox": [
+            395,
+            326,
+            453,
+            355
+          ],
+          "text": "アーム\n(m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p23-weight-table.r0.c4",
+          "source_bbox": [
+            453,
+            326,
+            519,
+            355
+          ],
+          "text": "ﾓｰﾒﾝﾄ\n(kN・m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p23-weight-table.r1.c0",
+          "source_bbox": [
+            109,
+            355,
+            125,
+            371.7
+          ],
+          "text": "①",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p23-weight-table.r1.c1",
+          "source_bbox": [
+            125,
+            355,
+            336,
+            371.7
+          ],
+          "text": "24.5×2.70×2.00×2.25",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p23-weight-table.r1.c2",
+          "source_bbox": [
+            336,
+            355,
+            395,
+            371.7
+          ],
+          "text": "297.68",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p23-weight-table.r1.c3",
+          "source_bbox": [
+            395,
+            355,
+            453,
+            371.7
+          ],
+          "text": "1.125",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p23-weight-table.r1.c4",
+          "source_bbox": [
+            453,
+            355,
+            519,
+            371.7
+          ],
+          "text": "334.89",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p23-weight-table.r2.c0",
+          "source_bbox": [
+            109,
+            371.7,
+            125,
+            386
+          ],
+          "text": "②",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p23-weight-table.r2.c1",
+          "source_bbox": [
+            125,
+            371.7,
+            336,
+            386
+          ],
+          "text": "24.5×2.70×0.70×2.25×1/2",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p23-weight-table.r2.c2",
+          "source_bbox": [
+            336,
+            371.7,
+            395,
+            386
+          ],
+          "text": "52.09",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p23-weight-table.r2.c3",
+          "source_bbox": [
+            395,
+            371.7,
+            453,
+            386
+          ],
+          "text": "0.750",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p23-weight-table.r2.c4",
+          "source_bbox": [
+            453,
+            371.7,
+            519,
+            386
+          ],
+          "text": "39.07",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p23-weight-table.r3.c0",
+          "source_bbox": [
+            109,
+            386,
+            125,
+            401
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p23-weight-table.r3.c1",
+          "source_bbox": [
+            125,
+            386,
+            336,
+            401
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p23-weight-table.r3.c2",
+          "source_bbox": [
+            336,
+            386,
+            395,
+            401
+          ],
+          "text": "349.77",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p23-weight-table.r3.c3",
+          "source_bbox": [
+            395,
+            386,
+            453,
+            401
+          ],
+          "text": "―",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p23-weight-table.r3.c4",
+          "source_bbox": [
+            453,
+            386,
+            519,
+            401
+          ],
+          "text": "373.96",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        }
+      ],
+      "header_rows": 1,
+      "body_rows": 3,
+      "columns": 5,
+      "selective_rules": {
+        "horizontal_boundaries": [],
+        "vertical_boundaries": []
+      }
+    }
+  ]
+}

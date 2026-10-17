@@ -1,0 +1,1750 @@
+{
+  "schema_version": 1,
+  "source_page": 1,
+  "source_sha256": "e56bf3ddbe3314ed95517099bedb0e68005df1567b0b3e8f52a2a4066d03393e",
+  "provenance": {
+    "author": "oracle",
+    "method": "independent source glyph transcription and visual comparison",
+    "reviewed_source_image": "source-survey/p01.png",
+    "review_status": "source-reviewed"
+  },
+  "omitted_page_number": "13 - 1",
+  "source_character_inventory": {
+    "(": 3,
+    ")": 6,
+    "-": 1,
+    ".": 54,
+    "/": 1,
+    "0": 104,
+    "1": 36,
+    "2": 25,
+    "3": 22,
+    "4": 9,
+    "5": 21,
+    "6": 12,
+    "7": 8,
+    "8": 7,
+    "9": 2,
+    "=": 8,
+    "A": 1,
+    "B": 2,
+    "C": 1,
+    "D": 5,
+    "G": 4,
+    "N": 4,
+    "R": 1,
+    "S": 2,
+    "a": 2,
+    "k": 4,
+    "§": 1,
+    "×": 2,
+    "Σ": 1,
+    "い": 1,
+    "ち": 1,
+    "に": 1,
+    "の": 2,
+    "る": 1,
+    "上": 1,
+    "付": 2,
+    "使": 1,
+    "値": 1,
+    "側": 2,
+    "列": 2,
+    "力": 1,
+    "加": 2,
+    "反": 1,
+    "固": 2,
+    "大": 1,
+    "定": 3,
+    "工": 1,
+    "年": 6,
+    "応": 1,
+    "性": 1,
+    "持": 1,
+    "支": 1,
+    "最": 1,
+    "査": 1,
+    "桁": 2,
+    "梁": 1,
+    "死": 6,
+    "点": 3,
+    "照": 1,
+    "片": 1,
+    "率": 6,
+    "用": 2,
+    "直": 1,
+    "確": 6,
+    "答": 1,
+    "算": 1,
+    "終": 1,
+    "荷": 12,
+    "表": 1,
+    "起": 1,
+    "車": 2,
+    "部": 1,
+    "重": 12,
+    "鉛": 1,
+    "雪": 2,
+    "（": 4,
+    "）": 4,
+    "＋": 3,
+    "Ｒ": 4
+  },
+  "marker_count": 0,
+  "hash_placeholder_count": 0,
+  "blocks": [
+    {
+      "id": "p01-title",
+      "source_bbox": [
+        0,
+        67.68,
+        595,
+        83.68
+      ],
+      "text": "§13 片持ち梁",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p01-section",
+      "source_bbox": [
+        0,
+        88.68,
+        595,
+        104.68
+      ],
+      "text": "13.1 応答値の算定",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p01-vertical",
+      "source_bbox": [
+        0,
+        109.68,
+        595,
+        125.68
+      ],
+      "text": "(1) 鉛直荷重",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p01-dead-title",
+      "source_bbox": [
+        0,
+        130.68,
+        595,
+        146.68
+      ],
+      "text": "1) 死荷重",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p01-table-title",
+      "source_bbox": [
+        0,
+        151.68,
+        595,
+        167.68
+      ],
+      "text": "表 13.1 上部工死荷重反力",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p01-train-title",
+      "source_bbox": [
+        0,
+        351.6,
+        595,
+        367.6
+      ],
+      "text": "2) 列車荷重",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p01-service-title",
+      "source_bbox": [
+        0,
+        380.76,
+        595,
+        396.76
+      ],
+      "text": "(a) 使用性の照査に用いる列車荷重",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p01-b-title",
+      "source_bbox": [
+        0,
+        407.88,
+        595,
+        423.88
+      ],
+      "text": "a) B支点最大",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p01-dead-loads",
+      "kind": "table",
+      "direction": [
+        1,
+        0
+      ],
+      "cells": [
+        {
+          "id": "p01-dead-loads.r0.c0",
+          "source_bbox": [
+            109.8,
+            167.16,
+            284.04,
+            181.44
+          ],
+          "text": "荷重",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 3
+        },
+        {
+          "id": "p01-dead-loads.r0.c3",
+          "source_bbox": [
+            284.04,
+            167.16,
+            327.66,
+            181.44
+          ],
+          "text": "G1",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r0.c4",
+          "source_bbox": [
+            327.66,
+            167.16,
+            371.22,
+            181.44
+          ],
+          "text": "G2",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r0.c5",
+          "source_bbox": [
+            371.22,
+            167.16,
+            414.78,
+            181.44
+          ],
+          "text": "G3",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r0.c6",
+          "source_bbox": [
+            414.78,
+            167.16,
+            458.34,
+            181.44
+          ],
+          "text": "G4",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r0.c7",
+          "source_bbox": [
+            458.34,
+            167.16,
+            501.96,
+            181.44
+          ],
+          "text": "ΣR",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r1.c0",
+          "source_bbox": [
+            109.8,
+            181.44,
+            182.46,
+            252.84
+          ],
+          "text": "起点側桁",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 0,
+          "rowspan": 5,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r1.c1",
+          "source_bbox": [
+            182.46,
+            181.44,
+            284.04,
+            195.78
+          ],
+          "text": "固定死荷重（D 1）",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [
+            {
+              "text": "1",
+              "size": 6.639,
+              "character_index": 7,
+              "baseline_delta": 1.92,
+              "role": "subscript"
+            }
+          ],
+          "row": 1,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 2
+        },
+        {
+          "id": "p01-dead-loads.r2.c1",
+          "source_bbox": [
+            182.46,
+            195.78,
+            284.04,
+            210.06
+          ],
+          "text": "付加死荷重（D 2）",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [
+            {
+              "text": "2",
+              "size": 6.639,
+              "character_index": 7,
+              "baseline_delta": 1.92,
+              "role": "subscript"
+            }
+          ],
+          "row": 2,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 2
+        },
+        {
+          "id": "p01-dead-loads.r3.c1",
+          "source_bbox": [
+            182.46,
+            210.06,
+            226.02,
+            252.84
+          ],
+          "text": "雪荷重\nS",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 1,
+          "rowspan": 3,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r3.c2",
+          "source_bbox": [
+            226.02,
+            210.06,
+            284.04,
+            224.34
+          ],
+          "text": "2年確率",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r4.c2",
+          "source_bbox": [
+            226.02,
+            224.34,
+            284.04,
+            238.62
+          ],
+          "text": "10年確率",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 4,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r5.c2",
+          "source_bbox": [
+            226.02,
+            238.62,
+            284.04,
+            252.84
+          ],
+          "text": "30年確率",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 5,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r1.c3",
+          "source_bbox": [
+            284.04,
+            181.44,
+            327.66,
+            195.78
+          ],
+          "text": "1530.0",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r1.c4",
+          "source_bbox": [
+            327.66,
+            181.44,
+            371.22,
+            195.78
+          ],
+          "text": "1340.0",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r1.c5",
+          "source_bbox": [
+            371.22,
+            181.44,
+            414.78,
+            195.78
+          ],
+          "text": "1340.0",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r1.c6",
+          "source_bbox": [
+            414.78,
+            181.44,
+            458.34,
+            195.78
+          ],
+          "text": "1530.0",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r1.c7",
+          "source_bbox": [
+            458.34,
+            181.44,
+            501.96,
+            195.78
+          ],
+          "text": "5740.0",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r2.c3",
+          "source_bbox": [
+            284.04,
+            195.78,
+            327.66,
+            210.06
+          ],
+          "text": "160.0",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r2.c4",
+          "source_bbox": [
+            327.66,
+            195.78,
+            371.22,
+            210.06
+          ],
+          "text": "100.0",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r2.c5",
+          "source_bbox": [
+            371.22,
+            195.78,
+            414.78,
+            210.06
+          ],
+          "text": "100.0",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r2.c6",
+          "source_bbox": [
+            414.78,
+            195.78,
+            458.34,
+            210.06
+          ],
+          "text": "160.0",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r2.c7",
+          "source_bbox": [
+            458.34,
+            195.78,
+            501.96,
+            210.06
+          ],
+          "text": "520.0",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r3.c3",
+          "source_bbox": [
+            284.04,
+            210.06,
+            327.66,
+            224.34
+          ],
+          "text": "200.0",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r3.c4",
+          "source_bbox": [
+            327.66,
+            210.06,
+            371.22,
+            224.34
+          ],
+          "text": "30.0",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r3.c5",
+          "source_bbox": [
+            371.22,
+            210.06,
+            414.78,
+            224.34
+          ],
+          "text": "30.0",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r3.c6",
+          "source_bbox": [
+            414.78,
+            210.06,
+            458.34,
+            224.34
+          ],
+          "text": "200.0",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r3.c7",
+          "source_bbox": [
+            458.34,
+            210.06,
+            501.96,
+            224.34
+          ],
+          "text": "460.0",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r4.c3",
+          "source_bbox": [
+            284.04,
+            224.34,
+            327.66,
+            238.62
+          ],
+          "text": "320.0",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 4,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r4.c4",
+          "source_bbox": [
+            327.66,
+            224.34,
+            371.22,
+            238.62
+          ],
+          "text": "50.0",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 4,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r4.c5",
+          "source_bbox": [
+            371.22,
+            224.34,
+            414.78,
+            238.62
+          ],
+          "text": "50.0",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 4,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r4.c6",
+          "source_bbox": [
+            414.78,
+            224.34,
+            458.34,
+            238.62
+          ],
+          "text": "320.0",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 4,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r4.c7",
+          "source_bbox": [
+            458.34,
+            224.34,
+            501.96,
+            238.62
+          ],
+          "text": "740.0",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 4,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r5.c3",
+          "source_bbox": [
+            284.04,
+            238.62,
+            327.66,
+            252.84
+          ],
+          "text": "360.0",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 5,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r5.c4",
+          "source_bbox": [
+            327.66,
+            238.62,
+            371.22,
+            252.84
+          ],
+          "text": "50.0",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 5,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r5.c5",
+          "source_bbox": [
+            371.22,
+            238.62,
+            414.78,
+            252.84
+          ],
+          "text": "50.0",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 5,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r5.c6",
+          "source_bbox": [
+            414.78,
+            238.62,
+            458.34,
+            252.84
+          ],
+          "text": "360.0",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 5,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r5.c7",
+          "source_bbox": [
+            458.34,
+            238.62,
+            501.96,
+            252.84
+          ],
+          "text": "820.0",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 5,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r6.c0",
+          "source_bbox": [
+            109.8,
+            252.84,
+            182.46,
+            324.24
+          ],
+          "text": "終点側桁",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 6,
+          "col": 0,
+          "rowspan": 5,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r6.c1",
+          "source_bbox": [
+            182.46,
+            252.84,
+            284.04,
+            267.18
+          ],
+          "text": "固定死荷重（D 1）",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [
+            {
+              "text": "1",
+              "size": 6.639,
+              "character_index": 7,
+              "baseline_delta": 1.92,
+              "role": "subscript"
+            }
+          ],
+          "row": 6,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 2
+        },
+        {
+          "id": "p01-dead-loads.r7.c1",
+          "source_bbox": [
+            182.46,
+            267.18,
+            284.04,
+            281.46
+          ],
+          "text": "付加死荷重（D 2）",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [
+            {
+              "text": "2",
+              "size": 6.639,
+              "character_index": 7,
+              "baseline_delta": 1.92,
+              "role": "subscript"
+            }
+          ],
+          "row": 7,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 2
+        },
+        {
+          "id": "p01-dead-loads.r8.c1",
+          "source_bbox": [
+            182.46,
+            281.46,
+            226.02,
+            324.24
+          ],
+          "text": "雪荷重\nS",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 8,
+          "col": 1,
+          "rowspan": 3,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r8.c2",
+          "source_bbox": [
+            226.02,
+            281.46,
+            284.04,
+            295.74
+          ],
+          "text": "2年確率",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 8,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r9.c2",
+          "source_bbox": [
+            226.02,
+            295.74,
+            284.04,
+            310.02
+          ],
+          "text": "10年確率",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 9,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r10.c2",
+          "source_bbox": [
+            226.02,
+            310.02,
+            284.04,
+            324.24
+          ],
+          "text": "30年確率",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 10,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r6.c3",
+          "source_bbox": [
+            284.04,
+            252.84,
+            327.66,
+            267.18
+          ],
+          "text": "930.0",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 6,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r6.c4",
+          "source_bbox": [
+            327.66,
+            252.84,
+            371.22,
+            267.18
+          ],
+          "text": "930.0",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 6,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r6.c5",
+          "source_bbox": [
+            371.22,
+            252.84,
+            414.78,
+            267.18
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 6,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r6.c6",
+          "source_bbox": [
+            414.78,
+            252.84,
+            458.34,
+            267.18
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 6,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r6.c7",
+          "source_bbox": [
+            458.34,
+            252.84,
+            501.96,
+            267.18
+          ],
+          "text": "1860.0",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 6,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r7.c3",
+          "source_bbox": [
+            284.04,
+            267.18,
+            327.66,
+            281.46
+          ],
+          "text": "130.0",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 7,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r7.c4",
+          "source_bbox": [
+            327.66,
+            267.18,
+            371.22,
+            281.46
+          ],
+          "text": "130.0",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 7,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r7.c5",
+          "source_bbox": [
+            371.22,
+            267.18,
+            414.78,
+            281.46
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 7,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r7.c6",
+          "source_bbox": [
+            414.78,
+            267.18,
+            458.34,
+            281.46
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 7,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r7.c7",
+          "source_bbox": [
+            458.34,
+            267.18,
+            501.96,
+            281.46
+          ],
+          "text": "260.0",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 7,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r8.c3",
+          "source_bbox": [
+            284.04,
+            281.46,
+            327.66,
+            295.74
+          ],
+          "text": "125.0",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 8,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r8.c4",
+          "source_bbox": [
+            327.66,
+            281.46,
+            371.22,
+            295.74
+          ],
+          "text": "125.0",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 8,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r8.c5",
+          "source_bbox": [
+            371.22,
+            281.46,
+            414.78,
+            295.74
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 8,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r8.c6",
+          "source_bbox": [
+            414.78,
+            281.46,
+            458.34,
+            295.74
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 8,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r8.c7",
+          "source_bbox": [
+            458.34,
+            281.46,
+            501.96,
+            295.74
+          ],
+          "text": "250.0",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 8,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r9.c3",
+          "source_bbox": [
+            284.04,
+            295.74,
+            327.66,
+            310.02
+          ],
+          "text": "200.0",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 9,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r9.c4",
+          "source_bbox": [
+            327.66,
+            295.74,
+            371.22,
+            310.02
+          ],
+          "text": "200.0",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 9,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r9.c5",
+          "source_bbox": [
+            371.22,
+            295.74,
+            414.78,
+            310.02
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 9,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r9.c6",
+          "source_bbox": [
+            414.78,
+            295.74,
+            458.34,
+            310.02
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 9,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r9.c7",
+          "source_bbox": [
+            458.34,
+            295.74,
+            501.96,
+            310.02
+          ],
+          "text": "400.0",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 9,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r10.c3",
+          "source_bbox": [
+            284.04,
+            310.02,
+            327.66,
+            324.24
+          ],
+          "text": "225.0",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 10,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r10.c4",
+          "source_bbox": [
+            327.66,
+            310.02,
+            371.22,
+            324.24
+          ],
+          "text": "225.0",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 10,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r10.c5",
+          "source_bbox": [
+            371.22,
+            310.02,
+            414.78,
+            324.24
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 10,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r10.c6",
+          "source_bbox": [
+            414.78,
+            310.02,
+            458.34,
+            324.24
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 10,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p01-dead-loads.r10.c7",
+          "source_bbox": [
+            458.34,
+            310.02,
+            501.96,
+            324.24
+          ],
+          "text": "450.0",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 10,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        }
+      ],
+      "header_rows": 1,
+      "body_rows": 10,
+      "columns": 8,
+      "cell_edge_rules": {
+        "horizontal_boundaries": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11
+        ],
+        "vertical_boundaries": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ]
+      }
+    },
+    {
+      "id": "p01-reactions",
+      "source_bbox": [
+        0,
+        575,
+        595,
+        700
+      ],
+      "text": "ＲA=160.00×4-517.77=122.23kN\nＲB=160.00×(18.850＋16.650＋13.850＋=517.77kN\n11.650)/18.850\nＲC==0.00kN\nＲD==0.00kN",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [
+        {
+          "text": "A",
+          "size": 6.639,
+          "character_index": 1,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        },
+        {
+          "text": "B",
+          "size": 6.639,
+          "character_index": 28,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        },
+        {
+          "text": "C",
+          "size": 6.639,
+          "character_index": 83,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        },
+        {
+          "text": "D",
+          "size": 6.639,
+          "character_index": 93,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        }
+      ],
+      "kind": "text",
+      "source_reading": "physical baseline order: top-to-bottom, then left-to-right including the result column"
+    }
+  ]
+}

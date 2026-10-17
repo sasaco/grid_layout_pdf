@@ -1,0 +1,701 @@
+{
+  "schema_version": 1,
+  "source_page": 1,
+  "blocks": [
+    {
+      "id": "p01-title",
+      "type": "paragraph",
+      "text": "§13 片持ち梁"
+    },
+    {
+      "id": "p01-section",
+      "type": "paragraph",
+      "text": "13.1 応答値の算定"
+    },
+    {
+      "id": "p01-vertical",
+      "type": "paragraph",
+      "text": "(1) 鉛直荷重"
+    },
+    {
+      "id": "p01-dead-title",
+      "type": "paragraph",
+      "text": "1) 死荷重"
+    },
+    {
+      "id": "p01-before-table",
+      "type": "spacer",
+      "rows": 1
+    },
+    {
+      "id": "p01-table-title",
+      "type": "paragraph",
+      "text": "表 13.1 上部工死荷重反力"
+    },
+    {
+      "id": "p01-dead-loads",
+      "type": "table",
+      "columns": [
+        4,
+        5,
+        5,
+        3,
+        3,
+        3,
+        3,
+        4
+      ],
+      "rows": [
+        [
+          {
+            "lines": [
+              "荷重"
+            ],
+            "colspan": 3
+          },
+          {
+            "lines": [
+              "G1"
+            ]
+          },
+          {
+            "lines": [
+              "G2"
+            ]
+          },
+          {
+            "lines": [
+              "G3"
+            ]
+          },
+          {
+            "lines": [
+              "G4"
+            ]
+          },
+          {
+            "lines": [
+              "ΣR"
+            ]
+          }
+        ],
+        [
+          {
+            "lines": [
+              "起点側桁"
+            ],
+            "rowspan": 5
+          },
+          {
+            "lines": [
+              {
+                "type": "row",
+                "items": [
+                  "固定死荷重（",
+                  {
+                    "type": "script",
+                    "base": "D",
+                    "sub": "1"
+                  },
+                  "）"
+                ],
+                "gap": 1.5
+              }
+            ],
+            "colspan": 2,
+            "padding": 0.1
+          },
+          {
+            "lines": [
+              "1530.0"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "1340.0"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "1340.0"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "1530.0"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "5740.0"
+            ],
+            "align": "right"
+          }
+        ],
+        [
+          {
+            "lines": [
+              {
+                "type": "row",
+                "items": [
+                  "付加死荷重（",
+                  {
+                    "type": "script",
+                    "base": "D",
+                    "sub": "2"
+                  },
+                  "）"
+                ],
+                "gap": 1.5
+              }
+            ],
+            "colspan": 2,
+            "padding": 0.1
+          },
+          {
+            "lines": [
+              "160.0"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "100.0"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "100.0"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "160.0"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "520.0"
+            ],
+            "align": "right"
+          }
+        ],
+        [
+          {
+            "lines": [
+              "雪荷重",
+              "S"
+            ],
+            "rowspan": 3
+          },
+          {
+            "lines": [
+              "2年確率"
+            ]
+          },
+          {
+            "lines": [
+              "200.0"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "30.0"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "30.0"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "200.0"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "460.0"
+            ],
+            "align": "right"
+          }
+        ],
+        [
+          {
+            "lines": [
+              "10年確率"
+            ]
+          },
+          {
+            "lines": [
+              "320.0"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "50.0"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "50.0"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "320.0"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "740.0"
+            ],
+            "align": "right"
+          }
+        ],
+        [
+          {
+            "lines": [
+              "30年確率"
+            ]
+          },
+          {
+            "lines": [
+              "360.0"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "50.0"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "50.0"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "360.0"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "820.0"
+            ],
+            "align": "right"
+          }
+        ],
+        [
+          {
+            "lines": [
+              "終点側桁"
+            ],
+            "rowspan": 5
+          },
+          {
+            "lines": [
+              {
+                "type": "row",
+                "items": [
+                  "固定死荷重（",
+                  {
+                    "type": "script",
+                    "base": "D",
+                    "sub": "1"
+                  },
+                  "）"
+                ],
+                "gap": 1.5
+              }
+            ],
+            "colspan": 2,
+            "padding": 0.1
+          },
+          {
+            "lines": [
+              "930.0"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "930.0"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "1860.0"
+            ],
+            "align": "right"
+          }
+        ],
+        [
+          {
+            "lines": [
+              {
+                "type": "row",
+                "items": [
+                  "付加死荷重（",
+                  {
+                    "type": "script",
+                    "base": "D",
+                    "sub": "2"
+                  },
+                  "）"
+                ],
+                "gap": 1.5
+              }
+            ],
+            "colspan": 2,
+            "padding": 0.1
+          },
+          {
+            "lines": [
+              "130.0"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "130.0"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "260.0"
+            ],
+            "align": "right"
+          }
+        ],
+        [
+          {
+            "lines": [
+              "雪荷重",
+              "S"
+            ],
+            "rowspan": 3
+          },
+          {
+            "lines": [
+              "2年確率"
+            ]
+          },
+          {
+            "lines": [
+              "125.0"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "125.0"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "250.0"
+            ],
+            "align": "right"
+          }
+        ],
+        [
+          {
+            "lines": [
+              "10年確率"
+            ]
+          },
+          {
+            "lines": [
+              "200.0"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "200.0"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "400.0"
+            ],
+            "align": "right"
+          }
+        ],
+        [
+          {
+            "lines": [
+              "30年確率"
+            ]
+          },
+          {
+            "lines": [
+              "225.0"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "225.0"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "450.0"
+            ],
+            "align": "right"
+          }
+        ]
+      ],
+      "header_rows": 1,
+      "padding": 0,
+      "horizontal_rules": [
+        1,
+        0.7,
+        0.12,
+        0.12,
+        0.12,
+        0.12,
+        1,
+        0.12,
+        0.12,
+        0.12,
+        0.12,
+        1
+      ],
+      "vertical_rules": [
+        0,
+        0.12,
+        0.12,
+        1,
+        0.12,
+        0.12,
+        0.12,
+        0.12,
+        0
+      ],
+      "inline_padding": 0.6
+    },
+    {
+      "id": "p01-before-train",
+      "type": "spacer",
+      "rows": 1
+    },
+    {
+      "id": "p01-train-title",
+      "type": "paragraph",
+      "text": "2) 列車荷重"
+    },
+    {
+      "id": "p01-service-title",
+      "type": "paragraph",
+      "text": "(a) 使用性の照査に用いる列車荷重"
+    },
+    {
+      "id": "p01-b-title",
+      "type": "paragraph",
+      "text": "a) B支点最大"
+    },
+    {
+      "id": "p01-load-figure",
+      "type": "image",
+      "image_id": "p01-load-b"
+    },
+    {
+      "id": "p01-before-reactions",
+      "type": "spacer",
+      "rows": 1
+    },
+    {
+      "id": "p01-reactions",
+      "type": "equations",
+      "anchors": {
+        "first_equal": 3,
+        "second_equal": 22,
+        "result_right": 27,
+        "unit_start": 28
+      },
+      "equations": [
+        {
+          "lhs": {
+            "type": "script",
+            "base": "Ｒ",
+            "sub": "A"
+          },
+          "rhs": {
+            "type": "row",
+            "items": [
+              "160.00",
+              {
+                "type": "operator",
+                "text": "×"
+              },
+              "4",
+              {
+                "type": "operator",
+                "text": "-"
+              },
+              "517.77"
+            ],
+            "gap": 1.5
+          },
+          "result": "122.23",
+          "unit": "kN"
+        },
+        {
+          "lhs": {
+            "type": "script",
+            "base": "Ｒ",
+            "sub": "B"
+          },
+          "rhs": {
+            "type": "row",
+            "items": [
+              "160.00",
+              {
+                "type": "operator",
+                "text": "×"
+              },
+              "(",
+              "18.850",
+              {
+                "type": "operator",
+                "text": "＋"
+              },
+              "16.650",
+              {
+                "type": "operator",
+                "text": "＋"
+              },
+              "13.850",
+              {
+                "type": "operator",
+                "text": "＋"
+              },
+              "11.650",
+              ")",
+              "/",
+              "18.850"
+            ],
+            "gap": 1.5
+          },
+          "result": "517.77",
+          "unit": "kN"
+        },
+        {
+          "lhs": {
+            "type": "script",
+            "base": "Ｒ",
+            "sub": "C"
+          },
+          "rhs": {
+            "type": "row",
+            "items": [],
+            "gap": 1.5
+          },
+          "result": "0.00",
+          "unit": "kN"
+        },
+        {
+          "lhs": {
+            "type": "script",
+            "base": "Ｒ",
+            "sub": "D"
+          },
+          "rhs": {
+            "type": "row",
+            "items": [],
+            "gap": 1.5
+          },
+          "result": "0.00",
+          "unit": "kN"
+        }
+      ]
+    }
+  ]
+}

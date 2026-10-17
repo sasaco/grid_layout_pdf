@@ -147,3 +147,21 @@ def test_scene_page_rejects_cyclic_metadata():
     metadata["children"].append(metadata)
     with pytest.raises(ValueError, match="metadata"):
         scene.ScenePage(A4_PORTRAIT_REFERENCE, metadata=metadata)
+
+
+def test_text_quarter_turns_default_preserves_four_arguments_and_translation():
+    horizontal = scene.Text(1, 2, "日本語", TextStyle())
+    assert getattr(horizontal, "quarter_turns", None) == 0
+    for turns in range(4):
+        command = scene.Text(1, 2, "日本語", TextStyle(), quarter_turns=turns)
+        assert command.translated(3, 4) == scene.Text(4, 6, "日本語", TextStyle(), quarter_turns=turns)
+        assert command.quarter_turns == turns
+        with pytest.raises(FrozenInstanceError):
+            command.quarter_turns = 0
+
+
+@pytest.mark.parametrize("turns", [True, False, -1, 4, 1.0, "1", None])
+def test_text_quarter_turns_rejects_noninteger_and_out_of_range(turns):
+    assert "quarter_turns" in scene.Text.__dataclass_fields__
+    with pytest.raises(ValueError, match="quarter_turns"):
+        scene.Text(1, 2, "x", TextStyle(), quarter_turns=turns)

@@ -1,0 +1,371 @@
+{
+  "schema_version": 1,
+  "source_page": 15,
+  "blocks": [
+    {
+      "id": "p15-title",
+      "type": "paragraph",
+      "text": "(2) 水平荷重",
+      "size": 10
+    },
+    {
+      "id": "p15-girder-title",
+      "type": "paragraph",
+      "text": "1) 桁に働く水平荷重",
+      "size": 10
+    },
+    {
+      "id": "p15-girder-gap",
+      "type": "spacer",
+      "rows": 1
+    },
+    {
+      "id": "p15-rail-title",
+      "type": "paragraph",
+      "text": "(a) ロングレール縦荷重",
+      "size": 10
+    },
+    {
+      "id": "p15-rail-safety-title",
+      "type": "paragraph",
+      "text": "a) 使用性の照査におけるひび割れの検討の必要性 および 安全性（破壊）,復旧性の照査",
+      "size": 10
+    },
+    {
+      "id": "p15-rail-safety-note",
+      "type": "paragraph",
+      "text": ",復旧性の照査　1 軌道当り　10 kN/m を考える.",
+      "size": 10
+    },
+    {
+      "id": "p15-rail-safety",
+      "type": "equations",
+      "size": 10,
+      "gap": 1.2,
+      "anchors": {
+        "first_equal": 7,
+        "second_equal": 22,
+        "result_right": 27,
+        "unit_start": 28
+      },
+      "equations": [
+        {
+          "lhs": {
+            "type": "row",
+            "items": [
+              "起点側",
+              {
+                "type": "script",
+                "base": "T",
+                "sub": "L1"
+              }
+            ],
+            "gap": 15
+          },
+          "rhs": {
+            "type": "row",
+            "items": [
+              "400.00",
+              "kN"
+            ],
+            "gap": 3
+          },
+          "relation": "＝",
+          "result_relation": "＝"
+        },
+        {
+          "lhs": {
+            "type": "row",
+            "items": [
+              "終点側",
+              {
+                "type": "script",
+                "base": "T",
+                "sub": "L2"
+              }
+            ],
+            "gap": 15
+          },
+          "rhs": {
+            "type": "row",
+            "items": [
+              "200.00",
+              "kN"
+            ],
+            "gap": 3
+          },
+          "relation": "＝",
+          "result_relation": "＝"
+        }
+      ]
+    },
+    {
+      "id": "p15-rail-safety-gap",
+      "type": "spacer",
+      "rows": 1
+    },
+    {
+      "id": "p15-rail-service-title",
+      "type": "paragraph",
+      "text": "b) 使用性の照査",
+      "size": 10
+    },
+    {
+      "id": "p15-rail-service-note",
+      "type": "paragraph",
+      "text": "1 軌道当り　8 kN/m を考える.",
+      "size": 10
+    },
+    {
+      "id": "p15-rail-service",
+      "type": "equations",
+      "size": 10,
+      "gap": 1.2,
+      "anchors": {
+        "first_equal": 7,
+        "second_equal": 22,
+        "result_right": 27,
+        "unit_start": 28
+      },
+      "equations": [
+        {
+          "lhs": {
+            "type": "row",
+            "items": [
+              "起点側",
+              {
+                "type": "script",
+                "base": "T",
+                "sub": "L1"
+              }
+            ],
+            "gap": 15
+          },
+          "rhs": {
+            "type": "row",
+            "items": [
+              "320.00",
+              "kN"
+            ],
+            "gap": 3
+          },
+          "relation": "＝",
+          "result_relation": "＝"
+        },
+        {
+          "lhs": {
+            "type": "row",
+            "items": [
+              "終点側",
+              {
+                "type": "script",
+                "base": "T",
+                "sub": "L2"
+              }
+            ],
+            "gap": 15
+          },
+          "rhs": {
+            "type": "row",
+            "items": [
+              "160.00",
+              "kN"
+            ],
+            "gap": 3
+          },
+          "relation": "＝",
+          "result_relation": "＝"
+        }
+      ]
+    },
+    {
+      "id": "p15-rail-service-gap",
+      "type": "spacer",
+      "rows": 2
+    },
+    {
+      "id": "p15-brake-title",
+      "type": "paragraph",
+      "text": "(b) 制御荷重",
+      "size": 10
+    },
+    {
+      "id": "p15-brake-note",
+      "type": "paragraph",
+      "text": "安全性（破壊）の照査に対して：1軌道当り次式による。",
+      "size": 10
+    },
+    {
+      "id": "p15-brake",
+      "type": "equations",
+      "size": 10,
+      "gap": 1.2,
+      "anchors": {
+        "first_equal": 7,
+        "second_equal": 22,
+        "result_right": 27,
+        "unit_start": 28
+      },
+      "equations": [
+        {
+          "lhs": "起点側　T",
+          "rhs": {
+            "type": "row",
+            "items": [
+              "160.00",
+              "kN"
+            ],
+            "gap": 3
+          },
+          "relation": "＝",
+          "result_relation": "＝"
+        },
+        {
+          "lhs": "終点側　T",
+          "rhs": {
+            "type": "row",
+            "items": [
+              "96.00",
+              "kN"
+            ],
+            "gap": 3
+          },
+          "relation": "＝",
+          "result_relation": "＝"
+        }
+      ]
+    },
+    {
+      "id": "p15-brake-gap",
+      "type": "spacer",
+      "rows": 1
+    },
+    {
+      "id": "p15-dead-eq-title",
+      "type": "paragraph",
+      "text": "(c) 地震時死荷重",
+      "size": 10
+    },
+    {
+      "id": "p15-dead-response",
+      "type": "math",
+      "content": {
+        "type": "row",
+        "items": [
+          "最大応答震度　Kh＝0.386　(ρm = 1.0, αf = 1.0)"
+        ],
+        "gap": 1.2
+      },
+      "size": 10
+    },
+    {
+      "id": "p15-dead-eq",
+      "type": "equations",
+      "size": 10,
+      "gap": 1.2,
+      "anchors": {
+        "first_equal": 7,
+        "second_equal": 22,
+        "result_right": 27,
+        "unit_start": 28
+      },
+      "equations": [
+        {
+          "lhs": "起点側　T",
+          "rhs": {
+            "type": "row",
+            "items": [
+              "0.386",
+              "×",
+              "13580.00"
+            ],
+            "gap": 3
+          },
+          "relation": "＝",
+          "result_relation": "＝",
+          "result": "5241.88",
+          "unit": "kN"
+        },
+        {
+          "lhs": "終点側　T",
+          "rhs": {
+            "type": "row",
+            "items": [
+              "0.386",
+              "×",
+              "4740.00"
+            ],
+            "gap": 3
+          },
+          "relation": "＝",
+          "result_relation": "＝",
+          "result": "1829.64",
+          "unit": "kN"
+        }
+      ]
+    },
+    {
+      "id": "p15-dead-eq-gap",
+      "type": "spacer",
+      "rows": 1
+    },
+    {
+      "id": "p15-train-eq-title",
+      "type": "paragraph",
+      "text": "(c)地震時列車荷重",
+      "size": 10
+    },
+    {
+      "id": "p15-train-response",
+      "type": "math",
+      "content": {
+        "type": "row",
+        "items": [
+          "設計震度　Kh＝0.200"
+        ],
+        "gap": 1.2
+      },
+      "size": 10
+    },
+    {
+      "id": "p15-train-eq",
+      "type": "equations",
+      "size": 10,
+      "gap": 1.2,
+      "anchors": {
+        "first_equal": 7,
+        "second_equal": 22,
+        "result_right": 27,
+        "unit_start": 28
+      },
+      "equations": [
+        {
+          "lhs": "起点側　T",
+          "rhs": {
+            "type": "row",
+            "items": [
+              "128.00",
+              "kN"
+            ],
+            "gap": 3
+          },
+          "relation": "＝",
+          "result_relation": "＝"
+        },
+        {
+          "lhs": "終点側　T",
+          "rhs": {
+            "type": "row",
+            "items": [
+              "64.00",
+              "kN"
+            ],
+            "gap": 3
+          },
+          "relation": "＝",
+          "result_relation": "＝"
+        }
+      ]
+    }
+  ]
+}

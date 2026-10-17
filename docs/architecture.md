@@ -28,6 +28,7 @@ flowchart LR
 | equations | 意味上の折り返し、等号・結果・単位の共有アンカー、MathBlock |
 | layout | 共通計測結果、分割、prefix再掲、部品内境界検証 |
 | containers | 縦積み・横並び・分割禁止・明示位置の指示 |
+| rotation | 局所グリッドで子を計測し、90度回転した既存primitiveと変換metadataへ確定 |
 | tables | セル配置と結合検証、整数行高、分割禁止行群、ヘッダー |
 | figures | 図枠・矢印・ラベル、画像の読込みと内容固定 |
 | document | ページフロー、見出し連鎖、用紙切替、ページ装飾 |
@@ -43,6 +44,8 @@ LayoutPartは分割しない縦方向の単位で、正の占有行数・相対�
 MeasuredBlockはprefixと本文partsを持つ。splitは本文の合法な境界だけで分け、prefixを両側へ再掲する。段落のmin_first/min_lastは表示part数を数え、物理グリッド行数やprefixを数えない。分割結果はどちらも本文を1part以上含み、再分割でも制約を保持する。
 
 Stackは通常フローで子へ展開する。ColumnsやKeepTogetherの中で計測すると全体が原子的になる。原子的な容器でも子の位置とローカルmetadataを残し、等号アンカーをトレースできる。
+
+QuarterTurnは原点0の局所PageProfileで子を計測し、Text/Line/Polyline/Rectangleを剛体回転して一つのLayoutPartへ確定する。再帰的な変換sceneノードは増やさない。Textは0〜3のquarter_turnsと既定0のshear_xを持ち、共通boundsは基線周りの実字形四隅を傾斜してから回転し、描画器も同じ順のPDF文字行列で扱う。QuarterTurnは文字の傾斜を保持する。子metadataは局所座標のまま保存し、local_to_part行列と累積part位置を明示する。外側の高さだけ整数行へ丸め、内容や文字サイズは変えない。
 
 ## 数式の配置
 

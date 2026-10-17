@@ -1,0 +1,1497 @@
+{
+  "schema_version": 1,
+  "source_page": 28,
+  "blocks": [
+    {
+      "id": "p28-eq-title",
+      "type": "paragraph",
+      "text": "8) 地震時直角方向EQ",
+      "size": 10
+    },
+    {
+      "id": "p28-eq-table",
+      "type": "table",
+      "columns": [
+        5,
+        3,
+        3,
+        3,
+        5,
+        3,
+        3,
+        5
+      ],
+      "header_rows": 1,
+      "padding": 0,
+      "border_width": 0.5,
+      "horizontal_rules": [
+        1,
+        0.12,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "vertical_rules": [
+        0,
+        0,
+        0.12,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "rows": [
+        [
+          {
+            "lines": [
+              "作用種別"
+            ],
+            "colspan": 2
+          },
+          {
+            "lines": [
+              "N",
+              "(KN)"
+            ]
+          },
+          {
+            "lines": [
+              "X",
+              "(m)"
+            ]
+          },
+          {
+            "lines": [
+              "Md",
+              "(KN・m)"
+            ]
+          },
+          {
+            "lines": [
+              "H",
+              "(KN)"
+            ]
+          },
+          {
+            "lines": [
+              "e",
+              "(m)"
+            ]
+          },
+          {
+            "lines": [
+              "Mt",
+              "(KN・m)"
+            ]
+          }
+        ],
+        [
+          {
+            "lines": [
+              "上部工　慣性力"
+            ],
+            "align": "center"
+          },
+          {
+            "lines": [
+              "起点側"
+            ],
+            "align": "center"
+          },
+          {
+            "lines": [
+              "1246.47"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "1.550"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "1932.03"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "-0.325"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "-405.10"
+            ],
+            "align": "right"
+          }
+        ],
+        [
+          {
+            "lines": [
+              ""
+            ],
+            "align": "center"
+          },
+          {
+            "lines": [
+              "終点側"
+            ],
+            "align": "center"
+          },
+          {
+            "lines": [
+              "679.90"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "0.645"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "438.54"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "0.675"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "458.93"
+            ],
+            "align": "right"
+          }
+        ],
+        [
+          {
+            "lines": [
+              "列車　慣性力"
+            ],
+            "align": "center"
+          },
+          {
+            "lines": [
+              "起点側"
+            ],
+            "align": "center"
+          },
+          {
+            "lines": [
+              "58.47"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "1.550"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "90.63"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "-0.325"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "-19.00"
+            ],
+            "align": "right"
+          }
+        ],
+        [
+          {
+            "lines": [
+              ""
+            ],
+            "align": "center"
+          },
+          {
+            "lines": [
+              "終点側"
+            ],
+            "align": "center"
+          },
+          {
+            "lines": [
+              "43.53"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "0.645"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "28.08"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "0.675"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "29.38"
+            ],
+            "align": "right"
+          }
+        ],
+        [
+          {
+            "lines": [
+              ""
+            ],
+            "align": "center"
+          },
+          {
+            "lines": [
+              "合計"
+            ],
+            "align": "center"
+          },
+          {
+            "lines": [
+              "2028.37"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "－"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "2489.27"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "－"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "－"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "64.21"
+            ],
+            "align": "right"
+          }
+        ]
+      ]
+    },
+    {
+      "id": "p28-eq-gap",
+      "type": "spacer",
+      "rows": 1
+    },
+    {
+      "id": "p28-horizontal9-title",
+      "type": "math",
+      "content": {
+        "type": "row",
+        "items": [
+          "9) 1.0 LR + 1.23B",
+          "　[",
+          "1.1",
+          {
+            "type": "script",
+            "base": "D",
+            "sub": "1"
+          },
+          "+1.2",
+          {
+            "type": "script",
+            "base": "D",
+            "sub": "2"
+          },
+          "+ 1.35(L+I) + 1.0",
+          {
+            "type": "script",
+            "base": "L",
+            "sub": "R"
+          },
+          "+ 1.23B +",
+          {
+            "type": "script",
+            "base": "S",
+            "sub": "10"
+          },
+          "の組み合わせ]"
+        ],
+        "gap": 0.8
+      },
+      "size": 10
+    },
+    {
+      "id": "p28-horizontal9-table",
+      "type": "table",
+      "columns": [
+        4,
+        4,
+        3,
+        3,
+        5,
+        3,
+        3,
+        5
+      ],
+      "header_rows": 1,
+      "padding": 0,
+      "border_width": 0.5,
+      "horizontal_rules": [
+        1,
+        0.12,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "vertical_rules": [
+        0,
+        0,
+        0.12,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "rows": [
+        [
+          {
+            "lines": [
+              "作用種別"
+            ],
+            "colspan": 2
+          },
+          {
+            "lines": [
+              "N",
+              "(KN)"
+            ]
+          },
+          {
+            "lines": [
+              "X",
+              "(m)"
+            ]
+          },
+          {
+            "lines": [
+              "Md",
+              "(KN・m)"
+            ]
+          },
+          {
+            "lines": [
+              "H",
+              "(KN)"
+            ]
+          },
+          {
+            "lines": [
+              "Y",
+              "(m)"
+            ]
+          },
+          {
+            "lines": [
+              "Mt",
+              "(KN・m)"
+            ]
+          }
+        ],
+        [
+          {
+            "lines": [
+              "起点側"
+            ],
+            "align": "center"
+          },
+          {
+            "lines": [
+              "ゴム支承"
+            ],
+            "align": "center"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "214.43"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "1.350"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "289.48"
+            ],
+            "align": "right"
+          }
+        ],
+        [
+          {
+            "lines": [
+              ""
+            ],
+            "align": "center"
+          },
+          {
+            "lines": [
+              "ストッパー"
+            ],
+            "align": "center"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "0.00"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "1.350"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "0.00"
+            ],
+            "align": "right"
+          }
+        ],
+        [
+          {
+            "lines": [
+              "終点側"
+            ],
+            "align": "center"
+          },
+          {
+            "lines": [
+              "ゴム支承"
+            ],
+            "align": "center"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "0.00"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "1.350"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "0.00"
+            ],
+            "align": "right"
+          }
+        ],
+        [
+          {
+            "lines": [
+              ""
+            ],
+            "align": "center"
+          },
+          {
+            "lines": [
+              "ストッパー"
+            ],
+            "align": "center"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "－"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "1.350"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          }
+        ],
+        [
+          {
+            "lines": [
+              ""
+            ],
+            "align": "center"
+          },
+          {
+            "lines": [
+              "合計"
+            ],
+            "align": "center"
+          },
+          {
+            "lines": [
+              "－"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "－"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "－"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "214.43"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "－"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "289.48"
+            ],
+            "align": "right"
+          }
+        ]
+      ]
+    },
+    {
+      "id": "p28-horizontal9-gap",
+      "type": "spacer",
+      "rows": 1
+    },
+    {
+      "id": "p28-horizontal10-title",
+      "type": "math",
+      "content": {
+        "type": "row",
+        "items": [
+          {
+            "type": "row",
+            "items": [
+              "10) 1.1",
+              {
+                "type": "script",
+                "base": "L",
+                "sub": "R"
+              },
+              "+ 1.23B"
+            ],
+            "gap": 1.2
+          },
+          "　[",
+          "1.1",
+          {
+            "type": "script",
+            "base": "D",
+            "sub": "1"
+          },
+          "+1.2",
+          {
+            "type": "script",
+            "base": "D",
+            "sub": "2"
+          },
+          "+ 1.23(L+I) + 1.1",
+          {
+            "type": "script",
+            "base": "L",
+            "sub": "R"
+          },
+          "+ 1.23B +",
+          {
+            "type": "script",
+            "base": "S",
+            "sub": "10"
+          },
+          "の組み合わせ]"
+        ],
+        "gap": 0.8
+      },
+      "size": 10
+    },
+    {
+      "id": "p28-horizontal10-table",
+      "type": "table",
+      "columns": [
+        4,
+        4,
+        3,
+        3,
+        5,
+        3,
+        3,
+        5
+      ],
+      "header_rows": 1,
+      "padding": 0,
+      "border_width": 0.5,
+      "horizontal_rules": [
+        1,
+        0.12,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "vertical_rules": [
+        0,
+        0,
+        0.12,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "rows": [
+        [
+          {
+            "lines": [
+              "作用種別"
+            ],
+            "colspan": 2
+          },
+          {
+            "lines": [
+              "N",
+              "(KN)"
+            ]
+          },
+          {
+            "lines": [
+              "X",
+              "(m)"
+            ]
+          },
+          {
+            "lines": [
+              "Md",
+              "(KN・m)"
+            ]
+          },
+          {
+            "lines": [
+              "H",
+              "(KN)"
+            ]
+          },
+          {
+            "lines": [
+              "Y",
+              "(m)"
+            ]
+          },
+          {
+            "lines": [
+              "Mt",
+              "(KN・m)"
+            ]
+          }
+        ],
+        [
+          {
+            "lines": [
+              "起点側"
+            ],
+            "align": "center"
+          },
+          {
+            "lines": [
+              "ゴム支承"
+            ],
+            "align": "center"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "212.43"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "1.350"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "286.78"
+            ],
+            "align": "right"
+          }
+        ],
+        [
+          {
+            "lines": [
+              ""
+            ],
+            "align": "center"
+          },
+          {
+            "lines": [
+              "ストッパー"
+            ],
+            "align": "center"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "0.00"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "1.350"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "0.00"
+            ],
+            "align": "right"
+          }
+        ],
+        [
+          {
+            "lines": [
+              "終点側"
+            ],
+            "align": "center"
+          },
+          {
+            "lines": [
+              "ゴム支承"
+            ],
+            "align": "center"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "0.00"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "1.350"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "0.00"
+            ],
+            "align": "right"
+          }
+        ],
+        [
+          {
+            "lines": [
+              ""
+            ],
+            "align": "center"
+          },
+          {
+            "lines": [
+              "ストッパー"
+            ],
+            "align": "center"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "－"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "1.350"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          }
+        ],
+        [
+          {
+            "lines": [
+              ""
+            ],
+            "align": "center"
+          },
+          {
+            "lines": [
+              "合計"
+            ],
+            "align": "center"
+          },
+          {
+            "lines": [
+              "－"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "－"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "－"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "212.43"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "－"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "286.78"
+            ],
+            "align": "right"
+          }
+        ]
+      ]
+    },
+    {
+      "id": "p28-horizontal10-gap",
+      "type": "spacer",
+      "rows": 1
+    },
+    {
+      "id": "p28-horizontal11-title",
+      "type": "math",
+      "content": {
+        "type": "row",
+        "items": [
+          {
+            "type": "row",
+            "items": [
+              "11) 1.0",
+              {
+                "type": "script",
+                "base": "L",
+                "sub": "R"
+              },
+              "+ 1.35B"
+            ],
+            "gap": 1.2
+          },
+          "　[",
+          "1.1",
+          {
+            "type": "script",
+            "base": "D",
+            "sub": "1"
+          },
+          "+1.2",
+          {
+            "type": "script",
+            "base": "D",
+            "sub": "2"
+          },
+          "+ 1.23L + 1.0",
+          {
+            "type": "script",
+            "base": "L",
+            "sub": "R"
+          },
+          "+ 1.35B +",
+          {
+            "type": "script",
+            "base": "S",
+            "sub": "10"
+          },
+          "の組み合わせ]"
+        ],
+        "gap": 0.8
+      },
+      "size": 10
+    },
+    {
+      "id": "p28-horizontal11-table",
+      "type": "table",
+      "columns": [
+        4,
+        4,
+        3,
+        3,
+        5,
+        3,
+        3,
+        5
+      ],
+      "header_rows": 1,
+      "padding": 0,
+      "border_width": 0.5,
+      "horizontal_rules": [
+        1,
+        0.12,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "vertical_rules": [
+        0,
+        0,
+        0.12,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "rows": [
+        [
+          {
+            "lines": [
+              "作用種別"
+            ],
+            "colspan": 2
+          },
+          {
+            "lines": [
+              "N",
+              "(KN)"
+            ]
+          },
+          {
+            "lines": [
+              "X",
+              "(m)"
+            ]
+          },
+          {
+            "lines": [
+              "Md",
+              "(KN・m)"
+            ]
+          },
+          {
+            "lines": [
+              "H",
+              "(KN)"
+            ]
+          },
+          {
+            "lines": [
+              "Y",
+              "(m)"
+            ]
+          },
+          {
+            "lines": [
+              "Mt",
+              "(KN・m)"
+            ]
+          }
+        ],
+        [
+          {
+            "lines": [
+              "起点側"
+            ],
+            "align": "center"
+          },
+          {
+            "lines": [
+              "ゴム支承"
+            ],
+            "align": "center"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "212.43"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "1.350"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "286.78"
+            ],
+            "align": "right"
+          }
+        ],
+        [
+          {
+            "lines": [
+              ""
+            ],
+            "align": "center"
+          },
+          {
+            "lines": [
+              "ストッパー"
+            ],
+            "align": "center"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "0.00"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "1.350"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "0.00"
+            ],
+            "align": "right"
+          }
+        ],
+        [
+          {
+            "lines": [
+              "終点側"
+            ],
+            "align": "center"
+          },
+          {
+            "lines": [
+              "ゴム支承"
+            ],
+            "align": "center"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "0.00"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "1.350"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "0.00"
+            ],
+            "align": "right"
+          }
+        ],
+        [
+          {
+            "lines": [
+              ""
+            ],
+            "align": "center"
+          },
+          {
+            "lines": [
+              "ストッパー"
+            ],
+            "align": "center"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "－"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "1.350"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              ""
+            ],
+            "align": "right"
+          }
+        ],
+        [
+          {
+            "lines": [
+              ""
+            ],
+            "align": "center"
+          },
+          {
+            "lines": [
+              "合計"
+            ],
+            "align": "center"
+          },
+          {
+            "lines": [
+              "－"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "－"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "－"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "212.43"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "－"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "286.78"
+            ],
+            "align": "right"
+          }
+        ]
+      ]
+    }
+  ]
+}

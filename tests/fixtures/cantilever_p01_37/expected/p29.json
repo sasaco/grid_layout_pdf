@@ -1,0 +1,2082 @@
+{
+  "schema_version": 1,
+  "source_page": 29,
+  "source_sha256": "e56bf3ddbe3314ed95517099bedb0e68005df1567b0b3e8f52a2a4066d03393e",
+  "provenance": {
+    "author": "oracle",
+    "method": "independent source glyph transcription and visual comparison",
+    "reviewed_source_image": "source-survey/p29.png",
+    "review_status": "source-reviewed"
+  },
+  "omitted_page_number": "13 - 29",
+  "source_character_inventory": {
+    "(": 12,
+    ")": 14,
+    "+": 3,
+    ".": 28,
+    "0": 37,
+    "1": 22,
+    "2": 11,
+    "3": 14,
+    "4": 2,
+    "5": 10,
+    "6": 2,
+    "8": 8,
+    "9": 8,
+    "D": 2,
+    "H": 2,
+    "K": 8,
+    "L": 2,
+    "M": 4,
+    "N": 10,
+    "R": 2,
+    "S": 1,
+    "X": 2,
+    "Y": 2,
+    "[": 1,
+    "]": 1,
+    "d": 2,
+    "m": 8,
+    "t": 2,
+    "せ": 1,
+    "の": 1,
+    "み": 1,
+    "わ": 1,
+    "ゴ": 4,
+    "ス": 4,
+    "ッ": 4,
+    "ト": 4,
+    "パ": 4,
+    "ム": 4,
+    "・": 4,
+    "ー": 4,
+    "作": 2,
+    "側": 4,
+    "別": 2,
+    "合": 3,
+    "向": 1,
+    "地": 1,
+    "承": 4,
+    "支": 4,
+    "方": 1,
+    "時": 1,
+    "点": 4,
+    "用": 2,
+    "種": 2,
+    "終": 2,
+    "組": 1,
+    "線": 1,
+    "計": 2,
+    "起": 2,
+    "路": 1,
+    "震": 1,
+    "－": 10
+  },
+  "marker_count": 0,
+  "hash_placeholder_count": 0,
+  "blocks": [
+    {
+      "id": "p29-horizontal12-title",
+      "source_bbox": [
+        0,
+        70.33115081787109,
+        595,
+        82.12843627929688
+      ],
+      "text": "12) 1.0 LR[1.1D1 + 1.2D2+ 1.0LR + S30 の組み合わせ]",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [
+        {
+          "text": "R",
+          "size": 6.639,
+          "character_index": 7,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        },
+        {
+          "text": "1",
+          "size": 6.639,
+          "character_index": 13,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        },
+        {
+          "text": "2",
+          "size": 6.639,
+          "character_index": 19,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        },
+        {
+          "text": "R",
+          "size": 6.639,
+          "character_index": 25,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        },
+        {
+          "text": "3",
+          "size": 6.639,
+          "character_index": 28,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        },
+        {
+          "text": "0",
+          "size": 6.639,
+          "character_index": 29,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        }
+      ],
+      "kind": "text"
+    },
+    {
+      "id": "p29-eq-title",
+      "source_bbox": [
+        0,
+        220.45115356445314,
+        595,
+        230.7909729003906
+      ],
+      "text": "13) 地震時線路方向",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p29-horizontal12-table",
+      "kind": "table",
+      "direction": [
+        1,
+        0
+      ],
+      "cells": [
+        {
+          "id": "p29-horizontal12-table.r0.c0",
+          "source_bbox": [
+            95.28,
+            89.4,
+            211.5,
+            118.5
+          ],
+          "text": "作用種別",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 2
+        },
+        {
+          "id": "p29-horizontal12-table.r0.c2",
+          "source_bbox": [
+            211.5,
+            89.4,
+            255.06,
+            118.5
+          ],
+          "text": "N\n(KN)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-horizontal12-table.r0.c3",
+          "source_bbox": [
+            255.06,
+            89.4,
+            298.62,
+            118.5
+          ],
+          "text": "X\n(m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-horizontal12-table.r0.c4",
+          "source_bbox": [
+            298.62,
+            89.4,
+            342.18,
+            118.5
+          ],
+          "text": "Md\n(KN・m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-horizontal12-table.r0.c5",
+          "source_bbox": [
+            342.18,
+            89.4,
+            385.74,
+            118.5
+          ],
+          "text": "H\n(KN)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-horizontal12-table.r0.c6",
+          "source_bbox": [
+            385.74,
+            89.4,
+            429.29999999999995,
+            118.5
+          ],
+          "text": "Y\n(m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-horizontal12-table.r0.c7",
+          "source_bbox": [
+            429.29999999999995,
+            89.4,
+            472.91999999999996,
+            118.5
+          ],
+          "text": "Mt\n(KN・m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-horizontal12-table.r1.c0",
+          "source_bbox": [
+            95.28,
+            118.5,
+            138.84,
+            132.78
+          ],
+          "text": "起点側",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-horizontal12-table.r1.c1",
+          "source_bbox": [
+            138.84,
+            118.5,
+            211.5,
+            132.78
+          ],
+          "text": "ゴム支承",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-horizontal12-table.r1.c2",
+          "source_bbox": [
+            211.5,
+            118.5,
+            255.06,
+            132.78
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-horizontal12-table.r1.c3",
+          "source_bbox": [
+            255.06,
+            118.5,
+            298.62,
+            132.78
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-horizontal12-table.r1.c4",
+          "source_bbox": [
+            298.62,
+            118.5,
+            342.18,
+            132.78
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-horizontal12-table.r1.c5",
+          "source_bbox": [
+            342.18,
+            118.5,
+            385.74,
+            132.78
+          ],
+          "text": "193.95",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-horizontal12-table.r1.c6",
+          "source_bbox": [
+            385.74,
+            118.5,
+            429.29999999999995,
+            132.78
+          ],
+          "text": "1.350",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-horizontal12-table.r1.c7",
+          "source_bbox": [
+            429.29999999999995,
+            118.5,
+            472.91999999999996,
+            132.78
+          ],
+          "text": "261.83",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-horizontal12-table.r2.c0",
+          "source_bbox": [
+            95.28,
+            132.78,
+            138.84,
+            147.06
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-horizontal12-table.r2.c1",
+          "source_bbox": [
+            138.84,
+            132.78,
+            211.5,
+            147.06
+          ],
+          "text": "ストッパー",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-horizontal12-table.r2.c2",
+          "source_bbox": [
+            211.5,
+            132.78,
+            255.06,
+            147.06
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-horizontal12-table.r2.c3",
+          "source_bbox": [
+            255.06,
+            132.78,
+            298.62,
+            147.06
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-horizontal12-table.r2.c4",
+          "source_bbox": [
+            298.62,
+            132.78,
+            342.18,
+            147.06
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-horizontal12-table.r2.c5",
+          "source_bbox": [
+            342.18,
+            132.78,
+            385.74,
+            147.06
+          ],
+          "text": "0.00",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-horizontal12-table.r2.c6",
+          "source_bbox": [
+            385.74,
+            132.78,
+            429.29999999999995,
+            147.06
+          ],
+          "text": "1.350",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-horizontal12-table.r2.c7",
+          "source_bbox": [
+            429.29999999999995,
+            132.78,
+            472.91999999999996,
+            147.06
+          ],
+          "text": "0.00",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-horizontal12-table.r3.c0",
+          "source_bbox": [
+            95.28,
+            147.06,
+            138.84,
+            161.34
+          ],
+          "text": "終点側",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-horizontal12-table.r3.c1",
+          "source_bbox": [
+            138.84,
+            147.06,
+            211.5,
+            161.34
+          ],
+          "text": "ゴム支承",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-horizontal12-table.r3.c2",
+          "source_bbox": [
+            211.5,
+            147.06,
+            255.06,
+            161.34
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-horizontal12-table.r3.c3",
+          "source_bbox": [
+            255.06,
+            147.06,
+            298.62,
+            161.34
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-horizontal12-table.r3.c4",
+          "source_bbox": [
+            298.62,
+            147.06,
+            342.18,
+            161.34
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-horizontal12-table.r3.c5",
+          "source_bbox": [
+            342.18,
+            147.06,
+            385.74,
+            161.34
+          ],
+          "text": "0.00",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-horizontal12-table.r3.c6",
+          "source_bbox": [
+            385.74,
+            147.06,
+            429.29999999999995,
+            161.34
+          ],
+          "text": "1.350",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-horizontal12-table.r3.c7",
+          "source_bbox": [
+            429.29999999999995,
+            147.06,
+            472.91999999999996,
+            161.34
+          ],
+          "text": "0.00",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-horizontal12-table.r4.c0",
+          "source_bbox": [
+            95.28,
+            161.34,
+            138.84,
+            175.62
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 4,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-horizontal12-table.r4.c1",
+          "source_bbox": [
+            138.84,
+            161.34,
+            211.5,
+            175.62
+          ],
+          "text": "ストッパー",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 4,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-horizontal12-table.r4.c2",
+          "source_bbox": [
+            211.5,
+            161.34,
+            255.06,
+            175.62
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 4,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-horizontal12-table.r4.c3",
+          "source_bbox": [
+            255.06,
+            161.34,
+            298.62,
+            175.62
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 4,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-horizontal12-table.r4.c4",
+          "source_bbox": [
+            298.62,
+            161.34,
+            342.18,
+            175.62
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 4,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-horizontal12-table.r4.c5",
+          "source_bbox": [
+            342.18,
+            161.34,
+            385.74,
+            175.62
+          ],
+          "text": "－",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 4,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-horizontal12-table.r4.c6",
+          "source_bbox": [
+            385.74,
+            161.34,
+            429.29999999999995,
+            175.62
+          ],
+          "text": "1.350",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 4,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-horizontal12-table.r4.c7",
+          "source_bbox": [
+            429.29999999999995,
+            161.34,
+            472.91999999999996,
+            175.62
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 4,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-horizontal12-table.r5.c0",
+          "source_bbox": [
+            95.28,
+            175.62,
+            138.84,
+            189.89999999999998
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 5,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-horizontal12-table.r5.c1",
+          "source_bbox": [
+            138.84,
+            175.62,
+            211.5,
+            189.89999999999998
+          ],
+          "text": "合計",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 5,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-horizontal12-table.r5.c2",
+          "source_bbox": [
+            211.5,
+            175.62,
+            255.06,
+            189.89999999999998
+          ],
+          "text": "－",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 5,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-horizontal12-table.r5.c3",
+          "source_bbox": [
+            255.06,
+            175.62,
+            298.62,
+            189.89999999999998
+          ],
+          "text": "－",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 5,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-horizontal12-table.r5.c4",
+          "source_bbox": [
+            298.62,
+            175.62,
+            342.18,
+            189.89999999999998
+          ],
+          "text": "－",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 5,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-horizontal12-table.r5.c5",
+          "source_bbox": [
+            342.18,
+            175.62,
+            385.74,
+            189.89999999999998
+          ],
+          "text": "193.95",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 5,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-horizontal12-table.r5.c6",
+          "source_bbox": [
+            385.74,
+            175.62,
+            429.29999999999995,
+            189.89999999999998
+          ],
+          "text": "－",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 5,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-horizontal12-table.r5.c7",
+          "source_bbox": [
+            429.29999999999995,
+            175.62,
+            472.91999999999996,
+            189.89999999999998
+          ],
+          "text": "261.83",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 5,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        }
+      ],
+      "header_rows": 1,
+      "body_rows": 5,
+      "columns": 8,
+      "selective_rules": {
+        "horizontal_boundaries": [
+          0,
+          1,
+          6
+        ],
+        "vertical_boundaries": [
+          2
+        ]
+      }
+    },
+    {
+      "id": "p29-eq-table",
+      "kind": "table",
+      "direction": [
+        1,
+        0
+      ],
+      "cells": [
+        {
+          "id": "p29-eq-table.r0.c0",
+          "source_bbox": [
+            95.28,
+            239.64,
+            211.5,
+            268.74
+          ],
+          "text": "作用種別",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 2
+        },
+        {
+          "id": "p29-eq-table.r0.c2",
+          "source_bbox": [
+            211.5,
+            239.64,
+            255.06,
+            268.74
+          ],
+          "text": "N\n(KN)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-eq-table.r0.c3",
+          "source_bbox": [
+            255.06,
+            239.64,
+            298.62,
+            268.74
+          ],
+          "text": "X\n(m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-eq-table.r0.c4",
+          "source_bbox": [
+            298.62,
+            239.64,
+            342.18,
+            268.74
+          ],
+          "text": "Md\n(KN・m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-eq-table.r0.c5",
+          "source_bbox": [
+            342.18,
+            239.64,
+            385.74,
+            268.74
+          ],
+          "text": "H\n(KN)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-eq-table.r0.c6",
+          "source_bbox": [
+            385.74,
+            239.64,
+            429.29999999999995,
+            268.74
+          ],
+          "text": "Y\n(m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-eq-table.r0.c7",
+          "source_bbox": [
+            429.29999999999995,
+            239.64,
+            472.91999999999996,
+            268.74
+          ],
+          "text": "Mt\n(KN・m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-eq-table.r1.c0",
+          "source_bbox": [
+            95.28,
+            268.74,
+            138.84,
+            283.02
+          ],
+          "text": "起点側",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-eq-table.r1.c1",
+          "source_bbox": [
+            138.84,
+            268.74,
+            211.5,
+            283.02
+          ],
+          "text": "ゴム支承",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-eq-table.r1.c2",
+          "source_bbox": [
+            211.5,
+            268.74,
+            255.06,
+            283.02
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-eq-table.r1.c3",
+          "source_bbox": [
+            255.06,
+            268.74,
+            298.62,
+            283.02
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-eq-table.r1.c4",
+          "source_bbox": [
+            298.62,
+            268.74,
+            342.18,
+            283.02
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-eq-table.r1.c5",
+          "source_bbox": [
+            342.18,
+            268.74,
+            385.74,
+            283.02
+          ],
+          "text": "0.00",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-eq-table.r1.c6",
+          "source_bbox": [
+            385.74,
+            268.74,
+            429.29999999999995,
+            283.02
+          ],
+          "text": "1.350",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-eq-table.r1.c7",
+          "source_bbox": [
+            429.29999999999995,
+            268.74,
+            472.91999999999996,
+            283.02
+          ],
+          "text": "0.00",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-eq-table.r2.c0",
+          "source_bbox": [
+            95.28,
+            283.02,
+            138.84,
+            297.3
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-eq-table.r2.c1",
+          "source_bbox": [
+            138.84,
+            283.02,
+            211.5,
+            297.3
+          ],
+          "text": "ストッパー",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-eq-table.r2.c2",
+          "source_bbox": [
+            211.5,
+            283.02,
+            255.06,
+            297.3
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-eq-table.r2.c3",
+          "source_bbox": [
+            255.06,
+            283.02,
+            298.62,
+            297.3
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-eq-table.r2.c4",
+          "source_bbox": [
+            298.62,
+            283.02,
+            342.18,
+            297.3
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-eq-table.r2.c5",
+          "source_bbox": [
+            342.18,
+            283.02,
+            385.74,
+            297.3
+          ],
+          "text": "894.98",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-eq-table.r2.c6",
+          "source_bbox": [
+            385.74,
+            283.02,
+            429.29999999999995,
+            297.3
+          ],
+          "text": "1.350",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-eq-table.r2.c7",
+          "source_bbox": [
+            429.29999999999995,
+            283.02,
+            472.91999999999996,
+            297.3
+          ],
+          "text": "1208.22",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-eq-table.r3.c0",
+          "source_bbox": [
+            95.28,
+            297.3,
+            138.84,
+            311.58
+          ],
+          "text": "終点側",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-eq-table.r3.c1",
+          "source_bbox": [
+            138.84,
+            297.3,
+            211.5,
+            311.58
+          ],
+          "text": "ゴム支承",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-eq-table.r3.c2",
+          "source_bbox": [
+            211.5,
+            297.3,
+            255.06,
+            311.58
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-eq-table.r3.c3",
+          "source_bbox": [
+            255.06,
+            297.3,
+            298.62,
+            311.58
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-eq-table.r3.c4",
+          "source_bbox": [
+            298.62,
+            297.3,
+            342.18,
+            311.58
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-eq-table.r3.c5",
+          "source_bbox": [
+            342.18,
+            297.3,
+            385.74,
+            311.58
+          ],
+          "text": "0.00",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-eq-table.r3.c6",
+          "source_bbox": [
+            385.74,
+            297.3,
+            429.29999999999995,
+            311.58
+          ],
+          "text": "1.350",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-eq-table.r3.c7",
+          "source_bbox": [
+            429.29999999999995,
+            297.3,
+            472.91999999999996,
+            311.58
+          ],
+          "text": "0.00",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-eq-table.r4.c0",
+          "source_bbox": [
+            95.28,
+            311.58,
+            138.84,
+            325.86
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 4,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-eq-table.r4.c1",
+          "source_bbox": [
+            138.84,
+            311.58,
+            211.5,
+            325.86
+          ],
+          "text": "ストッパー",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 4,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-eq-table.r4.c2",
+          "source_bbox": [
+            211.5,
+            311.58,
+            255.06,
+            325.86
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 4,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-eq-table.r4.c3",
+          "source_bbox": [
+            255.06,
+            311.58,
+            298.62,
+            325.86
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 4,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-eq-table.r4.c4",
+          "source_bbox": [
+            298.62,
+            311.58,
+            342.18,
+            325.86
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 4,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-eq-table.r4.c5",
+          "source_bbox": [
+            342.18,
+            311.58,
+            385.74,
+            325.86
+          ],
+          "text": "－",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 4,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-eq-table.r4.c6",
+          "source_bbox": [
+            385.74,
+            311.58,
+            429.29999999999995,
+            325.86
+          ],
+          "text": "1.350",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 4,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-eq-table.r4.c7",
+          "source_bbox": [
+            429.29999999999995,
+            311.58,
+            472.91999999999996,
+            325.86
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 4,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-eq-table.r5.c0",
+          "source_bbox": [
+            95.28,
+            325.86,
+            138.84,
+            340.14
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 5,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-eq-table.r5.c1",
+          "source_bbox": [
+            138.84,
+            325.86,
+            211.5,
+            340.14
+          ],
+          "text": "合計",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 5,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-eq-table.r5.c2",
+          "source_bbox": [
+            211.5,
+            325.86,
+            255.06,
+            340.14
+          ],
+          "text": "－",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 5,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-eq-table.r5.c3",
+          "source_bbox": [
+            255.06,
+            325.86,
+            298.62,
+            340.14
+          ],
+          "text": "－",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 5,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-eq-table.r5.c4",
+          "source_bbox": [
+            298.62,
+            325.86,
+            342.18,
+            340.14
+          ],
+          "text": "－",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 5,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-eq-table.r5.c5",
+          "source_bbox": [
+            342.18,
+            325.86,
+            385.74,
+            340.14
+          ],
+          "text": "894.98",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 5,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-eq-table.r5.c6",
+          "source_bbox": [
+            385.74,
+            325.86,
+            429.29999999999995,
+            340.14
+          ],
+          "text": "－",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 5,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p29-eq-table.r5.c7",
+          "source_bbox": [
+            429.29999999999995,
+            325.86,
+            472.91999999999996,
+            340.14
+          ],
+          "text": "1208.22",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 5,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        }
+      ],
+      "header_rows": 1,
+      "body_rows": 5,
+      "columns": 8,
+      "selective_rules": {
+        "horizontal_boundaries": [
+          0,
+          1,
+          6
+        ],
+        "vertical_boundaries": [
+          2
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,629 @@
+{
+  "schema_version": 1,
+  "source_sha256": "e56bf3ddbe3314ed95517099bedb0e68005df1567b0b3e8f52a2a4066d03393e",
+  "render_scale": 4,
+  "pymupdf_version": "1.28.2",
+  "figures": [
+    {
+      "id": "p01-load-b",
+      "file": "assets/p01-load-b.png",
+      "source_page": 1,
+      "source_bbox": [
+        122,
+        441,
+        504,
+        555
+      ],
+      "source_sha256": "e56bf3ddbe3314ed95517099bedb0e68005df1567b0b3e8f52a2a4066d03393e",
+      "sha256": "294ec2681ec1773b18ff2c218bf403548621a96429d136787128f18eb594880c",
+      "normalized_byte_sha256": "a76200a155cd2e5ab3349fdc9cbbe098fd0f991a7102b5e6a6caa84ebd071124",
+      "decoded_pixel_sha256": "eaf18f12b4ab1dfe074d82bd5f8a3efaf957ff7253b9efd3e9a702a379a005a5",
+      "pixel_width": 1528,
+      "pixel_height": 456,
+      "physical_width_pt": 382.0,
+      "physical_height_pt": 114.0,
+      "occurrence_count": 1,
+      "method": "reviewed figure-only PDF crop, RGB PNG at 288 dpi; no rescaling in layout",
+      "labels": [
+        "20.000",
+        "10.000",
+        "0.575",
+        "18.850",
+        "0.575",
+        "0.375",
+        "9.250",
+        "0.375",
+        "9.625",
+        "0.575",
+        "2.200",
+        "2.800",
+        "2.200",
+        "11.650"
+      ],
+      "label_method": "source text extraction checked against source image",
+      "source_review": {
+        "reviewer": "root",
+        "date": "2026-10-17",
+        "result": "pass"
+      }
+    },
+    {
+      "id": "p02-load-c",
+      "file": "assets/p02-load-c.png",
+      "source_page": 2,
+      "source_bbox": [
+        122,
+        100,
+        504,
+        214
+      ],
+      "source_sha256": "e56bf3ddbe3314ed95517099bedb0e68005df1567b0b3e8f52a2a4066d03393e",
+      "sha256": "58673a45649998216eaee2d5ef8fb5214058bfc7e7509db62380fe6fec645292",
+      "normalized_byte_sha256": "a0e53001c56534a52346b447a570f883903b0e33c89fb566c96ab8324fb5f1c4",
+      "decoded_pixel_sha256": "c7616281e7affffedb8cc4567ca91e8aaeed7fb1cf4f7a17276031ffbe5b9e4d",
+      "pixel_width": 1528,
+      "pixel_height": 456,
+      "physical_width_pt": 382.0,
+      "physical_height_pt": 114.0,
+      "occurrence_count": 1,
+      "method": "reviewed figure-only PDF crop, RGB PNG at 288 dpi; no rescaling in layout",
+      "labels": [
+        "20.000",
+        "10.000",
+        "0.575",
+        "18.850",
+        "0.575",
+        "0.375",
+        "9.250",
+        "0.375",
+        "2.425",
+        "2.200",
+        "2.800",
+        "2.200",
+        "12.800",
+        "2.200",
+        "2.800",
+        "1.625",
+        "0.575"
+      ],
+      "label_method": "source text extraction checked against source image",
+      "source_review": {
+        "reviewer": "root",
+        "date": "2026-10-17",
+        "result": "pass"
+      }
+    },
+    {
+      "id": "p02-load-bc",
+      "file": "assets/p02-load-bc.png",
+      "source_page": 2,
+      "source_bbox": [
+        122,
+        414,
+        504,
+        528
+      ],
+      "source_sha256": "e56bf3ddbe3314ed95517099bedb0e68005df1567b0b3e8f52a2a4066d03393e",
+      "sha256": "05b5ecfc3e1ea631f01a1a3def88c78c3dba37797fe6c5eb4e8d16f1f409de51",
+      "normalized_byte_sha256": "f510920d003643e807117fde5143f7935a3bd5a5f1af0c4636e4a09b05a65e7d",
+      "decoded_pixel_sha256": "9be7627c42bef222b5d46092d7dcb1a5c471d2861850cb55894ec180fc2c1e5f",
+      "pixel_width": 1528,
+      "pixel_height": 456,
+      "physical_width_pt": 382.0,
+      "physical_height_pt": 114.0,
+      "occurrence_count": 1,
+      "method": "reviewed figure-only PDF crop, RGB PNG at 288 dpi; no rescaling in layout",
+      "labels": [
+        "20.000",
+        "10.000",
+        "0.575",
+        "18.850",
+        "0.575",
+        "0.375",
+        "9.250",
+        "0.375",
+        "7.425",
+        "2.200",
+        "2.800",
+        "2.200",
+        "12.800",
+        "1.625",
+        "0.575"
+      ],
+      "label_method": "source text extraction checked against source image",
+      "source_review": {
+        "reviewer": "root",
+        "date": "2026-10-17",
+        "result": "pass"
+      }
+    },
+    {
+      "id": "p09-load-b",
+      "file": "assets/p09-load-b.png",
+      "source_page": 9,
+      "source_bbox": [
+        122,
+        128,
+        504,
+        242
+      ],
+      "source_sha256": "e56bf3ddbe3314ed95517099bedb0e68005df1567b0b3e8f52a2a4066d03393e",
+      "sha256": "f9ae2f6c08a9ba68c965821a875e3e8b9096852ba929b370b4f175aca68457bd",
+      "normalized_byte_sha256": "38a120a35d8c103d85ca4cdb67ed16a3d238e1226a7e1584578a620157babb37",
+      "decoded_pixel_sha256": "005b312596d628d776ea2d4153cecd4a3ae0c9f558dfc3bbbe4e539eff8e3295",
+      "pixel_width": 1528,
+      "pixel_height": 456,
+      "physical_width_pt": 382.0,
+      "physical_height_pt": 114.0,
+      "occurrence_count": 1,
+      "method": "reviewed figure-only PDF crop, RGB PNG at 288 dpi; no rescaling in layout",
+      "labels": [
+        "20.000",
+        "10.000",
+        "0.575",
+        "18.850",
+        "0.575",
+        "0.375",
+        "9.250",
+        "0.375",
+        "9.625",
+        "0.575",
+        "2.200",
+        "2.800",
+        "2.200",
+        "11.650"
+      ],
+      "label_method": "source text extraction checked against source image",
+      "source_review": {
+        "reviewer": "root",
+        "date": "2026-10-17",
+        "result": "pass"
+      }
+    },
+    {
+      "id": "p09-torque-origin",
+      "file": "assets/p09-torque-origin.png",
+      "source_page": 9,
+      "source_bbox": [
+        122,
+        360,
+        534,
+        523
+      ],
+      "source_sha256": "e56bf3ddbe3314ed95517099bedb0e68005df1567b0b3e8f52a2a4066d03393e",
+      "sha256": "67812bef2ab9078a5233ebdd580f50939ddde434289c5bd0c147cceefe197fef",
+      "normalized_byte_sha256": "7d17ba356ceed48e25395c29f2f379d3274006327eb029c6ccc8ee02a0e82d85",
+      "decoded_pixel_sha256": "43fc54b4c63ddbe0094224afab6727b0373e093c905c985d7c886b78bdc5aa96",
+      "pixel_width": 1648,
+      "pixel_height": 652,
+      "physical_width_pt": 412.0,
+      "physical_height_pt": 163.0,
+      "occurrence_count": 1,
+      "method": "reviewed figure-only PDF crop, RGB PNG at 288 dpi; no rescaling in layout",
+      "labels": [
+        "3.850",
+        "3.00",
+        "2.30",
+        "2.30",
+        "ＨB",
+        "G1",
+        "G2",
+        "G4",
+        "G3"
+      ],
+      "label_method": "source text extraction checked against source image",
+      "source_review": {
+        "reviewer": "root",
+        "date": "2026-10-17",
+        "result": "pass"
+      }
+    },
+    {
+      "id": "p10-load-c",
+      "file": "assets/p10-load-c.png",
+      "source_page": 10,
+      "source_bbox": [
+        122,
+        102,
+        504,
+        216
+      ],
+      "source_sha256": "e56bf3ddbe3314ed95517099bedb0e68005df1567b0b3e8f52a2a4066d03393e",
+      "sha256": "ae42e8da4fd4bed1f2bb117e58ca6085f16b1ff3a02f7ccead0984503579e5e7",
+      "normalized_byte_sha256": "3911a6b55f7d18d3a35813942b6c525c9b5b9243b304b944f6ce608326dcee1d",
+      "decoded_pixel_sha256": "cb7155be4717d4813e09fee11f433effb8fc068165a41c120c8d9fde18bcfe8a",
+      "pixel_width": 1528,
+      "pixel_height": 456,
+      "physical_width_pt": 382.0,
+      "physical_height_pt": 114.0,
+      "occurrence_count": 1,
+      "method": "reviewed figure-only PDF crop, RGB PNG at 288 dpi; no rescaling in layout",
+      "labels": [
+        "20.000",
+        "10.000",
+        "0.575",
+        "18.850",
+        "0.575",
+        "0.375",
+        "9.250",
+        "0.375",
+        "2.425",
+        "2.200",
+        "2.800",
+        "2.200",
+        "19.425"
+      ],
+      "label_method": "source text extraction checked against source image",
+      "source_review": {
+        "reviewer": "root",
+        "date": "2026-10-17",
+        "result": "pass"
+      }
+    },
+    {
+      "id": "p10-torque-end",
+      "file": "assets/p10-torque-end.png",
+      "source_page": 10,
+      "source_bbox": [
+        122,
+        335,
+        534,
+        498
+      ],
+      "source_sha256": "e56bf3ddbe3314ed95517099bedb0e68005df1567b0b3e8f52a2a4066d03393e",
+      "sha256": "e25b5850fdee6e0359b31143d9519d063bb48dbed85e89e9251bff44e734f684",
+      "normalized_byte_sha256": "a746946557d61c400b7dd67ee74ffaed0da42b9d9baaf0f0b765f1b71542583e",
+      "decoded_pixel_sha256": "0724a3dac8f6f718aae44b64c142208cf4f8cb2c32d10637387270783555b69e",
+      "pixel_width": 1648,
+      "pixel_height": 652,
+      "physical_width_pt": 412.0,
+      "physical_height_pt": 163.0,
+      "occurrence_count": 1,
+      "method": "reviewed figure-only PDF crop, RGB PNG at 288 dpi; no rescaling in layout",
+      "labels": [
+        "3.850",
+        "ＨC",
+        "5.90",
+        "G1",
+        "G2"
+      ],
+      "label_method": "source text extraction checked against source image",
+      "source_review": {
+        "reviewer": "root",
+        "date": "2026-10-17",
+        "result": "pass"
+      }
+    },
+    {
+      "id": "p11-load-bc",
+      "file": "assets/p11-load-bc.png",
+      "source_page": 11,
+      "source_bbox": [
+        122,
+        96,
+        480,
+        226
+      ],
+      "source_sha256": "e56bf3ddbe3314ed95517099bedb0e68005df1567b0b3e8f52a2a4066d03393e",
+      "sha256": "dcaee42c3f263e300666278a6ba33fab26969c09baae0d3f6b1459a7338dee40",
+      "normalized_byte_sha256": "c1a92e30daa73f59bc23658efbc035e3ca52afd073f1f80a9c2f3b155c70054b",
+      "decoded_pixel_sha256": "b6c91d5145292f44e69cac573b6c1e008b99c582ff6ead22ae2fd5ff751f811e",
+      "pixel_width": 1432,
+      "pixel_height": 520,
+      "physical_width_pt": 358.0,
+      "physical_height_pt": 130.0,
+      "occurrence_count": 1,
+      "method": "reviewed figure-only PDF crop, RGB PNG at 288 dpi; no rescaling in layout",
+      "labels": [
+        "14.425",
+        "2.200",
+        "2.200",
+        "7.425",
+        "2.800",
+        "0.575",
+        "18.850",
+        "0.575",
+        "0.375",
+        "9.250",
+        "0.375",
+        "20.000",
+        "10.000"
+      ],
+      "label_method": "source image visual transcription",
+      "source_review": {
+        "reviewer": "root",
+        "date": "2026-10-17",
+        "result": "pass"
+      }
+    },
+    {
+      "id": "p13-inertia-origin",
+      "file": "assets/p13-inertia-origin.png",
+      "source_page": 13,
+      "source_bbox": [
+        122,
+        210,
+        534,
+        348
+      ],
+      "source_sha256": "e56bf3ddbe3314ed95517099bedb0e68005df1567b0b3e8f52a2a4066d03393e",
+      "sha256": "41c3faea5d9e7ee3efa3312ef717ddba17bf45266c00a3762656fcf3b8df3f57",
+      "normalized_byte_sha256": "cbaaf67f1fe5436bb238de7e9a31b9ad02d9eb056a0977e8bf30fb9c4cb2e78a",
+      "decoded_pixel_sha256": "32cf0a87f97e0cf9e5650ffc151f5c577df5273545a0410bbd018d7b9894808b",
+      "pixel_width": 1648,
+      "pixel_height": 552,
+      "physical_width_pt": 412.0,
+      "physical_height_pt": 138.0,
+      "occurrence_count": 1,
+      "method": "reviewed figure-only PDF crop, RGB PNG at 288 dpi; no rescaling in layout",
+      "labels": [
+        "ＨB",
+        "2.30",
+        "3.00",
+        "2.30",
+        "2.750",
+        "G1",
+        "G2",
+        "G4",
+        "G3"
+      ],
+      "label_method": "source text extraction checked against source image",
+      "source_review": {
+        "reviewer": "root",
+        "date": "2026-10-17",
+        "result": "pass"
+      }
+    },
+    {
+      "id": "p13-inertia-end",
+      "file": "assets/p13-inertia-end.png",
+      "source_page": 13,
+      "source_bbox": [
+        122,
+        546,
+        534,
+        702
+      ],
+      "source_sha256": "e56bf3ddbe3314ed95517099bedb0e68005df1567b0b3e8f52a2a4066d03393e",
+      "sha256": "48a274bab13adf3c1535200aebc58cae830bce353479fd60dd33ddd251555ee1",
+      "normalized_byte_sha256": "91c53c2f315b45809cb8692256581b80e17bb3f612f168e3a0f95773026a294f",
+      "decoded_pixel_sha256": "405a8e91d12c8adfaab7b405951ad8f1acc59225a3a01b8b3523aca706d671b3",
+      "pixel_width": 1648,
+      "pixel_height": 624,
+      "physical_width_pt": 412.0,
+      "physical_height_pt": 156.0,
+      "occurrence_count": 1,
+      "method": "reviewed figure-only PDF crop, RGB PNG at 288 dpi; no rescaling in layout",
+      "labels": [
+        "5.90",
+        "2.750",
+        "ＨC",
+        "G1",
+        "G2"
+      ],
+      "label_method": "source text extraction checked against source image",
+      "source_review": {
+        "reviewer": "root",
+        "date": "2026-10-17",
+        "result": "pass"
+      }
+    },
+    {
+      "id": "p14-train-origin",
+      "file": "assets/p14-train-origin.png",
+      "source_page": 14,
+      "source_bbox": [
+        155,
+        194,
+        432,
+        350
+      ],
+      "source_sha256": "e56bf3ddbe3314ed95517099bedb0e68005df1567b0b3e8f52a2a4066d03393e",
+      "sha256": "c508845aad36ff34b51b4548959899bee9d08dacd7f1339a83d8f43e722dc3f4",
+      "normalized_byte_sha256": "95d58b806de403945b3e2a76594486ba97a65fda494d9f95914eb1be8a6ecd6f",
+      "decoded_pixel_sha256": "0a097359a1501abcc4ade649dd57bf110c60262345a43740e513a12101a7e012",
+      "pixel_width": 1108,
+      "pixel_height": 624,
+      "physical_width_pt": 277.0,
+      "physical_height_pt": 156.0,
+      "occurrence_count": 1,
+      "method": "reviewed figure-only PDF crop, RGB PNG at 288 dpi; no rescaling in layout",
+      "labels": [
+        "ＨB",
+        "5.350",
+        "2.30",
+        "3.00",
+        "2.30",
+        "G1",
+        "G2",
+        "G4",
+        "G3"
+      ],
+      "label_method": "source text extraction checked against source image",
+      "source_review": {
+        "reviewer": "root",
+        "date": "2026-10-17",
+        "result": "pass"
+      }
+    },
+    {
+      "id": "p14-train-end",
+      "file": "assets/p14-train-end.png",
+      "source_page": 14,
+      "source_bbox": [
+        155,
+        546,
+        432,
+        704
+      ],
+      "source_sha256": "e56bf3ddbe3314ed95517099bedb0e68005df1567b0b3e8f52a2a4066d03393e",
+      "sha256": "fa952e655006ed7683d242ed21d41987e37dddc1644a8cac3747333a98209268",
+      "normalized_byte_sha256": "9c1a67f6ff37097c06a2793d6776f0323536df24c30fead9a37a2245b2c6bfaf",
+      "decoded_pixel_sha256": "fea2e62e5bb501c81bb2026964f9b2bc256d32ca1e929e90b4f33cea04361f8c",
+      "pixel_width": 1108,
+      "pixel_height": 632,
+      "physical_width_pt": 277.0,
+      "physical_height_pt": 158.0,
+      "occurrence_count": 1,
+      "method": "reviewed figure-only PDF crop, RGB PNG at 288 dpi; no rescaling in layout",
+      "labels": [
+        "ＨC",
+        "5.350",
+        "5.90",
+        "G1",
+        "G2"
+      ],
+      "label_method": "source text extraction checked against source image",
+      "source_review": {
+        "reviewer": "root",
+        "date": "2026-10-17",
+        "result": "pass"
+      }
+    },
+    {
+      "id": "p23-weight-section",
+      "file": "assets/p23-weight-section.png",
+      "source_page": 23,
+      "source_bbox": [
+        93,
+        109,
+        273,
+        300
+      ],
+      "source_sha256": "e56bf3ddbe3314ed95517099bedb0e68005df1567b0b3e8f52a2a4066d03393e",
+      "sha256": "2ef27623f8a35e857e45d286efb5d1671e94b89d108ed4d5846a57dc3d312518",
+      "normalized_byte_sha256": "c66772e7ce046605af346a820ca2504dd1c0e3fd9463df25b93a2462f6b8b7f4",
+      "decoded_pixel_sha256": "fc9c993d0a4dfcb827520f10bd2a95b97f2375f96e2e07ea4d4b0f38bd578e4f",
+      "pixel_width": 720,
+      "pixel_height": 764,
+      "physical_width_pt": 180.0,
+      "physical_height_pt": 191.0,
+      "occurrence_count": 1,
+      "method": "reviewed figure-only PDF crop, RGB PNG at 288 dpi; no rescaling in layout",
+      "labels": [
+        "①",
+        "2250",
+        "設",
+        "計",
+        "断",
+        "面",
+        "②",
+        "700",
+        "2000"
+      ],
+      "label_method": "source text extraction checked against source image",
+      "source_review": {
+        "reviewer": "root",
+        "date": "2026-10-17",
+        "result": "pass"
+      }
+    },
+    {
+      "id": "p23-weight-front",
+      "file": "assets/p23-weight-front.png",
+      "source_page": 23,
+      "source_bbox": [
+        310,
+        95,
+        491,
+        286
+      ],
+      "source_sha256": "e56bf3ddbe3314ed95517099bedb0e68005df1567b0b3e8f52a2a4066d03393e",
+      "sha256": "b0ad31f55fed92d6958ffd45cedbd83ef28995d9767b164c2289e2151b0db69f",
+      "normalized_byte_sha256": "18d2f878fc2886c4624f6af602fffb571f59a4b78365d63d6218933230b26b3e",
+      "decoded_pixel_sha256": "199edb06bd35c3b5660d20eb50f8e0b473f26632be973fb79af691cddce63c9e",
+      "pixel_width": 724,
+      "pixel_height": 764,
+      "physical_width_pt": 181.0,
+      "physical_height_pt": 191.0,
+      "occurrence_count": 1,
+      "method": "reviewed figure-only PDF crop, RGB PNG at 288 dpi; no rescaling in layout",
+      "labels": [
+        "2700",
+        "700",
+        "2000"
+      ],
+      "label_method": "source text extraction checked against source image",
+      "source_review": {
+        "reviewer": "root",
+        "date": "2026-10-17",
+        "result": "pass"
+      }
+    },
+    {
+      "id": "p24-load-section",
+      "file": "assets/p24-load-section.png",
+      "source_page": 24,
+      "source_bbox": [
+        93,
+        99,
+        273,
+        384
+      ],
+      "source_sha256": "e56bf3ddbe3314ed95517099bedb0e68005df1567b0b3e8f52a2a4066d03393e",
+      "sha256": "2b5725883cff1e45af5af81a14226bc395f7de08da949bb14197171ff4046fb9",
+      "normalized_byte_sha256": "674a9a4db60f18257f0b8c622fca4befc8da9e6648942a17ac1a05481dc1bc4d",
+      "decoded_pixel_sha256": "a94b313b46a797647b764ea824e809d4f306f391c3b1ae1f773dc712b1c9f028",
+      "pixel_width": 720,
+      "pixel_height": 1140,
+      "physical_width_pt": 180.0,
+      "physical_height_pt": 285.0,
+      "occurrence_count": 1,
+      "method": "reviewed figure-only PDF crop, RGB PNG at 288 dpi; no rescaling in layout",
+      "labels": [
+        "645",
+        "1605",
+        "2000",
+        "700",
+        "2250",
+        "700",
+        "1550",
+        "Vd",
+        "Md"
+      ],
+      "label_method": "source text extraction checked against source image",
+      "source_review": {
+        "reviewer": "root",
+        "date": "2026-10-17",
+        "result": "pass"
+      }
+    },
+    {
+      "id": "p24-load-front",
+      "file": "assets/p24-load-front.png",
+      "source_page": 24,
+      "source_bbox": [
+        310,
+        141,
+        491,
+        384
+      ],
+      "source_sha256": "e56bf3ddbe3314ed95517099bedb0e68005df1567b0b3e8f52a2a4066d03393e",
+      "sha256": "1fd6f91d61c790c2eed7c024cc272cafaef373a3b062ac3e1c5c3a2c8e02a71b",
+      "normalized_byte_sha256": "0feab60f4aaf6198eae7a6889c5ef9105ddd51ada1bbbce042eb1e0a493e774e",
+      "decoded_pixel_sha256": "cb0957c0621d460c13421fa7d574425a1038fa91f02a9ee8ba5422f80389871c",
+      "pixel_width": 724,
+      "pixel_height": 972,
+      "physical_width_pt": 181.0,
+      "physical_height_pt": 243.0,
+      "occurrence_count": 1,
+      "method": "reviewed figure-only PDF crop, RGB PNG at 288 dpi; no rescaling in layout",
+      "labels": [
+        "325",
+        "675",
+        "1350",
+        "2700",
+        "1025",
+        "675",
+        "H",
+        "Mt"
+      ],
+      "label_method": "source text extraction checked against source image",
+      "source_review": {
+        "reviewer": "root",
+        "date": "2026-10-17",
+        "result": "pass"
+      }
+    }
+  ]
+}

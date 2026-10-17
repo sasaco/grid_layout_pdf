@@ -60,3 +60,30 @@ def test_table_proof_trace_keeps_original_rows_and_cell_content_metadata(tmp_pat
     previews = sorted((tmp_path / "previews").glob("table-proof*.png"))
     assert len(previews) == 4
     assert all(pymupdf.Pixmap(path).height == 1684 for path in previews)
+
+
+def test_selective_table_rules_are_native_paths_with_requested_per_stroke_widths(tmp_path):
+    from gridlayoutpdf import Cell, Document, FontRegistry, GridSpec, PageProfile, Table, TextStyle
+
+    assert "horizontal_rules" in Table.__dataclass_fields__
+    fonts = FontRegistry()
+    fonts.register("body", FONT)
+    profile = PageProfile("rules", 300, 400, GridSpec(20, 20, 10, 20, 20, 18))
+    table = Table((5, 5, 5), (("荷重", "G1", "G2"), ("終点", "12.50", "-3.00"), ("起点", "0.00", "4.50")),
+                  header_rows=1, horizontal_rules=(2, 0.5, 0, 2), vertical_rules=(0, 0.5, 0, 0))
+    document = Document(table, fonts=fonts, profile=profile)
+    output = tmp_path / "rules.pdf"
+    document.render(output)
+    with pymupdf.open(output) as pdf:
+        assert len(pdf) == 1
+        page = pdf[0]
+        assert page.get_images() == []
+        assert "12.50" in page.get_text() and "-3.00" in page.get_text()
+        drawings = page.get_drawings()
+        assert len(drawings) == 7
+        horizontal = [p for p in drawings if abs(p["items"][0][1].y - p["items"][0][2].y) < 0.001]
+        vertical = [p for p in drawings if abs(p["items"][0][1].x - p["items"][0][2].x) < 0.001]
+        assert [p["width"] for p in horizontal] == pytest.approx([2, 0.5, 0.5, 2])
+        assert [p["items"][0][1].y for p in horizontal] == pytest.approx([21, 59.75, 60.25, 139], abs=0.001)
+        assert [p["width"] for p in vertical] == pytest.approx([0.5] * 3)
+        assert all(p["items"][0][1].x == pytest.approx(70) for p in vertical)

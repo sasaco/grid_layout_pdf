@@ -1,0 +1,166 @@
+{
+  "schema_version": 1,
+  "source_page": 10,
+  "source_sha256": "e56bf3ddbe3314ed95517099bedb0e68005df1567b0b3e8f52a2a4066d03393e",
+  "provenance": {
+    "author": "oracle",
+    "method": "independent source glyph transcription and visual comparison",
+    "reviewed_source_image": "source-survey/p10.png",
+    "review_status": "source-reviewed"
+  },
+  "omitted_page_number": "13 - 10",
+  "source_character_inventory": {
+    "(": 2,
+    ")": 2,
+    ".": 14,
+    "/": 1,
+    "0": 11,
+    "1": 1,
+    "2": 10,
+    "3": 9,
+    "4": 5,
+    "5": 9,
+    "6": 2,
+    "7": 5,
+    "8": 4,
+    "9": 5,
+    "C": 3,
+    "N": 3,
+    "b": 1,
+    "k": 3,
+    "m": 2,
+    "x": 1,
+    "±": 1,
+    "×": 1,
+    "に": 1,
+    "の": 1,
+    "よ": 1,
+    "る": 1,
+    "ク": 1,
+    "ト": 2,
+    "メ": 1,
+    "モ": 1,
+    "ル": 1,
+    "ン": 1,
+    "ー": 1,
+    "位": 1,
+    "作": 1,
+    "力": 2,
+    "合": 1,
+    "場": 1,
+    "大": 1,
+    "平": 1,
+    "支": 1,
+    "最": 1,
+    "桁": 2,
+    "水": 1,
+    "点": 1,
+    "用": 1,
+    "直": 1,
+    "置": 1,
+    "鉛": 1,
+    "＋": 3,
+    "／": 1,
+    "＝": 7,
+    "Ｃ": 1,
+    "Ｇ": 2,
+    "Ｈ": 1,
+    "Ｍ": 1,
+    "ｙ": 1,
+    "･": 1
+  },
+  "marker_count": 0,
+  "hash_placeholder_count": 0,
+  "blocks": [
+    {
+      "id": "p10-subtitle",
+      "source_bbox": [
+        0,
+        71.0311264038086,
+        595,
+        81.17094573974609
+      ],
+      "text": "(b)Ｃ支点最大の場合",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p10-forces",
+      "source_bbox": [
+        0,
+        241.55115356445313,
+        595,
+        297.8909851074219
+      ],
+      "text": "水平力ＨC＝32.00×(9.625＋7.425＋4.625＋2.425)/9.250\n＝83.37kN\n作用位置ｙC＝＝3.850m\nモーメントＭC＝83.37x3.850＝320.97kN･m",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [
+        {
+          "text": "C",
+          "size": 6.639,
+          "character_index": 4,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        },
+        {
+          "text": "C",
+          "size": 6.639,
+          "character_index": 56,
+          "baseline_delta": 2.52,
+          "role": "subscript"
+        },
+        {
+          "text": "C",
+          "size": 6.639,
+          "character_index": 71,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        }
+      ],
+      "kind": "text"
+    },
+    {
+      "id": "p10-torque-title",
+      "source_bbox": [
+        0,
+        308.75116577148435,
+        595,
+        318.8909851074219
+      ],
+      "text": "トルクによる鉛直力",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p10-reactions",
+      "source_bbox": [
+        0,
+        512.511083984375,
+        595,
+        522.6509033203125
+      ],
+      "text": "Ｇ1桁 Ｇ2桁320.97／5.9000＝±54.40kN",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    }
+  ]
+}

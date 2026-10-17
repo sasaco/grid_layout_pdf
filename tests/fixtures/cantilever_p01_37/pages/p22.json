@@ -1,0 +1,492 @@
+{
+  "schema_version": 1,
+  "source_page": 22,
+  "blocks": [
+    {
+      "id": "p22-title",
+      "type": "paragraph",
+      "text": "(c) ストッパーに働く水平荷重のまとめ",
+      "size": 10
+    },
+    {
+      "id": "p22-title-gap",
+      "type": "spacer",
+      "rows": 1
+    },
+    {
+      "id": "p22-origin-title",
+      "type": "paragraph",
+      "text": "a) 起点桁　3 箇所",
+      "size": 10
+    },
+    {
+      "id": "p22-origin-table",
+      "type": "table",
+      "columns": [
+        2,
+        16,
+        6,
+        6
+      ],
+      "header_rows": 1,
+      "padding": 2,
+      "cell_min_height": 25,
+      "horizontal_rules": [
+        1,
+        0.12,
+        0.12,
+        0.12,
+        0.12,
+        0.12,
+        1
+      ],
+      "vertical_rules": [
+        1,
+        0.12,
+        0.12,
+        0.12,
+        1
+      ],
+      "rows": [
+        [
+          {
+            "lines": [
+              "荷　重　種　別"
+            ],
+            "colspan": 2
+          },
+          {
+            "lines": [
+              "桁全体",
+              "(kN)"
+            ]
+          },
+          {
+            "lines": [
+              "1ストッパー",
+              "当り(kN)"
+            ]
+          }
+        ],
+        [
+          {
+            "lines": [
+              "安",
+              "全",
+              "性",
+              "（",
+              "破",
+              "壊",
+              "）"
+            ],
+            "rowspan": 4
+          },
+          {
+            "lines": [
+              {
+                "type": "row",
+                "items": [
+                  "1.0",
+                  {
+                    "type": "script",
+                    "base": "L",
+                    "sub": "R"
+                  },
+                  "+ 1.23B"
+                ],
+                "gap": 1.2
+              }
+            ],
+            "align": "left"
+          },
+          {
+            "lines": [
+              "0.00"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "0.00"
+            ],
+            "align": "right"
+          }
+        ],
+        [
+          {
+            "lines": [
+              {
+                "type": "row",
+                "items": [
+                  "1.1",
+                  {
+                    "type": "script",
+                    "base": "L",
+                    "sub": "R"
+                  },
+                  "+ 1.23B"
+                ],
+                "gap": 1.2
+              }
+            ],
+            "align": "left"
+          },
+          {
+            "lines": [
+              "0.00"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "0.00"
+            ],
+            "align": "right"
+          }
+        ],
+        [
+          {
+            "lines": [
+              {
+                "type": "row",
+                "items": [
+                  "1.0",
+                  {
+                    "type": "script",
+                    "base": "L",
+                    "sub": "R"
+                  },
+                  "+ 1.35B"
+                ],
+                "gap": 1.2
+              }
+            ],
+            "align": "left"
+          },
+          {
+            "lines": [
+              "0.00"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "0.00"
+            ],
+            "align": "right"
+          }
+        ],
+        [
+          {
+            "lines": [
+              {
+                "type": "row",
+                "items": [
+                  "1.0",
+                  {
+                    "type": "script",
+                    "base": "L",
+                    "sub": "R"
+                  }
+                ],
+                "gap": 1.2
+              }
+            ],
+            "align": "left"
+          },
+          {
+            "lines": [
+              "0.00"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "0.00"
+            ],
+            "align": "right"
+          }
+        ],
+        [
+          {
+            "lines": [
+              "地",
+              "震",
+              "時"
+            ]
+          },
+          {
+            "lines": [
+              {
+                "type": "row",
+                "items": [
+                  "1.0",
+                  {
+                    "type": "script",
+                    "base": "E",
+                    "sub": "Q"
+                  },
+                  " (桁荷重)"
+                ],
+                "gap": 1.2
+              }
+            ],
+            "align": "left"
+          },
+          {
+            "lines": [
+              "2684.94"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "894.98"
+            ],
+            "align": "right"
+          }
+        ]
+      ]
+    },
+    {
+      "id": "p22-between-tables",
+      "type": "spacer",
+      "rows": 2
+    },
+    {
+      "id": "p22-end-title",
+      "type": "paragraph",
+      "text": "b) 終点桁　7 箇所",
+      "size": 10
+    },
+    {
+      "id": "p22-end-table",
+      "type": "table",
+      "columns": [
+        2,
+        16,
+        6,
+        6
+      ],
+      "header_rows": 1,
+      "padding": 2,
+      "cell_min_height": 25,
+      "horizontal_rules": [
+        1,
+        0.12,
+        0.12,
+        0.12,
+        0.12,
+        0.12,
+        1
+      ],
+      "vertical_rules": [
+        1,
+        0.12,
+        0.12,
+        0.12,
+        1
+      ],
+      "rows": [
+        [
+          {
+            "lines": [
+              "荷　重　種　別"
+            ],
+            "colspan": 2
+          },
+          {
+            "lines": [
+              "桁全体",
+              "(kN)"
+            ]
+          },
+          {
+            "lines": [
+              "1ストッパー",
+              "当り(kN)"
+            ]
+          }
+        ],
+        [
+          {
+            "lines": [
+              "安",
+              "全",
+              "性",
+              "（",
+              "破",
+              "壊",
+              "）"
+            ],
+            "rowspan": 4
+          },
+          {
+            "lines": [
+              {
+                "type": "row",
+                "items": [
+                  "1.0",
+                  {
+                    "type": "script",
+                    "base": "L",
+                    "sub": "R"
+                  },
+                  "+ 1.23B"
+                ],
+                "gap": 1.2
+              }
+            ],
+            "align": "left"
+          },
+          {
+            "lines": [
+              "175.03"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "25.00"
+            ],
+            "align": "right"
+          }
+        ],
+        [
+          {
+            "lines": [
+              {
+                "type": "row",
+                "items": [
+                  "1.1",
+                  {
+                    "type": "script",
+                    "base": "L",
+                    "sub": "R"
+                  },
+                  "+ 1.23B"
+                ],
+                "gap": 1.2
+              }
+            ],
+            "align": "left"
+          },
+          {
+            "lines": [
+              "195.49"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "27.93"
+            ],
+            "align": "right"
+          }
+        ],
+        [
+          {
+            "lines": [
+              {
+                "type": "row",
+                "items": [
+                  "1.0",
+                  {
+                    "type": "script",
+                    "base": "L",
+                    "sub": "R"
+                  },
+                  "+ 1.35B"
+                ],
+                "gap": 1.2
+              }
+            ],
+            "align": "left"
+          },
+          {
+            "lines": [
+              "187.01"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "26.72"
+            ],
+            "align": "right"
+          }
+        ],
+        [
+          {
+            "lines": [
+              {
+                "type": "row",
+                "items": [
+                  "1.0",
+                  {
+                    "type": "script",
+                    "base": "L",
+                    "sub": "R"
+                  }
+                ],
+                "gap": 1.2
+              }
+            ],
+            "align": "left"
+          },
+          {
+            "lines": [
+              "100.00"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "14.29"
+            ],
+            "align": "right"
+          }
+        ],
+        [
+          {
+            "lines": [
+              "地",
+              "震",
+              "時"
+            ]
+          },
+          {
+            "lines": [
+              {
+                "type": "row",
+                "items": [
+                  "1.0",
+                  {
+                    "type": "script",
+                    "base": "E",
+                    "sub": "Q"
+                  },
+                  " (桁荷重)"
+                ],
+                "gap": 1.2
+              }
+            ],
+            "align": "left"
+          },
+          {
+            "lines": [
+              "1893.64"
+            ],
+            "align": "right"
+          },
+          {
+            "lines": [
+              "270.52"
+            ],
+            "align": "right"
+          }
+        ]
+      ]
+    }
+  ]
+}

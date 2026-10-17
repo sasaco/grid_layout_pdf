@@ -1,0 +1,478 @@
+{
+  "schema_version": 1,
+  "source_page": 4,
+  "blocks": [
+    {
+      "id": "p04-bc",
+      "type": "paragraph",
+      "text": "c) B+C支点最大"
+    },
+    {
+      "id": "p04-bc-gap",
+      "type": "spacer",
+      "rows": 1
+    },
+    {
+      "id": "p04-bc-single-title",
+      "type": "paragraph",
+      "text": "・単線"
+    },
+    {
+      "id": "p04-bc-single-origin",
+      "type": "stack",
+      "children": [
+        {
+          "id": "p04-equation-001",
+          "type": "equations",
+          "label_columns": 3,
+          "anchors": {
+            "first_equal": 4,
+            "second_equal": 14,
+            "result_right": 19,
+            "unit_start": 20
+          },
+          "gap": 3,
+          "equations": [
+            {
+              "lhs": "",
+              "label": "Ｇ１桁",
+              "rhs": {
+                "type": "row",
+                "items": [
+                  "272.47",
+                  {
+                    "type": "operator",
+                    "text": "×"
+                  },
+                  "0.471"
+                ],
+                "gap": 3
+              },
+              "result": "128.33",
+              "unit": "kN",
+              "relation": " ",
+              "result_relation": "＝"
+            }
+          ]
+        },
+        {
+          "id": "p04-equation-002",
+          "type": "equations",
+          "label_columns": 3,
+          "anchors": {
+            "first_equal": 4,
+            "second_equal": 14,
+            "result_right": 19,
+            "unit_start": 20
+          },
+          "gap": 3,
+          "equations": [
+            {
+              "lhs": "",
+              "label": "Ｇ２桁",
+              "rhs": {
+                "type": "row",
+                "items": [
+                  "272.47",
+                  {
+                    "type": "operator",
+                    "text": "×"
+                  },
+                  "0.373"
+                ],
+                "gap": 3
+              },
+              "result": "101.63",
+              "unit": "kN",
+              "relation": " ",
+              "result_relation": "＝"
+            }
+          ]
+        },
+        {
+          "id": "p04-equation-003",
+          "type": "equations",
+          "label_columns": 3,
+          "anchors": {
+            "first_equal": 4,
+            "second_equal": 14,
+            "result_right": 19,
+            "unit_start": 20
+          },
+          "gap": 3,
+          "equations": [
+            {
+              "lhs": "",
+              "label": "Ｇ３桁",
+              "rhs": {
+                "type": "row",
+                "items": [
+                  "272.47",
+                  {
+                    "type": "operator",
+                    "text": "×"
+                  },
+                  "0.373"
+                ],
+                "gap": 3
+              },
+              "result": "101.63",
+              "unit": "kN",
+              "relation": " ",
+              "result_relation": "＝"
+            }
+          ]
+        },
+        {
+          "id": "p04-equation-004",
+          "type": "equations",
+          "label_columns": 3,
+          "anchors": {
+            "first_equal": 4,
+            "second_equal": 14,
+            "result_right": 19,
+            "unit_start": 20
+          },
+          "gap": 3,
+          "equations": [
+            {
+              "lhs": "",
+              "label": "Ｇ４桁",
+              "rhs": {
+                "type": "row",
+                "items": [
+                  "272.47",
+                  {
+                    "type": "operator",
+                    "text": "×"
+                  },
+                  "0.471"
+                ],
+                "gap": 3
+              },
+              "result": "128.33",
+              "unit": "kN",
+              "relation": " ",
+              "result_relation": "＝"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "p04-bc-single-bearings-gap",
+      "type": "spacer",
+      "rows": 1
+    },
+    {
+      "id": "p04-bc-single-end",
+      "type": "stack",
+      "children": [
+        {
+          "id": "p04-equation-005",
+          "type": "equations",
+          "label_columns": 3,
+          "anchors": {
+            "first_equal": 4,
+            "second_equal": 14,
+            "result_right": 19,
+            "unit_start": 20
+          },
+          "gap": 3,
+          "equations": [
+            {
+              "lhs": "",
+              "label": "Ｇ１桁",
+              "rhs": {
+                "type": "row",
+                "items": [
+                  "294.92",
+                  {
+                    "type": "operator",
+                    "text": "×"
+                  },
+                  "0.857"
+                ],
+                "gap": 3
+              },
+              "result": "252.75",
+              "unit": "kN",
+              "relation": " ",
+              "result_relation": "＝"
+            }
+          ]
+        },
+        {
+          "id": "p04-equation-006",
+          "type": "equations",
+          "label_columns": 3,
+          "anchors": {
+            "first_equal": 4,
+            "second_equal": 14,
+            "result_right": 19,
+            "unit_start": 20
+          },
+          "gap": 3,
+          "equations": [
+            {
+              "lhs": "",
+              "label": "Ｇ２桁",
+              "rhs": {
+                "type": "row",
+                "items": [
+                  "294.92",
+                  {
+                    "type": "operator",
+                    "text": "×"
+                  },
+                  "0.857"
+                ],
+                "gap": 3
+              },
+              "result": "252.75",
+              "unit": "kN",
+              "relation": " ",
+              "result_relation": "＝"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "p04-bc-single-gap",
+      "type": "spacer",
+      "rows": 1
+    },
+    {
+      "id": "p04-bc-double-title",
+      "type": "paragraph",
+      "text": "・複線"
+    },
+    {
+      "id": "p04-bc-double-origin",
+      "type": "stack",
+      "children": [
+        {
+          "id": "p04-equation-007",
+          "type": "equations",
+          "label_columns": 3,
+          "anchors": {
+            "first_equal": 4,
+            "second_equal": 14,
+            "result_right": 19,
+            "unit_start": 20
+          },
+          "gap": 3,
+          "equations": [
+            {
+              "lhs": "",
+              "label": "Ｇ１桁",
+              "rhs": {
+                "type": "row",
+                "items": [
+                  "272.47",
+                  {
+                    "type": "operator",
+                    "text": "×"
+                  },
+                  "0.451"
+                ],
+                "gap": 3
+              },
+              "result": "122.88",
+              "unit": "kN",
+              "relation": " ",
+              "result_relation": "＝"
+            }
+          ]
+        },
+        {
+          "id": "p04-equation-008",
+          "type": "equations",
+          "label_columns": 3,
+          "anchors": {
+            "first_equal": 4,
+            "second_equal": 14,
+            "result_right": 19,
+            "unit_start": 20
+          },
+          "gap": 3,
+          "equations": [
+            {
+              "lhs": "",
+              "label": "Ｇ２桁",
+              "rhs": {
+                "type": "row",
+                "items": [
+                  "272.47",
+                  {
+                    "type": "operator",
+                    "text": "×"
+                  },
+                  "0.549"
+                ],
+                "gap": 3
+              },
+              "result": "149.58",
+              "unit": "kN",
+              "relation": " ",
+              "result_relation": "＝"
+            }
+          ]
+        },
+        {
+          "id": "p04-equation-009",
+          "type": "equations",
+          "label_columns": 3,
+          "anchors": {
+            "first_equal": 4,
+            "second_equal": 14,
+            "result_right": 19,
+            "unit_start": 20
+          },
+          "gap": 3,
+          "equations": [
+            {
+              "lhs": "",
+              "label": "Ｇ３桁",
+              "rhs": {
+                "type": "row",
+                "items": [
+                  "272.47",
+                  {
+                    "type": "operator",
+                    "text": "×"
+                  },
+                  "0.549"
+                ],
+                "gap": 3
+              },
+              "result": "149.58",
+              "unit": "kN",
+              "relation": " ",
+              "result_relation": "＝"
+            }
+          ]
+        },
+        {
+          "id": "p04-equation-010",
+          "type": "equations",
+          "label_columns": 3,
+          "anchors": {
+            "first_equal": 4,
+            "second_equal": 14,
+            "result_right": 19,
+            "unit_start": 20
+          },
+          "gap": 3,
+          "equations": [
+            {
+              "lhs": "",
+              "label": "Ｇ４桁",
+              "rhs": {
+                "type": "row",
+                "items": [
+                  "272.47",
+                  {
+                    "type": "operator",
+                    "text": "×"
+                  },
+                  "0.451"
+                ],
+                "gap": 3
+              },
+              "result": "122.88",
+              "unit": "kN",
+              "relation": " ",
+              "result_relation": "＝"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "p04-bc-double-bearings-gap",
+      "type": "spacer",
+      "rows": 1
+    },
+    {
+      "id": "p04-bc-double-end",
+      "type": "stack",
+      "children": [
+        {
+          "id": "p04-equation-011",
+          "type": "equations",
+          "label_columns": 3,
+          "anchors": {
+            "first_equal": 4,
+            "second_equal": 14,
+            "result_right": 19,
+            "unit_start": 20
+          },
+          "gap": 3,
+          "equations": [
+            {
+              "lhs": "",
+              "label": "Ｇ１桁",
+              "rhs": {
+                "type": "row",
+                "items": [
+                  "294.92",
+                  {
+                    "type": "operator",
+                    "text": "×"
+                  },
+                  "1.000"
+                ],
+                "gap": 3
+              },
+              "result": "294.92",
+              "unit": "kN",
+              "relation": " ",
+              "result_relation": "＝"
+            }
+          ]
+        },
+        {
+          "id": "p04-equation-012",
+          "type": "equations",
+          "label_columns": 3,
+          "anchors": {
+            "first_equal": 4,
+            "second_equal": 14,
+            "result_right": 19,
+            "unit_start": 20
+          },
+          "gap": 3,
+          "equations": [
+            {
+              "lhs": "",
+              "label": "Ｇ２桁",
+              "rhs": {
+                "type": "row",
+                "items": [
+                  "294.92",
+                  {
+                    "type": "operator",
+                    "text": "×"
+                  },
+                  "1.000"
+                ],
+                "gap": 3
+              },
+              "result": "294.92",
+              "unit": "kN",
+              "relation": " ",
+              "result_relation": "＝"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "p04-bc-double-gap",
+      "type": "spacer",
+      "rows": 1
+    }
+  ]
+}

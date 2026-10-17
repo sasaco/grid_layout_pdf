@@ -1,0 +1,487 @@
+{
+  "schema_version": 1,
+  "source_page": 15,
+  "source_sha256": "e56bf3ddbe3314ed95517099bedb0e68005df1567b0b3e8f52a2a4066d03393e",
+  "provenance": {
+    "author": "oracle",
+    "method": "independent source glyph transcription and visual comparison",
+    "reviewed_source_image": "source-survey/p15.png",
+    "review_status": "source-reviewed"
+  },
+  "omitted_page_number": "13 - 15",
+  "source_character_inventory": {
+    "(": 6,
+    ")": 9,
+    ",": 3,
+    ".": 20,
+    "/": 2,
+    "0": 38,
+    "1": 15,
+    "2": 9,
+    "3": 5,
+    "4": 6,
+    "5": 2,
+    "6": 8,
+    "7": 1,
+    "8": 9,
+    "9": 2,
+    "=": 2,
+    "K": 2,
+    "L": 4,
+    "N": 12,
+    "T": 10,
+    "a": 2,
+    "b": 2,
+    "c": 2,
+    "f": 1,
+    "h": 2,
+    "k": 12,
+    "m": 3,
+    "×": 2,
+    "α": 1,
+    "ρ": 1,
+    "。": 1,
+    "え": 2,
+    "お": 2,
+    "く": 1,
+    "け": 1,
+    "し": 1,
+    "て": 1,
+    "に": 4,
+    "の": 7,
+    "ひ": 1,
+    "び": 2,
+    "よ": 2,
+    "り": 3,
+    "る": 4,
+    "れ": 1,
+    "を": 2,
+    "グ": 1,
+    "ル": 1,
+    "レ": 1,
+    "ロ": 1,
+    "ン": 1,
+    "ー": 1,
+    "使": 2,
+    "側": 10,
+    "働": 1,
+    "全": 2,
+    "列": 1,
+    "制": 1,
+    "割": 1,
+    "地": 2,
+    "壊": 2,
+    "大": 1,
+    "安": 2,
+    "対": 1,
+    "平": 2,
+    "度": 2,
+    "式": 1,
+    "当": 3,
+    "御": 1,
+    "復": 2,
+    "必": 1,
+    "応": 1,
+    "性": 7,
+    "旧": 2,
+    "時": 2,
+    "最": 1,
+    "査": 5,
+    "桁": 1,
+    "検": 1,
+    "次": 1,
+    "死": 1,
+    "水": 2,
+    "点": 10,
+    "照": 5,
+    "用": 2,
+    "破": 2,
+    "答": 1,
+    "終": 5,
+    "縦": 1,
+    "考": 2,
+    "荷": 6,
+    "要": 1,
+    "計": 1,
+    "討": 1,
+    "設": 1,
+    "起": 5,
+    "車": 1,
+    "軌": 3,
+    "道": 3,
+    "重": 6,
+    "震": 4,
+    "（": 2,
+    "）": 2,
+    "：": 1,
+    "＝": 14
+  },
+  "marker_count": 0,
+  "hash_placeholder_count": 0,
+  "blocks": [
+    {
+      "id": "p15-title",
+      "source_bbox": [
+        0,
+        71.0311264038086,
+        595,
+        81.17094573974609
+      ],
+      "text": "(2) 水平荷重",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p15-girder-title",
+      "source_bbox": [
+        0,
+        92.75115814208985,
+        595,
+        102.89097747802734
+      ],
+      "text": "1) 桁に働く水平荷重",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p15-rail-title",
+      "source_bbox": [
+        0,
+        114.47112884521485,
+        595,
+        124.61094818115234
+      ],
+      "text": "(a) ロングレール縦荷重",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p15-rail-safety-title",
+      "source_bbox": [
+        0,
+        137.51117553710938,
+        595,
+        147.65099487304687
+      ],
+      "text": "a) 使用性の照査におけるひび割れの検討の必要性 および 安全性（破壊）,復旧性の照査",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p15-rail-safety-note",
+      "source_bbox": [
+        0,
+        151.79114379882813,
+        595,
+        161.93096313476562
+      ],
+      "text": ",復旧性の照査1 軌道当り10kN/mを考える.",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p15-rail-safety",
+      "source_bbox": [
+        0,
+        170.75116577148438,
+        595,
+        203.81096801757812
+      ],
+      "text": "起点側TL1 ＝400.00kN\n終点側TL2 ＝200.00kN",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [
+        {
+          "text": "L",
+          "size": 6.639,
+          "character_index": 4,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        },
+        {
+          "text": "1",
+          "size": 6.639,
+          "character_index": 5,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        },
+        {
+          "text": "L",
+          "size": 6.639,
+          "character_index": 19,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        },
+        {
+          "text": "2",
+          "size": 6.639,
+          "character_index": 20,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        }
+      ],
+      "kind": "text"
+    },
+    {
+      "id": "p15-rail-service-title",
+      "source_bbox": [
+        0,
+        222.35114135742188,
+        595,
+        232.49096069335937
+      ],
+      "text": "b) 使用性の照査",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p15-rail-service-note",
+      "source_bbox": [
+        0,
+        244.07117309570313,
+        595,
+        254.21099243164062
+      ],
+      "text": "1 軌道当り8kN/mを考える.",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p15-rail-service",
+      "source_bbox": [
+        0,
+        263.0311340332031,
+        595,
+        289.3709655761719
+      ],
+      "text": "起点側TL1 ＝320.00kN\n終点側TL2 ＝160.00kN",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [
+        {
+          "text": "L",
+          "size": 6.639,
+          "character_index": 4,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        },
+        {
+          "text": "1",
+          "size": 6.639,
+          "character_index": 5,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        },
+        {
+          "text": "L",
+          "size": 6.639,
+          "character_index": 19,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        },
+        {
+          "text": "2",
+          "size": 6.639,
+          "character_index": 20,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        }
+      ],
+      "kind": "text"
+    },
+    {
+      "id": "p15-brake-title",
+      "source_bbox": [
+        0,
+        320.87116088867185,
+        595,
+        331.0109802246094
+      ],
+      "text": "(b) 制御荷重",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p15-brake-note",
+      "source_bbox": [
+        0,
+        342.591162109375,
+        595,
+        352.7309814453125
+      ],
+      "text": "安全性（破壊）の照査に対して：1軌道当り次式による。",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p15-brake",
+      "source_bbox": [
+        0,
+        363.83115234375,
+        595,
+        388.7309814453125
+      ],
+      "text": "起点側T＝160.00kN\n終点側T＝96.00kN",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p15-dead-eq-title",
+      "source_bbox": [
+        0,
+        407.1511596679687,
+        595,
+        417.2909790039063
+      ],
+      "text": "(c) 地震時死荷重",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p15-dead-response",
+      "source_bbox": [
+        0,
+        428.3911499023437,
+        595,
+        439.0109802246094
+      ],
+      "text": "最大応答震度Kh＝0.386(ρm = 1.0, αf = 1.0)",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p15-dead-eq",
+      "source_bbox": [
+        0,
+        450.11115112304685,
+        595,
+        475.0109802246094
+      ],
+      "text": "起点側T＝0.386×13580.00＝5241.88kN\n終点側T＝0.386×4740.00＝1829.64kN",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p15-train-eq-title",
+      "source_bbox": [
+        0,
+        493.4311584472656,
+        595,
+        503.57097778320315
+      ],
+      "text": "(c)地震時列車荷重",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p15-train-response",
+      "source_bbox": [
+        0,
+        514.6711181640625,
+        595,
+        525.29091796875
+      ],
+      "text": "設計震度Kh＝0.200",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p15-train-eq",
+      "source_bbox": [
+        0,
+        536.3910888671875,
+        595,
+        561.29091796875
+      ],
+      "text": "起点側T＝128.00kN\n終点側T＝64.00kN",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    }
+  ]
+}

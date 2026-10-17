@@ -1,0 +1,4091 @@
+{
+  "schema_version": 1,
+  "source_page": 26,
+  "source_sha256": "e56bf3ddbe3314ed95517099bedb0e68005df1567b0b3e8f52a2a4066d03393e",
+  "provenance": {
+    "author": "oracle",
+    "method": "independent source glyph transcription and visual comparison",
+    "reviewed_source_image": "source-survey/p26.png",
+    "review_status": "source-reviewed"
+  },
+  "omitted_page_number": "13 - 26",
+  "source_character_inventory": {
+    "(": 39,
+    ")": 46,
+    "+": 2,
+    "-": 14,
+    ".": 78,
+    "0": 58,
+    "1": 48,
+    "2": 28,
+    "3": 20,
+    "4": 30,
+    "5": 55,
+    "6": 24,
+    "7": 22,
+    "8": 14,
+    "9": 26,
+    "B": 4,
+    "C": 4,
+    "H": 6,
+    "I": 1,
+    "K": 24,
+    "M": 12,
+    "N": 30,
+    "X": 6,
+    "a": 3,
+    "b": 3,
+    "c": 2,
+    "d": 6,
+    "e": 6,
+    "m": 24,
+    "t": 6,
+    "の": 6,
+    "・": 12,
+    "上": 6,
+    "作": 6,
+    "使": 1,
+    "側": 12,
+    "全": 1,
+    "別": 6,
+    "力": 6,
+    "反": 6,
+    "合": 12,
+    "場": 6,
+    "壊": 1,
+    "大": 6,
+    "安": 1,
+    "工": 6,
+    "性": 2,
+    "撃": 1,
+    "支": 6,
+    "最": 6,
+    "点": 18,
+    "用": 7,
+    "破": 1,
+    "種": 6,
+    "終": 6,
+    "荷": 1,
+    "衝": 1,
+    "計": 6,
+    "起": 6,
+    "部": 6,
+    "重": 1,
+    "－": 18
+  },
+  "marker_count": 0,
+  "hash_placeholder_count": 0,
+  "blocks": [
+    {
+      "id": "p26-title",
+      "source_bbox": [
+        0,
+        65,
+        595,
+        90
+      ],
+      "text": "5) 衝撃荷重I",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p26-safety",
+      "source_bbox": [
+        0,
+        90,
+        595,
+        107
+      ],
+      "text": "(a) 安全性(破壊)",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p26-service",
+      "source_bbox": [
+        0,
+        432,
+        595,
+        451
+      ],
+      "text": "(b) 使用性",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p26-safety-b-title",
+      "source_bbox": [
+        0,
+        111.56,
+        595,
+        128.56
+      ],
+      "text": "a) B支点最大の場合",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p26-safety-b",
+      "kind": "table",
+      "direction": [
+        1,
+        0
+      ],
+      "header_rows": 1,
+      "body_rows": 3,
+      "columns": 8,
+      "cells": [
+        {
+          "id": "p26-safety-b.r0.c0",
+          "source_bbox": [
+            124.32,
+            133.56,
+            240.54,
+            162.66
+          ],
+          "text": "作用種別",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 2
+        },
+        {
+          "id": "p26-safety-b.r0.c2",
+          "source_bbox": [
+            240.54,
+            133.56,
+            284.1,
+            162.66
+          ],
+          "text": "N\n(KN)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-b.r0.c3",
+          "source_bbox": [
+            284.1,
+            133.56,
+            327.66,
+            162.66
+          ],
+          "text": "X\n(m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-b.r0.c4",
+          "source_bbox": [
+            327.66,
+            133.56,
+            371.22,
+            162.66
+          ],
+          "text": "Md\n(KN・m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-b.r0.c5",
+          "source_bbox": [
+            371.22,
+            133.56,
+            414.78,
+            162.66
+          ],
+          "text": "H\n(KN)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-b.r0.c6",
+          "source_bbox": [
+            414.78,
+            133.56,
+            458.34,
+            162.66
+          ],
+          "text": "e\n(m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-b.r0.c7",
+          "source_bbox": [
+            458.34,
+            133.56,
+            501.96,
+            162.66
+          ],
+          "text": "Mt\n(KN・m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-b.r1.c0",
+          "source_bbox": [
+            124.32,
+            162.66,
+            207,
+            176.85999999999999
+          ],
+          "text": "上部工　反力",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-b.r1.c1",
+          "source_bbox": [
+            207,
+            162.66,
+            240.54,
+            176.85999999999999
+          ],
+          "text": "起点側",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-b.r1.c2",
+          "source_bbox": [
+            240.54,
+            162.66,
+            284.1,
+            176.85999999999999
+          ],
+          "text": "59.75",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-b.r1.c3",
+          "source_bbox": [
+            284.1,
+            162.66,
+            327.66,
+            176.85999999999999
+          ],
+          "text": "1.550",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-b.r1.c4",
+          "source_bbox": [
+            327.66,
+            162.66,
+            371.22,
+            176.85999999999999
+          ],
+          "text": "92.61",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-b.r1.c5",
+          "source_bbox": [
+            371.22,
+            162.66,
+            414.78,
+            176.85999999999999
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-b.r1.c6",
+          "source_bbox": [
+            414.78,
+            162.66,
+            458.34,
+            176.85999999999999
+          ],
+          "text": "-0.325",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-b.r1.c7",
+          "source_bbox": [
+            458.34,
+            162.66,
+            501.96,
+            176.85999999999999
+          ],
+          "text": "-19.42",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-b.r2.c0",
+          "source_bbox": [
+            124.32,
+            176.85999999999999,
+            207,
+            191.06
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-b.r2.c1",
+          "source_bbox": [
+            207,
+            176.85999999999999,
+            240.54,
+            191.06
+          ],
+          "text": "終点側",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-b.r2.c2",
+          "source_bbox": [
+            240.54,
+            176.85999999999999,
+            284.1,
+            191.06
+          ],
+          "text": "0.00",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-b.r2.c3",
+          "source_bbox": [
+            284.1,
+            176.85999999999999,
+            327.66,
+            191.06
+          ],
+          "text": "0.645",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-b.r2.c4",
+          "source_bbox": [
+            327.66,
+            176.85999999999999,
+            371.22,
+            191.06
+          ],
+          "text": "0.00",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-b.r2.c5",
+          "source_bbox": [
+            371.22,
+            176.85999999999999,
+            414.78,
+            191.06
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-b.r2.c6",
+          "source_bbox": [
+            414.78,
+            176.85999999999999,
+            458.34,
+            191.06
+          ],
+          "text": "0.675",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-b.r2.c7",
+          "source_bbox": [
+            458.34,
+            176.85999999999999,
+            501.96,
+            191.06
+          ],
+          "text": "0.00",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-b.r3.c0",
+          "source_bbox": [
+            124.32,
+            191.06,
+            207,
+            205.26
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-b.r3.c1",
+          "source_bbox": [
+            207,
+            191.06,
+            240.54,
+            205.26
+          ],
+          "text": "合計",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-b.r3.c2",
+          "source_bbox": [
+            240.54,
+            191.06,
+            284.1,
+            205.26
+          ],
+          "text": "59.75",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-b.r3.c3",
+          "source_bbox": [
+            284.1,
+            191.06,
+            327.66,
+            205.26
+          ],
+          "text": "－",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-b.r3.c4",
+          "source_bbox": [
+            327.66,
+            191.06,
+            371.22,
+            205.26
+          ],
+          "text": "92.61",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-b.r3.c5",
+          "source_bbox": [
+            371.22,
+            191.06,
+            414.78,
+            205.26
+          ],
+          "text": "－",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-b.r3.c6",
+          "source_bbox": [
+            414.78,
+            191.06,
+            458.34,
+            205.26
+          ],
+          "text": "－",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-b.r3.c7",
+          "source_bbox": [
+            458.34,
+            191.06,
+            501.96,
+            205.26
+          ],
+          "text": "-19.42",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        }
+      ],
+      "selective_rules": {
+        "horizontal_boundaries": [
+          0,
+          1,
+          4
+        ],
+        "vertical_boundaries": [
+          2
+        ]
+      }
+    },
+    {
+      "id": "p26-safety-c-title",
+      "source_bbox": [
+        0,
+        218.96,
+        595,
+        235.96
+      ],
+      "text": "b) C支点最大の場合",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p26-safety-c",
+      "kind": "table",
+      "direction": [
+        1,
+        0
+      ],
+      "header_rows": 1,
+      "body_rows": 3,
+      "columns": 8,
+      "cells": [
+        {
+          "id": "p26-safety-c.r0.c0",
+          "source_bbox": [
+            124.32,
+            240.96,
+            240.54,
+            270.06
+          ],
+          "text": "作用種別",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 2
+        },
+        {
+          "id": "p26-safety-c.r0.c2",
+          "source_bbox": [
+            240.54,
+            240.96,
+            284.1,
+            270.06
+          ],
+          "text": "N\n(KN)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-c.r0.c3",
+          "source_bbox": [
+            284.1,
+            240.96,
+            327.66,
+            270.06
+          ],
+          "text": "X\n(m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-c.r0.c4",
+          "source_bbox": [
+            327.66,
+            240.96,
+            371.22,
+            270.06
+          ],
+          "text": "Md\n(KN・m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-c.r0.c5",
+          "source_bbox": [
+            371.22,
+            240.96,
+            414.78,
+            270.06
+          ],
+          "text": "H\n(KN)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-c.r0.c6",
+          "source_bbox": [
+            414.78,
+            240.96,
+            458.34,
+            270.06
+          ],
+          "text": "e\n(m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-c.r0.c7",
+          "source_bbox": [
+            458.34,
+            240.96,
+            501.96,
+            270.06
+          ],
+          "text": "Mt\n(KN・m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-c.r1.c0",
+          "source_bbox": [
+            124.32,
+            270.06,
+            207,
+            284.26
+          ],
+          "text": "上部工　反力",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-c.r1.c1",
+          "source_bbox": [
+            207,
+            270.06,
+            240.54,
+            284.26
+          ],
+          "text": "起点側",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-c.r1.c2",
+          "source_bbox": [
+            240.54,
+            270.06,
+            284.1,
+            284.26
+          ],
+          "text": "11.85",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-c.r1.c3",
+          "source_bbox": [
+            284.1,
+            270.06,
+            327.66,
+            284.26
+          ],
+          "text": "1.550",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-c.r1.c4",
+          "source_bbox": [
+            327.66,
+            270.06,
+            371.22,
+            284.26
+          ],
+          "text": "18.37",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-c.r1.c5",
+          "source_bbox": [
+            371.22,
+            270.06,
+            414.78,
+            284.26
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-c.r1.c6",
+          "source_bbox": [
+            414.78,
+            270.06,
+            458.34,
+            284.26
+          ],
+          "text": "-0.325",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-c.r1.c7",
+          "source_bbox": [
+            458.34,
+            270.06,
+            501.96,
+            284.26
+          ],
+          "text": "-3.85",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-c.r2.c0",
+          "source_bbox": [
+            124.32,
+            284.26,
+            207,
+            298.46
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-c.r2.c1",
+          "source_bbox": [
+            207,
+            284.26,
+            240.54,
+            298.46
+          ],
+          "text": "終点側",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-c.r2.c2",
+          "source_bbox": [
+            240.54,
+            284.26,
+            284.1,
+            298.46
+          ],
+          "text": "217.19",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-c.r2.c3",
+          "source_bbox": [
+            284.1,
+            284.26,
+            327.66,
+            298.46
+          ],
+          "text": "0.645",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-c.r2.c4",
+          "source_bbox": [
+            327.66,
+            284.26,
+            371.22,
+            298.46
+          ],
+          "text": "140.09",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-c.r2.c5",
+          "source_bbox": [
+            371.22,
+            284.26,
+            414.78,
+            298.46
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-c.r2.c6",
+          "source_bbox": [
+            414.78,
+            284.26,
+            458.34,
+            298.46
+          ],
+          "text": "0.675",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-c.r2.c7",
+          "source_bbox": [
+            458.34,
+            284.26,
+            501.96,
+            298.46
+          ],
+          "text": "146.60",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-c.r3.c0",
+          "source_bbox": [
+            124.32,
+            298.46,
+            207,
+            312.65999999999997
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-c.r3.c1",
+          "source_bbox": [
+            207,
+            298.46,
+            240.54,
+            312.65999999999997
+          ],
+          "text": "合計",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-c.r3.c2",
+          "source_bbox": [
+            240.54,
+            298.46,
+            284.1,
+            312.65999999999997
+          ],
+          "text": "229.04",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-c.r3.c3",
+          "source_bbox": [
+            284.1,
+            298.46,
+            327.66,
+            312.65999999999997
+          ],
+          "text": "－",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-c.r3.c4",
+          "source_bbox": [
+            327.66,
+            298.46,
+            371.22,
+            312.65999999999997
+          ],
+          "text": "158.46",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-c.r3.c5",
+          "source_bbox": [
+            371.22,
+            298.46,
+            414.78,
+            312.65999999999997
+          ],
+          "text": "－",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-c.r3.c6",
+          "source_bbox": [
+            414.78,
+            298.46,
+            458.34,
+            312.65999999999997
+          ],
+          "text": "－",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-c.r3.c7",
+          "source_bbox": [
+            458.34,
+            298.46,
+            501.96,
+            312.65999999999997
+          ],
+          "text": "142.75",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        }
+      ],
+      "selective_rules": {
+        "horizontal_boundaries": [
+          0,
+          1,
+          4
+        ],
+        "vertical_boundaries": [
+          2
+        ]
+      }
+    },
+    {
+      "id": "p26-safety-bc-title",
+      "source_bbox": [
+        0,
+        326.36,
+        595,
+        343.36
+      ],
+      "text": "c) B+C支点最大の場合",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p26-safety-bc",
+      "kind": "table",
+      "direction": [
+        1,
+        0
+      ],
+      "header_rows": 1,
+      "body_rows": 3,
+      "columns": 8,
+      "cells": [
+        {
+          "id": "p26-safety-bc.r0.c0",
+          "source_bbox": [
+            124.32,
+            348.36,
+            240.54,
+            377.46000000000004
+          ],
+          "text": "作用種別",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 2
+        },
+        {
+          "id": "p26-safety-bc.r0.c2",
+          "source_bbox": [
+            240.54,
+            348.36,
+            284.1,
+            377.46000000000004
+          ],
+          "text": "N\n(KN)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-bc.r0.c3",
+          "source_bbox": [
+            284.1,
+            348.36,
+            327.66,
+            377.46000000000004
+          ],
+          "text": "X\n(m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-bc.r0.c4",
+          "source_bbox": [
+            327.66,
+            348.36,
+            371.22,
+            377.46000000000004
+          ],
+          "text": "Md\n(KN・m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-bc.r0.c5",
+          "source_bbox": [
+            371.22,
+            348.36,
+            414.78,
+            377.46000000000004
+          ],
+          "text": "H\n(KN)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-bc.r0.c6",
+          "source_bbox": [
+            414.78,
+            348.36,
+            458.34,
+            377.46000000000004
+          ],
+          "text": "e\n(m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-bc.r0.c7",
+          "source_bbox": [
+            458.34,
+            348.36,
+            501.96,
+            377.46000000000004
+          ],
+          "text": "Mt\n(KN・m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-bc.r1.c0",
+          "source_bbox": [
+            124.32,
+            377.46000000000004,
+            207,
+            391.66
+          ],
+          "text": "上部工　反力",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-bc.r1.c1",
+          "source_bbox": [
+            207,
+            377.46000000000004,
+            240.54,
+            391.66
+          ],
+          "text": "起点側",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-bc.r1.c2",
+          "source_bbox": [
+            240.54,
+            377.46000000000004,
+            284.1,
+            391.66
+          ],
+          "text": "31.44",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-bc.r1.c3",
+          "source_bbox": [
+            284.1,
+            377.46000000000004,
+            327.66,
+            391.66
+          ],
+          "text": "1.550",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-bc.r1.c4",
+          "source_bbox": [
+            327.66,
+            377.46000000000004,
+            371.22,
+            391.66
+          ],
+          "text": "48.73",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-bc.r1.c5",
+          "source_bbox": [
+            371.22,
+            377.46000000000004,
+            414.78,
+            391.66
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-bc.r1.c6",
+          "source_bbox": [
+            414.78,
+            377.46000000000004,
+            458.34,
+            391.66
+          ],
+          "text": "-0.325",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-bc.r1.c7",
+          "source_bbox": [
+            458.34,
+            377.46000000000004,
+            501.96,
+            391.66
+          ],
+          "text": "-10.22",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-bc.r2.c0",
+          "source_bbox": [
+            124.32,
+            391.66,
+            207,
+            405.86
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-bc.r2.c1",
+          "source_bbox": [
+            207,
+            391.66,
+            240.54,
+            405.86
+          ],
+          "text": "終点側",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-bc.r2.c2",
+          "source_bbox": [
+            240.54,
+            391.66,
+            284.1,
+            405.86
+          ],
+          "text": "153.65",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-bc.r2.c3",
+          "source_bbox": [
+            284.1,
+            391.66,
+            327.66,
+            405.86
+          ],
+          "text": "0.645",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-bc.r2.c4",
+          "source_bbox": [
+            327.66,
+            391.66,
+            371.22,
+            405.86
+          ],
+          "text": "99.11",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-bc.r2.c5",
+          "source_bbox": [
+            371.22,
+            391.66,
+            414.78,
+            405.86
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-bc.r2.c6",
+          "source_bbox": [
+            414.78,
+            391.66,
+            458.34,
+            405.86
+          ],
+          "text": "0.675",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-bc.r2.c7",
+          "source_bbox": [
+            458.34,
+            391.66,
+            501.96,
+            405.86
+          ],
+          "text": "103.72",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-bc.r3.c0",
+          "source_bbox": [
+            124.32,
+            405.86,
+            207,
+            420.06000000000006
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-bc.r3.c1",
+          "source_bbox": [
+            207,
+            405.86,
+            240.54,
+            420.06000000000006
+          ],
+          "text": "合計",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-bc.r3.c2",
+          "source_bbox": [
+            240.54,
+            405.86,
+            284.1,
+            420.06000000000006
+          ],
+          "text": "185.09",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-bc.r3.c3",
+          "source_bbox": [
+            284.1,
+            405.86,
+            327.66,
+            420.06000000000006
+          ],
+          "text": "－",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-bc.r3.c4",
+          "source_bbox": [
+            327.66,
+            405.86,
+            371.22,
+            420.06000000000006
+          ],
+          "text": "147.84",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-bc.r3.c5",
+          "source_bbox": [
+            371.22,
+            405.86,
+            414.78,
+            420.06000000000006
+          ],
+          "text": "－",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-bc.r3.c6",
+          "source_bbox": [
+            414.78,
+            405.86,
+            458.34,
+            420.06000000000006
+          ],
+          "text": "－",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-safety-bc.r3.c7",
+          "source_bbox": [
+            458.34,
+            405.86,
+            501.96,
+            420.06000000000006
+          ],
+          "text": "93.50",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        }
+      ],
+      "selective_rules": {
+        "horizontal_boundaries": [
+          0,
+          1,
+          4
+        ],
+        "vertical_boundaries": [
+          2
+        ]
+      }
+    },
+    {
+      "id": "p26-service-b-title",
+      "source_bbox": [
+        0,
+        455.48,
+        595,
+        472.48
+      ],
+      "text": "a) B支点最大の場合",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p26-service-b",
+      "kind": "table",
+      "direction": [
+        1,
+        0
+      ],
+      "header_rows": 1,
+      "body_rows": 3,
+      "columns": 8,
+      "cells": [
+        {
+          "id": "p26-service-b.r0.c0",
+          "source_bbox": [
+            124.32,
+            477.48,
+            240.54,
+            506.58000000000004
+          ],
+          "text": "作用種別",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 2
+        },
+        {
+          "id": "p26-service-b.r0.c2",
+          "source_bbox": [
+            240.54,
+            477.48,
+            284.1,
+            506.58000000000004
+          ],
+          "text": "N\n(KN)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-b.r0.c3",
+          "source_bbox": [
+            284.1,
+            477.48,
+            327.66,
+            506.58000000000004
+          ],
+          "text": "X\n(m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-b.r0.c4",
+          "source_bbox": [
+            327.66,
+            477.48,
+            371.22,
+            506.58000000000004
+          ],
+          "text": "Md\n(KN・m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-b.r0.c5",
+          "source_bbox": [
+            371.22,
+            477.48,
+            414.78,
+            506.58000000000004
+          ],
+          "text": "H\n(KN)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-b.r0.c6",
+          "source_bbox": [
+            414.78,
+            477.48,
+            458.34,
+            506.58000000000004
+          ],
+          "text": "e\n(m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-b.r0.c7",
+          "source_bbox": [
+            458.34,
+            477.48,
+            501.96,
+            506.58000000000004
+          ],
+          "text": "Mt\n(KN・m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-b.r1.c0",
+          "source_bbox": [
+            124.32,
+            506.58000000000004,
+            207,
+            520.7800000000001
+          ],
+          "text": "上部工　反力",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-b.r1.c1",
+          "source_bbox": [
+            207,
+            506.58000000000004,
+            240.54,
+            520.7800000000001
+          ],
+          "text": "起点側",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-b.r1.c2",
+          "source_bbox": [
+            240.54,
+            506.58000000000004,
+            284.1,
+            520.7800000000001
+          ],
+          "text": "59.75",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-b.r1.c3",
+          "source_bbox": [
+            284.1,
+            506.58000000000004,
+            327.66,
+            520.7800000000001
+          ],
+          "text": "1.550",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-b.r1.c4",
+          "source_bbox": [
+            327.66,
+            506.58000000000004,
+            371.22,
+            520.7800000000001
+          ],
+          "text": "92.61",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-b.r1.c5",
+          "source_bbox": [
+            371.22,
+            506.58000000000004,
+            414.78,
+            520.7800000000001
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-b.r1.c6",
+          "source_bbox": [
+            414.78,
+            506.58000000000004,
+            458.34,
+            520.7800000000001
+          ],
+          "text": "-0.325",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-b.r1.c7",
+          "source_bbox": [
+            458.34,
+            506.58000000000004,
+            501.96,
+            520.7800000000001
+          ],
+          "text": "-19.42",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-b.r2.c0",
+          "source_bbox": [
+            124.32,
+            520.7800000000001,
+            207,
+            534.98
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-b.r2.c1",
+          "source_bbox": [
+            207,
+            520.7800000000001,
+            240.54,
+            534.98
+          ],
+          "text": "終点側",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-b.r2.c2",
+          "source_bbox": [
+            240.54,
+            520.7800000000001,
+            284.1,
+            534.98
+          ],
+          "text": "0.00",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-b.r2.c3",
+          "source_bbox": [
+            284.1,
+            520.7800000000001,
+            327.66,
+            534.98
+          ],
+          "text": "0.645",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-b.r2.c4",
+          "source_bbox": [
+            327.66,
+            520.7800000000001,
+            371.22,
+            534.98
+          ],
+          "text": "0.00",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-b.r2.c5",
+          "source_bbox": [
+            371.22,
+            520.7800000000001,
+            414.78,
+            534.98
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-b.r2.c6",
+          "source_bbox": [
+            414.78,
+            520.7800000000001,
+            458.34,
+            534.98
+          ],
+          "text": "0.675",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-b.r2.c7",
+          "source_bbox": [
+            458.34,
+            520.7800000000001,
+            501.96,
+            534.98
+          ],
+          "text": "0.00",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-b.r3.c0",
+          "source_bbox": [
+            124.32,
+            534.98,
+            207,
+            549.1800000000001
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-b.r3.c1",
+          "source_bbox": [
+            207,
+            534.98,
+            240.54,
+            549.1800000000001
+          ],
+          "text": "合計",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-b.r3.c2",
+          "source_bbox": [
+            240.54,
+            534.98,
+            284.1,
+            549.1800000000001
+          ],
+          "text": "59.75",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-b.r3.c3",
+          "source_bbox": [
+            284.1,
+            534.98,
+            327.66,
+            549.1800000000001
+          ],
+          "text": "－",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-b.r3.c4",
+          "source_bbox": [
+            327.66,
+            534.98,
+            371.22,
+            549.1800000000001
+          ],
+          "text": "92.61",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-b.r3.c5",
+          "source_bbox": [
+            371.22,
+            534.98,
+            414.78,
+            549.1800000000001
+          ],
+          "text": "－",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-b.r3.c6",
+          "source_bbox": [
+            414.78,
+            534.98,
+            458.34,
+            549.1800000000001
+          ],
+          "text": "－",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-b.r3.c7",
+          "source_bbox": [
+            458.34,
+            534.98,
+            501.96,
+            549.1800000000001
+          ],
+          "text": "-19.42",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        }
+      ],
+      "selective_rules": {
+        "horizontal_boundaries": [
+          0,
+          1,
+          4
+        ],
+        "vertical_boundaries": [
+          2
+        ]
+      }
+    },
+    {
+      "id": "p26-service-c-title",
+      "source_bbox": [
+        0,
+        562.88,
+        595,
+        579.88
+      ],
+      "text": "b) C支点最大の場合",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p26-service-c",
+      "kind": "table",
+      "direction": [
+        1,
+        0
+      ],
+      "header_rows": 1,
+      "body_rows": 3,
+      "columns": 8,
+      "cells": [
+        {
+          "id": "p26-service-c.r0.c0",
+          "source_bbox": [
+            124.32,
+            584.88,
+            240.54,
+            613.98
+          ],
+          "text": "作用種別",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 2
+        },
+        {
+          "id": "p26-service-c.r0.c2",
+          "source_bbox": [
+            240.54,
+            584.88,
+            284.1,
+            613.98
+          ],
+          "text": "N\n(KN)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-c.r0.c3",
+          "source_bbox": [
+            284.1,
+            584.88,
+            327.66,
+            613.98
+          ],
+          "text": "X\n(m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-c.r0.c4",
+          "source_bbox": [
+            327.66,
+            584.88,
+            371.22,
+            613.98
+          ],
+          "text": "Md\n(KN・m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-c.r0.c5",
+          "source_bbox": [
+            371.22,
+            584.88,
+            414.78,
+            613.98
+          ],
+          "text": "H\n(KN)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-c.r0.c6",
+          "source_bbox": [
+            414.78,
+            584.88,
+            458.34,
+            613.98
+          ],
+          "text": "e\n(m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-c.r0.c7",
+          "source_bbox": [
+            458.34,
+            584.88,
+            501.96,
+            613.98
+          ],
+          "text": "Mt\n(KN・m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-c.r1.c0",
+          "source_bbox": [
+            124.32,
+            613.98,
+            207,
+            628.1800000000001
+          ],
+          "text": "上部工　反力",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-c.r1.c1",
+          "source_bbox": [
+            207,
+            613.98,
+            240.54,
+            628.1800000000001
+          ],
+          "text": "起点側",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-c.r1.c2",
+          "source_bbox": [
+            240.54,
+            613.98,
+            284.1,
+            628.1800000000001
+          ],
+          "text": "11.85",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-c.r1.c3",
+          "source_bbox": [
+            284.1,
+            613.98,
+            327.66,
+            628.1800000000001
+          ],
+          "text": "1.550",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-c.r1.c4",
+          "source_bbox": [
+            327.66,
+            613.98,
+            371.22,
+            628.1800000000001
+          ],
+          "text": "18.37",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-c.r1.c5",
+          "source_bbox": [
+            371.22,
+            613.98,
+            414.78,
+            628.1800000000001
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-c.r1.c6",
+          "source_bbox": [
+            414.78,
+            613.98,
+            458.34,
+            628.1800000000001
+          ],
+          "text": "-0.325",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-c.r1.c7",
+          "source_bbox": [
+            458.34,
+            613.98,
+            501.96,
+            628.1800000000001
+          ],
+          "text": "-3.85",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-c.r2.c0",
+          "source_bbox": [
+            124.32,
+            628.1800000000001,
+            207,
+            642.38
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-c.r2.c1",
+          "source_bbox": [
+            207,
+            628.1800000000001,
+            240.54,
+            642.38
+          ],
+          "text": "終点側",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-c.r2.c2",
+          "source_bbox": [
+            240.54,
+            628.1800000000001,
+            284.1,
+            642.38
+          ],
+          "text": "217.19",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-c.r2.c3",
+          "source_bbox": [
+            284.1,
+            628.1800000000001,
+            327.66,
+            642.38
+          ],
+          "text": "0.645",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-c.r2.c4",
+          "source_bbox": [
+            327.66,
+            628.1800000000001,
+            371.22,
+            642.38
+          ],
+          "text": "140.09",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-c.r2.c5",
+          "source_bbox": [
+            371.22,
+            628.1800000000001,
+            414.78,
+            642.38
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-c.r2.c6",
+          "source_bbox": [
+            414.78,
+            628.1800000000001,
+            458.34,
+            642.38
+          ],
+          "text": "0.675",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-c.r2.c7",
+          "source_bbox": [
+            458.34,
+            628.1800000000001,
+            501.96,
+            642.38
+          ],
+          "text": "146.60",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-c.r3.c0",
+          "source_bbox": [
+            124.32,
+            642.38,
+            207,
+            656.58
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-c.r3.c1",
+          "source_bbox": [
+            207,
+            642.38,
+            240.54,
+            656.58
+          ],
+          "text": "合計",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-c.r3.c2",
+          "source_bbox": [
+            240.54,
+            642.38,
+            284.1,
+            656.58
+          ],
+          "text": "229.04",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-c.r3.c3",
+          "source_bbox": [
+            284.1,
+            642.38,
+            327.66,
+            656.58
+          ],
+          "text": "－",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-c.r3.c4",
+          "source_bbox": [
+            327.66,
+            642.38,
+            371.22,
+            656.58
+          ],
+          "text": "158.46",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-c.r3.c5",
+          "source_bbox": [
+            371.22,
+            642.38,
+            414.78,
+            656.58
+          ],
+          "text": "－",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-c.r3.c6",
+          "source_bbox": [
+            414.78,
+            642.38,
+            458.34,
+            656.58
+          ],
+          "text": "－",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-c.r3.c7",
+          "source_bbox": [
+            458.34,
+            642.38,
+            501.96,
+            656.58
+          ],
+          "text": "142.75",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        }
+      ],
+      "selective_rules": {
+        "horizontal_boundaries": [
+          0,
+          1,
+          4
+        ],
+        "vertical_boundaries": [
+          2
+        ]
+      }
+    },
+    {
+      "id": "p26-service-bc-title",
+      "source_bbox": [
+        0,
+        670.28,
+        595,
+        687.28
+      ],
+      "text": "c) B+C支点最大の場合",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p26-service-bc",
+      "kind": "table",
+      "direction": [
+        1,
+        0
+      ],
+      "header_rows": 1,
+      "body_rows": 3,
+      "columns": 8,
+      "cells": [
+        {
+          "id": "p26-service-bc.r0.c0",
+          "source_bbox": [
+            124.32,
+            692.28,
+            240.54,
+            721.38
+          ],
+          "text": "作用種別",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 2
+        },
+        {
+          "id": "p26-service-bc.r0.c2",
+          "source_bbox": [
+            240.54,
+            692.28,
+            284.1,
+            721.38
+          ],
+          "text": "N\n(KN)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-bc.r0.c3",
+          "source_bbox": [
+            284.1,
+            692.28,
+            327.66,
+            721.38
+          ],
+          "text": "X\n(m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-bc.r0.c4",
+          "source_bbox": [
+            327.66,
+            692.28,
+            371.22,
+            721.38
+          ],
+          "text": "Md\n(KN・m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-bc.r0.c5",
+          "source_bbox": [
+            371.22,
+            692.28,
+            414.78,
+            721.38
+          ],
+          "text": "H\n(KN)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-bc.r0.c6",
+          "source_bbox": [
+            414.78,
+            692.28,
+            458.34,
+            721.38
+          ],
+          "text": "e\n(m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-bc.r0.c7",
+          "source_bbox": [
+            458.34,
+            692.28,
+            501.96,
+            721.38
+          ],
+          "text": "Mt\n(KN・m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-bc.r1.c0",
+          "source_bbox": [
+            124.32,
+            721.38,
+            207,
+            735.58
+          ],
+          "text": "上部工　反力",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-bc.r1.c1",
+          "source_bbox": [
+            207,
+            721.38,
+            240.54,
+            735.58
+          ],
+          "text": "起点側",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-bc.r1.c2",
+          "source_bbox": [
+            240.54,
+            721.38,
+            284.1,
+            735.58
+          ],
+          "text": "31.44",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-bc.r1.c3",
+          "source_bbox": [
+            284.1,
+            721.38,
+            327.66,
+            735.58
+          ],
+          "text": "1.550",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-bc.r1.c4",
+          "source_bbox": [
+            327.66,
+            721.38,
+            371.22,
+            735.58
+          ],
+          "text": "48.73",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-bc.r1.c5",
+          "source_bbox": [
+            371.22,
+            721.38,
+            414.78,
+            735.58
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-bc.r1.c6",
+          "source_bbox": [
+            414.78,
+            721.38,
+            458.34,
+            735.58
+          ],
+          "text": "-0.325",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-bc.r1.c7",
+          "source_bbox": [
+            458.34,
+            721.38,
+            501.96,
+            735.58
+          ],
+          "text": "-10.22",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-bc.r2.c0",
+          "source_bbox": [
+            124.32,
+            735.58,
+            207,
+            749.78
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-bc.r2.c1",
+          "source_bbox": [
+            207,
+            735.58,
+            240.54,
+            749.78
+          ],
+          "text": "終点側",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-bc.r2.c2",
+          "source_bbox": [
+            240.54,
+            735.58,
+            284.1,
+            749.78
+          ],
+          "text": "153.65",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-bc.r2.c3",
+          "source_bbox": [
+            284.1,
+            735.58,
+            327.66,
+            749.78
+          ],
+          "text": "0.645",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-bc.r2.c4",
+          "source_bbox": [
+            327.66,
+            735.58,
+            371.22,
+            749.78
+          ],
+          "text": "99.11",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-bc.r2.c5",
+          "source_bbox": [
+            371.22,
+            735.58,
+            414.78,
+            749.78
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-bc.r2.c6",
+          "source_bbox": [
+            414.78,
+            735.58,
+            458.34,
+            749.78
+          ],
+          "text": "0.675",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-bc.r2.c7",
+          "source_bbox": [
+            458.34,
+            735.58,
+            501.96,
+            749.78
+          ],
+          "text": "103.72",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-bc.r3.c0",
+          "source_bbox": [
+            124.32,
+            749.78,
+            207,
+            763.98
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-bc.r3.c1",
+          "source_bbox": [
+            207,
+            749.78,
+            240.54,
+            763.98
+          ],
+          "text": "合計",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-bc.r3.c2",
+          "source_bbox": [
+            240.54,
+            749.78,
+            284.1,
+            763.98
+          ],
+          "text": "185.09",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-bc.r3.c3",
+          "source_bbox": [
+            284.1,
+            749.78,
+            327.66,
+            763.98
+          ],
+          "text": "－",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-bc.r3.c4",
+          "source_bbox": [
+            327.66,
+            749.78,
+            371.22,
+            763.98
+          ],
+          "text": "147.84",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-bc.r3.c5",
+          "source_bbox": [
+            371.22,
+            749.78,
+            414.78,
+            763.98
+          ],
+          "text": "－",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-bc.r3.c6",
+          "source_bbox": [
+            414.78,
+            749.78,
+            458.34,
+            763.98
+          ],
+          "text": "－",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p26-service-bc.r3.c7",
+          "source_bbox": [
+            458.34,
+            749.78,
+            501.96,
+            763.98
+          ],
+          "text": "93.50",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        }
+      ],
+      "selective_rules": {
+        "horizontal_boundaries": [
+          0,
+          1,
+          4
+        ],
+        "vertical_boundaries": [
+          2
+        ]
+      }
+    }
+  ]
+}

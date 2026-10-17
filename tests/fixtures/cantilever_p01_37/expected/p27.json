@@ -1,0 +1,3417 @@
+{
+  "schema_version": 1,
+  "source_page": 27,
+  "source_sha256": "e56bf3ddbe3314ed95517099bedb0e68005df1567b0b3e8f52a2a4066d03393e",
+  "provenance": {
+    "author": "oracle",
+    "method": "independent source glyph transcription and visual comparison",
+    "reviewed_source_image": "source-survey/p27.png",
+    "review_status": "source-reviewed"
+  },
+  "omitted_page_number": "13 - 27",
+  "source_character_inventory": {
+    "(": 35,
+    ")": 37,
+    "+": 1,
+    "-": 10,
+    ".": 65,
+    "0": 51,
+    "1": 23,
+    "2": 25,
+    "3": 30,
+    "4": 26,
+    "5": 41,
+    "6": 26,
+    "7": 19,
+    "8": 14,
+    "9": 8,
+    "B": 2,
+    "C": 2,
+    "F": 1,
+    "H": 5,
+    "K": 20,
+    "L": 1,
+    "M": 10,
+    "N": 25,
+    "W": 1,
+    "X": 5,
+    "a": 2,
+    "b": 2,
+    "c": 1,
+    "d": 5,
+    "e": 5,
+    "m": 20,
+    "t": 5,
+    "あ": 1,
+    "い": 1,
+    "が": 2,
+    "な": 1,
+    "の": 3,
+    "る": 1,
+    "・": 10,
+    "上": 5,
+    "両": 1,
+    "作": 5,
+    "側": 10,
+    "列": 2,
+    "別": 5,
+    "力": 5,
+    "反": 5,
+    "合": 10,
+    "場": 5,
+    "大": 3,
+    "工": 5,
+    "支": 3,
+    "最": 3,
+    "点": 13,
+    "用": 5,
+    "種": 5,
+    "終": 5,
+    "荷": 4,
+    "計": 5,
+    "起": 5,
+    "車": 3,
+    "部": 5,
+    "重": 4,
+    "風": 1,
+    "－": 15
+  },
+  "marker_count": 0,
+  "hash_placeholder_count": 0,
+  "blocks": [
+    {
+      "id": "p27-lateral-title",
+      "source_bbox": [
+        0,
+        70.93112640380859,
+        595,
+        81.2709457397461
+      ],
+      "text": "6) 車両荷重LF",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p27-lateral-b-title",
+      "source_bbox": [
+        0,
+        92.65115814208984,
+        595,
+        102.99097747802735
+      ],
+      "text": "(a) B支点最大の場合",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p27-lateral-c-title",
+      "source_bbox": [
+        0,
+        200.05112915039064,
+        595,
+        210.3909484863281
+      ],
+      "text": "(b) C支点最大の場合",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p27-lateral-bc-title",
+      "source_bbox": [
+        0,
+        307.45115356445314,
+        595,
+        317.7909729003906
+      ],
+      "text": "(c) B+C支点最大の場合",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p27-wind-title",
+      "source_bbox": [
+        0,
+        429.1311462402344,
+        595,
+        439.47096557617186
+      ],
+      "text": "7) 風荷重W",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p27-wind-with-title",
+      "source_bbox": [
+        0,
+        450.8511474609375,
+        595,
+        461.190966796875
+      ],
+      "text": "(a) 列車荷重がある場合",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p27-wind-without-title",
+      "source_bbox": [
+        0,
+        558.2511108398437,
+        595,
+        568.5909301757813
+      ],
+      "text": "(b) 列車荷重がない場合",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p27-lateral-b-table",
+      "kind": "table",
+      "direction": [
+        1,
+        0
+      ],
+      "cells": [
+        {
+          "id": "p27-lateral-b-table.r0.c0",
+          "source_bbox": [
+            109.8,
+            111.84,
+            226.01999999999998,
+            140.94
+          ],
+          "text": "作用種別",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 2
+        },
+        {
+          "id": "p27-lateral-b-table.r0.c2",
+          "source_bbox": [
+            226.01999999999998,
+            111.84,
+            269.58,
+            140.94
+          ],
+          "text": "N\n(KN)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-b-table.r0.c3",
+          "source_bbox": [
+            269.58,
+            111.84,
+            313.14,
+            140.94
+          ],
+          "text": "X\n(m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-b-table.r0.c4",
+          "source_bbox": [
+            313.14,
+            111.84,
+            356.7,
+            140.94
+          ],
+          "text": "Md\n(KN・m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-b-table.r0.c5",
+          "source_bbox": [
+            356.7,
+            111.84,
+            400.26,
+            140.94
+          ],
+          "text": "H\n(KN)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-b-table.r0.c6",
+          "source_bbox": [
+            400.26,
+            111.84,
+            443.82,
+            140.94
+          ],
+          "text": "e\n(m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-b-table.r0.c7",
+          "source_bbox": [
+            443.82,
+            111.84,
+            487.44,
+            140.94
+          ],
+          "text": "Mt\n(KN・m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-b-table.r1.c0",
+          "source_bbox": [
+            109.8,
+            140.94,
+            192.48000000000002,
+            155.22
+          ],
+          "text": "上部工　反力",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-b-table.r1.c1",
+          "source_bbox": [
+            192.48000000000002,
+            140.94,
+            226.01999999999998,
+            155.22
+          ],
+          "text": "起点側",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-b-table.r1.c2",
+          "source_bbox": [
+            226.01999999999998,
+            140.94,
+            269.58,
+            155.22
+          ],
+          "text": "45.38",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-b-table.r1.c3",
+          "source_bbox": [
+            269.58,
+            140.94,
+            313.14,
+            155.22
+          ],
+          "text": "1.550",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-b-table.r1.c4",
+          "source_bbox": [
+            313.14,
+            140.94,
+            356.7,
+            155.22
+          ],
+          "text": "70.34",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-b-table.r1.c5",
+          "source_bbox": [
+            356.7,
+            140.94,
+            400.26,
+            155.22
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-b-table.r1.c6",
+          "source_bbox": [
+            400.26,
+            140.94,
+            443.82,
+            155.22
+          ],
+          "text": "-0.325",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-b-table.r1.c7",
+          "source_bbox": [
+            443.82,
+            140.94,
+            487.44,
+            155.22
+          ],
+          "text": "-14.75",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-b-table.r2.c0",
+          "source_bbox": [
+            109.8,
+            155.22,
+            192.48000000000002,
+            169.5
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-b-table.r2.c1",
+          "source_bbox": [
+            192.48000000000002,
+            155.22,
+            226.01999999999998,
+            169.5
+          ],
+          "text": "終点側",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-b-table.r2.c2",
+          "source_bbox": [
+            226.01999999999998,
+            155.22,
+            269.58,
+            169.5
+          ],
+          "text": "0.00",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-b-table.r2.c3",
+          "source_bbox": [
+            269.58,
+            155.22,
+            313.14,
+            169.5
+          ],
+          "text": "0.645",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-b-table.r2.c4",
+          "source_bbox": [
+            313.14,
+            155.22,
+            356.7,
+            169.5
+          ],
+          "text": "0.00",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-b-table.r2.c5",
+          "source_bbox": [
+            356.7,
+            155.22,
+            400.26,
+            169.5
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-b-table.r2.c6",
+          "source_bbox": [
+            400.26,
+            155.22,
+            443.82,
+            169.5
+          ],
+          "text": "0.675",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-b-table.r2.c7",
+          "source_bbox": [
+            443.82,
+            155.22,
+            487.44,
+            169.5
+          ],
+          "text": "0.00",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-b-table.r3.c0",
+          "source_bbox": [
+            109.8,
+            169.5,
+            192.48000000000002,
+            183.78
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-b-table.r3.c1",
+          "source_bbox": [
+            192.48000000000002,
+            169.5,
+            226.01999999999998,
+            183.78
+          ],
+          "text": "合計",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-b-table.r3.c2",
+          "source_bbox": [
+            226.01999999999998,
+            169.5,
+            269.58,
+            183.78
+          ],
+          "text": "45.38",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-b-table.r3.c3",
+          "source_bbox": [
+            269.58,
+            169.5,
+            313.14,
+            183.78
+          ],
+          "text": "－",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-b-table.r3.c4",
+          "source_bbox": [
+            313.14,
+            169.5,
+            356.7,
+            183.78
+          ],
+          "text": "70.34",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-b-table.r3.c5",
+          "source_bbox": [
+            356.7,
+            169.5,
+            400.26,
+            183.78
+          ],
+          "text": "－",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-b-table.r3.c6",
+          "source_bbox": [
+            400.26,
+            169.5,
+            443.82,
+            183.78
+          ],
+          "text": "－",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-b-table.r3.c7",
+          "source_bbox": [
+            443.82,
+            169.5,
+            487.44,
+            183.78
+          ],
+          "text": "-14.75",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        }
+      ],
+      "header_rows": 1,
+      "body_rows": 3,
+      "columns": 8,
+      "selective_rules": {
+        "horizontal_boundaries": [
+          0,
+          1,
+          4
+        ],
+        "vertical_boundaries": [
+          2
+        ]
+      }
+    },
+    {
+      "id": "p27-lateral-c-table",
+      "kind": "table",
+      "direction": [
+        1,
+        0
+      ],
+      "cells": [
+        {
+          "id": "p27-lateral-c-table.r0.c0",
+          "source_bbox": [
+            109.8,
+            219.24,
+            226.01999999999998,
+            248.34
+          ],
+          "text": "作用種別",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 2
+        },
+        {
+          "id": "p27-lateral-c-table.r0.c2",
+          "source_bbox": [
+            226.01999999999998,
+            219.24,
+            269.58,
+            248.34
+          ],
+          "text": "N\n(KN)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-c-table.r0.c3",
+          "source_bbox": [
+            269.58,
+            219.24,
+            313.14,
+            248.34
+          ],
+          "text": "X\n(m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-c-table.r0.c4",
+          "source_bbox": [
+            313.14,
+            219.24,
+            356.7,
+            248.34
+          ],
+          "text": "Md\n(KN・m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-c-table.r0.c5",
+          "source_bbox": [
+            356.7,
+            219.24,
+            400.26,
+            248.34
+          ],
+          "text": "H\n(KN)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-c-table.r0.c6",
+          "source_bbox": [
+            400.26,
+            219.24,
+            443.82,
+            248.34
+          ],
+          "text": "e\n(m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-c-table.r0.c7",
+          "source_bbox": [
+            443.82,
+            219.24,
+            487.44,
+            248.34
+          ],
+          "text": "Mt\n(KN・m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-c-table.r1.c0",
+          "source_bbox": [
+            109.8,
+            248.34,
+            192.48000000000002,
+            262.62
+          ],
+          "text": "上部工　反力",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-c-table.r1.c1",
+          "source_bbox": [
+            192.48000000000002,
+            248.34,
+            226.01999999999998,
+            262.62
+          ],
+          "text": "起点側",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-c-table.r1.c2",
+          "source_bbox": [
+            226.01999999999998,
+            248.34,
+            269.58,
+            262.62
+          ],
+          "text": "0.00",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-c-table.r1.c3",
+          "source_bbox": [
+            269.58,
+            248.34,
+            313.14,
+            262.62
+          ],
+          "text": "1.550",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-c-table.r1.c4",
+          "source_bbox": [
+            313.14,
+            248.34,
+            356.7,
+            262.62
+          ],
+          "text": "0.00",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-c-table.r1.c5",
+          "source_bbox": [
+            356.7,
+            248.34,
+            400.26,
+            262.62
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-c-table.r1.c6",
+          "source_bbox": [
+            400.26,
+            248.34,
+            443.82,
+            262.62
+          ],
+          "text": "-0.325",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-c-table.r1.c7",
+          "source_bbox": [
+            443.82,
+            248.34,
+            487.44,
+            262.62
+          ],
+          "text": "0.00",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-c-table.r2.c0",
+          "source_bbox": [
+            109.8,
+            262.62,
+            192.48000000000002,
+            276.9
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-c-table.r2.c1",
+          "source_bbox": [
+            192.48000000000002,
+            262.62,
+            226.01999999999998,
+            276.9
+          ],
+          "text": "終点側",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-c-table.r2.c2",
+          "source_bbox": [
+            226.01999999999998,
+            262.62,
+            269.58,
+            276.9
+          ],
+          "text": "54.40",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-c-table.r2.c3",
+          "source_bbox": [
+            269.58,
+            262.62,
+            313.14,
+            276.9
+          ],
+          "text": "0.645",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-c-table.r2.c4",
+          "source_bbox": [
+            313.14,
+            262.62,
+            356.7,
+            276.9
+          ],
+          "text": "35.09",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-c-table.r2.c5",
+          "source_bbox": [
+            356.7,
+            262.62,
+            400.26,
+            276.9
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-c-table.r2.c6",
+          "source_bbox": [
+            400.26,
+            262.62,
+            443.82,
+            276.9
+          ],
+          "text": "0.675",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-c-table.r2.c7",
+          "source_bbox": [
+            443.82,
+            262.62,
+            487.44,
+            276.9
+          ],
+          "text": "36.72",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-c-table.r3.c0",
+          "source_bbox": [
+            109.8,
+            276.9,
+            192.48000000000002,
+            291.18
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-c-table.r3.c1",
+          "source_bbox": [
+            192.48000000000002,
+            276.9,
+            226.01999999999998,
+            291.18
+          ],
+          "text": "合計",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-c-table.r3.c2",
+          "source_bbox": [
+            226.01999999999998,
+            276.9,
+            269.58,
+            291.18
+          ],
+          "text": "54.40",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-c-table.r3.c3",
+          "source_bbox": [
+            269.58,
+            276.9,
+            313.14,
+            291.18
+          ],
+          "text": "－",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-c-table.r3.c4",
+          "source_bbox": [
+            313.14,
+            276.9,
+            356.7,
+            291.18
+          ],
+          "text": "35.09",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-c-table.r3.c5",
+          "source_bbox": [
+            356.7,
+            276.9,
+            400.26,
+            291.18
+          ],
+          "text": "－",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-c-table.r3.c6",
+          "source_bbox": [
+            400.26,
+            276.9,
+            443.82,
+            291.18
+          ],
+          "text": "－",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-c-table.r3.c7",
+          "source_bbox": [
+            443.82,
+            276.9,
+            487.44,
+            291.18
+          ],
+          "text": "36.72",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        }
+      ],
+      "header_rows": 1,
+      "body_rows": 3,
+      "columns": 8,
+      "selective_rules": {
+        "horizontal_boundaries": [
+          0,
+          1,
+          4
+        ],
+        "vertical_boundaries": [
+          2
+        ]
+      }
+    },
+    {
+      "id": "p27-lateral-bc-table",
+      "kind": "table",
+      "direction": [
+        1,
+        0
+      ],
+      "cells": [
+        {
+          "id": "p27-lateral-bc-table.r0.c0",
+          "source_bbox": [
+            109.8,
+            326.64,
+            226.01999999999998,
+            355.74
+          ],
+          "text": "作用種別",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 2
+        },
+        {
+          "id": "p27-lateral-bc-table.r0.c2",
+          "source_bbox": [
+            226.01999999999998,
+            326.64,
+            269.58,
+            355.74
+          ],
+          "text": "N\n(KN)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-bc-table.r0.c3",
+          "source_bbox": [
+            269.58,
+            326.64,
+            313.14,
+            355.74
+          ],
+          "text": "X\n(m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-bc-table.r0.c4",
+          "source_bbox": [
+            313.14,
+            326.64,
+            356.7,
+            355.74
+          ],
+          "text": "Md\n(KN・m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-bc-table.r0.c5",
+          "source_bbox": [
+            356.7,
+            326.64,
+            400.26,
+            355.74
+          ],
+          "text": "H\n(KN)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-bc-table.r0.c6",
+          "source_bbox": [
+            400.26,
+            326.64,
+            443.82,
+            355.74
+          ],
+          "text": "e\n(m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-bc-table.r0.c7",
+          "source_bbox": [
+            443.82,
+            326.64,
+            487.44,
+            355.74
+          ],
+          "text": "Mt\n(KN・m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-bc-table.r1.c0",
+          "source_bbox": [
+            109.8,
+            355.74,
+            192.48000000000002,
+            370.02
+          ],
+          "text": "上部工　反力",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-bc-table.r1.c1",
+          "source_bbox": [
+            192.48000000000002,
+            355.74,
+            226.01999999999998,
+            370.02
+          ],
+          "text": "起点側",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-bc-table.r1.c2",
+          "source_bbox": [
+            226.01999999999998,
+            355.74,
+            269.58,
+            370.02
+          ],
+          "text": "23.10",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-bc-table.r1.c3",
+          "source_bbox": [
+            269.58,
+            355.74,
+            313.14,
+            370.02
+          ],
+          "text": "1.550",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-bc-table.r1.c4",
+          "source_bbox": [
+            313.14,
+            355.74,
+            356.7,
+            370.02
+          ],
+          "text": "35.81",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-bc-table.r1.c5",
+          "source_bbox": [
+            356.7,
+            355.74,
+            400.26,
+            370.02
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-bc-table.r1.c6",
+          "source_bbox": [
+            400.26,
+            355.74,
+            443.82,
+            370.02
+          ],
+          "text": "-0.325",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-bc-table.r1.c7",
+          "source_bbox": [
+            443.82,
+            355.74,
+            487.44,
+            370.02
+          ],
+          "text": "-7.51",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-bc-table.r2.c0",
+          "source_bbox": [
+            109.8,
+            370.02,
+            192.48000000000002,
+            384.3
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-bc-table.r2.c1",
+          "source_bbox": [
+            192.48000000000002,
+            370.02,
+            226.01999999999998,
+            384.3
+          ],
+          "text": "終点側",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-bc-table.r2.c2",
+          "source_bbox": [
+            226.01999999999998,
+            370.02,
+            269.58,
+            384.3
+          ],
+          "text": "38.49",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-bc-table.r2.c3",
+          "source_bbox": [
+            269.58,
+            370.02,
+            313.14,
+            384.3
+          ],
+          "text": "0.645",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-bc-table.r2.c4",
+          "source_bbox": [
+            313.14,
+            370.02,
+            356.7,
+            384.3
+          ],
+          "text": "24.83",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-bc-table.r2.c5",
+          "source_bbox": [
+            356.7,
+            370.02,
+            400.26,
+            384.3
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-bc-table.r2.c6",
+          "source_bbox": [
+            400.26,
+            370.02,
+            443.82,
+            384.3
+          ],
+          "text": "0.675",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-bc-table.r2.c7",
+          "source_bbox": [
+            443.82,
+            370.02,
+            487.44,
+            384.3
+          ],
+          "text": "25.98",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-bc-table.r3.c0",
+          "source_bbox": [
+            109.8,
+            384.3,
+            192.48000000000002,
+            398.58
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-bc-table.r3.c1",
+          "source_bbox": [
+            192.48000000000002,
+            384.3,
+            226.01999999999998,
+            398.58
+          ],
+          "text": "合計",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-bc-table.r3.c2",
+          "source_bbox": [
+            226.01999999999998,
+            384.3,
+            269.58,
+            398.58
+          ],
+          "text": "61.59",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-bc-table.r3.c3",
+          "source_bbox": [
+            269.58,
+            384.3,
+            313.14,
+            398.58
+          ],
+          "text": "－",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-bc-table.r3.c4",
+          "source_bbox": [
+            313.14,
+            384.3,
+            356.7,
+            398.58
+          ],
+          "text": "60.63",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-bc-table.r3.c5",
+          "source_bbox": [
+            356.7,
+            384.3,
+            400.26,
+            398.58
+          ],
+          "text": "－",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-bc-table.r3.c6",
+          "source_bbox": [
+            400.26,
+            384.3,
+            443.82,
+            398.58
+          ],
+          "text": "－",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-lateral-bc-table.r3.c7",
+          "source_bbox": [
+            443.82,
+            384.3,
+            487.44,
+            398.58
+          ],
+          "text": "18.47",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        }
+      ],
+      "header_rows": 1,
+      "body_rows": 3,
+      "columns": 8,
+      "selective_rules": {
+        "horizontal_boundaries": [
+          0,
+          1,
+          4
+        ],
+        "vertical_boundaries": [
+          2
+        ]
+      }
+    },
+    {
+      "id": "p27-wind-with-table",
+      "kind": "table",
+      "direction": [
+        1,
+        0
+      ],
+      "cells": [
+        {
+          "id": "p27-wind-with-table.r0.c0",
+          "source_bbox": [
+            109.8,
+            470.04,
+            226.01999999999998,
+            499.14000000000004
+          ],
+          "text": "作用種別",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 2
+        },
+        {
+          "id": "p27-wind-with-table.r0.c2",
+          "source_bbox": [
+            226.01999999999998,
+            470.04,
+            269.58,
+            499.14000000000004
+          ],
+          "text": "N\n(KN)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-wind-with-table.r0.c3",
+          "source_bbox": [
+            269.58,
+            470.04,
+            313.14,
+            499.14000000000004
+          ],
+          "text": "X\n(m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-wind-with-table.r0.c4",
+          "source_bbox": [
+            313.14,
+            470.04,
+            356.7,
+            499.14000000000004
+          ],
+          "text": "Md\n(KN・m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-wind-with-table.r0.c5",
+          "source_bbox": [
+            356.7,
+            470.04,
+            400.26,
+            499.14000000000004
+          ],
+          "text": "H\n(KN)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-wind-with-table.r0.c6",
+          "source_bbox": [
+            400.26,
+            470.04,
+            443.82,
+            499.14000000000004
+          ],
+          "text": "e\n(m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-wind-with-table.r0.c7",
+          "source_bbox": [
+            443.82,
+            470.04,
+            487.44,
+            499.14000000000004
+          ],
+          "text": "Mt\n(KN・m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-wind-with-table.r1.c0",
+          "source_bbox": [
+            109.8,
+            499.14000000000004,
+            192.48000000000002,
+            513.4200000000001
+          ],
+          "text": "上部工　反力",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-wind-with-table.r1.c1",
+          "source_bbox": [
+            192.48000000000002,
+            499.14000000000004,
+            226.01999999999998,
+            513.4200000000001
+          ],
+          "text": "起点側",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-wind-with-table.r1.c2",
+          "source_bbox": [
+            226.01999999999998,
+            499.14000000000004,
+            269.58,
+            513.4200000000001
+          ],
+          "text": "73.30",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-wind-with-table.r1.c3",
+          "source_bbox": [
+            269.58,
+            499.14000000000004,
+            313.14,
+            513.4200000000001
+          ],
+          "text": "1.550",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-wind-with-table.r1.c4",
+          "source_bbox": [
+            313.14,
+            499.14000000000004,
+            356.7,
+            513.4200000000001
+          ],
+          "text": "113.62",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-wind-with-table.r1.c5",
+          "source_bbox": [
+            356.7,
+            499.14000000000004,
+            400.26,
+            513.4200000000001
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-wind-with-table.r1.c6",
+          "source_bbox": [
+            400.26,
+            499.14000000000004,
+            443.82,
+            513.4200000000001
+          ],
+          "text": "-0.325",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-wind-with-table.r1.c7",
+          "source_bbox": [
+            443.82,
+            499.14000000000004,
+            487.44,
+            513.4200000000001
+          ],
+          "text": "-23.82",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-wind-with-table.r2.c0",
+          "source_bbox": [
+            109.8,
+            513.4200000000001,
+            192.48000000000002,
+            527.7
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-wind-with-table.r2.c1",
+          "source_bbox": [
+            192.48000000000002,
+            513.4200000000001,
+            226.01999999999998,
+            527.7
+          ],
+          "text": "終点側",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-wind-with-table.r2.c2",
+          "source_bbox": [
+            226.01999999999998,
+            513.4200000000001,
+            269.58,
+            527.7
+          ],
+          "text": "59.91",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-wind-with-table.r2.c3",
+          "source_bbox": [
+            269.58,
+            513.4200000000001,
+            313.14,
+            527.7
+          ],
+          "text": "0.645",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-wind-with-table.r2.c4",
+          "source_bbox": [
+            313.14,
+            513.4200000000001,
+            356.7,
+            527.7
+          ],
+          "text": "38.64",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-wind-with-table.r2.c5",
+          "source_bbox": [
+            356.7,
+            513.4200000000001,
+            400.26,
+            527.7
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-wind-with-table.r2.c6",
+          "source_bbox": [
+            400.26,
+            513.4200000000001,
+            443.82,
+            527.7
+          ],
+          "text": "0.675",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-wind-with-table.r2.c7",
+          "source_bbox": [
+            443.82,
+            513.4200000000001,
+            487.44,
+            527.7
+          ],
+          "text": "40.44",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-wind-with-table.r3.c0",
+          "source_bbox": [
+            109.8,
+            527.7,
+            192.48000000000002,
+            541.98
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-wind-with-table.r3.c1",
+          "source_bbox": [
+            192.48000000000002,
+            527.7,
+            226.01999999999998,
+            541.98
+          ],
+          "text": "合計",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-wind-with-table.r3.c2",
+          "source_bbox": [
+            226.01999999999998,
+            527.7,
+            269.58,
+            541.98
+          ],
+          "text": "133.21",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-wind-with-table.r3.c3",
+          "source_bbox": [
+            269.58,
+            527.7,
+            313.14,
+            541.98
+          ],
+          "text": "－",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-wind-with-table.r3.c4",
+          "source_bbox": [
+            313.14,
+            527.7,
+            356.7,
+            541.98
+          ],
+          "text": "152.26",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-wind-with-table.r3.c5",
+          "source_bbox": [
+            356.7,
+            527.7,
+            400.26,
+            541.98
+          ],
+          "text": "－",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-wind-with-table.r3.c6",
+          "source_bbox": [
+            400.26,
+            527.7,
+            443.82,
+            541.98
+          ],
+          "text": "－",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-wind-with-table.r3.c7",
+          "source_bbox": [
+            443.82,
+            527.7,
+            487.44,
+            541.98
+          ],
+          "text": "16.62",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        }
+      ],
+      "header_rows": 1,
+      "body_rows": 3,
+      "columns": 8,
+      "selective_rules": {
+        "horizontal_boundaries": [
+          0,
+          1,
+          4
+        ],
+        "vertical_boundaries": [
+          2
+        ]
+      }
+    },
+    {
+      "id": "p27-wind-without-table",
+      "kind": "table",
+      "direction": [
+        1,
+        0
+      ],
+      "cells": [
+        {
+          "id": "p27-wind-without-table.r0.c0",
+          "source_bbox": [
+            109.8,
+            577.44,
+            226.01999999999998,
+            606.5400000000001
+          ],
+          "text": "作用種別",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 2
+        },
+        {
+          "id": "p27-wind-without-table.r0.c2",
+          "source_bbox": [
+            226.01999999999998,
+            577.44,
+            269.58,
+            606.5400000000001
+          ],
+          "text": "N\n(KN)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-wind-without-table.r0.c3",
+          "source_bbox": [
+            269.58,
+            577.44,
+            313.14,
+            606.5400000000001
+          ],
+          "text": "X\n(m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-wind-without-table.r0.c4",
+          "source_bbox": [
+            313.14,
+            577.44,
+            356.7,
+            606.5400000000001
+          ],
+          "text": "Md\n(KN・m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-wind-without-table.r0.c5",
+          "source_bbox": [
+            356.7,
+            577.44,
+            400.26,
+            606.5400000000001
+          ],
+          "text": "H\n(KN)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-wind-without-table.r0.c6",
+          "source_bbox": [
+            400.26,
+            577.44,
+            443.82,
+            606.5400000000001
+          ],
+          "text": "e\n(m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-wind-without-table.r0.c7",
+          "source_bbox": [
+            443.82,
+            577.44,
+            487.44,
+            606.5400000000001
+          ],
+          "text": "Mt\n(KN・m)",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-wind-without-table.r1.c0",
+          "source_bbox": [
+            109.8,
+            606.5400000000001,
+            192.48000000000002,
+            620.82
+          ],
+          "text": "上部工　反力",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-wind-without-table.r1.c1",
+          "source_bbox": [
+            192.48000000000002,
+            606.5400000000001,
+            226.01999999999998,
+            620.82
+          ],
+          "text": "起点側",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-wind-without-table.r1.c2",
+          "source_bbox": [
+            226.01999999999998,
+            606.5400000000001,
+            269.58,
+            620.82
+          ],
+          "text": "146.60",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-wind-without-table.r1.c3",
+          "source_bbox": [
+            269.58,
+            606.5400000000001,
+            313.14,
+            620.82
+          ],
+          "text": "1.550",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-wind-without-table.r1.c4",
+          "source_bbox": [
+            313.14,
+            606.5400000000001,
+            356.7,
+            620.82
+          ],
+          "text": "227.23",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-wind-without-table.r1.c5",
+          "source_bbox": [
+            356.7,
+            606.5400000000001,
+            400.26,
+            620.82
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-wind-without-table.r1.c6",
+          "source_bbox": [
+            400.26,
+            606.5400000000001,
+            443.82,
+            620.82
+          ],
+          "text": "-0.325",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-wind-without-table.r1.c7",
+          "source_bbox": [
+            443.82,
+            606.5400000000001,
+            487.44,
+            620.82
+          ],
+          "text": "-47.65",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-wind-without-table.r2.c0",
+          "source_bbox": [
+            109.8,
+            620.82,
+            192.48000000000002,
+            635.1
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-wind-without-table.r2.c1",
+          "source_bbox": [
+            192.48000000000002,
+            620.82,
+            226.01999999999998,
+            635.1
+          ],
+          "text": "終点側",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-wind-without-table.r2.c2",
+          "source_bbox": [
+            226.01999999999998,
+            620.82,
+            269.58,
+            635.1
+          ],
+          "text": "119.82",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-wind-without-table.r2.c3",
+          "source_bbox": [
+            269.58,
+            620.82,
+            313.14,
+            635.1
+          ],
+          "text": "0.645",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-wind-without-table.r2.c4",
+          "source_bbox": [
+            313.14,
+            620.82,
+            356.7,
+            635.1
+          ],
+          "text": "77.28",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-wind-without-table.r2.c5",
+          "source_bbox": [
+            356.7,
+            620.82,
+            400.26,
+            635.1
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-wind-without-table.r2.c6",
+          "source_bbox": [
+            400.26,
+            620.82,
+            443.82,
+            635.1
+          ],
+          "text": "0.675",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-wind-without-table.r2.c7",
+          "source_bbox": [
+            443.82,
+            620.82,
+            487.44,
+            635.1
+          ],
+          "text": "80.88",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-wind-without-table.r3.c0",
+          "source_bbox": [
+            109.8,
+            635.1,
+            192.48000000000002,
+            649.3800000000001
+          ],
+          "text": "",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-wind-without-table.r3.c1",
+          "source_bbox": [
+            192.48000000000002,
+            635.1,
+            226.01999999999998,
+            649.3800000000001
+          ],
+          "text": "合計",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-wind-without-table.r3.c2",
+          "source_bbox": [
+            226.01999999999998,
+            635.1,
+            269.58,
+            649.3800000000001
+          ],
+          "text": "266.42",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-wind-without-table.r3.c3",
+          "source_bbox": [
+            269.58,
+            635.1,
+            313.14,
+            649.3800000000001
+          ],
+          "text": "－",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-wind-without-table.r3.c4",
+          "source_bbox": [
+            313.14,
+            635.1,
+            356.7,
+            649.3800000000001
+          ],
+          "text": "304.51",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-wind-without-table.r3.c5",
+          "source_bbox": [
+            356.7,
+            635.1,
+            400.26,
+            649.3800000000001
+          ],
+          "text": "－",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-wind-without-table.r3.c6",
+          "source_bbox": [
+            400.26,
+            635.1,
+            443.82,
+            649.3800000000001
+          ],
+          "text": "－",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p27-wind-without-table.r3.c7",
+          "source_bbox": [
+            443.82,
+            635.1,
+            487.44,
+            649.3800000000001
+          ],
+          "text": "33.23",
+          "direction": [
+            1,
+            0
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        }
+      ],
+      "header_rows": 1,
+      "body_rows": 3,
+      "columns": 8,
+      "selective_rules": {
+        "horizontal_boundaries": [
+          0,
+          1,
+          4
+        ],
+        "vertical_boundaries": [
+          2
+        ]
+      }
+    }
+  ]
+}

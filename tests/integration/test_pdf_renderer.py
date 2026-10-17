@@ -2,6 +2,7 @@
 
 import importlib
 from pathlib import Path
+import re
 
 import pymupdf
 import pytest
@@ -82,6 +83,58 @@ def test_tracking_moves_origins_without_stretching_and_nfc_is_drawn(fonts, tmp_p
         assert [char["origin"][0] for char in bottom] == pytest.approx([60, 70, 80], abs=0.01)
         assert [char["bbox"][2] - char["bbox"][0] for char in top] == pytest.approx([10] * 3, abs=0.01)
         assert "がé" in pdf[0].get_text()
+
+
+@pytest.mark.parametrize("turns", range(4))
+@pytest.mark.parametrize("shear", [-.342, .342])
+def test_native_shear_matrix_preserves_baseline_advance_font_and_following_run(fonts, tmp_path, turns, shear):
+    assert "shear_x" in Text.__dataclass_fields__, "Text must support native glyph shear"
+    output = tmp_path / "shear.pdf"
+    style = TextStyle(size=10, tracking=.25)
+    page = ScenePage(A4, (
+        Text(150, 200, "jÅ", style, quarter_turns=turns, shear_x=shear),
+        Text(150, 240, "jÅ", style),
+    ))
+    backend().render_pdf((page,), output, fonts)
+    with pymupdf.open(output) as pdf:
+        page = pdf[0]
+        stream = page.read_contents().decode("latin-1")
+        number = r"([-+]?(?:\d+(?:\.\d*)?|\.\d+))"
+        matrices = [tuple(map(float, match)) for match in re.findall(r"\s+".join([number]*6)+r"\s+Tm", stream)]
+        linear = ((1, 0, shear, 1), (0, 1, -1, shear),
+                  (-1, 0, -shear, -1), (0, -1, 1, -shear))[turns]
+        assert any(matrix == pytest.approx((*linear, 150, 642)) for matrix in matrices)
+        assert "100 Tz" in stream and ".25 Tc" in stream
+        chars = characters(page)
+        assert [char["c"] for char in chars] == list("jÅjÅ")
+        direction = ((1, 0), (0, -1), (-1, 0), (0, 1))[turns]
+        # Compare against the same embedded font's plain PDF run: its width
+        # table rounds glyph advances independently of the source font metrics.
+        advance = chars[3]["origin"][0] - chars[2]["origin"][0]
+        assert advance == pytest.approx(fonts.measure("j", style).width + style.tracking, abs=.003)
+        assert chars[0]["origin"] == pytest.approx((150, 200), abs=.001)
+        assert chars[1]["origin"] == pytest.approx((150+direction[0]*advance, 200+direction[1]*advance), abs=.0001)
+        assert chars[2]["origin"] == pytest.approx((150, 240), abs=.001)
+        assert chars[3]["origin"][1] == pytest.approx(240, abs=.001)
+        assert all(span["size"] == pytest.approx(10, abs=.001) for span in spans(page))
+        assert not page.get_images() and not page.get_drawings()
+        # ReportLab also declares an unused standard Helvetica resource.
+        for name in {span["font"] for span in spans(page)}:
+            matches = [item for item in page.get_fonts() if item[3].split("+", 1)[-1].startswith(name)]
+            assert len(matches) == 1
+            assert pdf.extract_font(matches[0][0])[3]
+
+
+def test_sheared_ink_overflow_does_not_replace_existing_pdf(fonts, tmp_path):
+    assert "shear_x" in Text.__dataclass_fields__
+    output = tmp_path / "keep.pdf"
+    output.write_bytes(b"existing PDF bytes")
+    style = TextStyle()
+    x = A4.width - fonts.measure("D", style).bounds.right - .1
+    command = Text(x, 100, "D", style, shear_x=.342)
+    with pytest.raises(LayoutOverflowError, match="Text bounds"):
+        backend().render_pdf((ScenePage(A4, (command,)),), output, fonts)
+    assert output.read_bytes() == b"existing PDF bytes"
 
 
 def test_vector_top_origin_colors_widths_and_page_state_are_independent(fonts, tmp_path):
@@ -258,5 +311,52 @@ def test_missing_glyph_diagnostic_identifies_page_command_and_keeps_cause(fonts,
     with pytest.raises(FontError, match="page\\[2\\].commands\\[0\\].*U\\+10FFFF") as caught:
         backend().render_pdf(pages, output, fonts)
     assert isinstance(caught.value.__cause__, FontError)
+    assert output.read_bytes() == b"previous completed PDF"
+    assert list(tmp_path.iterdir()) == [output]
+
+
+@pytest.mark.parametrize("turns,direction", [(1, (0, -1)), (2, (-1, 0)), (3, (0, 1))])
+def test_rotated_text_is_native_size_tracking_and_state_isolation(fonts, tmp_path, turns, direction):
+    assert "quarter_turns" in Text.__dataclass_fields__
+    output = tmp_path / "rotated.pdf"
+    style = TextStyle(tracking=0.5)
+    backend().render_pdf([ScenePage(A4, (
+        Text(200, 300, "日本語", style, quarter_turns=turns),
+        Text(60, 400, "か\u3099Ａ", TextStyle()),
+    ))], output, fonts)
+    with pymupdf.open(output) as pdf:
+        page = pdf[0]
+        assert page.rotation == 0 and (page.rect.width, page.rect.height) == (595, 842)
+        lines = [line for block in page.get_text("rawdict")["blocks"] for line in block.get("lines", [])]
+        assert len(lines) == 2
+        assert lines[0]["dir"] == pytest.approx(direction)
+        assert lines[1]["dir"] == pytest.approx((1, 0))
+        run = lines[0]["spans"][0]
+        assert run["size"] == pytest.approx(10)
+        assert "".join(c["c"] for c in run["chars"]) == "日本語"
+        for index, char in enumerate(run["chars"]):
+            assert char["origin"] == pytest.approx((200 + index * 10.5 * direction[0],
+                                                    300 + index * 10.5 * direction[1]), abs=0.001)
+            axis_width = char["bbox"][2] - char["bbox"][0] if direction[0] else char["bbox"][3] - char["bbox"][1]
+            assert axis_width == pytest.approx(10, abs=0.001)
+        assert "がＡ" in page.get_text()
+
+
+@pytest.mark.parametrize("failure", ["ink", "glyph", "direction"])
+def test_rotated_text_preflight_preserves_existing_pdf(fonts, tmp_path, monkeypatch, failure):
+    assert "quarter_turns" in Text.__dataclass_fields__
+    output = tmp_path / "existing.pdf"
+    output.write_bytes(b"previous completed PDF")
+    command = Text(20, 30, "j", TextStyle(), quarter_turns=1)
+    if failure == "ink":
+        command = Text(0.01, 30, "j", TextStyle(), quarter_turns=1)
+    elif failure == "glyph":
+        command = Text(20, 30, "\U0010ffff", TextStyle(), quarter_turns=1)
+    else:
+        object.__setattr__(command, "quarter_turns", 4)
+    monkeypatch.setattr(backend(), "Canvas", lambda *args, **kwargs: pytest.fail("Canvas before validation"))
+    error = {"ink": LayoutOverflowError, "glyph": FontError, "direction": ValueError}[failure]
+    with pytest.raises(error):
+        backend().render_pdf([ScenePage(A4, (command,))], output, fonts)
     assert output.read_bytes() == b"previous completed PDF"
     assert list(tmp_path.iterdir()) == [output]

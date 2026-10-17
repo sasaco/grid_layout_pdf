@@ -1,0 +1,438 @@
+{
+  "schema_version": 1,
+  "source_page": 12,
+  "source_sha256": "e56bf3ddbe3314ed95517099bedb0e68005df1567b0b3e8f52a2a4066d03393e",
+  "provenance": {
+    "author": "oracle",
+    "method": "independent source glyph transcription and visual comparison",
+    "reviewed_source_image": "source-survey/p12.png",
+    "review_status": "source-reviewed"
+  },
+  "omitted_page_number": "13 - 12",
+  "source_character_inventory": {
+    "#": 42,
+    "(": 2,
+    ")": 3,
+    "-": 12,
+    ".": 54,
+    "/": 6,
+    "0": 76,
+    "1": 35,
+    "2": 16,
+    "3": 44,
+    "4": 7,
+    "5": 26,
+    "6": 13,
+    "7": 7,
+    "8": 24,
+    "9": 12,
+    "B": 4,
+    "N": 16,
+    "a": 1,
+    "b": 1,
+    "k": 16,
+    "m": 4,
+    "x": 14,
+    "あ": 1,
+    "い": 1,
+    "が": 2,
+    "な": 1,
+    "に": 5,
+    "の": 1,
+    "よ": 5,
+    "る": 6,
+    "ク": 5,
+    "ト": 9,
+    "メ": 4,
+    "モ": 4,
+    "ル": 5,
+    "ン": 4,
+    "・": 4,
+    "ー": 4,
+    "側": 4,
+    "列": 2,
+    "力": 5,
+    "反": 1,
+    "合": 2,
+    "場": 2,
+    "桁": 12,
+    "点": 4,
+    "直": 5,
+    "終": 2,
+    "荷": 3,
+    "起": 2,
+    "車": 2,
+    "重": 3,
+    "鉛": 5,
+    "風": 1,
+    "＋": 12,
+    "／": 12,
+    "１": 4,
+    "２": 4,
+    "３": 2,
+    "４": 2,
+    "＝": 16,
+    "Ｇ": 12,
+    "Ｍ": 4,
+    "･": 4
+  },
+  "marker_count": 0,
+  "hash_placeholder_count": 6,
+  "blocks": [
+    {
+      "id": "p12-title",
+      "source_bbox": [
+        0,
+        71.0311264038086,
+        595,
+        81.17094573974609
+      ],
+      "text": "6) 風荷重のトルクによる鉛直反力",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p12-with-train-title",
+      "source_bbox": [
+        0,
+        100.9111312866211,
+        595,
+        111.05095062255859
+      ],
+      "text": "(a) 列車荷重がある場合",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p12-with-origin-title",
+      "source_bbox": [
+        0,
+        129.47113647460938,
+        595,
+        139.61095581054687
+      ],
+      "text": "・起点側",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p12-with-origin-moment",
+      "source_bbox": [
+        0,
+        155.75116577148438,
+        595,
+        168.77098999023437
+      ],
+      "text": "モーメントＭB＝116.85kN･m",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [
+        {
+          "text": "B",
+          "size": 6.639,
+          "character_index": 6,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        }
+      ],
+      "kind": "text"
+    },
+    {
+      "id": "p12-with-origin-torque-title",
+      "source_bbox": [
+        0,
+        179.63117065429688,
+        595,
+        189.77098999023437
+      ],
+      "text": "トルクによる鉛直力",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p12-with-origin-reactions",
+      "source_bbox": [
+        0,
+        199.31116333007813,
+        595,
+        253.61095581054687
+      ],
+      "text": "Ｇ１桁116.85x-3.80／33.3800＋#######x1/2＝-73.30kN\nＧ２桁116.85x-1.50／33.3800＋-50.00x1/2＝-30.25kN\nＧ３桁116.85x1.50／33.3800＋50.00x1/2＝30.25kN\nＧ４桁116.85x3.80／33.3800＋120.00x1/2＝73.30kN",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p12-with-end-title",
+      "source_bbox": [
+        0,
+        272.0311340332031,
+        595,
+        282.17095336914065
+      ],
+      "text": "・終点側",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p12-with-end-moment",
+      "source_bbox": [
+        0,
+        298.3111633300781,
+        595,
+        311.33098754882815
+      ],
+      "text": "モーメントＭB＝58.48kN･m",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [
+        {
+          "text": "B",
+          "size": 6.639,
+          "character_index": 6,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        }
+      ],
+      "kind": "text"
+    },
+    {
+      "id": "p12-with-end-torque-title",
+      "source_bbox": [
+        0,
+        322.1911682128906,
+        595,
+        332.33098754882815
+      ],
+      "text": "トルクによる鉛直力",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p12-with-end-reactions",
+      "source_bbox": [
+        0,
+        341.87116088867185,
+        595,
+        367.610986328125
+      ],
+      "text": "Ｇ１桁-58.48／5.9000＋#######x1/2＝-59.91kN\nＧ２桁58.48／5.9000＋100.00x1/2＝59.91kN",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p12-without-train-title",
+      "source_bbox": [
+        0,
+        400.3111633300781,
+        595,
+        410.45098266601565
+      ],
+      "text": "(b) 列車荷重がない場合",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p12-without-origin-title",
+      "source_bbox": [
+        0,
+        428.87116088867185,
+        595,
+        439.0109802246094
+      ],
+      "text": "・起点側",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p12-without-origin-moment",
+      "source_bbox": [
+        0,
+        455.1511596679687,
+        595,
+        468.1709838867188
+      ],
+      "text": "モーメントＭB＝233.70kN･m",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [
+        {
+          "text": "B",
+          "size": 6.639,
+          "character_index": 6,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        }
+      ],
+      "kind": "text"
+    },
+    {
+      "id": "p12-without-origin-torque-title",
+      "source_bbox": [
+        0,
+        479.0311645507812,
+        595,
+        489.1709838867188
+      ],
+      "text": "トルクによる鉛直力",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p12-without-origin-reactions",
+      "source_bbox": [
+        0,
+        498.7111572265625,
+        595,
+        553.0109497070313
+      ],
+      "text": "Ｇ１桁233.70x-3.80／33.3800＋#######＝#######kN\nＧ２桁233.70x-1.50／33.3800＋-50.00＝-60.50kN\nＧ３桁233.70x1.50／33.3800＋50.00＝60.50kN\nＧ４桁233.70x3.80／33.3800＋120.00＝146.60kN",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p12-without-end-title",
+      "source_bbox": [
+        0,
+        571.4311279296875,
+        595,
+        581.570947265625
+      ],
+      "text": "・終点側",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p12-without-end-moment",
+      "source_bbox": [
+        0,
+        597.7111572265625,
+        595,
+        610.7309814453125
+      ],
+      "text": "モーメントＭB＝116.94kN･m",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [
+        {
+          "text": "B",
+          "size": 6.639,
+          "character_index": 6,
+          "baseline_delta": 1.92,
+          "role": "subscript"
+        }
+      ],
+      "kind": "text"
+    },
+    {
+      "id": "p12-without-end-torque-title",
+      "source_bbox": [
+        0,
+        621.591162109375,
+        595,
+        631.7309814453125
+      ],
+      "text": "トルクによる鉛直力",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p12-without-end-reactions",
+      "source_bbox": [
+        0,
+        641.27109375,
+        595,
+        667.0109497070313
+      ],
+      "text": "Ｇ１桁-116.94／5.9000＋#######＝#######kN\nＧ２桁116.94／5.9000＋100.00＝119.82kN",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    }
+  ]
+}

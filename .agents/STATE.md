@@ -125,3 +125,142 @@ lead-final-all:1269 passed in59.22s、製品行coverage98.82%（2510/2540、pyte
 ### Continuation
 
 承認計画内の実装・検証に残作業なし。既存P7アプリ移行、PyPI公開、GUI、ソルバー、TeXパーサー、全文251頁の移植は実施していない。原本PDFと別作業の.agents/skills等の変更を保持し、コミット・公開は行っていない。次の機能追加ではdocs/api.mdとcontracts、固定書体、原本不変を維持し、run_tests.py経由でTDD/最終ゲートを行う。
+
+---
+
+## Current Project: Cantilever pages 01 37 reproduction plan
+<!-- orchestra:block-id: cantilever-pages-01-37-plan-20261017 -->
+
+### Status
+
+2026-10-17、引継ぎの実装依頼に対し、指定されたgrill-with-docs/planで原本全37頁・コードを調査し計画を作成。形式・存在検査とCodex内容再レビューPASSまで完了。plan Gate4による具体的計画の実装開始承認待ち。製品コード・再現テスト・生成PDFはまだ実装していない。以前の初期ライブラリ受入とは別作業。
+
+### Confirmed requirements
+
+最新ユーザー回答が引継ぎの可変ページ数方針を上書きする。原本物理p1〜37を各1出力頁、A4縦37頁に固定し、あふれは原本再現できずとして停止。右上頁番号は全頁不要。p30〜37は原本の反時計回り90度回転表と18/13ケース区切りを保持。原本の#######や不整合な表示値を推測修正しない。DESIGN FR-012〜014ではFR-014を優先。
+
+### Artifacts and verification
+
+計画docs/plans/cantilever-pages-01-37.md（slug:cantilever-pages-01-37）。調査docs/research/cantilever-p01-37-source-survey.mdと同code-findings.md。内容レビューlogs/codex/20261016T235437Z-plan-cantilever-pages-01-37-validate-r2.md PASS。原本hashはmanifestと一致して不変。開始時全pytest1269 passed/coverage表示99%、logs/cantilever-p01-37-baseline.log。これは新しい37頁再現の成功ではない。共有check.ps1合格、PROGRESSは未チェックポイントのまま。
+
+### Next
+
+具体的計画の承認後、/team-executeへ同slugを渡す。原稿契約・高密度5頁の完全oracle、Text方向とQuarterTurn、p30/p36とp16/p17/p26の1頁実証を先行。その後全原稿、独立PDF検査、全74通常/grid画像目視、全体ゲート。出力はbuild/reports/cantilever-p01-37配下のstagingで一式検査し、変更しない版へcurrent.jsonを最後に切替える。原本PDF・共有スキル・既存goldenを変更しない。
+
+---
+
+## Current Project: Cantilever pages 01 37 approved implementation
+<!-- orchestra:block-id: cantilever-pages-01-37-implementation-20261017 -->
+
+### Status
+
+2026-10-17、ユーザーが計画を承認し実装開始を指示。先行計画の承認待ちは解消済み。原本再現で不足する機能や改善候補を一覧に記録する追加依頼も受領。team-execute/TDDで回転機能、先行5頁の原稿、独立期待値を所有分離して実装中。
+
+### Artifacts
+
+計画docs/plans/cantilever-pages-01-37.md、実行記録docs/plans/cantilever-pages-01-37-execution.md、改善一覧docs/research/cantilever-p01-37-improvements.md。固定37頁・頁番号全頁不要・回転表原本まま・あふれ時停止という条件を継続。
+
+### Next
+
+p30/p36とp16/p17/p26の全内容で固定頁実証を行い、成立後だけ残り32頁へ進む。原本・既存goldenを保持し、実証subsetを完成37頁と扱わない。
+
+---
+
+## Current Project: Cantilever proof passed and 37-page transcription complete
+<!-- orchestra:block-id: cantilever-proof-and-transcription-20261017 -->
+
+### Status
+
+先行5頁は通常/grid全795項目の独立照合、leadのintegration35件+fixture21件、全10画像目視に合格。全37頁の組立原稿と独立expectedが揃い、全37頁一括layoutは37枚・最大47行で成立。原本図16点は全crop画像を個別確認済み。現在は全37 native PDF照合と負例拡張を実行中で、current/goldenはまだ未作成。
+
+### Artifacts
+
+実行記録docs/plans/cantilever-pages-01-37-execution.md、改善一覧docs/research/cantilever-p01-37-improvements.md（IMP001〜010）。proof証拠はbuild/reports/cantilever-p01-37/proof5-review.json。追加製品APIはText.quarter_turns、QuarterTurn、Table.horizontal_rules/vertical_rules。sdistからwheel生成し、外部の新規Python3.12/3.13環境で新APIと実PDF画素一致を検証済み。
+
+### Next
+
+全37 native PDFの全文/セル/図照合→通常/grid全74画像目視→通常37golden登録→独立3観点レビュー/修正→全体coverage90%以上ゲート→検証済みbundleのcurrent切替。既にユーザー承認済みなので再承認不要。subset成果物を全37完了と扱わない。
+
+---
+
+## Current Project: Cantilever p01-37 reproduction accepted
+<!-- orchestra:block-id: cantilever-complete-20261017 -->
+
+### Status
+
+承認済み計画の全工程を完了。原本物理p1〜37を各1頁で再現し、通常/gridとも37頁・595×842pt・Rotate0。p30〜37は紙面内CCW90度表、全頁右上番号省略。あふれは原本再現できずとして停止。本文/式/表はnative公開API、出典hash付き16図のみ画像。
+
+### Verification
+
+root最終全件1508 passed/75.96秒、製品行coverage98.801498%（2638/2670）。全3345項目、114算式、124ケース、63箇所の#######、16図、原本37頁21,232文字の独立照合。全74画像を個別目視、通常37枚golden登録。Security/Quality/Tests独立レビュー未解決0。最適化Pythonで検査が消える指摘をTDDで修正。原本PDF/書体/旧golden/lock不変、Python3.12/3.13外部wheel検証合格。
+
+### Artifacts
+
+完成bundleはbuild/reports/cantilever-p01-37/versions/20261017T005753Z-7952a1f3f915474c8a478f77d40cf9da/。current.jsonを最後に原子的切替し、resolve_currentと78成果物hashを検証済み。通常normal.pdf、検査grid.pdf、trace.json、mapping.json、74preview、目視記録を含む。実行記録docs/plans/cantilever-pages-01-37-execution.md、改善13項目docs/research/cantilever-p01-37-improvements.md。
+
+### Next
+
+今回の未完了作業なし。汎用Cellの辺別余白/行高診断、Imageの物理寸法指定、Scriptのstyle調整、Table罫線継ぎ目の統合は改善一覧に将来候補として明示。自動縮小や原本値の修正は行わない。コミット/外部公開は未実施で、別の指示が必要。
+
+---
+
+## Current Project: Cantilever appearance correction reopened
+<!-- orchestra:block-id: cantilever-appearance-correction-20261017 -->
+
+### Status
+
+ユーザーが書体・インデント・イコール位置・表の行高の相違を指摘したため、前の受入記録を外観受入の証拠として扱わず修正中。37頁固定、右上番号省略、あふれ時停止、native本文/式/表を維持する。再承認待ちではない。
+
+### Findings
+
+原本native書体はMS-Mincho/MS-Gothic、PCのmsmincho.ttc/msgothic.ttc face0を利用可能。現版はIPAex明朝。p1の原本表行高約14.28ptに対し15.48/30.96pt、p21は26.52ptに対し46.44pt。意味部品別の書体・左端・等号・表行列境界を全37頁で実測中。
+
+### Next
+
+原本実測に基づく書体と意味部品配置を実装し、原本を直接参照する外観検査・通常/grid全頁比較・回帰・独立レビュー後に新bundleを有効化する。改善一覧へ書体選択、局所配置、表行高の二重丸めと検証不足を追記する。
+
+---
+
+## Current Project: Cantilever p01-37 improvements reviewed and planned
+<!-- orchestra:block-id: cantilever-p01-37-improvements-plan-20261017 -->
+
+### Status
+
+ユーザー指定の改善13件と受入bundleをレビューし、8工程の実装計画を策定。7件は実装済み、6件は公開API化等の候補。IMP-013の原本対expected順序検査不足をMedium、IMP-008の途中行数と最終行数の区別をLowとして計画へ反映した。計画形式・存在・Codex内容レビューPASS。今回の依頼は計画までで、新規改善の実装は未着手・開始承認待ち。
+
+### Artifacts
+
+計画docs/plans/cantilever-p01-37-improvements.md（slug:cantilever-p01-37-improvements）、レビューdocs/research/cantilever-p01-37-improvements-review.md。元の改善一覧へレビュー注記を追加。内容レビューlogs/codex/20261017T012817Z-plan-cantilever-p01-37-improvements-validate.md PASS、Medium/Highなし。
+
+### Verification
+
+調査開始時の全テスト1508 passed/55.75秒、logs/cantilever-improvements-plan-baseline.log。新coverage測定はしていない。初回は指定bundle入力123件・成果物78件のhash一致、通常/grid各37頁595x842/Rotate0、代表p1/9/26/30/36の10画像目視。指定版p26は45行、外側padding0.6のメモリ上計測は69必要/47使用可能。原本・受入版を変更していない。
+
+### Concurrent changes and next
+
+調査中に別作業のTable.row_heightsとsource appearance（SourceCell/SourceScript/PageFrame、source-layout/font-profile）追加を検知し、保持と統合条件を計画に反映。1508件と旧helper/行数は追加前の基準で、最新作業ツリーの受入成功を意味しない。承認後のStep1で合流状態を再確認し、原本固有アンカーは維持して共通責務だけ公開APIへ移す。/team-executeへ同slugを渡す。既定APIの画素互換、新opt-in出力の独立照合・74画像目視、新version有効化を別々に検証する。
+
+---
+
+## Current Bug Fix: Cantilever appearance correction completed
+<!-- orchestra:block-id: cantilever-appearance-corrected-20261017 -->
+
+### Status
+
+ユーザーの書体・インデント・イコール位置・表行高の指摘を修正し、外観の再受入を完了。原本MS明朝/MSゴシック、意味部品の配置・式アンカー・添字基線・全40表の行高を保持する。通常/grid各37頁、全頁右上番号なし、p30〜37はA4縦内CCW90度のnative表、追加頁や容量超過は原本再現できずとして停止。旧版の内部合格記録と今回の原本外観比較を区別する。
+
+### Implementation
+
+公開Table.row_heightsとText.shear_xをopt-inで追加し、既定互換を維持。fixtureは意味AST/空白/run基線・Identity-V括弧の実inkを保持する。表の実glyph ink計測はfixture局所だけに限定し、元FontRegistry/製品boundsは維持。原本接触8セルだけ最大0.05pt補正。独立reviewのAPP-T01/Q01/Q02/Q03を修正済み。
+
+### Verification
+
+root単独全体1738 passed / 107.30秒、製品行coverage98.923134%（2664/2693）、logs/cantilever-appearance-final-full.logとcoverage JSON。通常/grid各3345内容項目、原本外観error0。基線21204字最大差0.043419pt、等号335件0.0000611pt、罫線21312検査0.002pt。rootが再生成全74画像を個別確認して37goldenを更新。独立Tests監査5件合格、128入力/78成果物/37golden完全一致。3観点未解決0、外部Python3.12/3.13 wheel合格。原本PDF/書体/旧代表5golden/lock不変。
+
+### Artifacts
+
+完成版build/reports/cantilever-p01-37/versions/20261017T023053Z-a954761644604bd1a289b5fcdd9f20d1/。currentを原子的切替し、rootがresolve_current・全hash・両37頁595×842/Rotate0を再監査。normal.pdf SHA256 73b25b1364573802dcca74e9ff2800cc6f304b6da547d1104f9983f656129942。目視appearance-correction-visual-review.json、切替後監査appearance-correction-current-audit.json。改善24件はdocs/research/cantilever-p01-37-improvements.md、経緯はdocs/plans/cantilever-pages-01-37-execution.md。
+
+### Next
+
+今回の承認済み原本再現と外観修正に未完了工程なし。別途改善計画の汎用Script/辺別padding/物理寸法Image/罫線統合/実ink APIは未実装の将来候補として保持する。細罫のアンチエイリアス差があるため原本との全画素一致は主張しない。コミット・外部公開は行っていない。

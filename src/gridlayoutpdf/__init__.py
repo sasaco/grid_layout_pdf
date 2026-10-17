@@ -19,6 +19,7 @@ from .profiles import (
     A3_LANDSCAPE_REFERENCE, A4_PORTRAIT_REFERENCE, PageProfile, derived_profile,
 )
 from .renderers.reportlab import render_pdf
+from .rotation import QuarterTurn
 from .scene import Color, Command, Line, Polyline, RasterImage, Rectangle, ScenePage, Text
 from .styles import ReportStyle, TextStyle
 from .tables import Cell, Table
@@ -31,7 +32,7 @@ __all__ = [
     "FontRegistry", "FontFace", "TextMetrics", "FontError", "LayoutError", "LayoutOverflowError",
     "Block", "LayoutContext", "LayoutPart", "MeasuredBlock", "measure_block",
     "Document", "PageDecoration", "PageSection", "Paragraph", "Heading", "Spacer", "PageBreak",
-    "Stack", "Columns", "KeepTogether", "At", "Cell", "Table", "Figure", "Image", "Arrow", "Label",
+    "Stack", "Columns", "KeepTogether", "At", "QuarterTurn", "Cell", "Table", "Figure", "Image", "Arrow", "Label",
     "MathNode", "MathBox", "Literal", "Symbol", "Operator", "Row", "Fraction", "Root", "Script",
     "Delimited", "BreakHint", "as_math", "MathBlock", "Equation", "EquationGroup", "EquationAnchors",
     "wrap_math", "TextLine", "wrap_text", "fit_tracking",

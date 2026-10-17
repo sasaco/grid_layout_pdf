@@ -1,0 +1,5943 @@
+{
+  "schema_version": 1,
+  "source_page": 30,
+  "source_sha256": "e56bf3ddbe3314ed95517099bedb0e68005df1567b0b3e8f52a2a4066d03393e",
+  "provenance": {
+    "author": "oracle",
+    "method": "independent source glyph transcription and visual comparison",
+    "reviewed_source_image": "source-survey/p30.png",
+    "review_status": "source-reviewed"
+  },
+  "omitted_page_number": "13 - 30",
+  "source_character_inventory": {
+    "(": 2,
+    ")": 2,
+    "+": 10,
+    ".": 221,
+    "0": 87,
+    "1": 205,
+    "2": 131,
+    "3": 107,
+    "4": 63,
+    "5": 79,
+    "6": 60,
+    "7": 37,
+    "8": 65,
+    "9": 64,
+    "B": 20,
+    "C": 11,
+    "D": 2,
+    "E": 1,
+    "F": 1,
+    "I": 1,
+    "L": 13,
+    "M": 1,
+    "N": 2,
+    "Q": 1,
+    "R": 11,
+    "S": 16,
+    "W": 1,
+    "a": 1,
+    "d": 1,
+    "e": 1,
+    "k": 1,
+    "m": 1,
+    "o": 1,
+    "s": 1,
+    "〃": 27,
+    "せ": 2,
+    "の": 1,
+    "グ": 1,
+    "ロ": 1,
+    "ン": 1,
+    "・": 1,
+    "作": 1,
+    "備": 1,
+    "全": 1,
+    "列": 2,
+    "制": 1,
+    "動": 1,
+    "合": 2,
+    "壊": 1,
+    "大": 23,
+    "安": 1,
+    "性": 2,
+    "摘": 1,
+    "支": 15,
+    "最": 23,
+    "横": 1,
+    "点": 15,
+    "用": 1,
+    "目": 1,
+    "破": 1,
+    "組": 2,
+    "考": 1,
+    "能": 1,
+    "要": 1,
+    "計": 1,
+    "設": 1,
+    "車": 3,
+    "雪": 2,
+    "項": 1,
+    "風": 1,
+    "＋": 5,
+    "－": 10,
+    "ｰ": 1,
+    "ﾄ": 1,
+    "ﾒ": 1,
+    "ﾓ": 1,
+    "ﾝ": 1
+  },
+  "marker_count": 0,
+  "hash_placeholder_count": 0,
+  "blocks": [
+    {
+      "id": "p30-title",
+      "source_bbox": [
+        0,
+        62,
+        500,
+        85
+      ],
+      "text": "13.2 設計作用の組合せ",
+      "direction": [
+        1,
+        0
+      ],
+      "minimum_body_size": 9.7,
+      "source_scripts": [],
+      "kind": "text"
+    },
+    {
+      "id": "p30-combinations-md",
+      "kind": "table",
+      "direction": [
+        0,
+        -1
+      ],
+      "cells": [
+        {
+          "id": "p30-combinations-md.r0.c0",
+          "source_bbox": [
+            65.64,
+            746.82,
+            98.58,
+            776.4
+          ],
+          "text": "Case\nNo.",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 0,
+          "rowspan": 2,
+          "colspan": 1
+        },
+        {
+          "id": "p30-combinations-md.r0.c1",
+          "source_bbox": [
+            65.64,
+            340.26,
+            76.98,
+            746.82
+          ],
+          "text": "組合せ",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 9
+        },
+        {
+          "id": "p30-combinations-md.r0.c10",
+          "source_bbox": [
+            65.64,
+            296.7,
+            98.58,
+            340.26
+          ],
+          "text": "ﾓｰﾒﾝﾄ\nMd\n(kN・m)",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 10,
+          "rowspan": 2,
+          "colspan": 1
+        },
+        {
+          "id": "p30-combinations-md.r0.c11",
+          "source_bbox": [
+            65.64,
+            238.62,
+            98.58,
+            296.7
+          ],
+          "text": "性能項目",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 11,
+          "rowspan": 2,
+          "colspan": 1
+        },
+        {
+          "id": "p30-combinations-md.r0.c12",
+          "source_bbox": [
+            65.64,
+            180.54,
+            98.58,
+            238.62
+          ],
+          "text": "備考",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 12,
+          "rowspan": 2,
+          "colspan": 1
+        },
+        {
+          "id": "p30-combinations-md.r0.c13",
+          "source_bbox": [
+            65.64,
+            93.0,
+            98.58,
+            180.54
+          ],
+          "text": "摘要",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 13,
+          "rowspan": 2,
+          "colspan": 1
+        },
+        {
+          "id": "p30-combinations-md.r1.c1",
+          "source_bbox": [
+            76.98,
+            703.26,
+            98.58,
+            746.82
+          ],
+          "text": "D1",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p30-combinations-md.r1.c2",
+          "source_bbox": [
+            76.98,
+            659.7,
+            98.58,
+            703.26
+          ],
+          "text": "D2",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p30-combinations-md.r1.c3",
+          "source_bbox": [
+            76.98,
+            616.14,
+            98.58,
+            659.7
+          ],
+          "text": "S",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p30-combinations-md.r1.c4",
+          "source_bbox": [
+            76.98,
+            572.58,
+            98.58,
+            616.14
+          ],
+          "text": "L",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p30-combinations-md.r1.c5",
+          "source_bbox": [
+            76.98,
+            529.02,
+            98.58,
+            572.58
+          ],
+          "text": "I",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p30-combinations-md.r1.c6",
+          "source_bbox": [
+            76.98,
+            485.46,
+            98.58,
+            529.02
+          ],
+          "text": "LF",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p30-combinations-md.r1.c7",
+          "source_bbox": [
+            76.98,
+            441.9,
+            98.58,
+            485.46
+          ],
+          "text": "W",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p30-combinations-md.r1.c8",
+          "source_bbox": [
+            76.98,
+            383.82,
+            98.58,
+            441.9
+          ],
+          "text": "LR+B",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [
+            {
+              "text": "R",
+              "size": 6.659,
+              "character_index": 1,
+              "baseline_delta": 1.92,
+              "role": "subscript"
+            }
+          ],
+          "row": 1,
+          "col": 8,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p30-combinations-md.r1.c9",
+          "source_bbox": [
+            76.98,
+            340.26,
+            98.58,
+            383.82
+          ],
+          "text": "EQ",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 9,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p30-combinations-md.r2.c0",
+          "source_bbox": [
+            98.58,
+            746.82,
+            120.18,
+            776.4
+          ],
+          "text": "1",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 1
+        },
+        {
+          "id": "p30-combinations-md.r2.c1",
+          "source_bbox": [
+            98.58,
+            703.26,
+            120.18,
+            746.82
+          ],
+          "text": "1.1\n3679.84",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 1
+        },
+        {
+          "id": "p30-combinations-md.r2.c2",
+          "source_bbox": [
+            98.58,
+            659.7,
+            120.18,
+            703.26
+          ],
+          "text": "1.2\n398.22",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 1
+        },
+        {
+          "id": "p30-combinations-md.r2.c3",
+          "source_bbox": [
+            98.58,
+            616.14,
+            120.18,
+            659.7
+          ],
+          "text": "1.0S10\n625.00",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [
+            {
+              "text": "1",
+              "size": 6.659,
+              "character_index": 4,
+              "baseline_delta": 1.92,
+              "role": "subscript"
+            },
+            {
+              "text": "0",
+              "size": 6.659,
+              "character_index": 5,
+              "baseline_delta": 1.92,
+              "role": "subscript"
+            }
+          ],
+          "row": 2,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 1
+        },
+        {
+          "id": "p30-combinations-md.r2.c4",
+          "source_bbox": [
+            98.58,
+            572.58,
+            120.18,
+            616.14
+          ],
+          "text": "1.35\n510.30",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 1
+        },
+        {
+          "id": "p30-combinations-md.r2.c5",
+          "source_bbox": [
+            98.58,
+            529.02,
+            120.18,
+            572.58
+          ],
+          "text": "1.35\n125.02",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 1
+        },
+        {
+          "id": "p30-combinations-md.r2.c6",
+          "source_bbox": [
+            98.58,
+            485.46,
+            120.18,
+            529.02
+          ],
+          "text": "1.23\n86.52",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 1
+        },
+        {
+          "id": "p30-combinations-md.r2.c7",
+          "source_bbox": [
+            98.58,
+            441.9,
+            120.18,
+            485.46
+          ],
+          "text": "1.0\n152.26",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 1
+        },
+        {
+          "id": "p30-combinations-md.r2.c8",
+          "source_bbox": [
+            98.58,
+            383.82,
+            120.18,
+            441.9
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 8,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 1
+        },
+        {
+          "id": "p30-combinations-md.r2.c9",
+          "source_bbox": [
+            98.58,
+            340.26,
+            120.18,
+            383.82
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 9,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 1
+        },
+        {
+          "id": "p30-combinations-md.r2.c10",
+          "source_bbox": [
+            98.58,
+            296.7,
+            120.18,
+            340.26
+          ],
+          "text": "5577.15",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 10,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 1
+        },
+        {
+          "id": "p30-combinations-md.r2.c11",
+          "source_bbox": [
+            98.58,
+            238.62,
+            120.18,
+            296.7
+          ],
+          "text": " 安全性(破壊)",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.0,
+          "source_scripts": [],
+          "row": 2,
+          "col": 11,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 1
+        },
+        {
+          "id": "p30-combinations-md.r2.c12",
+          "source_bbox": [
+            98.58,
+            180.54,
+            120.18,
+            238.62
+          ],
+          "text": "列車最大",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 12,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 1
+        },
+        {
+          "id": "p30-combinations-md.r2.c13",
+          "source_bbox": [
+            98.58,
+            93.0,
+            120.18,
+            180.54
+          ],
+          "text": "B支点最大",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 13,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 1
+        },
+        {
+          "id": "p30-combinations-md.r3.c0",
+          "source_bbox": [
+            120.18,
+            746.82,
+            141.78,
+            776.4
+          ],
+          "text": "2",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 2
+        },
+        {
+          "id": "p30-combinations-md.r3.c1",
+          "source_bbox": [
+            120.18,
+            703.26,
+            141.78,
+            746.82
+          ],
+          "text": "1.1\n3679.84",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 2
+        },
+        {
+          "id": "p30-combinations-md.r3.c2",
+          "source_bbox": [
+            120.18,
+            659.7,
+            141.78,
+            703.26
+          ],
+          "text": "1.2\n398.22",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 2
+        },
+        {
+          "id": "p30-combinations-md.r3.c3",
+          "source_bbox": [
+            120.18,
+            616.14,
+            141.78,
+            659.7
+          ],
+          "text": "1.0S10\n625.00",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [
+            {
+              "text": "1",
+              "size": 6.659,
+              "character_index": 4,
+              "baseline_delta": 1.92,
+              "role": "subscript"
+            },
+            {
+              "text": "0",
+              "size": 6.659,
+              "character_index": 5,
+              "baseline_delta": 1.92,
+              "role": "subscript"
+            }
+          ],
+          "row": 3,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 2
+        },
+        {
+          "id": "p30-combinations-md.r3.c4",
+          "source_bbox": [
+            120.18,
+            572.58,
+            141.78,
+            616.14
+          ],
+          "text": "1.35\n464.21",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 2
+        },
+        {
+          "id": "p30-combinations-md.r3.c5",
+          "source_bbox": [
+            120.18,
+            529.02,
+            141.78,
+            572.58
+          ],
+          "text": "1.35\n213.91",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 2
+        },
+        {
+          "id": "p30-combinations-md.r3.c6",
+          "source_bbox": [
+            120.18,
+            485.46,
+            141.78,
+            529.02
+          ],
+          "text": "1.23\n43.16",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 2
+        },
+        {
+          "id": "p30-combinations-md.r3.c7",
+          "source_bbox": [
+            120.18,
+            441.9,
+            141.78,
+            485.46
+          ],
+          "text": "1.0\n152.26",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 2
+        },
+        {
+          "id": "p30-combinations-md.r3.c8",
+          "source_bbox": [
+            120.18,
+            383.82,
+            141.78,
+            441.9
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 8,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 2
+        },
+        {
+          "id": "p30-combinations-md.r3.c9",
+          "source_bbox": [
+            120.18,
+            340.26,
+            141.78,
+            383.82
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 9,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 2
+        },
+        {
+          "id": "p30-combinations-md.r3.c10",
+          "source_bbox": [
+            120.18,
+            296.7,
+            141.78,
+            340.26
+          ],
+          "text": "5576.60",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 10,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 2
+        },
+        {
+          "id": "p30-combinations-md.r3.c11",
+          "source_bbox": [
+            120.18,
+            238.62,
+            141.78,
+            296.7
+          ],
+          "text": "〃",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 11,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 2
+        },
+        {
+          "id": "p30-combinations-md.r3.c12",
+          "source_bbox": [
+            120.18,
+            180.54,
+            141.78,
+            238.62
+          ],
+          "text": "〃",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 12,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 2
+        },
+        {
+          "id": "p30-combinations-md.r3.c13",
+          "source_bbox": [
+            120.18,
+            93.0,
+            141.78,
+            180.54
+          ],
+          "text": "C支点最大",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 13,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 2
+        },
+        {
+          "id": "p30-combinations-md.r4.c0",
+          "source_bbox": [
+            141.78,
+            746.82,
+            163.38,
+            776.4
+          ],
+          "text": "3",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 4,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 3
+        },
+        {
+          "id": "p30-combinations-md.r4.c1",
+          "source_bbox": [
+            141.78,
+            703.26,
+            163.38,
+            746.82
+          ],
+          "text": "1.1\n3679.84",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 4,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 3
+        },
+        {
+          "id": "p30-combinations-md.r4.c2",
+          "source_bbox": [
+            141.78,
+            659.7,
+            163.38,
+            703.26
+          ],
+          "text": "1.2\n398.22",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 4,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 3
+        },
+        {
+          "id": "p30-combinations-md.r4.c3",
+          "source_bbox": [
+            141.78,
+            616.14,
+            163.38,
+            659.7
+          ],
+          "text": "1.0S10\n625.00",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [
+            {
+              "text": "1",
+              "size": 6.659,
+              "character_index": 4,
+              "baseline_delta": 1.92,
+              "role": "subscript"
+            },
+            {
+              "text": "0",
+              "size": 6.659,
+              "character_index": 5,
+              "baseline_delta": 1.92,
+              "role": "subscript"
+            }
+          ],
+          "row": 4,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 3
+        },
+        {
+          "id": "p30-combinations-md.r4.c4",
+          "source_bbox": [
+            141.78,
+            572.58,
+            163.38,
+            616.14
+          ],
+          "text": "1.35\n525.34",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 4,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 3
+        },
+        {
+          "id": "p30-combinations-md.r4.c5",
+          "source_bbox": [
+            141.78,
+            529.02,
+            163.38,
+            572.58
+          ],
+          "text": "1.35\n199.58",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 4,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 3
+        },
+        {
+          "id": "p30-combinations-md.r4.c6",
+          "source_bbox": [
+            141.78,
+            485.46,
+            163.38,
+            529.02
+          ],
+          "text": "1.23\n74.58",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 4,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 3
+        },
+        {
+          "id": "p30-combinations-md.r4.c7",
+          "source_bbox": [
+            141.78,
+            441.9,
+            163.38,
+            485.46
+          ],
+          "text": "1.0\n152.26",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 4,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 3
+        },
+        {
+          "id": "p30-combinations-md.r4.c8",
+          "source_bbox": [
+            141.78,
+            383.82,
+            163.38,
+            441.9
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 4,
+          "col": 8,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 3
+        },
+        {
+          "id": "p30-combinations-md.r4.c9",
+          "source_bbox": [
+            141.78,
+            340.26,
+            163.38,
+            383.82
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 4,
+          "col": 9,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 3
+        },
+        {
+          "id": "p30-combinations-md.r4.c10",
+          "source_bbox": [
+            141.78,
+            296.7,
+            163.38,
+            340.26
+          ],
+          "text": "5654.81",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 4,
+          "col": 10,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 3
+        },
+        {
+          "id": "p30-combinations-md.r4.c11",
+          "source_bbox": [
+            141.78,
+            238.62,
+            163.38,
+            296.7
+          ],
+          "text": "〃",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 4,
+          "col": 11,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 3
+        },
+        {
+          "id": "p30-combinations-md.r4.c12",
+          "source_bbox": [
+            141.78,
+            180.54,
+            163.38,
+            238.62
+          ],
+          "text": "〃",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 4,
+          "col": 12,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 3
+        },
+        {
+          "id": "p30-combinations-md.r4.c13",
+          "source_bbox": [
+            141.78,
+            93.0,
+            163.38,
+            180.54
+          ],
+          "text": "B＋C支点最大",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 4,
+          "col": 13,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 3
+        },
+        {
+          "id": "p30-combinations-md.r5.c0",
+          "source_bbox": [
+            163.38,
+            746.82,
+            184.98000000000002,
+            776.4
+          ],
+          "text": "4",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 5,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 4
+        },
+        {
+          "id": "p30-combinations-md.r5.c1",
+          "source_bbox": [
+            163.38,
+            703.26,
+            184.98000000000002,
+            746.82
+          ],
+          "text": "1.1\n3679.84",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 5,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 4
+        },
+        {
+          "id": "p30-combinations-md.r5.c2",
+          "source_bbox": [
+            163.38,
+            659.7,
+            184.98000000000002,
+            703.26
+          ],
+          "text": "1.2\n398.22",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 5,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 4
+        },
+        {
+          "id": "p30-combinations-md.r5.c3",
+          "source_bbox": [
+            163.38,
+            616.14,
+            184.98000000000002,
+            659.7
+          ],
+          "text": "1.0S10\n625.00",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [
+            {
+              "text": "1",
+              "size": 6.659,
+              "character_index": 4,
+              "baseline_delta": 1.92,
+              "role": "subscript"
+            },
+            {
+              "text": "0",
+              "size": 6.659,
+              "character_index": 5,
+              "baseline_delta": 1.92,
+              "role": "subscript"
+            }
+          ],
+          "row": 5,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 4
+        },
+        {
+          "id": "p30-combinations-md.r5.c4",
+          "source_bbox": [
+            163.38,
+            572.58,
+            184.98000000000002,
+            616.14
+          ],
+          "text": "1.23\n464.94",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 5,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 4
+        },
+        {
+          "id": "p30-combinations-md.r5.c5",
+          "source_bbox": [
+            163.38,
+            529.02,
+            184.98000000000002,
+            572.58
+          ],
+          "text": "1.23\n113.91",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 5,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 4
+        },
+        {
+          "id": "p30-combinations-md.r5.c6",
+          "source_bbox": [
+            163.38,
+            485.46,
+            184.98000000000002,
+            529.02
+          ],
+          "text": "1.35\n94.96",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 5,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 4
+        },
+        {
+          "id": "p30-combinations-md.r5.c7",
+          "source_bbox": [
+            163.38,
+            441.9,
+            184.98000000000002,
+            485.46
+          ],
+          "text": "1.0\n152.26",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 5,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 4
+        },
+        {
+          "id": "p30-combinations-md.r5.c8",
+          "source_bbox": [
+            163.38,
+            383.82,
+            184.98000000000002,
+            441.9
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 5,
+          "col": 8,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 4
+        },
+        {
+          "id": "p30-combinations-md.r5.c9",
+          "source_bbox": [
+            163.38,
+            340.26,
+            184.98000000000002,
+            383.82
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 5,
+          "col": 9,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 4
+        },
+        {
+          "id": "p30-combinations-md.r5.c10",
+          "source_bbox": [
+            163.38,
+            296.7,
+            184.98000000000002,
+            340.26
+          ],
+          "text": "5529.12",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 5,
+          "col": 10,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 4
+        },
+        {
+          "id": "p30-combinations-md.r5.c11",
+          "source_bbox": [
+            163.38,
+            238.62,
+            184.98000000000002,
+            296.7
+          ],
+          "text": "〃",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 5,
+          "col": 11,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 4
+        },
+        {
+          "id": "p30-combinations-md.r5.c12",
+          "source_bbox": [
+            163.38,
+            180.54,
+            184.98000000000002,
+            238.62
+          ],
+          "text": "車横最大",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 5,
+          "col": 12,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 4
+        },
+        {
+          "id": "p30-combinations-md.r5.c13",
+          "source_bbox": [
+            163.38,
+            93.0,
+            184.98000000000002,
+            180.54
+          ],
+          "text": "B支点最大",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 5,
+          "col": 13,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 4
+        },
+        {
+          "id": "p30-combinations-md.r6.c0",
+          "source_bbox": [
+            184.98000000000002,
+            746.82,
+            206.57999999999998,
+            776.4
+          ],
+          "text": "5",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 6,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 5
+        },
+        {
+          "id": "p30-combinations-md.r6.c1",
+          "source_bbox": [
+            184.98000000000002,
+            703.26,
+            206.57999999999998,
+            746.82
+          ],
+          "text": "1.1\n3679.84",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 6,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 5
+        },
+        {
+          "id": "p30-combinations-md.r6.c2",
+          "source_bbox": [
+            184.98000000000002,
+            659.7,
+            206.57999999999998,
+            703.26
+          ],
+          "text": "1.2\n398.22",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 6,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 5
+        },
+        {
+          "id": "p30-combinations-md.r6.c3",
+          "source_bbox": [
+            184.98000000000002,
+            616.14,
+            206.57999999999998,
+            659.7
+          ],
+          "text": "1.0S10\n625.00",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [
+            {
+              "text": "1",
+              "size": 6.659,
+              "character_index": 4,
+              "baseline_delta": 1.92,
+              "role": "subscript"
+            },
+            {
+              "text": "0",
+              "size": 6.659,
+              "character_index": 5,
+              "baseline_delta": 1.92,
+              "role": "subscript"
+            }
+          ],
+          "row": 6,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 5
+        },
+        {
+          "id": "p30-combinations-md.r6.c4",
+          "source_bbox": [
+            184.98000000000002,
+            572.58,
+            206.57999999999998,
+            616.14
+          ],
+          "text": "1.23\n422.95",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 6,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 5
+        },
+        {
+          "id": "p30-combinations-md.r6.c5",
+          "source_bbox": [
+            184.98000000000002,
+            529.02,
+            206.57999999999998,
+            572.58
+          ],
+          "text": "1.23\n194.90",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 6,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 5
+        },
+        {
+          "id": "p30-combinations-md.r6.c6",
+          "source_bbox": [
+            184.98000000000002,
+            485.46,
+            206.57999999999998,
+            529.02
+          ],
+          "text": "1.35\n47.37",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 6,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 5
+        },
+        {
+          "id": "p30-combinations-md.r6.c7",
+          "source_bbox": [
+            184.98000000000002,
+            441.9,
+            206.57999999999998,
+            485.46
+          ],
+          "text": "1.0\n152.26",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 6,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 5
+        },
+        {
+          "id": "p30-combinations-md.r6.c8",
+          "source_bbox": [
+            184.98000000000002,
+            383.82,
+            206.57999999999998,
+            441.9
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 6,
+          "col": 8,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 5
+        },
+        {
+          "id": "p30-combinations-md.r6.c9",
+          "source_bbox": [
+            184.98000000000002,
+            340.26,
+            206.57999999999998,
+            383.82
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 6,
+          "col": 9,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 5
+        },
+        {
+          "id": "p30-combinations-md.r6.c10",
+          "source_bbox": [
+            184.98000000000002,
+            296.7,
+            206.57999999999998,
+            340.26
+          ],
+          "text": "5520.53",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 6,
+          "col": 10,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 5
+        },
+        {
+          "id": "p30-combinations-md.r6.c11",
+          "source_bbox": [
+            184.98000000000002,
+            238.62,
+            206.57999999999998,
+            296.7
+          ],
+          "text": "〃",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 6,
+          "col": 11,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 5
+        },
+        {
+          "id": "p30-combinations-md.r6.c12",
+          "source_bbox": [
+            184.98000000000002,
+            180.54,
+            206.57999999999998,
+            238.62
+          ],
+          "text": "〃",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 6,
+          "col": 12,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 5
+        },
+        {
+          "id": "p30-combinations-md.r6.c13",
+          "source_bbox": [
+            184.98000000000002,
+            93.0,
+            206.57999999999998,
+            180.54
+          ],
+          "text": "C支点最大",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 6,
+          "col": 13,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 5
+        },
+        {
+          "id": "p30-combinations-md.r7.c0",
+          "source_bbox": [
+            206.57999999999998,
+            746.82,
+            228.18,
+            776.4
+          ],
+          "text": "6",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 7,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 6
+        },
+        {
+          "id": "p30-combinations-md.r7.c1",
+          "source_bbox": [
+            206.57999999999998,
+            703.26,
+            228.18,
+            746.82
+          ],
+          "text": "1.1\n3679.84",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 7,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 6
+        },
+        {
+          "id": "p30-combinations-md.r7.c2",
+          "source_bbox": [
+            206.57999999999998,
+            659.7,
+            228.18,
+            703.26
+          ],
+          "text": "1.2\n398.22",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 7,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 6
+        },
+        {
+          "id": "p30-combinations-md.r7.c3",
+          "source_bbox": [
+            206.57999999999998,
+            616.14,
+            228.18,
+            659.7
+          ],
+          "text": "1.0S10\n625.00",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [
+            {
+              "text": "1",
+              "size": 6.659,
+              "character_index": 4,
+              "baseline_delta": 1.92,
+              "role": "subscript"
+            },
+            {
+              "text": "0",
+              "size": 6.659,
+              "character_index": 5,
+              "baseline_delta": 1.92,
+              "role": "subscript"
+            }
+          ],
+          "row": 7,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 6
+        },
+        {
+          "id": "p30-combinations-md.r7.c4",
+          "source_bbox": [
+            206.57999999999998,
+            572.58,
+            228.18,
+            616.14
+          ],
+          "text": "1.23\n478.64",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 7,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 6
+        },
+        {
+          "id": "p30-combinations-md.r7.c5",
+          "source_bbox": [
+            206.57999999999998,
+            529.02,
+            228.18,
+            572.58
+          ],
+          "text": "1.23\n181.84",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 7,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 6
+        },
+        {
+          "id": "p30-combinations-md.r7.c6",
+          "source_bbox": [
+            206.57999999999998,
+            485.46,
+            228.18,
+            529.02
+          ],
+          "text": "1.35\n81.85",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 7,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 6
+        },
+        {
+          "id": "p30-combinations-md.r7.c7",
+          "source_bbox": [
+            206.57999999999998,
+            441.9,
+            228.18,
+            485.46
+          ],
+          "text": "1.0\n152.26",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 7,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 6
+        },
+        {
+          "id": "p30-combinations-md.r7.c8",
+          "source_bbox": [
+            206.57999999999998,
+            383.82,
+            228.18,
+            441.9
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 7,
+          "col": 8,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 6
+        },
+        {
+          "id": "p30-combinations-md.r7.c9",
+          "source_bbox": [
+            206.57999999999998,
+            340.26,
+            228.18,
+            383.82
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 7,
+          "col": 9,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 6
+        },
+        {
+          "id": "p30-combinations-md.r7.c10",
+          "source_bbox": [
+            206.57999999999998,
+            296.7,
+            228.18,
+            340.26
+          ],
+          "text": "5597.65",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 7,
+          "col": 10,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 6
+        },
+        {
+          "id": "p30-combinations-md.r7.c11",
+          "source_bbox": [
+            206.57999999999998,
+            238.62,
+            228.18,
+            296.7
+          ],
+          "text": "〃",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 7,
+          "col": 11,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 6
+        },
+        {
+          "id": "p30-combinations-md.r7.c12",
+          "source_bbox": [
+            206.57999999999998,
+            180.54,
+            228.18,
+            238.62
+          ],
+          "text": "〃",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 7,
+          "col": 12,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 6
+        },
+        {
+          "id": "p30-combinations-md.r7.c13",
+          "source_bbox": [
+            206.57999999999998,
+            93.0,
+            228.18,
+            180.54
+          ],
+          "text": "B＋C支点最大",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 7,
+          "col": 13,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 6
+        },
+        {
+          "id": "p30-combinations-md.r8.c0",
+          "source_bbox": [
+            228.18,
+            746.82,
+            249.78000000000003,
+            776.4
+          ],
+          "text": "7",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 8,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 7
+        },
+        {
+          "id": "p30-combinations-md.r8.c1",
+          "source_bbox": [
+            228.18,
+            703.26,
+            249.78000000000003,
+            746.82
+          ],
+          "text": "1.1\n3679.84",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 8,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 7
+        },
+        {
+          "id": "p30-combinations-md.r8.c2",
+          "source_bbox": [
+            228.18,
+            659.7,
+            249.78000000000003,
+            703.26
+          ],
+          "text": "1.2\n398.22",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 8,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 7
+        },
+        {
+          "id": "p30-combinations-md.r8.c3",
+          "source_bbox": [
+            228.18,
+            616.14,
+            249.78000000000003,
+            659.7
+          ],
+          "text": "1.0S2\n390.63",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [
+            {
+              "text": "2",
+              "size": 6.659,
+              "character_index": 4,
+              "baseline_delta": 1.92,
+              "role": "subscript"
+            }
+          ],
+          "row": 8,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 7
+        },
+        {
+          "id": "p30-combinations-md.r8.c4",
+          "source_bbox": [
+            228.18,
+            572.58,
+            249.78000000000003,
+            616.14
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 8,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 7
+        },
+        {
+          "id": "p30-combinations-md.r8.c5",
+          "source_bbox": [
+            228.18,
+            529.02,
+            249.78000000000003,
+            572.58
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 8,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 7
+        },
+        {
+          "id": "p30-combinations-md.r8.c6",
+          "source_bbox": [
+            228.18,
+            485.46,
+            249.78000000000003,
+            529.02
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 8,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 7
+        },
+        {
+          "id": "p30-combinations-md.r8.c7",
+          "source_bbox": [
+            228.18,
+            441.9,
+            249.78000000000003,
+            485.46
+          ],
+          "text": "1.2\n365.42",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 8,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 7
+        },
+        {
+          "id": "p30-combinations-md.r8.c8",
+          "source_bbox": [
+            228.18,
+            383.82,
+            249.78000000000003,
+            441.9
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 8,
+          "col": 8,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 7
+        },
+        {
+          "id": "p30-combinations-md.r8.c9",
+          "source_bbox": [
+            228.18,
+            340.26,
+            249.78000000000003,
+            383.82
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 8,
+          "col": 9,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 7
+        },
+        {
+          "id": "p30-combinations-md.r8.c10",
+          "source_bbox": [
+            228.18,
+            296.7,
+            249.78000000000003,
+            340.26
+          ],
+          "text": "4834.10",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 8,
+          "col": 10,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 7
+        },
+        {
+          "id": "p30-combinations-md.r8.c11",
+          "source_bbox": [
+            228.18,
+            238.62,
+            249.78000000000003,
+            296.7
+          ],
+          "text": "〃",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 8,
+          "col": 11,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 7
+        },
+        {
+          "id": "p30-combinations-md.r8.c12",
+          "source_bbox": [
+            228.18,
+            180.54,
+            249.78000000000003,
+            238.62
+          ],
+          "text": "風最大",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 8,
+          "col": 12,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 7
+        },
+        {
+          "id": "p30-combinations-md.r8.c13",
+          "source_bbox": [
+            228.18,
+            93.0,
+            249.78000000000003,
+            180.54
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 8,
+          "col": 13,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 7
+        },
+        {
+          "id": "p30-combinations-md.r9.c0",
+          "source_bbox": [
+            249.78000000000003,
+            746.82,
+            271.38,
+            776.4
+          ],
+          "text": "8",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 9,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 8
+        },
+        {
+          "id": "p30-combinations-md.r9.c1",
+          "source_bbox": [
+            249.78000000000003,
+            703.26,
+            271.38,
+            746.82
+          ],
+          "text": "1.1\n3679.84",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 9,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 8
+        },
+        {
+          "id": "p30-combinations-md.r9.c2",
+          "source_bbox": [
+            249.78000000000003,
+            659.7,
+            271.38,
+            703.26
+          ],
+          "text": "1.2\n398.22",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 9,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 8
+        },
+        {
+          "id": "p30-combinations-md.r9.c3",
+          "source_bbox": [
+            249.78000000000003,
+            616.14,
+            271.38,
+            659.7
+          ],
+          "text": "1.0S30\n703.13",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [
+            {
+              "text": "3",
+              "size": 6.659,
+              "character_index": 4,
+              "baseline_delta": 1.92,
+              "role": "subscript"
+            },
+            {
+              "text": "0",
+              "size": 6.659,
+              "character_index": 5,
+              "baseline_delta": 1.92,
+              "role": "subscript"
+            }
+          ],
+          "row": 9,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 8
+        },
+        {
+          "id": "p30-combinations-md.r9.c4",
+          "source_bbox": [
+            249.78000000000003,
+            572.58,
+            271.38,
+            616.14
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 9,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 8
+        },
+        {
+          "id": "p30-combinations-md.r9.c5",
+          "source_bbox": [
+            249.78000000000003,
+            529.02,
+            271.38,
+            572.58
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 9,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 8
+        },
+        {
+          "id": "p30-combinations-md.r9.c6",
+          "source_bbox": [
+            249.78000000000003,
+            485.46,
+            271.38,
+            529.02
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 9,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 8
+        },
+        {
+          "id": "p30-combinations-md.r9.c7",
+          "source_bbox": [
+            249.78000000000003,
+            441.9,
+            271.38,
+            485.46
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 9,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 8
+        },
+        {
+          "id": "p30-combinations-md.r9.c8",
+          "source_bbox": [
+            249.78000000000003,
+            383.82,
+            271.38,
+            441.9
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 9,
+          "col": 8,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 8
+        },
+        {
+          "id": "p30-combinations-md.r9.c9",
+          "source_bbox": [
+            249.78000000000003,
+            340.26,
+            271.38,
+            383.82
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 9,
+          "col": 9,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 8
+        },
+        {
+          "id": "p30-combinations-md.r9.c10",
+          "source_bbox": [
+            249.78000000000003,
+            296.7,
+            271.38,
+            340.26
+          ],
+          "text": "4781.18",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 9,
+          "col": 10,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 8
+        },
+        {
+          "id": "p30-combinations-md.r9.c11",
+          "source_bbox": [
+            249.78000000000003,
+            238.62,
+            271.38,
+            296.7
+          ],
+          "text": "〃",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 9,
+          "col": 11,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 8
+        },
+        {
+          "id": "p30-combinations-md.r9.c12",
+          "source_bbox": [
+            249.78000000000003,
+            180.54,
+            271.38,
+            238.62
+          ],
+          "text": "雪最大",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 9,
+          "col": 12,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 8
+        },
+        {
+          "id": "p30-combinations-md.r9.c13",
+          "source_bbox": [
+            249.78000000000003,
+            93.0,
+            271.38,
+            180.54
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 9,
+          "col": 13,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 8
+        },
+        {
+          "id": "p30-combinations-md.r10.c0",
+          "source_bbox": [
+            271.38,
+            746.82,
+            292.98,
+            776.4
+          ],
+          "text": "9",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 10,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 9
+        },
+        {
+          "id": "p30-combinations-md.r10.c1",
+          "source_bbox": [
+            271.38,
+            703.26,
+            292.98,
+            746.82
+          ],
+          "text": "1.1\n3679.84",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 10,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 9
+        },
+        {
+          "id": "p30-combinations-md.r10.c2",
+          "source_bbox": [
+            271.38,
+            659.7,
+            292.98,
+            703.26
+          ],
+          "text": "1.2\n398.22",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 10,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 9
+        },
+        {
+          "id": "p30-combinations-md.r10.c3",
+          "source_bbox": [
+            271.38,
+            616.14,
+            292.98,
+            659.7
+          ],
+          "text": "1.0S10\n625.00",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [
+            {
+              "text": "1",
+              "size": 6.659,
+              "character_index": 4,
+              "baseline_delta": 1.92,
+              "role": "subscript"
+            },
+            {
+              "text": "0",
+              "size": 6.659,
+              "character_index": 5,
+              "baseline_delta": 1.92,
+              "role": "subscript"
+            }
+          ],
+          "row": 10,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 9
+        },
+        {
+          "id": "p30-combinations-md.r10.c4",
+          "source_bbox": [
+            271.38,
+            572.58,
+            292.98,
+            616.14
+          ],
+          "text": "1.35\n510.30",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 10,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 9
+        },
+        {
+          "id": "p30-combinations-md.r10.c5",
+          "source_bbox": [
+            271.38,
+            529.02,
+            292.98,
+            572.58
+          ],
+          "text": "1.35\n125.02",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 10,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 9
+        },
+        {
+          "id": "p30-combinations-md.r10.c6",
+          "source_bbox": [
+            271.38,
+            485.46,
+            292.98,
+            529.02
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 10,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 9
+        },
+        {
+          "id": "p30-combinations-md.r10.c7",
+          "source_bbox": [
+            271.38,
+            441.9,
+            292.98,
+            485.46
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 10,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 9
+        },
+        {
+          "id": "p30-combinations-md.r10.c8",
+          "source_bbox": [
+            271.38,
+            383.82,
+            292.98,
+            441.9
+          ],
+          "text": "1.0LR+1.23B\n－",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 10,
+          "col": 8,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 9
+        },
+        {
+          "id": "p30-combinations-md.r10.c9",
+          "source_bbox": [
+            271.38,
+            340.26,
+            292.98,
+            383.82
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 10,
+          "col": 9,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 9
+        },
+        {
+          "id": "p30-combinations-md.r10.c10",
+          "source_bbox": [
+            271.38,
+            296.7,
+            292.98,
+            340.26
+          ],
+          "text": "5338.38",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 10,
+          "col": 10,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 9
+        },
+        {
+          "id": "p30-combinations-md.r10.c11",
+          "source_bbox": [
+            271.38,
+            238.62,
+            292.98,
+            296.7
+          ],
+          "text": "〃",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 10,
+          "col": 11,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 9
+        },
+        {
+          "id": "p30-combinations-md.r10.c12",
+          "source_bbox": [
+            271.38,
+            180.54,
+            292.98,
+            238.62
+          ],
+          "text": "列車最大",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 10,
+          "col": 12,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 9
+        },
+        {
+          "id": "p30-combinations-md.r10.c13",
+          "source_bbox": [
+            271.38,
+            93.0,
+            292.98,
+            180.54
+          ],
+          "text": "B支点最大",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 10,
+          "col": 13,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 9
+        },
+        {
+          "id": "p30-combinations-md.r11.c0",
+          "source_bbox": [
+            292.98,
+            746.82,
+            314.58,
+            776.4
+          ],
+          "text": "10",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 11,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 10
+        },
+        {
+          "id": "p30-combinations-md.r11.c1",
+          "source_bbox": [
+            292.98,
+            703.26,
+            314.58,
+            746.82
+          ],
+          "text": "1.1\n3679.84",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 11,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 10
+        },
+        {
+          "id": "p30-combinations-md.r11.c2",
+          "source_bbox": [
+            292.98,
+            659.7,
+            314.58,
+            703.26
+          ],
+          "text": "1.2\n398.22",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 11,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 10
+        },
+        {
+          "id": "p30-combinations-md.r11.c3",
+          "source_bbox": [
+            292.98,
+            616.14,
+            314.58,
+            659.7
+          ],
+          "text": "1.0S10\n625.00",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [
+            {
+              "text": "1",
+              "size": 6.659,
+              "character_index": 4,
+              "baseline_delta": 1.92,
+              "role": "subscript"
+            },
+            {
+              "text": "0",
+              "size": 6.659,
+              "character_index": 5,
+              "baseline_delta": 1.92,
+              "role": "subscript"
+            }
+          ],
+          "row": 11,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 10
+        },
+        {
+          "id": "p30-combinations-md.r11.c4",
+          "source_bbox": [
+            292.98,
+            572.58,
+            314.58,
+            616.14
+          ],
+          "text": "1.35\n464.21",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 11,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 10
+        },
+        {
+          "id": "p30-combinations-md.r11.c5",
+          "source_bbox": [
+            292.98,
+            529.02,
+            314.58,
+            572.58
+          ],
+          "text": "1.35\n213.91",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 11,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 10
+        },
+        {
+          "id": "p30-combinations-md.r11.c6",
+          "source_bbox": [
+            292.98,
+            485.46,
+            314.58,
+            529.02
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 11,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 10
+        },
+        {
+          "id": "p30-combinations-md.r11.c7",
+          "source_bbox": [
+            292.98,
+            441.9,
+            314.58,
+            485.46
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 11,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 10
+        },
+        {
+          "id": "p30-combinations-md.r11.c8",
+          "source_bbox": [
+            292.98,
+            383.82,
+            314.58,
+            441.9
+          ],
+          "text": "1.0LR+1.23B\n－",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 11,
+          "col": 8,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 10
+        },
+        {
+          "id": "p30-combinations-md.r11.c9",
+          "source_bbox": [
+            292.98,
+            340.26,
+            314.58,
+            383.82
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 11,
+          "col": 9,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 10
+        },
+        {
+          "id": "p30-combinations-md.r11.c10",
+          "source_bbox": [
+            292.98,
+            296.7,
+            314.58,
+            340.26
+          ],
+          "text": "5381.18",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 11,
+          "col": 10,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 10
+        },
+        {
+          "id": "p30-combinations-md.r11.c11",
+          "source_bbox": [
+            292.98,
+            238.62,
+            314.58,
+            296.7
+          ],
+          "text": "〃",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 11,
+          "col": 11,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 10
+        },
+        {
+          "id": "p30-combinations-md.r11.c12",
+          "source_bbox": [
+            292.98,
+            180.54,
+            314.58,
+            238.62
+          ],
+          "text": "〃",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 11,
+          "col": 12,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 10
+        },
+        {
+          "id": "p30-combinations-md.r11.c13",
+          "source_bbox": [
+            292.98,
+            93.0,
+            314.58,
+            180.54
+          ],
+          "text": "C支点最大",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 11,
+          "col": 13,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 10
+        },
+        {
+          "id": "p30-combinations-md.r12.c0",
+          "source_bbox": [
+            314.58,
+            746.82,
+            336.18,
+            776.4
+          ],
+          "text": "11",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 12,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 11
+        },
+        {
+          "id": "p30-combinations-md.r12.c1",
+          "source_bbox": [
+            314.58,
+            703.26,
+            336.18,
+            746.82
+          ],
+          "text": "1.1\n3679.84",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 12,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 11
+        },
+        {
+          "id": "p30-combinations-md.r12.c2",
+          "source_bbox": [
+            314.58,
+            659.7,
+            336.18,
+            703.26
+          ],
+          "text": "1.2\n398.22",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 12,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 11
+        },
+        {
+          "id": "p30-combinations-md.r12.c3",
+          "source_bbox": [
+            314.58,
+            616.14,
+            336.18,
+            659.7
+          ],
+          "text": "1.0S10\n625.00",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [
+            {
+              "text": "1",
+              "size": 6.659,
+              "character_index": 4,
+              "baseline_delta": 1.92,
+              "role": "subscript"
+            },
+            {
+              "text": "0",
+              "size": 6.659,
+              "character_index": 5,
+              "baseline_delta": 1.92,
+              "role": "subscript"
+            }
+          ],
+          "row": 12,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 11
+        },
+        {
+          "id": "p30-combinations-md.r12.c4",
+          "source_bbox": [
+            314.58,
+            572.58,
+            336.18,
+            616.14
+          ],
+          "text": "1.35\n525.34",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 12,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 11
+        },
+        {
+          "id": "p30-combinations-md.r12.c5",
+          "source_bbox": [
+            314.58,
+            529.02,
+            336.18,
+            572.58
+          ],
+          "text": "1.35\n199.58",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 12,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 11
+        },
+        {
+          "id": "p30-combinations-md.r12.c6",
+          "source_bbox": [
+            314.58,
+            485.46,
+            336.18,
+            529.02
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 12,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 11
+        },
+        {
+          "id": "p30-combinations-md.r12.c7",
+          "source_bbox": [
+            314.58,
+            441.9,
+            336.18,
+            485.46
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 12,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 11
+        },
+        {
+          "id": "p30-combinations-md.r12.c8",
+          "source_bbox": [
+            314.58,
+            383.82,
+            336.18,
+            441.9
+          ],
+          "text": "1.0LR+1.23B\n－",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 12,
+          "col": 8,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 11
+        },
+        {
+          "id": "p30-combinations-md.r12.c9",
+          "source_bbox": [
+            314.58,
+            340.26,
+            336.18,
+            383.82
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 12,
+          "col": 9,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 11
+        },
+        {
+          "id": "p30-combinations-md.r12.c10",
+          "source_bbox": [
+            314.58,
+            296.7,
+            336.18,
+            340.26
+          ],
+          "text": "5427.98",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 12,
+          "col": 10,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 11
+        },
+        {
+          "id": "p30-combinations-md.r12.c11",
+          "source_bbox": [
+            314.58,
+            238.62,
+            336.18,
+            296.7
+          ],
+          "text": "〃",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 12,
+          "col": 11,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 11
+        },
+        {
+          "id": "p30-combinations-md.r12.c12",
+          "source_bbox": [
+            314.58,
+            180.54,
+            336.18,
+            238.62
+          ],
+          "text": "〃",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 12,
+          "col": 12,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 11
+        },
+        {
+          "id": "p30-combinations-md.r12.c13",
+          "source_bbox": [
+            314.58,
+            93.0,
+            336.18,
+            180.54
+          ],
+          "text": "B＋C支点最大",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 12,
+          "col": 13,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 11
+        },
+        {
+          "id": "p30-combinations-md.r13.c0",
+          "source_bbox": [
+            336.18,
+            746.82,
+            357.78000000000003,
+            776.4
+          ],
+          "text": "12",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 13,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 12
+        },
+        {
+          "id": "p30-combinations-md.r13.c1",
+          "source_bbox": [
+            336.18,
+            703.26,
+            357.78000000000003,
+            746.82
+          ],
+          "text": "1.1\n3679.84",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 13,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 12
+        },
+        {
+          "id": "p30-combinations-md.r13.c2",
+          "source_bbox": [
+            336.18,
+            659.7,
+            357.78000000000003,
+            703.26
+          ],
+          "text": "1.2\n398.22",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 13,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 12
+        },
+        {
+          "id": "p30-combinations-md.r13.c3",
+          "source_bbox": [
+            336.18,
+            616.14,
+            357.78000000000003,
+            659.7
+          ],
+          "text": "1.0S10\n625.00",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [
+            {
+              "text": "1",
+              "size": 6.659,
+              "character_index": 4,
+              "baseline_delta": 1.92,
+              "role": "subscript"
+            },
+            {
+              "text": "0",
+              "size": 6.659,
+              "character_index": 5,
+              "baseline_delta": 1.92,
+              "role": "subscript"
+            }
+          ],
+          "row": 13,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 12
+        },
+        {
+          "id": "p30-combinations-md.r13.c4",
+          "source_bbox": [
+            336.18,
+            572.58,
+            357.78000000000003,
+            616.14
+          ],
+          "text": "1.23\n464.94",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 13,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 12
+        },
+        {
+          "id": "p30-combinations-md.r13.c5",
+          "source_bbox": [
+            336.18,
+            529.02,
+            357.78000000000003,
+            572.58
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 13,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 12
+        },
+        {
+          "id": "p30-combinations-md.r13.c6",
+          "source_bbox": [
+            336.18,
+            485.46,
+            357.78000000000003,
+            529.02
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 13,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 12
+        },
+        {
+          "id": "p30-combinations-md.r13.c7",
+          "source_bbox": [
+            336.18,
+            441.9,
+            357.78000000000003,
+            485.46
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 13,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 12
+        },
+        {
+          "id": "p30-combinations-md.r13.c8",
+          "source_bbox": [
+            336.18,
+            383.82,
+            357.78000000000003,
+            441.9
+          ],
+          "text": "1.0LR+1.35B\n－",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 13,
+          "col": 8,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 12
+        },
+        {
+          "id": "p30-combinations-md.r13.c9",
+          "source_bbox": [
+            336.18,
+            340.26,
+            357.78000000000003,
+            383.82
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 13,
+          "col": 9,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 12
+        },
+        {
+          "id": "p30-combinations-md.r13.c10",
+          "source_bbox": [
+            336.18,
+            296.7,
+            357.78000000000003,
+            340.26
+          ],
+          "text": "5168.00",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 13,
+          "col": 10,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 12
+        },
+        {
+          "id": "p30-combinations-md.r13.c11",
+          "source_bbox": [
+            336.18,
+            238.62,
+            357.78000000000003,
+            296.7
+          ],
+          "text": "〃",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 13,
+          "col": 11,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 12
+        },
+        {
+          "id": "p30-combinations-md.r13.c12",
+          "source_bbox": [
+            336.18,
+            180.54,
+            357.78000000000003,
+            238.62
+          ],
+          "text": "制動最大",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 13,
+          "col": 12,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 12
+        },
+        {
+          "id": "p30-combinations-md.r13.c13",
+          "source_bbox": [
+            336.18,
+            93.0,
+            357.78000000000003,
+            180.54
+          ],
+          "text": "B支点最大",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 13,
+          "col": 13,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 12
+        },
+        {
+          "id": "p30-combinations-md.r14.c0",
+          "source_bbox": [
+            357.78000000000003,
+            746.82,
+            379.38,
+            776.4
+          ],
+          "text": "13",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 14,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 13
+        },
+        {
+          "id": "p30-combinations-md.r14.c1",
+          "source_bbox": [
+            357.78000000000003,
+            703.26,
+            379.38,
+            746.82
+          ],
+          "text": "1.1\n3679.84",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 14,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 13
+        },
+        {
+          "id": "p30-combinations-md.r14.c2",
+          "source_bbox": [
+            357.78000000000003,
+            659.7,
+            379.38,
+            703.26
+          ],
+          "text": "1.2\n398.22",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 14,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 13
+        },
+        {
+          "id": "p30-combinations-md.r14.c3",
+          "source_bbox": [
+            357.78000000000003,
+            616.14,
+            379.38,
+            659.7
+          ],
+          "text": "1.0S10\n625.00",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [
+            {
+              "text": "1",
+              "size": 6.659,
+              "character_index": 4,
+              "baseline_delta": 1.92,
+              "role": "subscript"
+            },
+            {
+              "text": "0",
+              "size": 6.659,
+              "character_index": 5,
+              "baseline_delta": 1.92,
+              "role": "subscript"
+            }
+          ],
+          "row": 14,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 13
+        },
+        {
+          "id": "p30-combinations-md.r14.c4",
+          "source_bbox": [
+            357.78000000000003,
+            572.58,
+            379.38,
+            616.14
+          ],
+          "text": "1.23\n422.95",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 14,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 13
+        },
+        {
+          "id": "p30-combinations-md.r14.c5",
+          "source_bbox": [
+            357.78000000000003,
+            529.02,
+            379.38,
+            572.58
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 14,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 13
+        },
+        {
+          "id": "p30-combinations-md.r14.c6",
+          "source_bbox": [
+            357.78000000000003,
+            485.46,
+            379.38,
+            529.02
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 14,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 13
+        },
+        {
+          "id": "p30-combinations-md.r14.c7",
+          "source_bbox": [
+            357.78000000000003,
+            441.9,
+            379.38,
+            485.46
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 14,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 13
+        },
+        {
+          "id": "p30-combinations-md.r14.c8",
+          "source_bbox": [
+            357.78000000000003,
+            383.82,
+            379.38,
+            441.9
+          ],
+          "text": "1.0LR+1.35B\n－",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 14,
+          "col": 8,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 13
+        },
+        {
+          "id": "p30-combinations-md.r14.c9",
+          "source_bbox": [
+            357.78000000000003,
+            340.26,
+            379.38,
+            383.82
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 14,
+          "col": 9,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 13
+        },
+        {
+          "id": "p30-combinations-md.r14.c10",
+          "source_bbox": [
+            357.78000000000003,
+            296.7,
+            379.38,
+            340.26
+          ],
+          "text": "5126.00",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 14,
+          "col": 10,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 13
+        },
+        {
+          "id": "p30-combinations-md.r14.c11",
+          "source_bbox": [
+            357.78000000000003,
+            238.62,
+            379.38,
+            296.7
+          ],
+          "text": "〃",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 14,
+          "col": 11,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 13
+        },
+        {
+          "id": "p30-combinations-md.r14.c12",
+          "source_bbox": [
+            357.78000000000003,
+            180.54,
+            379.38,
+            238.62
+          ],
+          "text": "〃",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 14,
+          "col": 12,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 13
+        },
+        {
+          "id": "p30-combinations-md.r14.c13",
+          "source_bbox": [
+            357.78000000000003,
+            93.0,
+            379.38,
+            180.54
+          ],
+          "text": "C支点最大",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 14,
+          "col": 13,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 13
+        },
+        {
+          "id": "p30-combinations-md.r15.c0",
+          "source_bbox": [
+            379.38,
+            746.82,
+            400.98,
+            776.4
+          ],
+          "text": "14",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 15,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 14
+        },
+        {
+          "id": "p30-combinations-md.r15.c1",
+          "source_bbox": [
+            379.38,
+            703.26,
+            400.98,
+            746.82
+          ],
+          "text": "1.1\n3679.84",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 15,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 14
+        },
+        {
+          "id": "p30-combinations-md.r15.c2",
+          "source_bbox": [
+            379.38,
+            659.7,
+            400.98,
+            703.26
+          ],
+          "text": "1.2\n398.22",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 15,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 14
+        },
+        {
+          "id": "p30-combinations-md.r15.c3",
+          "source_bbox": [
+            379.38,
+            616.14,
+            400.98,
+            659.7
+          ],
+          "text": "1.0S10\n625.00",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [
+            {
+              "text": "1",
+              "size": 6.659,
+              "character_index": 4,
+              "baseline_delta": 1.92,
+              "role": "subscript"
+            },
+            {
+              "text": "0",
+              "size": 6.659,
+              "character_index": 5,
+              "baseline_delta": 1.92,
+              "role": "subscript"
+            }
+          ],
+          "row": 15,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 14
+        },
+        {
+          "id": "p30-combinations-md.r15.c4",
+          "source_bbox": [
+            379.38,
+            572.58,
+            400.98,
+            616.14
+          ],
+          "text": "1.23\n478.64",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 15,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 14
+        },
+        {
+          "id": "p30-combinations-md.r15.c5",
+          "source_bbox": [
+            379.38,
+            529.02,
+            400.98,
+            572.58
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 15,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 14
+        },
+        {
+          "id": "p30-combinations-md.r15.c6",
+          "source_bbox": [
+            379.38,
+            485.46,
+            400.98,
+            529.02
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 15,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 14
+        },
+        {
+          "id": "p30-combinations-md.r15.c7",
+          "source_bbox": [
+            379.38,
+            441.9,
+            400.98,
+            485.46
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 15,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 14
+        },
+        {
+          "id": "p30-combinations-md.r15.c8",
+          "source_bbox": [
+            379.38,
+            383.82,
+            400.98,
+            441.9
+          ],
+          "text": "1.0LR+1.35B\n－",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 15,
+          "col": 8,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 14
+        },
+        {
+          "id": "p30-combinations-md.r15.c9",
+          "source_bbox": [
+            379.38,
+            340.26,
+            400.98,
+            383.82
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 15,
+          "col": 9,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 14
+        },
+        {
+          "id": "p30-combinations-md.r15.c10",
+          "source_bbox": [
+            379.38,
+            296.7,
+            400.98,
+            340.26
+          ],
+          "text": "5181.70",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 15,
+          "col": 10,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 14
+        },
+        {
+          "id": "p30-combinations-md.r15.c11",
+          "source_bbox": [
+            379.38,
+            238.62,
+            400.98,
+            296.7
+          ],
+          "text": "〃",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 15,
+          "col": 11,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 14
+        },
+        {
+          "id": "p30-combinations-md.r15.c12",
+          "source_bbox": [
+            379.38,
+            180.54,
+            400.98,
+            238.62
+          ],
+          "text": "〃",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 15,
+          "col": 12,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 14
+        },
+        {
+          "id": "p30-combinations-md.r15.c13",
+          "source_bbox": [
+            379.38,
+            93.0,
+            400.98,
+            180.54
+          ],
+          "text": "B＋C支点最大",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 15,
+          "col": 13,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 14
+        },
+        {
+          "id": "p30-combinations-md.r16.c0",
+          "source_bbox": [
+            400.98,
+            746.82,
+            422.58,
+            776.4
+          ],
+          "text": "15",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 16,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 15
+        },
+        {
+          "id": "p30-combinations-md.r16.c1",
+          "source_bbox": [
+            400.98,
+            703.26,
+            422.58,
+            746.82
+          ],
+          "text": "1.1\n3679.84",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 16,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 15
+        },
+        {
+          "id": "p30-combinations-md.r16.c2",
+          "source_bbox": [
+            400.98,
+            659.7,
+            422.58,
+            703.26
+          ],
+          "text": "1.2\n398.22",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 16,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 15
+        },
+        {
+          "id": "p30-combinations-md.r16.c3",
+          "source_bbox": [
+            400.98,
+            616.14,
+            422.58,
+            659.7
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 16,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 15
+        },
+        {
+          "id": "p30-combinations-md.r16.c4",
+          "source_bbox": [
+            400.98,
+            572.58,
+            422.58,
+            616.14
+          ],
+          "text": "1.23\n464.94",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 16,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 15
+        },
+        {
+          "id": "p30-combinations-md.r16.c5",
+          "source_bbox": [
+            400.98,
+            529.02,
+            422.58,
+            572.58
+          ],
+          "text": "1.23\n113.91",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 16,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 15
+        },
+        {
+          "id": "p30-combinations-md.r16.c6",
+          "source_bbox": [
+            400.98,
+            485.46,
+            422.58,
+            529.02
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 16,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 15
+        },
+        {
+          "id": "p30-combinations-md.r16.c7",
+          "source_bbox": [
+            400.98,
+            441.9,
+            422.58,
+            485.46
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 16,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 15
+        },
+        {
+          "id": "p30-combinations-md.r16.c8",
+          "source_bbox": [
+            400.98,
+            383.82,
+            422.58,
+            441.9
+          ],
+          "text": "1.1LR+1.23B\n－",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 16,
+          "col": 8,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 15
+        },
+        {
+          "id": "p30-combinations-md.r16.c9",
+          "source_bbox": [
+            400.98,
+            340.26,
+            422.58,
+            383.82
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 16,
+          "col": 9,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 15
+        },
+        {
+          "id": "p30-combinations-md.r16.c10",
+          "source_bbox": [
+            400.98,
+            296.7,
+            422.58,
+            340.26
+          ],
+          "text": "4656.91",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 16,
+          "col": 10,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 15
+        },
+        {
+          "id": "p30-combinations-md.r16.c11",
+          "source_bbox": [
+            400.98,
+            238.62,
+            422.58,
+            296.7
+          ],
+          "text": "〃",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 16,
+          "col": 11,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 15
+        },
+        {
+          "id": "p30-combinations-md.r16.c12",
+          "source_bbox": [
+            400.98,
+            180.54,
+            422.58,
+            238.62
+          ],
+          "text": "ロング最大",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 16,
+          "col": 12,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 15
+        },
+        {
+          "id": "p30-combinations-md.r16.c13",
+          "source_bbox": [
+            400.98,
+            93.0,
+            422.58,
+            180.54
+          ],
+          "text": "B支点最大",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 16,
+          "col": 13,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 15
+        },
+        {
+          "id": "p30-combinations-md.r17.c0",
+          "source_bbox": [
+            422.58,
+            746.82,
+            444.18,
+            776.4
+          ],
+          "text": "16",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 17,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 16
+        },
+        {
+          "id": "p30-combinations-md.r17.c1",
+          "source_bbox": [
+            422.58,
+            703.26,
+            444.18,
+            746.82
+          ],
+          "text": "1.1\n3679.84",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 17,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 16
+        },
+        {
+          "id": "p30-combinations-md.r17.c2",
+          "source_bbox": [
+            422.58,
+            659.7,
+            444.18,
+            703.26
+          ],
+          "text": "1.2\n398.22",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 17,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 16
+        },
+        {
+          "id": "p30-combinations-md.r17.c3",
+          "source_bbox": [
+            422.58,
+            616.14,
+            444.18,
+            659.7
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 17,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 16
+        },
+        {
+          "id": "p30-combinations-md.r17.c4",
+          "source_bbox": [
+            422.58,
+            572.58,
+            444.18,
+            616.14
+          ],
+          "text": "1.23\n422.95",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 17,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 16
+        },
+        {
+          "id": "p30-combinations-md.r17.c5",
+          "source_bbox": [
+            422.58,
+            529.02,
+            444.18,
+            572.58
+          ],
+          "text": "1.23\n194.90",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 17,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 16
+        },
+        {
+          "id": "p30-combinations-md.r17.c6",
+          "source_bbox": [
+            422.58,
+            485.46,
+            444.18,
+            529.02
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 17,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 16
+        },
+        {
+          "id": "p30-combinations-md.r17.c7",
+          "source_bbox": [
+            422.58,
+            441.9,
+            444.18,
+            485.46
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 17,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 16
+        },
+        {
+          "id": "p30-combinations-md.r17.c8",
+          "source_bbox": [
+            422.58,
+            383.82,
+            444.18,
+            441.9
+          ],
+          "text": "1.1LR+1.23B\n－",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 17,
+          "col": 8,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 16
+        },
+        {
+          "id": "p30-combinations-md.r17.c9",
+          "source_bbox": [
+            422.58,
+            340.26,
+            444.18,
+            383.82
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 17,
+          "col": 9,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 16
+        },
+        {
+          "id": "p30-combinations-md.r17.c10",
+          "source_bbox": [
+            422.58,
+            296.7,
+            444.18,
+            340.26
+          ],
+          "text": "4695.90",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 17,
+          "col": 10,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 16
+        },
+        {
+          "id": "p30-combinations-md.r17.c11",
+          "source_bbox": [
+            422.58,
+            238.62,
+            444.18,
+            296.7
+          ],
+          "text": "〃",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 17,
+          "col": 11,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 16
+        },
+        {
+          "id": "p30-combinations-md.r17.c12",
+          "source_bbox": [
+            422.58,
+            180.54,
+            444.18,
+            238.62
+          ],
+          "text": "〃",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 17,
+          "col": 12,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 16
+        },
+        {
+          "id": "p30-combinations-md.r17.c13",
+          "source_bbox": [
+            422.58,
+            93.0,
+            444.18,
+            180.54
+          ],
+          "text": "C支点最大",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 17,
+          "col": 13,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 16
+        },
+        {
+          "id": "p30-combinations-md.r18.c0",
+          "source_bbox": [
+            444.18,
+            746.82,
+            465.78000000000003,
+            776.4
+          ],
+          "text": "17",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 18,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 17
+        },
+        {
+          "id": "p30-combinations-md.r18.c1",
+          "source_bbox": [
+            444.18,
+            703.26,
+            465.78000000000003,
+            746.82
+          ],
+          "text": "1.1\n3679.84",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 18,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 17
+        },
+        {
+          "id": "p30-combinations-md.r18.c2",
+          "source_bbox": [
+            444.18,
+            659.7,
+            465.78000000000003,
+            703.26
+          ],
+          "text": "1.2\n398.22",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 18,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 17
+        },
+        {
+          "id": "p30-combinations-md.r18.c3",
+          "source_bbox": [
+            444.18,
+            616.14,
+            465.78000000000003,
+            659.7
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 18,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 17
+        },
+        {
+          "id": "p30-combinations-md.r18.c4",
+          "source_bbox": [
+            444.18,
+            572.58,
+            465.78000000000003,
+            616.14
+          ],
+          "text": "1.23\n478.64",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 18,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 17
+        },
+        {
+          "id": "p30-combinations-md.r18.c5",
+          "source_bbox": [
+            444.18,
+            529.02,
+            465.78000000000003,
+            572.58
+          ],
+          "text": "1.23\n181.84",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 18,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 17
+        },
+        {
+          "id": "p30-combinations-md.r18.c6",
+          "source_bbox": [
+            444.18,
+            485.46,
+            465.78000000000003,
+            529.02
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 18,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 17
+        },
+        {
+          "id": "p30-combinations-md.r18.c7",
+          "source_bbox": [
+            444.18,
+            441.9,
+            465.78000000000003,
+            485.46
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 18,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 17
+        },
+        {
+          "id": "p30-combinations-md.r18.c8",
+          "source_bbox": [
+            444.18,
+            383.82,
+            465.78000000000003,
+            441.9
+          ],
+          "text": "1.1LR+1.23B\n－",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 18,
+          "col": 8,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 17
+        },
+        {
+          "id": "p30-combinations-md.r18.c9",
+          "source_bbox": [
+            444.18,
+            340.26,
+            465.78000000000003,
+            383.82
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 18,
+          "col": 9,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 17
+        },
+        {
+          "id": "p30-combinations-md.r18.c10",
+          "source_bbox": [
+            444.18,
+            296.7,
+            465.78000000000003,
+            340.26
+          ],
+          "text": "4738.54",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 18,
+          "col": 10,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 17
+        },
+        {
+          "id": "p30-combinations-md.r18.c11",
+          "source_bbox": [
+            444.18,
+            238.62,
+            465.78000000000003,
+            296.7
+          ],
+          "text": "〃",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 18,
+          "col": 11,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 17
+        },
+        {
+          "id": "p30-combinations-md.r18.c12",
+          "source_bbox": [
+            444.18,
+            180.54,
+            465.78000000000003,
+            238.62
+          ],
+          "text": "〃",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 18,
+          "col": 12,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 17
+        },
+        {
+          "id": "p30-combinations-md.r18.c13",
+          "source_bbox": [
+            444.18,
+            93.0,
+            465.78000000000003,
+            180.54
+          ],
+          "text": "B＋C支点最大",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 18,
+          "col": 13,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 17
+        },
+        {
+          "id": "p30-combinations-md.r19.c0",
+          "source_bbox": [
+            465.78000000000003,
+            746.82,
+            487.38,
+            776.4
+          ],
+          "text": "18",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 19,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 18
+        },
+        {
+          "id": "p30-combinations-md.r19.c1",
+          "source_bbox": [
+            465.78000000000003,
+            703.26,
+            487.38,
+            746.82
+          ],
+          "text": "1.1\n3679.84",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 19,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 18
+        },
+        {
+          "id": "p30-combinations-md.r19.c2",
+          "source_bbox": [
+            465.78000000000003,
+            659.7,
+            487.38,
+            703.26
+          ],
+          "text": "1.2\n398.22",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 19,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 18
+        },
+        {
+          "id": "p30-combinations-md.r19.c3",
+          "source_bbox": [
+            465.78000000000003,
+            616.14,
+            487.38,
+            659.7
+          ],
+          "text": "1.0S30\n703.13",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [
+            {
+              "text": "3",
+              "size": 6.659,
+              "character_index": 4,
+              "baseline_delta": 1.92,
+              "role": "subscript"
+            },
+            {
+              "text": "0",
+              "size": 6.659,
+              "character_index": 5,
+              "baseline_delta": 1.92,
+              "role": "subscript"
+            }
+          ],
+          "row": 19,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 18
+        },
+        {
+          "id": "p30-combinations-md.r19.c4",
+          "source_bbox": [
+            465.78000000000003,
+            572.58,
+            487.38,
+            616.14
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 19,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 18
+        },
+        {
+          "id": "p30-combinations-md.r19.c5",
+          "source_bbox": [
+            465.78000000000003,
+            529.02,
+            487.38,
+            572.58
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 19,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 18
+        },
+        {
+          "id": "p30-combinations-md.r19.c6",
+          "source_bbox": [
+            465.78000000000003,
+            485.46,
+            487.38,
+            529.02
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 19,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 18
+        },
+        {
+          "id": "p30-combinations-md.r19.c7",
+          "source_bbox": [
+            465.78000000000003,
+            441.9,
+            487.38,
+            485.46
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 19,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 18
+        },
+        {
+          "id": "p30-combinations-md.r19.c8",
+          "source_bbox": [
+            465.78000000000003,
+            383.82,
+            487.38,
+            441.9
+          ],
+          "text": "1.0LR\n－",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 19,
+          "col": 8,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 18
+        },
+        {
+          "id": "p30-combinations-md.r19.c9",
+          "source_bbox": [
+            465.78000000000003,
+            340.26,
+            487.38,
+            383.82
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 19,
+          "col": 9,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 18
+        },
+        {
+          "id": "p30-combinations-md.r19.c10",
+          "source_bbox": [
+            465.78000000000003,
+            296.7,
+            487.38,
+            340.26
+          ],
+          "text": "4781.18",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 19,
+          "col": 10,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 18
+        },
+        {
+          "id": "p30-combinations-md.r19.c11",
+          "source_bbox": [
+            465.78000000000003,
+            238.62,
+            487.38,
+            296.7
+          ],
+          "text": "〃",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 19,
+          "col": 11,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 18
+        },
+        {
+          "id": "p30-combinations-md.r19.c12",
+          "source_bbox": [
+            465.78000000000003,
+            180.54,
+            487.38,
+            238.62
+          ],
+          "text": "雪最大",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 19,
+          "col": 12,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 18
+        },
+        {
+          "id": "p30-combinations-md.r19.c13",
+          "source_bbox": [
+            465.78000000000003,
+            93.0,
+            487.38,
+            180.54
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 19,
+          "col": 13,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 18
+        }
+      ],
+      "header_rows": 2,
+      "body_rows": 18,
+      "columns": 14
+    }
+  ]
+}

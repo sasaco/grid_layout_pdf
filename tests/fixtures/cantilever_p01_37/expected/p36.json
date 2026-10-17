@@ -1,0 +1,6522 @@
+{
+  "schema_version": 1,
+  "source_page": 36,
+  "source_sha256": "e56bf3ddbe3314ed95517099bedb0e68005df1567b0b3e8f52a2a4066d03393e",
+  "provenance": {
+    "author": "oracle",
+    "method": "independent source glyph transcription and visual comparison",
+    "reviewed_source_image": "source-survey/p36.png",
+    "review_status": "source-reviewed"
+  },
+  "omitted_page_number": "13 - 36",
+  "source_character_inventory": {
+    "(": 4,
+    ")": 4,
+    "+": 9,
+    ".": 168,
+    "0": 73,
+    "1": 185,
+    "2": 69,
+    "3": 72,
+    "4": 36,
+    "5": 69,
+    "6": 26,
+    "7": 34,
+    "8": 38,
+    "9": 29,
+    "B": 20,
+    "C": 11,
+    "D": 2,
+    "E": 1,
+    "F": 1,
+    "I": 1,
+    "L": 13,
+    "M": 2,
+    "N": 4,
+    "Q": 1,
+    "R": 11,
+    "S": 16,
+    "V": 1,
+    "W": 1,
+    "a": 1,
+    "d": 2,
+    "e": 1,
+    "k": 3,
+    "o": 1,
+    "s": 1,
+    "t": 1,
+    "〃": 27,
+    "げ": 1,
+    "じ": 1,
+    "せ": 2,
+    "ね": 1,
+    "り": 1,
+    "ん": 1,
+    "グ": 1,
+    "ロ": 1,
+    "ン": 1,
+    "作": 1,
+    "備": 1,
+    "全": 1,
+    "列": 2,
+    "制": 1,
+    "力": 1,
+    "動": 1,
+    "合": 1,
+    "壊": 1,
+    "大": 23,
+    "安": 1,
+    "性": 2,
+    "摘": 1,
+    "支": 15,
+    "断": 1,
+    "曲": 1,
+    "最": 23,
+    "横": 1,
+    "点": 15,
+    "用": 1,
+    "目": 1,
+    "破": 1,
+    "組": 1,
+    "考": 1,
+    "能": 1,
+    "要": 1,
+    "計": 1,
+    "設": 1,
+    "車": 3,
+    "雪": 2,
+    "項": 1,
+    "風": 1,
+    "＋": 6,
+    "ｰ": 2,
+    "ﾄ": 2,
+    "ﾒ": 2,
+    "ﾓ": 2,
+    "ﾝ": 2
+  },
+  "marker_count": 0,
+  "hash_placeholder_count": 0,
+  "blocks": [
+    {
+      "id": "p36-combinations-summary",
+      "kind": "table",
+      "direction": [
+        0,
+        -1
+      ],
+      "cells": [
+        {
+          "id": "p36-combinations-summary.r0.c0",
+          "source_bbox": [
+            67.68,
+            746.82,
+            127.74,
+            776.4
+          ],
+          "text": "Case\nNo.",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 0,
+          "rowspan": 2,
+          "colspan": 1
+        },
+        {
+          "id": "p36-combinations-summary.r0.c1",
+          "source_bbox": [
+            67.68,
+            441.9,
+            83.1,
+            746.82
+          ],
+          "text": "組合せ",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 9
+        },
+        {
+          "id": "p36-combinations-summary.r0.c10",
+          "source_bbox": [
+            67.68,
+            267.66,
+            83.1,
+            441.9
+          ],
+          "text": "設計作用",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 10,
+          "rowspan": 1,
+          "colspan": 3
+        },
+        {
+          "id": "p36-combinations-summary.r0.c13",
+          "source_bbox": [
+            67.68,
+            209.58,
+            127.74,
+            267.66
+          ],
+          "text": "性能項目",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 13,
+          "rowspan": 2,
+          "colspan": 1
+        },
+        {
+          "id": "p36-combinations-summary.r0.c14",
+          "source_bbox": [
+            67.68,
+            151.5,
+            127.74,
+            209.58
+          ],
+          "text": "備考",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 14,
+          "rowspan": 2,
+          "colspan": 1
+        },
+        {
+          "id": "p36-combinations-summary.r0.c15",
+          "source_bbox": [
+            67.68,
+            63.96,
+            127.74,
+            151.5
+          ],
+          "text": "摘要",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 0,
+          "col": 15,
+          "rowspan": 2,
+          "colspan": 1
+        },
+        {
+          "id": "p36-combinations-summary.r1.c1",
+          "source_bbox": [
+            83.1,
+            717.78,
+            127.74,
+            746.82
+          ],
+          "text": "D1",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p36-combinations-summary.r1.c2",
+          "source_bbox": [
+            83.1,
+            688.74,
+            127.74,
+            717.78
+          ],
+          "text": "D2",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p36-combinations-summary.r1.c3",
+          "source_bbox": [
+            83.1,
+            645.18,
+            127.74,
+            688.74
+          ],
+          "text": "S",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p36-combinations-summary.r1.c4",
+          "source_bbox": [
+            83.1,
+            616.14,
+            127.74,
+            645.18
+          ],
+          "text": "L",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p36-combinations-summary.r1.c5",
+          "source_bbox": [
+            83.1,
+            587.1,
+            127.74,
+            616.14
+          ],
+          "text": "I",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p36-combinations-summary.r1.c6",
+          "source_bbox": [
+            83.1,
+            558.06,
+            127.74,
+            587.1
+          ],
+          "text": "LF",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p36-combinations-summary.r1.c7",
+          "source_bbox": [
+            83.1,
+            529.02,
+            127.74,
+            558.06
+          ],
+          "text": "W",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p36-combinations-summary.r1.c8",
+          "source_bbox": [
+            83.1,
+            470.94,
+            127.74,
+            529.02
+          ],
+          "text": "LR＋B",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 8,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p36-combinations-summary.r1.c9",
+          "source_bbox": [
+            83.1,
+            441.9,
+            127.74,
+            470.94
+          ],
+          "text": "EQ",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 9,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p36-combinations-summary.r1.c10",
+          "source_bbox": [
+            83.1,
+            383.82,
+            127.74,
+            441.9
+          ],
+          "text": "曲げ\nﾓｰﾒﾝﾄ\nMd(kN)",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 10,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p36-combinations-summary.r1.c11",
+          "source_bbox": [
+            83.1,
+            325.74,
+            127.74,
+            383.82
+          ],
+          "text": "せん断力\nVd(kN)",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 11,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p36-combinations-summary.r1.c12",
+          "source_bbox": [
+            83.1,
+            267.66,
+            127.74,
+            325.74
+          ],
+          "text": "ねじり\nﾓｰﾒﾝﾄ\nMt(kN)",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 1,
+          "col": 12,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "id": "p36-combinations-summary.r2.c0",
+          "source_bbox": [
+            127.74,
+            746.82,
+            149.34,
+            776.4
+          ],
+          "text": "1",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 1
+        },
+        {
+          "id": "p36-combinations-summary.r2.c1",
+          "source_bbox": [
+            127.74,
+            717.78,
+            149.34,
+            746.82
+          ],
+          "text": "1.1",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 1
+        },
+        {
+          "id": "p36-combinations-summary.r2.c2",
+          "source_bbox": [
+            127.74,
+            688.74,
+            149.34,
+            717.78
+          ],
+          "text": "1.2",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 1
+        },
+        {
+          "id": "p36-combinations-summary.r2.c3",
+          "source_bbox": [
+            127.74,
+            645.18,
+            149.34,
+            688.74
+          ],
+          "text": "1.0S10",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 1
+        },
+        {
+          "id": "p36-combinations-summary.r2.c4",
+          "source_bbox": [
+            127.74,
+            616.14,
+            149.34,
+            645.18
+          ],
+          "text": "1.35",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 1
+        },
+        {
+          "id": "p36-combinations-summary.r2.c5",
+          "source_bbox": [
+            127.74,
+            587.1,
+            149.34,
+            616.14
+          ],
+          "text": "1.35",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 1
+        },
+        {
+          "id": "p36-combinations-summary.r2.c6",
+          "source_bbox": [
+            127.74,
+            558.06,
+            149.34,
+            587.1
+          ],
+          "text": "1.23",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 1
+        },
+        {
+          "id": "p36-combinations-summary.r2.c7",
+          "source_bbox": [
+            127.74,
+            529.02,
+            149.34,
+            558.06
+          ],
+          "text": "1.0",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 1
+        },
+        {
+          "id": "p36-combinations-summary.r2.c8",
+          "source_bbox": [
+            127.74,
+            470.94,
+            149.34,
+            529.02
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 8,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 1
+        },
+        {
+          "id": "p36-combinations-summary.r2.c9",
+          "source_bbox": [
+            127.74,
+            441.9,
+            149.34,
+            470.94
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 9,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 1
+        },
+        {
+          "id": "p36-combinations-summary.r2.c10",
+          "source_bbox": [
+            127.74,
+            383.82,
+            149.34,
+            441.9
+          ],
+          "text": "5577.15",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 10,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 1
+        },
+        {
+          "id": "p36-combinations-summary.r2.c11",
+          "source_bbox": [
+            127.74,
+            325.74,
+            149.34,
+            383.82
+          ],
+          "text": "4557.66",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 11,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 1
+        },
+        {
+          "id": "p36-combinations-summary.r2.c12",
+          "source_bbox": [
+            127.74,
+            267.66,
+            149.34,
+            325.74
+          ],
+          "text": "82.71",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 12,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 1
+        },
+        {
+          "id": "p36-combinations-summary.r2.c13",
+          "source_bbox": [
+            127.74,
+            209.58,
+            149.34,
+            267.66
+          ],
+          "text": "安全性(破壊)",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.0,
+          "source_scripts": [],
+          "row": 2,
+          "col": 13,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 1
+        },
+        {
+          "id": "p36-combinations-summary.r2.c14",
+          "source_bbox": [
+            127.74,
+            151.5,
+            149.34,
+            209.58
+          ],
+          "text": "列車最大",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 14,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 1
+        },
+        {
+          "id": "p36-combinations-summary.r2.c15",
+          "source_bbox": [
+            127.74,
+            63.96,
+            149.34,
+            151.5
+          ],
+          "text": "B支点最大",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 2,
+          "col": 15,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 1
+        },
+        {
+          "id": "p36-combinations-summary.r3.c0",
+          "source_bbox": [
+            149.34,
+            746.82,
+            170.94,
+            776.4
+          ],
+          "text": "2",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 2
+        },
+        {
+          "id": "p36-combinations-summary.r3.c1",
+          "source_bbox": [
+            149.34,
+            717.78,
+            170.94,
+            746.82
+          ],
+          "text": "1.1",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 2
+        },
+        {
+          "id": "p36-combinations-summary.r3.c2",
+          "source_bbox": [
+            149.34,
+            688.74,
+            170.94,
+            717.78
+          ],
+          "text": "1.2",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 2
+        },
+        {
+          "id": "p36-combinations-summary.r3.c3",
+          "source_bbox": [
+            149.34,
+            645.18,
+            170.94,
+            688.74
+          ],
+          "text": "1.0S10",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 2
+        },
+        {
+          "id": "p36-combinations-summary.r3.c4",
+          "source_bbox": [
+            149.34,
+            616.14,
+            170.94,
+            645.18
+          ],
+          "text": "1.35",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 2
+        },
+        {
+          "id": "p36-combinations-summary.r3.c5",
+          "source_bbox": [
+            149.34,
+            587.1,
+            170.94,
+            616.14
+          ],
+          "text": "1.35",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 2
+        },
+        {
+          "id": "p36-combinations-summary.r3.c6",
+          "source_bbox": [
+            149.34,
+            558.06,
+            170.94,
+            587.1
+          ],
+          "text": "1.23",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 2
+        },
+        {
+          "id": "p36-combinations-summary.r3.c7",
+          "source_bbox": [
+            149.34,
+            529.02,
+            170.94,
+            558.06
+          ],
+          "text": "1.0",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 2
+        },
+        {
+          "id": "p36-combinations-summary.r3.c8",
+          "source_bbox": [
+            149.34,
+            470.94,
+            170.94,
+            529.02
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 8,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 2
+        },
+        {
+          "id": "p36-combinations-summary.r3.c9",
+          "source_bbox": [
+            149.34,
+            441.9,
+            170.94,
+            470.94
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 9,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 2
+        },
+        {
+          "id": "p36-combinations-summary.r3.c10",
+          "source_bbox": [
+            149.34,
+            383.82,
+            170.94,
+            441.9
+          ],
+          "text": "5576.60",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 10,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 2
+        },
+        {
+          "id": "p36-combinations-summary.r3.c11",
+          "source_bbox": [
+            149.34,
+            325.74,
+            170.94,
+            383.82
+          ],
+          "text": "5096.14",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 11,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 2
+        },
+        {
+          "id": "p36-combinations-summary.r3.c12",
+          "source_bbox": [
+            149.34,
+            267.66,
+            170.94,
+            325.74
+          ],
+          "text": "830.59",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 12,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 2
+        },
+        {
+          "id": "p36-combinations-summary.r3.c13",
+          "source_bbox": [
+            149.34,
+            209.58,
+            170.94,
+            267.66
+          ],
+          "text": "〃",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 13,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 2
+        },
+        {
+          "id": "p36-combinations-summary.r3.c14",
+          "source_bbox": [
+            149.34,
+            151.5,
+            170.94,
+            209.58
+          ],
+          "text": "〃",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 14,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 2
+        },
+        {
+          "id": "p36-combinations-summary.r3.c15",
+          "source_bbox": [
+            149.34,
+            63.96,
+            170.94,
+            151.5
+          ],
+          "text": "C支点最大",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 3,
+          "col": 15,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 2
+        },
+        {
+          "id": "p36-combinations-summary.r4.c0",
+          "source_bbox": [
+            170.94,
+            746.82,
+            192.54000000000002,
+            776.4
+          ],
+          "text": "3",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 4,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 3
+        },
+        {
+          "id": "p36-combinations-summary.r4.c1",
+          "source_bbox": [
+            170.94,
+            717.78,
+            192.54000000000002,
+            746.82
+          ],
+          "text": "1.1",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 4,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 3
+        },
+        {
+          "id": "p36-combinations-summary.r4.c2",
+          "source_bbox": [
+            170.94,
+            688.74,
+            192.54000000000002,
+            717.78
+          ],
+          "text": "1.2",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 4,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 3
+        },
+        {
+          "id": "p36-combinations-summary.r4.c3",
+          "source_bbox": [
+            170.94,
+            645.18,
+            192.54000000000002,
+            688.74
+          ],
+          "text": "1.0S10",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 4,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 3
+        },
+        {
+          "id": "p36-combinations-summary.r4.c4",
+          "source_bbox": [
+            170.94,
+            616.14,
+            192.54000000000002,
+            645.18
+          ],
+          "text": "1.35",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 4,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 3
+        },
+        {
+          "id": "p36-combinations-summary.r4.c5",
+          "source_bbox": [
+            170.94,
+            587.1,
+            192.54000000000002,
+            616.14
+          ],
+          "text": "1.35",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 4,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 3
+        },
+        {
+          "id": "p36-combinations-summary.r4.c6",
+          "source_bbox": [
+            170.94,
+            558.06,
+            192.54000000000002,
+            587.1
+          ],
+          "text": "1.23",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 4,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 3
+        },
+        {
+          "id": "p36-combinations-summary.r4.c7",
+          "source_bbox": [
+            170.94,
+            529.02,
+            192.54000000000002,
+            558.06
+          ],
+          "text": "1.0",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 4,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 3
+        },
+        {
+          "id": "p36-combinations-summary.r4.c8",
+          "source_bbox": [
+            170.94,
+            470.94,
+            192.54000000000002,
+            529.02
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 4,
+          "col": 8,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 3
+        },
+        {
+          "id": "p36-combinations-summary.r4.c9",
+          "source_bbox": [
+            170.94,
+            441.9,
+            192.54000000000002,
+            470.94
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 4,
+          "col": 9,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 3
+        },
+        {
+          "id": "p36-combinations-summary.r4.c10",
+          "source_bbox": [
+            170.94,
+            383.82,
+            192.54000000000002,
+            441.9
+          ],
+          "text": "5654.81",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 4,
+          "col": 10,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 3
+        },
+        {
+          "id": "p36-combinations-summary.r4.c11",
+          "source_bbox": [
+            170.94,
+            325.74,
+            192.54000000000002,
+            383.82
+          ],
+          "text": "4988.98",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 4,
+          "col": 11,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 3
+        },
+        {
+          "id": "p36-combinations-summary.r4.c12",
+          "source_bbox": [
+            170.94,
+            267.66,
+            192.54000000000002,
+            325.74
+          ],
+          "text": "595.45",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 4,
+          "col": 12,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 3
+        },
+        {
+          "id": "p36-combinations-summary.r4.c13",
+          "source_bbox": [
+            170.94,
+            209.58,
+            192.54000000000002,
+            267.66
+          ],
+          "text": "〃",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 4,
+          "col": 13,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 3
+        },
+        {
+          "id": "p36-combinations-summary.r4.c14",
+          "source_bbox": [
+            170.94,
+            151.5,
+            192.54000000000002,
+            209.58
+          ],
+          "text": "〃",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 4,
+          "col": 14,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 3
+        },
+        {
+          "id": "p36-combinations-summary.r4.c15",
+          "source_bbox": [
+            170.94,
+            63.96,
+            192.54000000000002,
+            151.5
+          ],
+          "text": "B＋C支点最大",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 4,
+          "col": 15,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 3
+        },
+        {
+          "id": "p36-combinations-summary.r5.c0",
+          "source_bbox": [
+            192.54000000000002,
+            746.82,
+            214.14,
+            776.4
+          ],
+          "text": "4",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 5,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 4
+        },
+        {
+          "id": "p36-combinations-summary.r5.c1",
+          "source_bbox": [
+            192.54000000000002,
+            717.78,
+            214.14,
+            746.82
+          ],
+          "text": "1.1",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 5,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 4
+        },
+        {
+          "id": "p36-combinations-summary.r5.c2",
+          "source_bbox": [
+            192.54000000000002,
+            688.74,
+            214.14,
+            717.78
+          ],
+          "text": "1.2",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 5,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 4
+        },
+        {
+          "id": "p36-combinations-summary.r5.c3",
+          "source_bbox": [
+            192.54000000000002,
+            645.18,
+            214.14,
+            688.74
+          ],
+          "text": "1.0S10",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 5,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 4
+        },
+        {
+          "id": "p36-combinations-summary.r5.c4",
+          "source_bbox": [
+            192.54000000000002,
+            616.14,
+            214.14,
+            645.18
+          ],
+          "text": "1.23",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 5,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 4
+        },
+        {
+          "id": "p36-combinations-summary.r5.c5",
+          "source_bbox": [
+            192.54000000000002,
+            587.1,
+            214.14,
+            616.14
+          ],
+          "text": "1.23",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 5,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 4
+        },
+        {
+          "id": "p36-combinations-summary.r5.c6",
+          "source_bbox": [
+            192.54000000000002,
+            558.06,
+            214.14,
+            587.1
+          ],
+          "text": "1.35",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 5,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 4
+        },
+        {
+          "id": "p36-combinations-summary.r5.c7",
+          "source_bbox": [
+            192.54000000000002,
+            529.02,
+            214.14,
+            558.06
+          ],
+          "text": "1.0",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 5,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 4
+        },
+        {
+          "id": "p36-combinations-summary.r5.c8",
+          "source_bbox": [
+            192.54000000000002,
+            470.94,
+            214.14,
+            529.02
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 5,
+          "col": 8,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 4
+        },
+        {
+          "id": "p36-combinations-summary.r5.c9",
+          "source_bbox": [
+            192.54000000000002,
+            441.9,
+            214.14,
+            470.94
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 5,
+          "col": 9,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 4
+        },
+        {
+          "id": "p36-combinations-summary.r5.c10",
+          "source_bbox": [
+            192.54000000000002,
+            383.82,
+            214.14,
+            441.9
+          ],
+          "text": "5529.12",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 5,
+          "col": 10,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 4
+        },
+        {
+          "id": "p36-combinations-summary.r5.c11",
+          "source_bbox": [
+            192.54000000000002,
+            325.74,
+            214.14,
+            383.82
+          ],
+          "text": "4526.67",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 5,
+          "col": 11,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 4
+        },
+        {
+          "id": "p36-combinations-summary.r5.c12",
+          "source_bbox": [
+            192.54000000000002,
+            267.66,
+            214.14,
+            325.74
+          ],
+          "text": "92.78",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 5,
+          "col": 12,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 4
+        },
+        {
+          "id": "p36-combinations-summary.r5.c13",
+          "source_bbox": [
+            192.54000000000002,
+            209.58,
+            214.14,
+            267.66
+          ],
+          "text": "〃",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 5,
+          "col": 13,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 4
+        },
+        {
+          "id": "p36-combinations-summary.r5.c14",
+          "source_bbox": [
+            192.54000000000002,
+            151.5,
+            214.14,
+            209.58
+          ],
+          "text": "車横最大",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 5,
+          "col": 14,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 4
+        },
+        {
+          "id": "p36-combinations-summary.r5.c15",
+          "source_bbox": [
+            192.54000000000002,
+            63.96,
+            214.14,
+            151.5
+          ],
+          "text": "B支点最大",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 5,
+          "col": 15,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 4
+        },
+        {
+          "id": "p36-combinations-summary.r6.c0",
+          "source_bbox": [
+            214.14,
+            746.82,
+            235.74,
+            776.4
+          ],
+          "text": "5",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 6,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 5
+        },
+        {
+          "id": "p36-combinations-summary.r6.c1",
+          "source_bbox": [
+            214.14,
+            717.78,
+            235.74,
+            746.82
+          ],
+          "text": "1.1",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 6,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 5
+        },
+        {
+          "id": "p36-combinations-summary.r6.c2",
+          "source_bbox": [
+            214.14,
+            688.74,
+            235.74,
+            717.78
+          ],
+          "text": "1.2",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 6,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 5
+        },
+        {
+          "id": "p36-combinations-summary.r6.c3",
+          "source_bbox": [
+            214.14,
+            645.18,
+            235.74,
+            688.74
+          ],
+          "text": "1.0S10",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 6,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 5
+        },
+        {
+          "id": "p36-combinations-summary.r6.c4",
+          "source_bbox": [
+            214.14,
+            616.14,
+            235.74,
+            645.18
+          ],
+          "text": "1.23",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 6,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 5
+        },
+        {
+          "id": "p36-combinations-summary.r6.c5",
+          "source_bbox": [
+            214.14,
+            587.1,
+            235.74,
+            616.14
+          ],
+          "text": "1.23",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 6,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 5
+        },
+        {
+          "id": "p36-combinations-summary.r6.c6",
+          "source_bbox": [
+            214.14,
+            558.06,
+            235.74,
+            587.1
+          ],
+          "text": "1.35",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 6,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 5
+        },
+        {
+          "id": "p36-combinations-summary.r6.c7",
+          "source_bbox": [
+            214.14,
+            529.02,
+            235.74,
+            558.06
+          ],
+          "text": "1.0",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 6,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 5
+        },
+        {
+          "id": "p36-combinations-summary.r6.c8",
+          "source_bbox": [
+            214.14,
+            470.94,
+            235.74,
+            529.02
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 6,
+          "col": 8,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 5
+        },
+        {
+          "id": "p36-combinations-summary.r6.c9",
+          "source_bbox": [
+            214.14,
+            441.9,
+            235.74,
+            470.94
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 6,
+          "col": 9,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 5
+        },
+        {
+          "id": "p36-combinations-summary.r6.c10",
+          "source_bbox": [
+            214.14,
+            383.82,
+            235.74,
+            441.9
+          ],
+          "text": "5520.53",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 6,
+          "col": 10,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 5
+        },
+        {
+          "id": "p36-combinations-summary.r6.c11",
+          "source_bbox": [
+            214.14,
+            325.74,
+            235.74,
+            383.82
+          ],
+          "text": "5019.36",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 6,
+          "col": 11,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 5
+        },
+        {
+          "id": "p36-combinations-summary.r6.c12",
+          "source_bbox": [
+            214.14,
+            267.66,
+            235.74,
+            325.74
+          ],
+          "text": "785.98",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 6,
+          "col": 12,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 5
+        },
+        {
+          "id": "p36-combinations-summary.r6.c13",
+          "source_bbox": [
+            214.14,
+            209.58,
+            235.74,
+            267.66
+          ],
+          "text": "〃",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 6,
+          "col": 13,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 5
+        },
+        {
+          "id": "p36-combinations-summary.r6.c14",
+          "source_bbox": [
+            214.14,
+            151.5,
+            235.74,
+            209.58
+          ],
+          "text": "〃",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 6,
+          "col": 14,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 5
+        },
+        {
+          "id": "p36-combinations-summary.r6.c15",
+          "source_bbox": [
+            214.14,
+            63.96,
+            235.74,
+            151.5
+          ],
+          "text": "C支点最大",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 6,
+          "col": 15,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 5
+        },
+        {
+          "id": "p36-combinations-summary.r7.c0",
+          "source_bbox": [
+            235.74,
+            746.82,
+            257.34000000000003,
+            776.4
+          ],
+          "text": "6",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 7,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 6
+        },
+        {
+          "id": "p36-combinations-summary.r7.c1",
+          "source_bbox": [
+            235.74,
+            717.78,
+            257.34000000000003,
+            746.82
+          ],
+          "text": "1.1",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 7,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 6
+        },
+        {
+          "id": "p36-combinations-summary.r7.c2",
+          "source_bbox": [
+            235.74,
+            688.74,
+            257.34000000000003,
+            717.78
+          ],
+          "text": "1.2",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 7,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 6
+        },
+        {
+          "id": "p36-combinations-summary.r7.c3",
+          "source_bbox": [
+            235.74,
+            645.18,
+            257.34000000000003,
+            688.74
+          ],
+          "text": "1.0S10",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 7,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 6
+        },
+        {
+          "id": "p36-combinations-summary.r7.c4",
+          "source_bbox": [
+            235.74,
+            616.14,
+            257.34000000000003,
+            645.18
+          ],
+          "text": "1.23",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 7,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 6
+        },
+        {
+          "id": "p36-combinations-summary.r7.c5",
+          "source_bbox": [
+            235.74,
+            587.1,
+            257.34000000000003,
+            616.14
+          ],
+          "text": "1.23",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 7,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 6
+        },
+        {
+          "id": "p36-combinations-summary.r7.c6",
+          "source_bbox": [
+            235.74,
+            558.06,
+            257.34000000000003,
+            587.1
+          ],
+          "text": "1.35",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 7,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 6
+        },
+        {
+          "id": "p36-combinations-summary.r7.c7",
+          "source_bbox": [
+            235.74,
+            529.02,
+            257.34000000000003,
+            558.06
+          ],
+          "text": "1.0",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 7,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 6
+        },
+        {
+          "id": "p36-combinations-summary.r7.c8",
+          "source_bbox": [
+            235.74,
+            470.94,
+            257.34000000000003,
+            529.02
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 7,
+          "col": 8,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 6
+        },
+        {
+          "id": "p36-combinations-summary.r7.c9",
+          "source_bbox": [
+            235.74,
+            441.9,
+            257.34000000000003,
+            470.94
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 7,
+          "col": 9,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 6
+        },
+        {
+          "id": "p36-combinations-summary.r7.c10",
+          "source_bbox": [
+            235.74,
+            383.82,
+            257.34000000000003,
+            441.9
+          ],
+          "text": "5597.65",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 7,
+          "col": 10,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 6
+        },
+        {
+          "id": "p36-combinations-summary.r7.c11",
+          "source_bbox": [
+            235.74,
+            325.74,
+            257.34000000000003,
+            383.82
+          ],
+          "text": "4923.37",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 7,
+          "col": 11,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 6
+        },
+        {
+          "id": "p36-combinations-summary.r7.c12",
+          "source_bbox": [
+            235.74,
+            267.66,
+            257.34000000000003,
+            325.74
+          ],
+          "text": "567.56",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 7,
+          "col": 12,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 6
+        },
+        {
+          "id": "p36-combinations-summary.r7.c13",
+          "source_bbox": [
+            235.74,
+            209.58,
+            257.34000000000003,
+            267.66
+          ],
+          "text": "〃",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 7,
+          "col": 13,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 6
+        },
+        {
+          "id": "p36-combinations-summary.r7.c14",
+          "source_bbox": [
+            235.74,
+            151.5,
+            257.34000000000003,
+            209.58
+          ],
+          "text": "〃",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 7,
+          "col": 14,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 6
+        },
+        {
+          "id": "p36-combinations-summary.r7.c15",
+          "source_bbox": [
+            235.74,
+            63.96,
+            257.34000000000003,
+            151.5
+          ],
+          "text": "B＋C支点最大",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 7,
+          "col": 15,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 6
+        },
+        {
+          "id": "p36-combinations-summary.r8.c0",
+          "source_bbox": [
+            257.34000000000003,
+            746.82,
+            278.94,
+            776.4
+          ],
+          "text": "7",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 8,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 7
+        },
+        {
+          "id": "p36-combinations-summary.r8.c1",
+          "source_bbox": [
+            257.34000000000003,
+            717.78,
+            278.94,
+            746.82
+          ],
+          "text": "1.1",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 8,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 7
+        },
+        {
+          "id": "p36-combinations-summary.r8.c2",
+          "source_bbox": [
+            257.34000000000003,
+            688.74,
+            278.94,
+            717.78
+          ],
+          "text": "1.2",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 8,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 7
+        },
+        {
+          "id": "p36-combinations-summary.r8.c3",
+          "source_bbox": [
+            257.34000000000003,
+            645.18,
+            278.94,
+            688.74
+          ],
+          "text": "1.0S2",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 8,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 7
+        },
+        {
+          "id": "p36-combinations-summary.r8.c4",
+          "source_bbox": [
+            257.34000000000003,
+            616.14,
+            278.94,
+            645.18
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 8,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 7
+        },
+        {
+          "id": "p36-combinations-summary.r8.c5",
+          "source_bbox": [
+            257.34000000000003,
+            587.1,
+            278.94,
+            616.14
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 8,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 7
+        },
+        {
+          "id": "p36-combinations-summary.r8.c6",
+          "source_bbox": [
+            257.34000000000003,
+            558.06,
+            278.94,
+            587.1
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 8,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 7
+        },
+        {
+          "id": "p36-combinations-summary.r8.c7",
+          "source_bbox": [
+            257.34000000000003,
+            529.02,
+            278.94,
+            558.06
+          ],
+          "text": "1.2",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 8,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 7
+        },
+        {
+          "id": "p36-combinations-summary.r8.c8",
+          "source_bbox": [
+            257.34000000000003,
+            470.94,
+            278.94,
+            529.02
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 8,
+          "col": 8,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 7
+        },
+        {
+          "id": "p36-combinations-summary.r8.c9",
+          "source_bbox": [
+            257.34000000000003,
+            441.9,
+            278.94,
+            470.94
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 8,
+          "col": 9,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 7
+        },
+        {
+          "id": "p36-combinations-summary.r8.c10",
+          "source_bbox": [
+            257.34000000000003,
+            383.82,
+            278.94,
+            441.9
+          ],
+          "text": "4834.10",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 8,
+          "col": 10,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 7
+        },
+        {
+          "id": "p36-combinations-summary.r8.c11",
+          "source_bbox": [
+            257.34000000000003,
+            325.74,
+            278.94,
+            383.82
+          ],
+          "text": "4083.45",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 8,
+          "col": 11,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 7
+        },
+        {
+          "id": "p36-combinations-summary.r8.c12",
+          "source_bbox": [
+            257.34000000000003,
+            267.66,
+            278.94,
+            325.74
+          ],
+          "text": "245.71",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 8,
+          "col": 12,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 7
+        },
+        {
+          "id": "p36-combinations-summary.r8.c13",
+          "source_bbox": [
+            257.34000000000003,
+            209.58,
+            278.94,
+            267.66
+          ],
+          "text": "〃",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 8,
+          "col": 13,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 7
+        },
+        {
+          "id": "p36-combinations-summary.r8.c14",
+          "source_bbox": [
+            257.34000000000003,
+            151.5,
+            278.94,
+            209.58
+          ],
+          "text": "風最大",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 8,
+          "col": 14,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 7
+        },
+        {
+          "id": "p36-combinations-summary.r8.c15",
+          "source_bbox": [
+            257.34000000000003,
+            63.96,
+            278.94,
+            151.5
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 8,
+          "col": 15,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 7
+        },
+        {
+          "id": "p36-combinations-summary.r9.c0",
+          "source_bbox": [
+            278.94,
+            746.82,
+            300.54,
+            776.4
+          ],
+          "text": "8",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 9,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 8
+        },
+        {
+          "id": "p36-combinations-summary.r9.c1",
+          "source_bbox": [
+            278.94,
+            717.78,
+            300.54,
+            746.82
+          ],
+          "text": "1.1",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 9,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 8
+        },
+        {
+          "id": "p36-combinations-summary.r9.c2",
+          "source_bbox": [
+            278.94,
+            688.74,
+            300.54,
+            717.78
+          ],
+          "text": "1.2",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 9,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 8
+        },
+        {
+          "id": "p36-combinations-summary.r9.c3",
+          "source_bbox": [
+            278.94,
+            645.18,
+            300.54,
+            688.74
+          ],
+          "text": "1.0S30",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 9,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 8
+        },
+        {
+          "id": "p36-combinations-summary.r9.c4",
+          "source_bbox": [
+            278.94,
+            616.14,
+            300.54,
+            645.18
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 9,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 8
+        },
+        {
+          "id": "p36-combinations-summary.r9.c5",
+          "source_bbox": [
+            278.94,
+            587.1,
+            300.54,
+            616.14
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 9,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 8
+        },
+        {
+          "id": "p36-combinations-summary.r9.c6",
+          "source_bbox": [
+            278.94,
+            558.06,
+            300.54,
+            587.1
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 9,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 8
+        },
+        {
+          "id": "p36-combinations-summary.r9.c7",
+          "source_bbox": [
+            278.94,
+            529.02,
+            300.54,
+            558.06
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 9,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 8
+        },
+        {
+          "id": "p36-combinations-summary.r9.c8",
+          "source_bbox": [
+            278.94,
+            470.94,
+            300.54,
+            529.02
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 9,
+          "col": 8,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 8
+        },
+        {
+          "id": "p36-combinations-summary.r9.c9",
+          "source_bbox": [
+            278.94,
+            441.9,
+            300.54,
+            470.94
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 9,
+          "col": 9,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 8
+        },
+        {
+          "id": "p36-combinations-summary.r9.c10",
+          "source_bbox": [
+            278.94,
+            383.82,
+            300.54,
+            441.9
+          ],
+          "text": "4781.18",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 9,
+          "col": 10,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 8
+        },
+        {
+          "id": "p36-combinations-summary.r9.c11",
+          "source_bbox": [
+            278.94,
+            325.74,
+            300.54,
+            383.82
+          ],
+          "text": "4023.75",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 9,
+          "col": 11,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 8
+        },
+        {
+          "id": "p36-combinations-summary.r9.c12",
+          "source_bbox": [
+            278.94,
+            267.66,
+            300.54,
+            325.74
+          ],
+          "text": "221.33",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 9,
+          "col": 12,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 8
+        },
+        {
+          "id": "p36-combinations-summary.r9.c13",
+          "source_bbox": [
+            278.94,
+            209.58,
+            300.54,
+            267.66
+          ],
+          "text": "〃",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 9,
+          "col": 13,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 8
+        },
+        {
+          "id": "p36-combinations-summary.r9.c14",
+          "source_bbox": [
+            278.94,
+            151.5,
+            300.54,
+            209.58
+          ],
+          "text": "雪最大",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 9,
+          "col": 14,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 8
+        },
+        {
+          "id": "p36-combinations-summary.r9.c15",
+          "source_bbox": [
+            278.94,
+            63.96,
+            300.54,
+            151.5
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 9,
+          "col": 15,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 8
+        },
+        {
+          "id": "p36-combinations-summary.r10.c0",
+          "source_bbox": [
+            300.54,
+            746.82,
+            322.14,
+            776.4
+          ],
+          "text": "9",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 10,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 9
+        },
+        {
+          "id": "p36-combinations-summary.r10.c1",
+          "source_bbox": [
+            300.54,
+            717.78,
+            322.14,
+            746.82
+          ],
+          "text": "1.1",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 10,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 9
+        },
+        {
+          "id": "p36-combinations-summary.r10.c2",
+          "source_bbox": [
+            300.54,
+            688.74,
+            322.14,
+            717.78
+          ],
+          "text": "1.2",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 10,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 9
+        },
+        {
+          "id": "p36-combinations-summary.r10.c3",
+          "source_bbox": [
+            300.54,
+            645.18,
+            322.14,
+            688.74
+          ],
+          "text": "1.0S10",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 10,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 9
+        },
+        {
+          "id": "p36-combinations-summary.r10.c4",
+          "source_bbox": [
+            300.54,
+            616.14,
+            322.14,
+            645.18
+          ],
+          "text": "1.35",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 10,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 9
+        },
+        {
+          "id": "p36-combinations-summary.r10.c5",
+          "source_bbox": [
+            300.54,
+            587.1,
+            322.14,
+            616.14
+          ],
+          "text": "1.35",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 10,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 9
+        },
+        {
+          "id": "p36-combinations-summary.r10.c6",
+          "source_bbox": [
+            300.54,
+            558.06,
+            322.14,
+            587.1
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 10,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 9
+        },
+        {
+          "id": "p36-combinations-summary.r10.c7",
+          "source_bbox": [
+            300.54,
+            529.02,
+            322.14,
+            558.06
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 10,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 9
+        },
+        {
+          "id": "p36-combinations-summary.r10.c8",
+          "source_bbox": [
+            300.54,
+            470.94,
+            322.14,
+            529.02
+          ],
+          "text": "1.0LR+1.23B",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 10,
+          "col": 8,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 9
+        },
+        {
+          "id": "p36-combinations-summary.r10.c9",
+          "source_bbox": [
+            300.54,
+            441.9,
+            322.14,
+            470.94
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 10,
+          "col": 9,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 9
+        },
+        {
+          "id": "p36-combinations-summary.r10.c10",
+          "source_bbox": [
+            300.54,
+            383.82,
+            322.14,
+            441.9
+          ],
+          "text": "5338.38",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 10,
+          "col": 10,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 9
+        },
+        {
+          "id": "p36-combinations-summary.r10.c11",
+          "source_bbox": [
+            300.54,
+            325.74,
+            322.14,
+            383.82
+          ],
+          "text": "4368.63",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 10,
+          "col": 11,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 9
+        },
+        {
+          "id": "p36-combinations-summary.r10.c12",
+          "source_bbox": [
+            300.54,
+            267.66,
+            322.14,
+            325.74
+          ],
+          "text": "373.72",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 10,
+          "col": 12,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 9
+        },
+        {
+          "id": "p36-combinations-summary.r10.c13",
+          "source_bbox": [
+            300.54,
+            209.58,
+            322.14,
+            267.66
+          ],
+          "text": "〃",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 10,
+          "col": 13,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 9
+        },
+        {
+          "id": "p36-combinations-summary.r10.c14",
+          "source_bbox": [
+            300.54,
+            151.5,
+            322.14,
+            209.58
+          ],
+          "text": "列車最大",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 10,
+          "col": 14,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 9
+        },
+        {
+          "id": "p36-combinations-summary.r10.c15",
+          "source_bbox": [
+            300.54,
+            63.96,
+            322.14,
+            151.5
+          ],
+          "text": "B支点最大",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 10,
+          "col": 15,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 9
+        },
+        {
+          "id": "p36-combinations-summary.r11.c0",
+          "source_bbox": [
+            322.14,
+            746.82,
+            343.74,
+            776.4
+          ],
+          "text": "10",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 11,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 10
+        },
+        {
+          "id": "p36-combinations-summary.r11.c1",
+          "source_bbox": [
+            322.14,
+            717.78,
+            343.74,
+            746.82
+          ],
+          "text": "1.1",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 11,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 10
+        },
+        {
+          "id": "p36-combinations-summary.r11.c2",
+          "source_bbox": [
+            322.14,
+            688.74,
+            343.74,
+            717.78
+          ],
+          "text": "1.2",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 11,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 10
+        },
+        {
+          "id": "p36-combinations-summary.r11.c3",
+          "source_bbox": [
+            322.14,
+            645.18,
+            343.74,
+            688.74
+          ],
+          "text": "1.0S10",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 11,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 10
+        },
+        {
+          "id": "p36-combinations-summary.r11.c4",
+          "source_bbox": [
+            322.14,
+            616.14,
+            343.74,
+            645.18
+          ],
+          "text": "1.35",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 11,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 10
+        },
+        {
+          "id": "p36-combinations-summary.r11.c5",
+          "source_bbox": [
+            322.14,
+            587.1,
+            343.74,
+            616.14
+          ],
+          "text": "1.35",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 11,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 10
+        },
+        {
+          "id": "p36-combinations-summary.r11.c6",
+          "source_bbox": [
+            322.14,
+            558.06,
+            343.74,
+            587.1
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 11,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 10
+        },
+        {
+          "id": "p36-combinations-summary.r11.c7",
+          "source_bbox": [
+            322.14,
+            529.02,
+            343.74,
+            558.06
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 11,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 10
+        },
+        {
+          "id": "p36-combinations-summary.r11.c8",
+          "source_bbox": [
+            322.14,
+            470.94,
+            343.74,
+            529.02
+          ],
+          "text": "1.0LR+1.23B",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 11,
+          "col": 8,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 10
+        },
+        {
+          "id": "p36-combinations-summary.r11.c9",
+          "source_bbox": [
+            322.14,
+            441.9,
+            343.74,
+            470.94
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 11,
+          "col": 9,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 10
+        },
+        {
+          "id": "p36-combinations-summary.r11.c10",
+          "source_bbox": [
+            322.14,
+            383.82,
+            343.74,
+            441.9
+          ],
+          "text": "5381.18",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 11,
+          "col": 10,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 10
+        },
+        {
+          "id": "p36-combinations-summary.r11.c11",
+          "source_bbox": [
+            322.14,
+            325.74,
+            343.74,
+            383.82
+          ],
+          "text": "4896.02",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 11,
+          "col": 11,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 10
+        },
+        {
+          "id": "p36-combinations-summary.r11.c12",
+          "source_bbox": [
+            322.14,
+            267.66,
+            343.74,
+            325.74
+          ],
+          "text": "1058.29",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 11,
+          "col": 12,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 10
+        },
+        {
+          "id": "p36-combinations-summary.r11.c13",
+          "source_bbox": [
+            322.14,
+            209.58,
+            343.74,
+            267.66
+          ],
+          "text": "〃",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 11,
+          "col": 13,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 10
+        },
+        {
+          "id": "p36-combinations-summary.r11.c14",
+          "source_bbox": [
+            322.14,
+            151.5,
+            343.74,
+            209.58
+          ],
+          "text": "〃",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 11,
+          "col": 14,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 10
+        },
+        {
+          "id": "p36-combinations-summary.r11.c15",
+          "source_bbox": [
+            322.14,
+            63.96,
+            343.74,
+            151.5
+          ],
+          "text": "C支点最大",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 11,
+          "col": 15,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 10
+        },
+        {
+          "id": "p36-combinations-summary.r12.c0",
+          "source_bbox": [
+            343.74,
+            746.82,
+            365.34000000000003,
+            776.4
+          ],
+          "text": "11",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 12,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 11
+        },
+        {
+          "id": "p36-combinations-summary.r12.c1",
+          "source_bbox": [
+            343.74,
+            717.78,
+            365.34000000000003,
+            746.82
+          ],
+          "text": "1.1",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 12,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 11
+        },
+        {
+          "id": "p36-combinations-summary.r12.c2",
+          "source_bbox": [
+            343.74,
+            688.74,
+            365.34000000000003,
+            717.78
+          ],
+          "text": "1.2",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 12,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 11
+        },
+        {
+          "id": "p36-combinations-summary.r12.c3",
+          "source_bbox": [
+            343.74,
+            645.18,
+            365.34000000000003,
+            688.74
+          ],
+          "text": "1.0S10",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 12,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 11
+        },
+        {
+          "id": "p36-combinations-summary.r12.c4",
+          "source_bbox": [
+            343.74,
+            616.14,
+            365.34000000000003,
+            645.18
+          ],
+          "text": "1.35",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 12,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 11
+        },
+        {
+          "id": "p36-combinations-summary.r12.c5",
+          "source_bbox": [
+            343.74,
+            587.1,
+            365.34000000000003,
+            616.14
+          ],
+          "text": "1.35",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 12,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 11
+        },
+        {
+          "id": "p36-combinations-summary.r12.c6",
+          "source_bbox": [
+            343.74,
+            558.06,
+            365.34000000000003,
+            587.1
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 12,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 11
+        },
+        {
+          "id": "p36-combinations-summary.r12.c7",
+          "source_bbox": [
+            343.74,
+            529.02,
+            365.34000000000003,
+            558.06
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 12,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 11
+        },
+        {
+          "id": "p36-combinations-summary.r12.c8",
+          "source_bbox": [
+            343.74,
+            470.94,
+            365.34000000000003,
+            529.02
+          ],
+          "text": "1.0LR+1.23B",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 12,
+          "col": 8,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 11
+        },
+        {
+          "id": "p36-combinations-summary.r12.c9",
+          "source_bbox": [
+            343.74,
+            441.9,
+            365.34000000000003,
+            470.94
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 12,
+          "col": 9,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 11
+        },
+        {
+          "id": "p36-combinations-summary.r12.c10",
+          "source_bbox": [
+            343.74,
+            383.82,
+            365.34000000000003,
+            441.9
+          ],
+          "text": "5427.98",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 12,
+          "col": 10,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 11
+        },
+        {
+          "id": "p36-combinations-summary.r12.c11",
+          "source_bbox": [
+            343.74,
+            325.74,
+            365.34000000000003,
+            383.82
+          ],
+          "text": "4780.01",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 12,
+          "col": 11,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 11
+        },
+        {
+          "id": "p36-combinations-summary.r12.c12",
+          "source_bbox": [
+            343.74,
+            267.66,
+            365.34000000000003,
+            325.74
+          ],
+          "text": "845.59",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 12,
+          "col": 12,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 11
+        },
+        {
+          "id": "p36-combinations-summary.r12.c13",
+          "source_bbox": [
+            343.74,
+            209.58,
+            365.34000000000003,
+            267.66
+          ],
+          "text": "〃",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 12,
+          "col": 13,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 11
+        },
+        {
+          "id": "p36-combinations-summary.r12.c14",
+          "source_bbox": [
+            343.74,
+            151.5,
+            365.34000000000003,
+            209.58
+          ],
+          "text": "〃",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 12,
+          "col": 14,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 11
+        },
+        {
+          "id": "p36-combinations-summary.r12.c15",
+          "source_bbox": [
+            343.74,
+            63.96,
+            365.34000000000003,
+            151.5
+          ],
+          "text": "B＋C支点最大",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 12,
+          "col": 15,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 11
+        },
+        {
+          "id": "p36-combinations-summary.r13.c0",
+          "source_bbox": [
+            365.34000000000003,
+            746.82,
+            386.94000000000005,
+            776.4
+          ],
+          "text": "12",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 13,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 12
+        },
+        {
+          "id": "p36-combinations-summary.r13.c1",
+          "source_bbox": [
+            365.34000000000003,
+            717.78,
+            386.94000000000005,
+            746.82
+          ],
+          "text": "1.1",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 13,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 12
+        },
+        {
+          "id": "p36-combinations-summary.r13.c2",
+          "source_bbox": [
+            365.34000000000003,
+            688.74,
+            386.94000000000005,
+            717.78
+          ],
+          "text": "1.2",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 13,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 12
+        },
+        {
+          "id": "p36-combinations-summary.r13.c3",
+          "source_bbox": [
+            365.34000000000003,
+            645.18,
+            386.94000000000005,
+            688.74
+          ],
+          "text": "1.0S10",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 13,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 12
+        },
+        {
+          "id": "p36-combinations-summary.r13.c4",
+          "source_bbox": [
+            365.34000000000003,
+            616.14,
+            386.94000000000005,
+            645.18
+          ],
+          "text": "1.23",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 13,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 12
+        },
+        {
+          "id": "p36-combinations-summary.r13.c5",
+          "source_bbox": [
+            365.34000000000003,
+            587.1,
+            386.94000000000005,
+            616.14
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 13,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 12
+        },
+        {
+          "id": "p36-combinations-summary.r13.c6",
+          "source_bbox": [
+            365.34000000000003,
+            558.06,
+            386.94000000000005,
+            587.1
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 13,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 12
+        },
+        {
+          "id": "p36-combinations-summary.r13.c7",
+          "source_bbox": [
+            365.34000000000003,
+            529.02,
+            386.94000000000005,
+            558.06
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 13,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 12
+        },
+        {
+          "id": "p36-combinations-summary.r13.c8",
+          "source_bbox": [
+            365.34000000000003,
+            470.94,
+            386.94000000000005,
+            529.02
+          ],
+          "text": "1.0LR+1.35B",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 13,
+          "col": 8,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 12
+        },
+        {
+          "id": "p36-combinations-summary.r13.c9",
+          "source_bbox": [
+            365.34000000000003,
+            441.9,
+            386.94000000000005,
+            470.94
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 13,
+          "col": 9,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 12
+        },
+        {
+          "id": "p36-combinations-summary.r13.c10",
+          "source_bbox": [
+            365.34000000000003,
+            383.82,
+            386.94000000000005,
+            441.9
+          ],
+          "text": "5168.00",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 13,
+          "col": 10,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 12
+        },
+        {
+          "id": "p36-combinations-summary.r13.c11",
+          "source_bbox": [
+            365.34000000000003,
+            325.74,
+            386.94000000000005,
+            383.82
+          ],
+          "text": "4258.71",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 13,
+          "col": 11,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 12
+        },
+        {
+          "id": "p36-combinations-summary.r13.c12",
+          "source_bbox": [
+            365.34000000000003,
+            267.66,
+            386.94000000000005,
+            325.74
+          ],
+          "text": "406.74",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 13,
+          "col": 12,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 12
+        },
+        {
+          "id": "p36-combinations-summary.r13.c13",
+          "source_bbox": [
+            365.34000000000003,
+            209.58,
+            386.94000000000005,
+            267.66
+          ],
+          "text": "〃",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 13,
+          "col": 13,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 12
+        },
+        {
+          "id": "p36-combinations-summary.r13.c14",
+          "source_bbox": [
+            365.34000000000003,
+            151.5,
+            386.94000000000005,
+            209.58
+          ],
+          "text": "制動最大",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 13,
+          "col": 14,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 12
+        },
+        {
+          "id": "p36-combinations-summary.r13.c15",
+          "source_bbox": [
+            365.34000000000003,
+            63.96,
+            386.94000000000005,
+            151.5
+          ],
+          "text": "B支点最大",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 13,
+          "col": 15,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 12
+        },
+        {
+          "id": "p36-combinations-summary.r14.c0",
+          "source_bbox": [
+            386.94000000000005,
+            746.82,
+            408.54,
+            776.4
+          ],
+          "text": "13",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 14,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 13
+        },
+        {
+          "id": "p36-combinations-summary.r14.c1",
+          "source_bbox": [
+            386.94000000000005,
+            717.78,
+            408.54,
+            746.82
+          ],
+          "text": "1.1",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 14,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 13
+        },
+        {
+          "id": "p36-combinations-summary.r14.c2",
+          "source_bbox": [
+            386.94000000000005,
+            688.74,
+            408.54,
+            717.78
+          ],
+          "text": "1.2",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 14,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 13
+        },
+        {
+          "id": "p36-combinations-summary.r14.c3",
+          "source_bbox": [
+            386.94000000000005,
+            645.18,
+            408.54,
+            688.74
+          ],
+          "text": "1.0S10",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 14,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 13
+        },
+        {
+          "id": "p36-combinations-summary.r14.c4",
+          "source_bbox": [
+            386.94000000000005,
+            616.14,
+            408.54,
+            645.18
+          ],
+          "text": "1.23",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 14,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 13
+        },
+        {
+          "id": "p36-combinations-summary.r14.c5",
+          "source_bbox": [
+            386.94000000000005,
+            587.1,
+            408.54,
+            616.14
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 14,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 13
+        },
+        {
+          "id": "p36-combinations-summary.r14.c6",
+          "source_bbox": [
+            386.94000000000005,
+            558.06,
+            408.54,
+            587.1
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 14,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 13
+        },
+        {
+          "id": "p36-combinations-summary.r14.c7",
+          "source_bbox": [
+            386.94000000000005,
+            529.02,
+            408.54,
+            558.06
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 14,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 13
+        },
+        {
+          "id": "p36-combinations-summary.r14.c8",
+          "source_bbox": [
+            386.94000000000005,
+            470.94,
+            408.54,
+            529.02
+          ],
+          "text": "1.0LR+1.35B",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 14,
+          "col": 8,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 13
+        },
+        {
+          "id": "p36-combinations-summary.r14.c9",
+          "source_bbox": [
+            386.94000000000005,
+            441.9,
+            408.54,
+            470.94
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 14,
+          "col": 9,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 13
+        },
+        {
+          "id": "p36-combinations-summary.r14.c10",
+          "source_bbox": [
+            386.94000000000005,
+            383.82,
+            408.54,
+            441.9
+          ],
+          "text": "5126.00",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 14,
+          "col": 10,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 13
+        },
+        {
+          "id": "p36-combinations-summary.r14.c11",
+          "source_bbox": [
+            386.94000000000005,
+            325.74,
+            408.54,
+            383.82
+          ],
+          "text": "4530.99",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 14,
+          "col": 11,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 13
+        },
+        {
+          "id": "p36-combinations-summary.r14.c12",
+          "source_bbox": [
+            386.94000000000005,
+            267.66,
+            408.54,
+            325.74
+          ],
+          "text": "830.99",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 14,
+          "col": 12,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 13
+        },
+        {
+          "id": "p36-combinations-summary.r14.c13",
+          "source_bbox": [
+            386.94000000000005,
+            209.58,
+            408.54,
+            267.66
+          ],
+          "text": "〃",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 14,
+          "col": 13,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 13
+        },
+        {
+          "id": "p36-combinations-summary.r14.c14",
+          "source_bbox": [
+            386.94000000000005,
+            151.5,
+            408.54,
+            209.58
+          ],
+          "text": "〃",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 14,
+          "col": 14,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 13
+        },
+        {
+          "id": "p36-combinations-summary.r14.c15",
+          "source_bbox": [
+            386.94000000000005,
+            63.96,
+            408.54,
+            151.5
+          ],
+          "text": "C支点最大",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 14,
+          "col": 15,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 13
+        },
+        {
+          "id": "p36-combinations-summary.r15.c0",
+          "source_bbox": [
+            408.54,
+            746.82,
+            430.14000000000004,
+            776.4
+          ],
+          "text": "14",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 15,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 14
+        },
+        {
+          "id": "p36-combinations-summary.r15.c1",
+          "source_bbox": [
+            408.54,
+            717.78,
+            430.14000000000004,
+            746.82
+          ],
+          "text": "1.1",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 15,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 14
+        },
+        {
+          "id": "p36-combinations-summary.r15.c2",
+          "source_bbox": [
+            408.54,
+            688.74,
+            430.14000000000004,
+            717.78
+          ],
+          "text": "1.2",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 15,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 14
+        },
+        {
+          "id": "p36-combinations-summary.r15.c3",
+          "source_bbox": [
+            408.54,
+            645.18,
+            430.14000000000004,
+            688.74
+          ],
+          "text": "1.0S10",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 15,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 14
+        },
+        {
+          "id": "p36-combinations-summary.r15.c4",
+          "source_bbox": [
+            408.54,
+            616.14,
+            430.14000000000004,
+            645.18
+          ],
+          "text": "1.23",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 15,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 14
+        },
+        {
+          "id": "p36-combinations-summary.r15.c5",
+          "source_bbox": [
+            408.54,
+            587.1,
+            430.14000000000004,
+            616.14
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 15,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 14
+        },
+        {
+          "id": "p36-combinations-summary.r15.c6",
+          "source_bbox": [
+            408.54,
+            558.06,
+            430.14000000000004,
+            587.1
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 15,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 14
+        },
+        {
+          "id": "p36-combinations-summary.r15.c7",
+          "source_bbox": [
+            408.54,
+            529.02,
+            430.14000000000004,
+            558.06
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 15,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 14
+        },
+        {
+          "id": "p36-combinations-summary.r15.c8",
+          "source_bbox": [
+            408.54,
+            470.94,
+            430.14000000000004,
+            529.02
+          ],
+          "text": "1.0LR+1.35B",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 15,
+          "col": 8,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 14
+        },
+        {
+          "id": "p36-combinations-summary.r15.c9",
+          "source_bbox": [
+            408.54,
+            441.9,
+            430.14000000000004,
+            470.94
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 15,
+          "col": 9,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 14
+        },
+        {
+          "id": "p36-combinations-summary.r15.c10",
+          "source_bbox": [
+            408.54,
+            383.82,
+            430.14000000000004,
+            441.9
+          ],
+          "text": "5181.70",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 15,
+          "col": 10,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 14
+        },
+        {
+          "id": "p36-combinations-summary.r15.c11",
+          "source_bbox": [
+            408.54,
+            325.74,
+            430.14000000000004,
+            383.82
+          ],
+          "text": "4479.35",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 15,
+          "col": 11,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 14
+        },
+        {
+          "id": "p36-combinations-summary.r15.c12",
+          "source_bbox": [
+            408.54,
+            267.66,
+            430.14000000000004,
+            325.74
+          ],
+          "text": "697.79",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 15,
+          "col": 12,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 14
+        },
+        {
+          "id": "p36-combinations-summary.r15.c13",
+          "source_bbox": [
+            408.54,
+            209.58,
+            430.14000000000004,
+            267.66
+          ],
+          "text": "〃",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 15,
+          "col": 13,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 14
+        },
+        {
+          "id": "p36-combinations-summary.r15.c14",
+          "source_bbox": [
+            408.54,
+            151.5,
+            430.14000000000004,
+            209.58
+          ],
+          "text": "〃",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 15,
+          "col": 14,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 14
+        },
+        {
+          "id": "p36-combinations-summary.r15.c15",
+          "source_bbox": [
+            408.54,
+            63.96,
+            430.14000000000004,
+            151.5
+          ],
+          "text": "B＋C支点最大",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 15,
+          "col": 15,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 14
+        },
+        {
+          "id": "p36-combinations-summary.r16.c0",
+          "source_bbox": [
+            430.14000000000004,
+            746.82,
+            451.74,
+            776.4
+          ],
+          "text": "15",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 16,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 15
+        },
+        {
+          "id": "p36-combinations-summary.r16.c1",
+          "source_bbox": [
+            430.14000000000004,
+            717.78,
+            451.74,
+            746.82
+          ],
+          "text": "1.1",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 16,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 15
+        },
+        {
+          "id": "p36-combinations-summary.r16.c2",
+          "source_bbox": [
+            430.14000000000004,
+            688.74,
+            451.74,
+            717.78
+          ],
+          "text": "1.2",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 16,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 15
+        },
+        {
+          "id": "p36-combinations-summary.r16.c3",
+          "source_bbox": [
+            430.14000000000004,
+            645.18,
+            451.74,
+            688.74
+          ],
+          "text": "0.0",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 16,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 15
+        },
+        {
+          "id": "p36-combinations-summary.r16.c4",
+          "source_bbox": [
+            430.14000000000004,
+            616.14,
+            451.74,
+            645.18
+          ],
+          "text": "1.23",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 16,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 15
+        },
+        {
+          "id": "p36-combinations-summary.r16.c5",
+          "source_bbox": [
+            430.14000000000004,
+            587.1,
+            451.74,
+            616.14
+          ],
+          "text": "1.23",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 16,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 15
+        },
+        {
+          "id": "p36-combinations-summary.r16.c6",
+          "source_bbox": [
+            430.14000000000004,
+            558.06,
+            451.74,
+            587.1
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 16,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 15
+        },
+        {
+          "id": "p36-combinations-summary.r16.c7",
+          "source_bbox": [
+            430.14000000000004,
+            529.02,
+            451.74,
+            558.06
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 16,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 15
+        },
+        {
+          "id": "p36-combinations-summary.r16.c8",
+          "source_bbox": [
+            430.14000000000004,
+            470.94,
+            451.74,
+            529.02
+          ],
+          "text": "1.1LR+1.23B",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 16,
+          "col": 8,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 15
+        },
+        {
+          "id": "p36-combinations-summary.r16.c9",
+          "source_bbox": [
+            430.14000000000004,
+            441.9,
+            451.74,
+            470.94
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 16,
+          "col": 9,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 15
+        },
+        {
+          "id": "p36-combinations-summary.r16.c10",
+          "source_bbox": [
+            430.14000000000004,
+            383.82,
+            451.74,
+            441.9
+          ],
+          "text": "4656.91",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 16,
+          "col": 10,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 15
+        },
+        {
+          "id": "p36-combinations-summary.r16.c11",
+          "source_bbox": [
+            430.14000000000004,
+            325.74,
+            451.74,
+            383.82
+          ],
+          "text": "3812.20",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 16,
+          "col": 11,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 15
+        },
+        {
+          "id": "p36-combinations-summary.r16.c12",
+          "source_bbox": [
+            430.14000000000004,
+            267.66,
+            451.74,
+            325.74
+          ],
+          "text": "351.86",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 16,
+          "col": 12,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 15
+        },
+        {
+          "id": "p36-combinations-summary.r16.c13",
+          "source_bbox": [
+            430.14000000000004,
+            209.58,
+            451.74,
+            267.66
+          ],
+          "text": "〃",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 16,
+          "col": 13,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 15
+        },
+        {
+          "id": "p36-combinations-summary.r16.c14",
+          "source_bbox": [
+            430.14000000000004,
+            151.5,
+            451.74,
+            209.58
+          ],
+          "text": "ロング最大",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 16,
+          "col": 14,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 15
+        },
+        {
+          "id": "p36-combinations-summary.r16.c15",
+          "source_bbox": [
+            430.14000000000004,
+            63.96,
+            451.74,
+            151.5
+          ],
+          "text": "B支点最大",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 16,
+          "col": 15,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 15
+        },
+        {
+          "id": "p36-combinations-summary.r17.c0",
+          "source_bbox": [
+            451.74,
+            746.82,
+            473.34000000000003,
+            776.4
+          ],
+          "text": "16",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 17,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 16
+        },
+        {
+          "id": "p36-combinations-summary.r17.c1",
+          "source_bbox": [
+            451.74,
+            717.78,
+            473.34000000000003,
+            746.82
+          ],
+          "text": "1.1",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 17,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 16
+        },
+        {
+          "id": "p36-combinations-summary.r17.c2",
+          "source_bbox": [
+            451.74,
+            688.74,
+            473.34000000000003,
+            717.78
+          ],
+          "text": "1.2",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 17,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 16
+        },
+        {
+          "id": "p36-combinations-summary.r17.c3",
+          "source_bbox": [
+            451.74,
+            645.18,
+            473.34000000000003,
+            688.74
+          ],
+          "text": "0.0",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 17,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 16
+        },
+        {
+          "id": "p36-combinations-summary.r17.c4",
+          "source_bbox": [
+            451.74,
+            616.14,
+            473.34000000000003,
+            645.18
+          ],
+          "text": "1.23",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 17,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 16
+        },
+        {
+          "id": "p36-combinations-summary.r17.c5",
+          "source_bbox": [
+            451.74,
+            587.1,
+            473.34000000000003,
+            616.14
+          ],
+          "text": "1.23",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 17,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 16
+        },
+        {
+          "id": "p36-combinations-summary.r17.c6",
+          "source_bbox": [
+            451.74,
+            558.06,
+            473.34000000000003,
+            587.1
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 17,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 16
+        },
+        {
+          "id": "p36-combinations-summary.r17.c7",
+          "source_bbox": [
+            451.74,
+            529.02,
+            473.34000000000003,
+            558.06
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 17,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 16
+        },
+        {
+          "id": "p36-combinations-summary.r17.c8",
+          "source_bbox": [
+            451.74,
+            470.94,
+            473.34000000000003,
+            529.02
+          ],
+          "text": "1.1LR+1.23B",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 17,
+          "col": 8,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 16
+        },
+        {
+          "id": "p36-combinations-summary.r17.c9",
+          "source_bbox": [
+            451.74,
+            441.9,
+            473.34000000000003,
+            470.94
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 17,
+          "col": 9,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 16
+        },
+        {
+          "id": "p36-combinations-summary.r17.c10",
+          "source_bbox": [
+            451.74,
+            383.82,
+            473.34000000000003,
+            441.9
+          ],
+          "text": "4695.90",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 17,
+          "col": 10,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 16
+        },
+        {
+          "id": "p36-combinations-summary.r17.c11",
+          "source_bbox": [
+            451.74,
+            325.74,
+            473.34000000000003,
+            383.82
+          ],
+          "text": "4292.71",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 17,
+          "col": 11,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 16
+        },
+        {
+          "id": "p36-combinations-summary.r17.c12",
+          "source_bbox": [
+            451.74,
+            267.66,
+            473.34000000000003,
+            325.74
+          ],
+          "text": "975.58",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 17,
+          "col": 12,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 16
+        },
+        {
+          "id": "p36-combinations-summary.r17.c13",
+          "source_bbox": [
+            451.74,
+            209.58,
+            473.34000000000003,
+            267.66
+          ],
+          "text": "〃",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 17,
+          "col": 13,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 16
+        },
+        {
+          "id": "p36-combinations-summary.r17.c14",
+          "source_bbox": [
+            451.74,
+            151.5,
+            473.34000000000003,
+            209.58
+          ],
+          "text": "〃",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 17,
+          "col": 14,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 16
+        },
+        {
+          "id": "p36-combinations-summary.r17.c15",
+          "source_bbox": [
+            451.74,
+            63.96,
+            473.34000000000003,
+            151.5
+          ],
+          "text": "C支点最大",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 17,
+          "col": 15,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 16
+        },
+        {
+          "id": "p36-combinations-summary.r18.c0",
+          "source_bbox": [
+            473.34000000000003,
+            746.82,
+            494.94000000000005,
+            776.4
+          ],
+          "text": "17",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 18,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 17
+        },
+        {
+          "id": "p36-combinations-summary.r18.c1",
+          "source_bbox": [
+            473.34000000000003,
+            717.78,
+            494.94000000000005,
+            746.82
+          ],
+          "text": "1.1",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 18,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 17
+        },
+        {
+          "id": "p36-combinations-summary.r18.c2",
+          "source_bbox": [
+            473.34000000000003,
+            688.74,
+            494.94000000000005,
+            717.78
+          ],
+          "text": "1.2",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 18,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 17
+        },
+        {
+          "id": "p36-combinations-summary.r18.c3",
+          "source_bbox": [
+            473.34000000000003,
+            645.18,
+            494.94000000000005,
+            688.74
+          ],
+          "text": "0.0",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 18,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 17
+        },
+        {
+          "id": "p36-combinations-summary.r18.c4",
+          "source_bbox": [
+            473.34000000000003,
+            616.14,
+            494.94000000000005,
+            645.18
+          ],
+          "text": "1.23",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 18,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 17
+        },
+        {
+          "id": "p36-combinations-summary.r18.c5",
+          "source_bbox": [
+            473.34000000000003,
+            587.1,
+            494.94000000000005,
+            616.14
+          ],
+          "text": "1.23",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 18,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 17
+        },
+        {
+          "id": "p36-combinations-summary.r18.c6",
+          "source_bbox": [
+            473.34000000000003,
+            558.06,
+            494.94000000000005,
+            587.1
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 18,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 17
+        },
+        {
+          "id": "p36-combinations-summary.r18.c7",
+          "source_bbox": [
+            473.34000000000003,
+            529.02,
+            494.94000000000005,
+            558.06
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 18,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 17
+        },
+        {
+          "id": "p36-combinations-summary.r18.c8",
+          "source_bbox": [
+            473.34000000000003,
+            470.94,
+            494.94000000000005,
+            529.02
+          ],
+          "text": "1.1LR+1.23B",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 18,
+          "col": 8,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 17
+        },
+        {
+          "id": "p36-combinations-summary.r18.c9",
+          "source_bbox": [
+            473.34000000000003,
+            441.9,
+            494.94000000000005,
+            470.94
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 18,
+          "col": 9,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 17
+        },
+        {
+          "id": "p36-combinations-summary.r18.c10",
+          "source_bbox": [
+            473.34000000000003,
+            383.82,
+            494.94000000000005,
+            441.9
+          ],
+          "text": "4738.54",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 18,
+          "col": 10,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 17
+        },
+        {
+          "id": "p36-combinations-summary.r18.c11",
+          "source_bbox": [
+            473.34000000000003,
+            325.74,
+            494.94000000000005,
+            383.82
+          ],
+          "text": "4187.01",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 18,
+          "col": 11,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 17
+        },
+        {
+          "id": "p36-combinations-summary.r18.c12",
+          "source_bbox": [
+            473.34000000000003,
+            267.66,
+            494.94000000000005,
+            325.74
+          ],
+          "text": "781.79",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 18,
+          "col": 12,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 17
+        },
+        {
+          "id": "p36-combinations-summary.r18.c13",
+          "source_bbox": [
+            473.34000000000003,
+            209.58,
+            494.94000000000005,
+            267.66
+          ],
+          "text": "〃",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 18,
+          "col": 13,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 17
+        },
+        {
+          "id": "p36-combinations-summary.r18.c14",
+          "source_bbox": [
+            473.34000000000003,
+            151.5,
+            494.94000000000005,
+            209.58
+          ],
+          "text": "〃",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 18,
+          "col": 14,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 17
+        },
+        {
+          "id": "p36-combinations-summary.r18.c15",
+          "source_bbox": [
+            473.34000000000003,
+            63.96,
+            494.94000000000005,
+            151.5
+          ],
+          "text": "B＋C支点最大",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 18,
+          "col": 15,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 17
+        },
+        {
+          "id": "p36-combinations-summary.r19.c0",
+          "source_bbox": [
+            494.94000000000005,
+            746.82,
+            516.54,
+            776.4
+          ],
+          "text": "18",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 19,
+          "col": 0,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 18
+        },
+        {
+          "id": "p36-combinations-summary.r19.c1",
+          "source_bbox": [
+            494.94000000000005,
+            717.78,
+            516.54,
+            746.82
+          ],
+          "text": "1.1",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 19,
+          "col": 1,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 18
+        },
+        {
+          "id": "p36-combinations-summary.r19.c2",
+          "source_bbox": [
+            494.94000000000005,
+            688.74,
+            516.54,
+            717.78
+          ],
+          "text": "1.2",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 19,
+          "col": 2,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 18
+        },
+        {
+          "id": "p36-combinations-summary.r19.c3",
+          "source_bbox": [
+            494.94000000000005,
+            645.18,
+            516.54,
+            688.74
+          ],
+          "text": "1.0S30",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 19,
+          "col": 3,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 18
+        },
+        {
+          "id": "p36-combinations-summary.r19.c4",
+          "source_bbox": [
+            494.94000000000005,
+            616.14,
+            516.54,
+            645.18
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 19,
+          "col": 4,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 18
+        },
+        {
+          "id": "p36-combinations-summary.r19.c5",
+          "source_bbox": [
+            494.94000000000005,
+            587.1,
+            516.54,
+            616.14
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 19,
+          "col": 5,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 18
+        },
+        {
+          "id": "p36-combinations-summary.r19.c6",
+          "source_bbox": [
+            494.94000000000005,
+            558.06,
+            516.54,
+            587.1
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 19,
+          "col": 6,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 18
+        },
+        {
+          "id": "p36-combinations-summary.r19.c7",
+          "source_bbox": [
+            494.94000000000005,
+            529.02,
+            516.54,
+            558.06
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 19,
+          "col": 7,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 18
+        },
+        {
+          "id": "p36-combinations-summary.r19.c8",
+          "source_bbox": [
+            494.94000000000005,
+            470.94,
+            516.54,
+            529.02
+          ],
+          "text": "1.0LR",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 19,
+          "col": 8,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 18
+        },
+        {
+          "id": "p36-combinations-summary.r19.c9",
+          "source_bbox": [
+            494.94000000000005,
+            441.9,
+            516.54,
+            470.94
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 19,
+          "col": 9,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 18
+        },
+        {
+          "id": "p36-combinations-summary.r19.c10",
+          "source_bbox": [
+            494.94000000000005,
+            383.82,
+            516.54,
+            441.9
+          ],
+          "text": "4781.18",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 19,
+          "col": 10,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 18
+        },
+        {
+          "id": "p36-combinations-summary.r19.c11",
+          "source_bbox": [
+            494.94000000000005,
+            325.74,
+            516.54,
+            383.82
+          ],
+          "text": "4023.75",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 19,
+          "col": 11,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 18
+        },
+        {
+          "id": "p36-combinations-summary.r19.c12",
+          "source_bbox": [
+            494.94000000000005,
+            267.66,
+            516.54,
+            325.74
+          ],
+          "text": "483.16",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 19,
+          "col": 12,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 18
+        },
+        {
+          "id": "p36-combinations-summary.r19.c13",
+          "source_bbox": [
+            494.94000000000005,
+            209.58,
+            516.54,
+            267.66
+          ],
+          "text": "〃",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 19,
+          "col": 13,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 18
+        },
+        {
+          "id": "p36-combinations-summary.r19.c14",
+          "source_bbox": [
+            494.94000000000005,
+            151.5,
+            516.54,
+            209.58
+          ],
+          "text": "雪最大",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 19,
+          "col": 14,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 18
+        },
+        {
+          "id": "p36-combinations-summary.r19.c15",
+          "source_bbox": [
+            494.94000000000005,
+            63.96,
+            516.54,
+            151.5
+          ],
+          "text": "",
+          "direction": [
+            0,
+            -1
+          ],
+          "minimum_body_size": 9.7,
+          "source_scripts": [],
+          "row": 19,
+          "col": 15,
+          "rowspan": 1,
+          "colspan": 1,
+          "case": 18
+        }
+      ],
+      "header_rows": 2,
+      "body_rows": 18,
+      "columns": 16
+    }
+  ]
+}
