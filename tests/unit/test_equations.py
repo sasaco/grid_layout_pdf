@@ -478,3 +478,18 @@ def test_zero_gap_scarce_width_reports_layout_overflow_not_anchor_constructor_fa
     with pytest.raises(LayoutOverflowError) as caught:
         EquationGroup(Equation("A", "2", result="2", unit="m"), gap=gap).measure(CONTEXT, 3 * PITCH)
     assert caught.value.needed > caught.value.available >= 0
+
+
+def test_automatic_label_cap_is_a_paper_width_so_fine_grids_keep_their_labels():
+    """The cap is 96.48 pt (six 16.08 pt reference columns) on every grid, not six columns of any pitch."""
+    from gridlayoutpdf.profiles import GridSpec, PageProfile
+
+    fine = LayoutContext(FONTS, PageProfile("fine", 595, 842, GridSpec(48, 72, .12, .12, 4400, 6000)), ReportStyle())
+    short, = measure_block(EquationGroup(Equation("", "b", label="T / n")), fine, 528).parts
+    assert short.metadata["label_width_pt"] == pytest.approx(30.0)  # natural 5 × 6 pt, on whole 0.12 pt columns
+    assert [c.text for c in short.commands if isinstance(c, Text)][0] == "T / n"
+    long, = measure_block(EquationGroup(Equation("", "b", label="日" * 20)), fine, 528).parts
+    assert long.metadata["label_width_pt"] == pytest.approx(96.48)
+    anchored, = measure_block(EquationGroup(Equation("", "b", label="T / n"), anchors=EquationAnchors(840)),
+                              fine, 528).parts
+    assert anchored.metadata["label_width_pt"] == pytest.approx(30.0)  # the anchors leave room: no extra limit

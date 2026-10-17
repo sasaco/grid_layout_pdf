@@ -71,7 +71,7 @@
     "src/gridlayoutpdf/containers.py": "e3f107a30ef8c7f20ad9844e37c7a75869a89ae59cae55aa1677d3391403f81e",
     "src/gridlayoutpdf/diagnostics.py": "037908399191bc638a6af71d6427b08e48827fcb2cd6ca1599f8d7da930bbef6",
     "src/gridlayoutpdf/document.py": "63d6058fd985b2a6d8f50b4f7364acb3ac3cba0bb3a18f62051f743185fe06fe",
-    "src/gridlayoutpdf/equations.py": "47a9e2f2bcdb70b5755a80cfc05721f05917193e176b9861b869a23a822b3bf1",
+    "src/gridlayoutpdf/equations.py": "175a89e73c81e21ffbf959dea97f220071ae81d77f723992111c3bc854aba1f3",
     "src/gridlayoutpdf/errors.py": "250817ba0cfea3e1ca7cb1f83ae5d9c4f68bbb0f57831d01036805257f27f027",
     "src/gridlayoutpdf/figures.py": "c491179c637408c2f76af2ca2afe047f1ca97dfe57f1a46d34d5f8af8ccc7664",
     "src/gridlayoutpdf/fonts.py": "7d96c58849b33df94875dc075323e5799047b2f8f969d76d5774a534ef8dd8e1",

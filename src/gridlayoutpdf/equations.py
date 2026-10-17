@@ -285,6 +285,11 @@ def _automatic_anchors(items: tuple[_EquationMeasure, ...], pitch: float,
     return EquationAnchors(first, second, right, unit)
 
 
+# An automatic label reserves its measured width, at most this paper width (six 16.08 pt reference
+# columns); a longer label wraps. A fixed number of columns would vanish on a fine placement grid.
+AUTOMATIC_LABEL_MAX_PT = 96.48
+
+
 def _label_columns(group: EquationGroup, items: tuple[_EquationMeasure, ...],
                    context: LayoutContext) -> int:
     labeled = tuple(item for item in items if item.equation.label)
@@ -303,7 +308,7 @@ def _label_columns(group: EquationGroup, items: tuple[_EquationMeasure, ...],
                 natural = max(natural, metrics.bounds.width)
         except FontError as exc:
             raise FontError(f"{item.path}.label: {exc}") from exc
-    columns = min(6, max(1, _ceil_column(natural, pitch)))
+    columns = min(max(1, _floor_column(AUTOMATIC_LABEL_MAX_PT, pitch)), max(1, _ceil_column(natural, pitch)))
     if group.anchors is not None:
         room = (group.anchors.first_equal * pitch - max(item.first.left for item in items)
                 - max(item.lhs.width for item in items) - 2 * group.gap)

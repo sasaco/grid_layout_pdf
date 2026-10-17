@@ -148,7 +148,7 @@ group = EquationGroup(
 
 `Literal`・`Symbol`・`Operator`は文字、`Row`は横並び、`Fraction`は分数、`Root`は根号、`Script`は上下付き、`Delimited`は内容に応じた括弧を表す。文字列はLiteralに持ち上げる。TeXや文字列内の`*`・`^`などを解析しない。`Row`の分割候補となる記号は`Operator`として渡す。
 
-`Equation(lhs, rhs, label='', result=None, unit=None, ...)`をまとめた`EquationGroup`内で、第一等号の送り中心、第二等号の送り中心、結果の右端、単位開始を共有する。アンカーはブロックの左端から数えた整数グリッド列。省略すると左辺・ラベル・結果・単位を計測して自動決定する。半角と全角の等号も送り中心を揃える。
+`Equation(lhs, rhs, label='', result=None, unit=None, ...)`をまとめた`EquationGroup`内で、第一等号の送り中心、第二等号の送り中心、結果の右端、単位開始を共有する。アンカーはブロックの左端から数えた整数グリッド列。省略すると左辺・ラベル・結果・単位を計測して自動決定する。半角と全角の等号も送り中心を揃える。`label_columns`を省略したラベルは計測した幅を確保し、上限は紙面上の96.48pt（グリッドのピッチによらない）で、超えるラベルは折り返す。
 
 結果がある明示アンカーにはsecond_equal/result_right、単位がある場合はunit_startも必要。unitだけを指定することはできない。右辺に単位を含める場合はRowで組む。式のstyleは式→グループ→本文の順で解決する。
 
