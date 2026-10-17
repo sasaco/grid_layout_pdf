@@ -9,8 +9,8 @@
 ```powershell
 uv sync --locked --extra dev
 $env:PYTHONUTF8 = '1'
-$env:COVERAGE_FILE = '.agents/logs/coverage-validation'
-uv run --locked --extra dev python -X utf8 .agents/skills/_shared/run_tests.py --target tests --expect pass --cov gridlayoutpdf --min-coverage 90 --label validation
+$env:COVERAGE_FILE = '.claude/logs/coverage-validation'
+uv run --locked --extra dev python -X utf8 .claude/skills/_shared/run_tests.py --target tests --expect pass --cov gridlayoutpdf --min-coverage 90 --label validation
 ```
 
 `run_tests.py` は期待する成功／失敗と実測結果を比較して終了コードを返します。TDDのRedとして認めるのは実際のテスト失敗（pytest exit 1）で、importや収集のエラーではありません。並行実行時はラベルと `COVERAGE_FILE` を担当別にします。
@@ -68,9 +68,9 @@ Windowsの検証ではPopplerが配置されていないため、PyMuPDFを画�
 
 ## 受入記録
 
-2026-10-16の最終全件ゲート `lead-final-all` は **1269 passed（59.22秒）**、製品全体の行カバレッジは **98.82%（2540行中2510行、pytest表示99%）**。基準90%以上を満たし、原本12PDFのハッシュ不変、独立PDF抽出、代表5ページの画像回帰を含めて成功しました。Python 3.13.11での一回の全件実測であり、担当別のテスト件数・カバレッジを合算した値ではありません。ログは `.agents/logs/lead-final-all.log` です。
+2026-10-16の最終全件ゲート `lead-final-all` は **1269 passed（59.22秒）**、製品全体の行カバレッジは **98.82%（2540行中2510行、pytest表示99%）**。基準90%以上を満たし、原本12PDFのハッシュ不変、独立PDF抽出、代表5ページの画像回帰を含めて成功しました。Python 3.13.11での一回の全件実測であり、担当別のテスト件数・カバレッジを合算した値ではありません。ログは `.claude/logs/lead-final-all.log` です。
 
-独立レビューで検出した指摘は回帰TDDで修正し、再レビューでMedium以上0を確認しました。最終段階のDocument、入れ子Columns、公開代表例、画像回帰も確認済みです。個別の根拠は [実装記録](../.agents/docs/plans/grid-aligned-calculation-reports-execution.md) にあります。
+独立レビューで検出した指摘は回帰TDDで修正し、再レビューでMedium以上0を確認しました。最終段階のDocument、入れ子Columns、公開代表例、画像回帰も確認済みです。個別の根拠は [実装記録](../.claude/docs/plans/grid-aligned-calculation-reports-execution.md) にあります。
 
 ### 代表帳票
 
@@ -80,7 +80,7 @@ Windowsの検証ではPopplerが配置されていないため、PyMuPDFを画�
 
 ### 配布物と互換性
 
-`uv build` によりsdistを作り、そのsdistからwheelを生成しました。wheelは20個の製品Pythonファイルとパッケージ情報の計23エントリー、sdistは24エントリーです。書体・参照PDF・画像・テスト・`.agents`は配布物へ含まれません。
+`uv build` によりsdistを作り、そのsdistからwheelを生成しました。wheelは20個の製品Pythonファイルとパッケージ情報の計23エントリー、sdistは24エントリーです。書体・参照PDF・画像・テスト・`.claude`は配布物へ含まれません。
 
 Python 3.12.12／3.13.11の新規仮想環境へwheelを通常インストールし、リポジトリ外へコピーした例・画像・利用者側フォントで出力しました。`python -I`で実行し、site-packagesからの読込みとPyMuPDF未導入を確認しています。各環境の標準5ページは、本文・用紙寸法・全画素が承認した出力と一致しました。これは3.12で全開発テストを実行したという意味ではなく、両バージョンの配布物・実行時機能の検証です。
 
@@ -97,7 +97,7 @@ Python 3.12.12／3.13.11の新規仮想環境へwheelを通常インストール
 
 tracemalloc自体の負荷があるため、時間とメモリを別実行で記録しています。ピークはPythonの割当メモリで、プロセスのRSSではありません。入力行リストの作成とPDF抽出は計測範囲外です。表示内容や書体・環境に依存する実測であり、性能保証値や合否の上限ではありません。
 
-実行スクリプトは `.agents/logs/benchmark_300.py`、結果は `build/reports/performance-300{,-time}.json`、PDFは同じstemで保存しています。これらはローカル受入の生成物で、配布パッケージには入りません。
+実行スクリプトは `.claude/logs/benchmark_300.py`、結果は `build/reports/performance-300{,-time}.json`、PDFは同じstemで保存しています。これらはローカル受入の生成物で、配布パッケージには入りません。
 
 ### 片持ち梁の原本p01〜37
 
@@ -113,9 +113,9 @@ uv run --locked --extra dev python -X utf8 tests/fixtures/cantilever_p01_37/rend
 
 このコマンドは一意の`.staging/<bundle-id>/`へ通常/grid PDF、配置trace、原本対応表、各37枚のpreviewを生成し、両PDFの内容と外観を検証します。検証後も自動でcurrentにはしません。全74画像の目視記録が成果物hashと一致した場合だけ、`--activate <staging-dir> --visual-review <review.json>`で不変の`versions/<bundle-id>/`へ移し、最後に`current.json`を原子的に切り替えます。途中失敗時に旧currentが残ることを失敗注入で検査します。先行5頁などのsubsetはcurrent化できません。
 
-照合用`expected/`は組立用`pages/`と別担当が原本から作成しています。全項目・空セル・結合・罫線・文字方向・添字・字形サイズ・画像の配置と画素を実PDFから検査します。114算式、124ケース、63箇所の`#######`の総量確認は、項目ごとの照合を補う検査です。生成後画像の回帰手順は[画像回帰の説明](../tests/visual/README.md)、不足機能と改善候補は[改善項目一覧](../.agents/docs/research/cantilever-p01-37-improvements.md)を参照してください。
+照合用`expected/`は組立用`pages/`と別担当が原本から作成しています。全項目・空セル・結合・罫線・文字方向・添字・字形サイズ・画像の配置と画素を実PDFから検査します。114算式、124ケース、63箇所の`#######`の総量確認は、項目ごとの照合を補う検査です。生成後画像の回帰手順は[画像回帰の説明](../tests/visual/README.md)、不足機能と改善候補は[改善項目一覧](../.claude/docs/research/cantilever-p01-37-improvements.md)を参照してください。
 
-2026-10-17の外観修正後全件実測は原本12PDFのhash、既存golden、新しい通常37頁goldenの再生成画素一致を含みます。通常/grid各3345項目と全37頁の外観検査が合格。外観107件、旧内容127件、builder25件、固定頁/保存24件の計283件もrootが個別に再実行しました。基線21,204字の最大差は0.043419pt、等号335件は0.0000611pt、表罫線21,312検査は0.002ptです。全体coverageの実数は`.agents/logs/cantilever-appearance-final-coverage.json`に保存しています。
+2026-10-17の外観修正後全件実測は原本12PDFのhash、既存golden、新しい通常37頁goldenの再生成画素一致を含みます。通常/grid各3345項目と全37頁の外観検査が合格。外観107件、旧内容127件、builder25件、固定頁/保存24件の計283件もrootが個別に再実行しました。基線21,204字の最大差は0.043419pt、等号335件は0.0000611pt、表罫線21,312検査は0.002ptです。全体coverageの実数は`.claude/logs/cantilever-appearance-final-coverage.json`に保存しています。
 
 rootは再生成した最終候補の通常37枚/grid37枚を個別表示し、原本の書体・インデント・等号・行高、添字・括弧の接触、切断、セル結合、罫線、回転方向、頁番号不在を確認しました。記録は`build/reports/cantilever-p01-37/appearance-correction-visual-review.json`、登録画像とhashは`tests/visual/cantilever_p01_37/manifest.json`です。128入力・78成果物・全74目視画像を結び付けています。原本との全画素一致は主張しません。細罫の塗り矩形とstrokeには描画時のアンチエイリアス差が残り、書体の微小な変形も独立した許容範囲で検査します。
 
@@ -129,7 +129,7 @@ rootは再生成した最終候補の通常37枚/grid37枚を個別表示し、�
 
 2026-10-17の承認済み改善計画で、`Insets`、`CellLines`、表の行高診断、`Image`の物理寸法、`Script`の明示サイズ・基線offset、`Table(split=False)`を追加しました。既定の分割・丸め・画像fit・添字配置は保持します。`split=False`はheaderを含む全行を1partへまとめ、共有罫線を統合します。任意分割表のページ境界をまたぐ線の統合は対象外です。
 
-レビュー指摘修正後の最終全件検証は **1939 passed（192.16秒）**、行カバレッジは **98.825109%（2979行中2944行）**。ログは`.agents/logs/cantilever-improvements-revised-final.log`、実数は`cantilever-improvements-revised-final-coverage.json`です。原本対expectedの文字順序と添字の役割を直接検査するゲートを、生成前・有効化前へ追加しました。同じ文字集合の桁交換、符号移動、回転セル、添字role/index/textの改変を負例で検査します。さらに基準commitの全37頁・3345項目のIDと原本bboxだけを独立pinし、本文とbboxの連動交換・ID交換・微小bbox変更も拒否します。本文・方向・添字は固定hashへ含めず、原本から直接検査します。
+レビュー指摘修正後の最終全件検証は **1939 passed（192.16秒）**、行カバレッジは **98.825109%（2979行中2944行）**。ログは`.claude/logs/cantilever-improvements-revised-final.log`、実数は`cantilever-improvements-revised-final-coverage.json`です。原本対expectedの文字順序と添字の役割を直接検査するゲートを、生成前・有効化前へ追加しました。同じ文字集合の桁交換、符号移動、回転セル、添字role/index/textの改変を負例で検査します。さらに基準commitの全37頁・3345項目のIDと原本bboxだけを独立pinし、本文とbboxの連動交換・ID交換・微小bbox変更も拒否します。本文・方向・添字は固定hashへ含めず、原本から直接検査します。
 
 全16図を物理寸法Imageへ、旧CompactCellをCellLinesへ委譲し、829セルと16図を検査しました。非等間隔アンカーを持つ現行SourceCell/SourceScriptと表の原本配置は維持しています。新APIを組み合わせた別3頁の実証では、298セルを独立expectedと実PDFで照合し、通常/grid計6画像をrootも確認しました。密な表に必要な内側余白と局所容量は実証側で明示し、原本の37頁へ転用していません。
 
@@ -137,4 +137,4 @@ rootは再生成した最終候補の通常37枚/grid37枚を個別表示し、�
 
 修正後にsdistから再生成したwheelは22製品moduleを含み、Python3.12.12/3.13.11の新規環境へインストールして新APIを描画しました。両版の画素・物理画像寸法・文字内容が一致し、PyMuPDFを導入していないことを確認しました。結果は`build/reports/cantilever-p01-37/improvements-wheel-acceptance.json`、wheel SHA-256は`14ac344e68447ef802580824e14b02cf6a719c6d7b04ea0a92dc28125ac02510`です。
 
-独立レビューのQ01（原本領域対応・Medium）とQ02（枠逸脱診断の軸・Low）を修正して再レビューし、未解決0件となりました。全ゲート通過後に`versions/20261017T033209Z-f93e3db55c094beaa28d3b3029fc2b7d/`を有効化し、129入力・78成果物・currentの解決先・両PDF37頁を再監査済みです。旧versionは保持しています。詳細と成果物へのリンクは[改善計画の実行記録](../.agents/docs/plans/cantilever-p01-37-improvements-execution.md)を参照してください。
+独立レビューのQ01（原本領域対応・Medium）とQ02（枠逸脱診断の軸・Low）を修正して再レビューし、未解決0件となりました。全ゲート通過後に`versions/20261017T033209Z-f93e3db55c094beaa28d3b3029fc2b7d/`を有効化し、129入力・78成果物・currentの解決先・両PDF37頁を再監査済みです。旧versionは保持しています。詳細と成果物へのリンクは[改善計画の実行記録](../.claude/docs/plans/cantilever-p01-37-improvements-execution.md)を参照してください。

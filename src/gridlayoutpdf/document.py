@@ -1,18 +1,21 @@
 """Immutable report documents and bounded grid-row pagination."""
 
 from dataclasses import KW_ONLY, dataclass, replace
-from math import floor
 from pathlib import Path
 from string import Formatter
 
 from .blocks import PageBreak, Paragraph
 from .containers import At, Stack
-from .errors import FontError, LayoutError, LayoutOverflowError
+from .errors import LayoutError, LayoutOverflowError
 from .fonts import FontRegistry
-from .layout import LayoutContext, MeasuredBlock, _has_visible_commands, measure_block
+from .layout import (
+    LayoutContext, MeasuredBlock, _has_visible_commands, measure_child, part_descriptors,
+)
 from .profiles import A4_PORTRAIT_REFERENCE, PageProfile
+from .renderers.reportlab import render_pdf
 from .scene import ScenePage
 from .styles import ReportStyle, TextStyle
+from .validation import _integer, whole_units_in
 
 
 @dataclass(frozen=True, slots=True)
@@ -30,8 +33,7 @@ class PageDecoration:
         if not isinstance(self.text, str) or "\t" in self.text:
             raise ValueError("decoration text must be a string without tabs")
         for name, value, minimum in (("rows", self.rows, 1), ("gap_rows", self.gap_rows, 0)):
-            if isinstance(value, bool) or not isinstance(value, int) or value < minimum:
-                raise ValueError(f"{name} must be an integer >= {minimum}")
+            _integer(value, name, minimum)
         if self.align not in ("left", "center", "right"):
             raise ValueError("decoration align must be left, center or right")
         if self.style is not None and not isinstance(self.style, TextStyle):
@@ -84,15 +86,13 @@ class Document:
         events = tuple(_events(self.blocks, self, self.profile, "Document.blocks"))
         return _decorate_pages(_Paginator(self).run(events), self)
 
-    def render(self, path: str | Path, *, debug_grid: bool = False) -> Path:
+    def render(self, path: str | Path, *, debug_grid: bool = False, invariant: bool = False) -> Path:
         """Layout completely, then atomically replace the destination PDF."""
-        from .renderers.reportlab import render_pdf
-
         pages = self.layout()
         if not pages:
             raise LayoutError("cannot render an empty Document")
         destination = Path(path)
-        render_pdf(pages, destination, self.fonts, debug_grid=debug_grid)
+        render_pdf(pages, destination, self.fonts, debug_grid=debug_grid, invariant=invariant)
         return destination
 
 
@@ -122,7 +122,7 @@ def _events(blocks, document: Document, profile: PageProfile, prefix: str):
         elif isinstance(block, At):
             yield _at_event(block, context, profile, path)
         else:
-            yield _Event("block", profile, path, _measure_source(block, context, profile.body_rect.width, path))
+            yield _Event("block", profile, path, measure_child(block, context, profile.body_rect.width, path))
 
 
 def _at_event(block: At, context: LayoutContext, profile: PageProfile, path: str) -> _Event:
@@ -136,7 +136,7 @@ def _at_event(block: At, context: LayoutContext, profile: PageProfile, path: str
             needed=block.col_span * profile.grid.pitch_x,
             available=max(0, profile.grid.columns - block.col) * profile.grid.pitch_x,
         )
-    measured = _measure_source(block.block, context, block.col_span * profile.grid.pitch_x, path + ".block")
+    measured = measure_child(block.block, context, block.col_span * profile.grid.pitch_x, path + ".block")
     if block.block_id:
         measured = replace(measured, block_id=block.block_id)
     if measured.rows > profile.body_end_row - block.row:
@@ -144,21 +144,8 @@ def _at_event(block: At, context: LayoutContext, profile: PageProfile, path: str
     return _Event("at", profile, path, measured, block)
 
 
-def _measure_source(block, context: LayoutContext, width: float, path: str) -> MeasuredBlock:
-    try:
-        return measure_block(block, context, width)
-    except FontError as exc:
-        raise FontError(f"{path}: {exc}") from exc
-    except LayoutOverflowError as exc:
-        raise LayoutOverflowError(f"{path}: {exc}", block_id=exc.block_id or path,
-                                  needed=exc.needed, available=exc.available) from exc
-    except ValueError as exc:
-        raise ValueError(f"{path}: {exc}") from exc
-
-
 class _Paginator:
     def __init__(self, document: Document) -> None:
-        self.document = document
         self.profile = document.profile
         self.cursor = self.profile.body_start_row
         self.pages = []
@@ -267,14 +254,8 @@ class _Paginator:
         self.commands.extend(measured.translated(grid.x(col), grid.y(self.cursor)))
         placement = {"block_id": measured.block_id or event.source_path,
                      "source_path": event.source_path, "row": self.cursor, "col": col,
-                     "rows": measured.rows, "width": measured.width}
-        row = 0
-        for name, parts in (("prefix", measured.prefix), ("parts", measured.parts)):
-            descriptors = []
-            for part in parts:
-                descriptors.append({"row": row, "rows": part.rows, "metadata": part.metadata})
-                row += part.rows
-            placement[name] = descriptors
+                     "rows": measured.rows, "width": measured.width,
+                     **part_descriptors(measured)}
         self.placements.append(placement)
         self.cursor += measured.rows
 
@@ -333,7 +314,7 @@ def _decorate_page(page: ScenePage, number: int, total: int, document: Document)
         context = LayoutContext(document.fonts, profile, document.style)
         block = Paragraph(text, style=style, align=decoration.align, block_id=source,
                           min_first=1, min_last=1)
-        measured = _measure_source(block, context, body.width, source)
+        measured = measure_child(block, context, body.width, source)
         if measured.rows > decoration.rows:
             _row_overflow(source, measured.rows, decoration.rows)
         commands.extend(measured.translated(body.x, top))
@@ -348,9 +329,4 @@ def _decorate_page(page: ScenePage, number: int, total: int, document: Document)
 
 def _whole_rows(start: float, end: float, pitch: float) -> int:
     """Count complete row boundaries using the coordinates used for drawing."""
-    count = floor((end - start) / pitch)
-    if start + (count + 1) * pitch <= end:
-        count += 1
-    elif start + count * pitch > end:
-        count -= 1
-    return count
+    return whole_units_in(start, end, pitch)

@@ -105,7 +105,7 @@ print(metrics.width, metrics.ascent, metrics.descent)  # 単位は pt
 
 ```powershell
 uv sync --locked
-uv run --locked --extra dev python -X utf8 .agents/skills/_shared/run_tests.py --target tests --expect pass --label local-validation
+uv run --locked --extra dev python -X utf8 .claude/skills/_shared/run_tests.py --target tests --expect pass --label local-validation
 uv build
 ```
 

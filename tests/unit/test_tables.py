@@ -9,7 +9,7 @@ from gridlayoutpdf.fonts import FontRegistry
 from gridlayoutpdf.layout import LayoutContext, LayoutPart, MeasuredBlock, measure_block
 from gridlayoutpdf.profiles import A4_PORTRAIT_REFERENCE
 from gridlayoutpdf.scene import Line, Text
-from gridlayoutpdf.styles import ReportStyle, TextStyle
+from gridlayoutpdf.styles import Insets, ReportStyle, TextStyle
 
 
 def api():
@@ -396,3 +396,20 @@ def test_nested_table_actual_shortage_still_fails_with_cell_diagnostic(context, 
         measure_block(module.Table((3, 3, 3), [row], block_id="outer"), context, 144.72)
     assert caught.value.needed == 32.16
     assert caught.value.available == pytest.approx(32.1599, abs=1e-12)
+
+
+@pytest.mark.parametrize("padding, axis", [("vertical_only", "vertical"), ("both", "horizontal")])
+def test_clearance_diagnostic_reports_the_axis_that_is_short(context, padding, axis):
+    """A cell short only vertically must not be described with its width."""
+    module = api()
+    insets = Insets(0.0, 8.0, 0.0, 8.0) if padding == "vertical_only" else 0.0
+    cell = module.Cell("8", padding=insets, valign="top")
+    table = module.Table((4,), [[cell]], border_width=3.0, block_id="T")
+    with pytest.raises(LayoutOverflowError, match=rf"clearance from border strokes \({axis}\)") as caught:
+        table.measure(context, 200.0)
+    pitch_y = context.profile.grid.pitch_y
+    if axis == "vertical":
+        assert caught.value.needed < pitch_y
+        assert caught.value.available == pytest.approx(pitch_y - 6.0, abs=1e-12)
+    else:
+        assert caught.value.available == pytest.approx(4 * context.profile.grid.pitch_x - 6.0, abs=1e-12)

@@ -6,11 +6,11 @@ from dataclasses import KW_ONLY, dataclass, replace
 import math as _math
 from typing import Protocol, cast, runtime_checkable
 
-from .bounds import command_bounds
+from .bounds import command_bounds, transformed_text_bounds
 from .errors import LayoutError
-from .fonts import FontRegistry
+from .fonts import FontRegistry, TextMetrics
 from .geometry import Point, Rect
-from .scene import Command, Line, Polyline, Rectangle, Text, _text_matrix
+from .scene import Command, Line, Polyline, Rectangle, Text
 from .styles import TextStyle, _finite_number
 
 
@@ -66,6 +66,30 @@ class MathNode(Protocol):
     def measure(self, fonts: FontRegistry, style: TextStyle) -> MathBox: ...
 
 
+def literal_box(text: str, metrics: TextMetrics, style: TextStyle) -> MathBox:
+    """Build a text atom's box from metrics already measured for that text."""
+    bounds = metrics.bounds
+    return MathBox(
+        bounds.width, max(0, -bounds.y), max(0, bounds.bottom),
+        (Text(-bounds.x, 0, text, style),), style.size * 0.25,
+    )
+
+
+def compose_row(boxes, gap: float, axis: float) -> MathBox:
+    """Place measured boxes left to right on one axis, separated by gap."""
+    commands: list[Command] = []
+    width = ascent = descent = 0.0
+    for index, box in enumerate(boxes):
+        dy = box.axis - axis
+        if index:
+            width += gap
+        commands.extend(box.translated(width, dy))
+        width += box.width
+        ascent = max(ascent, box.ascent - dy)
+        descent = max(descent, box.descent + dy)
+    return MathBox(width, ascent, descent, tuple(commands), axis)
+
+
 @dataclass(frozen=True, slots=True)
 class Literal:
     """A single text atom; the text is never interpreted as TeX."""
@@ -79,12 +103,7 @@ class Literal:
     def measure(self, fonts: FontRegistry, style: TextStyle) -> MathBox:
         _validate_context(fonts, style)
         text = fonts.normalize_text(self.text)
-        metrics = fonts.measure(text, style)
-        bounds = metrics.bounds
-        return MathBox(
-            bounds.width, max(0, -bounds.y), max(0, bounds.bottom),
-            (Text(-bounds.x, 0, text, style),), style.size * 0.25,
-        )
+        return literal_box(text, fonts.measure(text, style), style)
 
 
 @dataclass(frozen=True, slots=True)
@@ -128,20 +147,9 @@ class Row:
 
     def measure(self, fonts: FontRegistry, style: TextStyle) -> MathBox:
         _validate_context(fonts, style)
-        axis = style.size * 0.25
         gap = style.size * 0.15 if self.gap is None else self.gap
-        commands: list[Command] = []
-        width = ascent = descent = 0.0
-        for index, item in enumerate(self.items):
-            box = item.measure(fonts, style)
-            dy = box.axis - axis
-            if index:
-                width += gap
-            commands.extend(box.translated(width, dy))
-            width += box.width
-            ascent = max(ascent, box.ascent - dy)
-            descent = max(descent, box.descent + dy)
-        return MathBox(width, ascent, descent, tuple(commands), axis)
+        return compose_row([item.measure(fonts, style) for item in self.items],
+                           gap, style.size * 0.25)
 
 
 @dataclass(frozen=True, slots=True)
@@ -187,12 +195,7 @@ def _script_ink(commands: tuple[Command, ...], fonts: FontRegistry) -> tuple[Rec
             bounds = metrics.ink_bounds if metrics.ink_bounds is not None else metrics.bounds
             if bounds.width == 0 or bounds.height == 0:
                 continue
-            a, b, c, d = _text_matrix(command.quarter_turns, command.shear_x)
-            points = [(a * x + c * y, b * x + d * y)
-                      for x in (bounds.x, bounds.right) for y in (bounds.y, bounds.bottom)]
-            left, right = min(x for x, _ in points), max(x for x, _ in points)
-            top, bottom = min(y for _, y in points), max(y for _, y in points)
-            result.append(Rect(command.x + left, command.y + top, right - left, bottom - top))
+            result.append(transformed_text_bounds(command, bounds))
         else:
             result.append(command_bounds(command, fonts))
     return tuple(result)

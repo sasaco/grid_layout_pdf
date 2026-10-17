@@ -7,8 +7,8 @@
   "acceptance": "grid_normalized_appearance_not_source_pixel_equality",
   "coordinates": {"origin": "top_left", "x": "right", "y": "down", "unit": "pt"},
   "evidence_documents": [
-    ".agents/docs/research/grid-reference-findings.md",
-    ".agents/docs/research/sample-report-findings.md"
+    ".claude/docs/research/grid-reference-findings.md",
+    ".claude/docs/research/sample-report-findings.md"
   ],
   "notes": [
     "Original hashes protect source material; they are not expected hashes for generated PDFs.",
@@ -20,7 +20,7 @@
   "references": [
     {
       "id": "grid_a4",
-      "path": ".agents/docs/research/A4.pdf",
+      "path": ".claude/docs/research/A4.pdf",
       "sha256": "eb6176ec32e60e494605da9e1e0481149eed89183d5ac306245db13ced603f60",
       "page_count": 1,
       "paper_runs": [{"first_page": 1, "last_page": 1, "size_pt": [595, 842], "rotation": 0}],
@@ -37,7 +37,7 @@
     },
     {
       "id": "grid_a3",
-      "path": ".agents/docs/research/A3.pdf",
+      "path": ".claude/docs/research/A3.pdf",
       "sha256": "3ef244c1085416746b0392fc2ef8898004bb1be49fc35a0f56335482425d9e16",
       "page_count": 1,
       "paper_runs": [{"first_page": 1, "last_page": 1, "size_pt": [1191, 842], "rotation": 0}],

@@ -1,20 +1,8 @@
 """Immutable typographic settings shared by measuring and rendering."""
 
 from dataclasses import dataclass
-from math import isfinite
-from numbers import Real
 
-
-def _finite_number(value: Real, name: str) -> float:
-    if isinstance(value, bool) or not isinstance(value, Real):
-        raise ValueError(f"{name} must be a finite number")
-    try:
-        result = float(value)
-    except (ValueError, OverflowError) as exc:
-        raise ValueError(f"{name} must be a finite number") from exc
-    if not isfinite(result):
-        raise ValueError(f"{name} must be a finite number")
-    return result
+from .validation import _finite_number, _integer
 
 
 @dataclass(frozen=True, slots=True)
@@ -86,8 +74,7 @@ class ReportStyle:
         if tracking < 0:
             raise ValueError("max_tracking_em must be nonnegative")
         for name in ("min_first_lines", "min_last_lines"):
-            value = getattr(self, name)
-            if isinstance(value, bool) or not isinstance(value, int) or value < 1:
-                raise ValueError(f"{name} must be a positive integer")
+            _integer(getattr(self, name), name, 1,
+                     message=f"{name} must be a positive integer")
         object.__setattr__(self, "baseline_offset", baseline)
         object.__setattr__(self, "max_tracking_em", tracking)

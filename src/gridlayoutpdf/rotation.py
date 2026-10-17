@@ -3,12 +3,15 @@
 from dataclasses import KW_ONLY, dataclass, replace
 
 from .bounds import command_bounds
-from .containers import _block, _child_trace, _identifier, _measure_child, _measurement_inputs
 from .errors import LayoutOverflowError
 from .geometry import GridSpec, Point
-from .layout import Block, LayoutContext, LayoutPart, MeasuredBlock, _has_visible_commands
+from .layout import (
+    Block, LayoutContext, LayoutPart, MeasuredBlock, _has_visible_commands,
+    block_trace, measure_child, measurement_inputs, require_block,
+)
 from .profiles import PageProfile
 from .scene import Line, Polyline, Rectangle, Text
+from .validation import TOLERANCE, _identifier, _integer
 
 
 def _rotate_command(command, turns, width, height):
@@ -56,21 +59,22 @@ class QuarterTurn:
 
     def __post_init__(self) -> None:
         _identifier(self.block_id)
-        _block(self.block)
-        if isinstance(self.turns, bool) or not isinstance(self.turns, int) or self.turns not in (-1, 1):
+        require_block(self.block)
+        _integer(self.turns, "turns", None, message="turns must be the integer +1 or -1")
+        if self.turns not in (-1, 1):
             raise ValueError("turns must be the integer +1 or -1")
         if not isinstance(self.local_grid, GridSpec) or self.local_grid.origin_x != 0 or self.local_grid.origin_y != 0:
             raise ValueError("local_grid must be a GridSpec with origin (0, 0)")
 
     def measure(self, context: LayoutContext, available_width: float) -> MeasuredBlock:
-        available_width = _measurement_inputs(context, available_width)
+        available_width = measurement_inputs(context, available_width)
         location = self.block_id or "QuarterTurn"
         grid = self.local_grid
         local_width, local_height = grid.columns * grid.pitch_x, grid.rows * grid.pitch_y
         local_profile = PageProfile(f"{location}.local", local_width, local_height, grid)
-        child = _measure_child(self.block, LayoutContext(context.fonts, local_profile, context.style),
-                               local_width, f"{location}.block")
-        if child.height > local_height + 1e-7:
+        child = measure_child(self.block, LayoutContext(context.fonts, local_profile, context.style),
+                              local_width, f"{location}.block")
+        if child.height > local_height + TOLERANCE:
             raise LayoutOverflowError(
                 f"{location}: child height {child.height} exceeds local_grid height {local_height}",
                 block_id=location, needed=child.height, available=local_height,
@@ -80,7 +84,7 @@ class QuarterTurn:
             raise ValueError(f"{location}: child must contain visible drawing commands")
         rotated = tuple(_rotate_command(command, self.turns, child.width, child.height) for command in commands)
         width, height = child.height, child.width
-        if width > available_width + 1e-7:
+        if width > available_width + TOLERANCE:
             raise LayoutOverflowError(
                 f"{location}: rotated width {width} exceeds available width {available_width}",
                 block_id=location, needed=width, available=available_width,
@@ -96,15 +100,15 @@ class QuarterTurn:
         # Check the true rotated rectangle, before outer-row rounding adds blank space.
         for index, command in enumerate(rotated):
             bounds = command_bounds(command, context.fonts)
-            if (bounds.x < -1e-7 or bounds.y < -1e-7
-                    or bounds.right > width + 1e-7 or bounds.bottom > height + 1e-7):
-                horizontal = bounds.x < -1e-7 or bounds.right > width + 1e-7
+            if (bounds.x < -TOLERANCE or bounds.y < -TOLERANCE
+                    or bounds.right > width + TOLERANCE or bounds.bottom > height + TOLERANCE):
+                horizontal = bounds.x < -TOLERANCE or bounds.right > width + TOLERANCE
                 raise LayoutOverflowError(
                     f"{location}.commands[{index}]: rotated bounds exceed ({width}, {height})",
                     block_id=location, needed=bounds.width if horizontal else bounds.height,
                     available=width if horizontal else height,
                 )
-        child_trace = _child_trace(child, 0, 0)
+        child_trace = block_trace(child, 0, 0)
         for group in ("prefix", "parts"):
             for part in child_trace[group]:
                 part["y_pt"] = part["row"] * child.row_pitch

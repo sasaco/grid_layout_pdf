@@ -27,6 +27,14 @@ def fonts():
     return registry
 
 
+def test_document_render_forwards_invariant_output(tmp_path, fonts):
+    document = Document(Paragraph("再現 Alpha"), fonts=fonts, footer=PageDecoration("{page}/{pages}"))
+    first, second = tmp_path / "first.pdf", tmp_path / "second.pdf"
+    assert document.render(first, invariant=True) == first
+    assert document.render(second, invariant=True) == second
+    assert first.read_bytes() == second.read_bytes()
+
+
 def test_render_returns_path_and_preserves_mixed_page_geometry_text_and_sizes(tmp_path, fonts):
     document = Document(Paragraph("一枚目 Alpha"),
                         PageSection(A3_LANDSCAPE_REFERENCE, Paragraph("二枚目 Beta")),

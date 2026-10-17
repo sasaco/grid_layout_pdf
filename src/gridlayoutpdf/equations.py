@@ -7,9 +7,12 @@ from typing import NoReturn
 from .blocks import Paragraph
 from .errors import FontError, LayoutOverflowError
 from .fonts import FontRegistry
-from .layout import LayoutContext, LayoutPart, MeasuredBlock
-from .math import BreakHint, Literal, MathBox, MathNode, Operator, Row, as_math
+from .layout import LayoutContext, LayoutPart, MeasuredBlock, measurement_inputs
+from .math import (
+    BreakHint, MathBox, MathNode, Operator, Row, as_math, compose_row, literal_box,
+)
 from .styles import TextStyle, _finite_number
+from .validation import _identifier, _integer
 
 
 @dataclass(frozen=True, slots=True)
@@ -101,7 +104,7 @@ class EquationGroup:
             object.__setattr__(self, name, value)
 
     def measure(self, context: LayoutContext, available_width: float) -> MeasuredBlock:
-        available_width = _block_width(context, available_width)
+        available_width = measurement_inputs(context, available_width)
         if not self.equations:
             return MeasuredBlock(available_width, context.profile.grid.pitch_y,
                                  prefer_keep=True, block_id=self.block_id)
@@ -228,9 +231,14 @@ def _wrap_without_rhs_space(item: _EquationMeasure, context: LayoutContext,
 
 
 def _relation(text: str, context: LayoutContext, style: TextStyle, path: str) -> _Relation:
-    box = _measure(Literal(text), context.fonts, style, path)
-    metrics = context.fonts.measure(context.fonts.normalize_text(text), style)
-    return _Relation(box, metrics.width / 2 - metrics.bounds.x,
+    """Measure a relation once, keeping its box and advance-centred edges."""
+    normalized = context.fonts.normalize_text(text)
+    try:
+        metrics = context.fonts.measure(normalized, style)
+    except FontError as exc:
+        raise FontError(f"{path}: {exc}") from exc
+    return _Relation(literal_box(normalized, metrics, style),
+                     metrics.width / 2 - metrics.bounds.x,
                      metrics.bounds.right - metrics.width / 2)
 
 
@@ -371,7 +379,7 @@ class MathBlock:
         _style_and_id(self.style, self.block_id)
 
     def measure(self, context: LayoutContext, available_width: float) -> MeasuredBlock:
-        available_width = _block_width(context, available_width)
+        available_width = measurement_inputs(context, available_width)
         style = self.style or context.style.body
         box = _measure(self.expression, context.fonts, style, self.block_id or "MathBlock")
         if box.width > available_width:
@@ -388,22 +396,11 @@ class MathBlock:
 def _style_and_id(style: TextStyle | None, block_id: str) -> None:
     if style is not None and not isinstance(style, TextStyle):
         raise ValueError("style must be a TextStyle or None")
-    if not isinstance(block_id, str):
-        raise ValueError("block_id must be a string")
+    _identifier(block_id)
 
 
 def _column(value: int, name: str) -> None:
-    if isinstance(value, bool) or not isinstance(value, int) or value < 0:
-        raise ValueError(f"{name} must be a nonnegative integer column")
-
-
-def _block_width(context: LayoutContext, available_width: float) -> float:
-    if not isinstance(context, LayoutContext):
-        raise ValueError("context must be a LayoutContext")
-    width = _finite_number(available_width, "available_width")
-    if width <= 0:
-        raise ValueError("available_width must be positive")
-    return width
+    _integer(value, name, 0, message=f"{name} must be a nonnegative integer column")
 
 
 def wrap_math(
@@ -429,8 +426,7 @@ def wrap_math(
     available_width = _finite_number(available_width, "available_width")
     if available_width <= 0:
         raise ValueError("available_width must be positive")
-    if not isinstance(block_id, str):
-        raise ValueError("block_id must be a string")
+    _identifier(block_id)
     node = as_math(node)
     path = f"{block_id}.rhs" if block_id else "rhs"
     if not isinstance(node, Row):
@@ -472,7 +468,8 @@ def wrap_math(
                     first, last = source_indices[start], source_indices[end - 1] + 1
                     _overflow(needed, available_width, f"{path}[{first}:{last}]")
                 end = min(fitting, key=lambda index: (candidates[index], -index))
-            lines.append(Row(*atoms[start:end], gap=node.gap).measure(fonts, style))
+            # The atoms are already measured; composing avoids a second pass.
+            lines.append(compose_row(boxes[start:end], gap, style.size * 0.25))
             start = end
     return tuple(lines)
 

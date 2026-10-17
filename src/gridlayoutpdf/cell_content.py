@@ -2,16 +2,14 @@
 
 from dataclasses import KW_ONLY, dataclass
 
-from .bounds import command_bounds
+from .bounds import command_bounds, transformed_text_bounds
 from .errors import FontError, LayoutOverflowError
 from .geometry import Rect
-from .layout import LayoutContext, LayoutPart, MeasuredBlock
+from .layout import LayoutContext, LayoutPart, MeasuredBlock, measurement_inputs
 from .math import MathBox, MathNode, as_math
-from .scene import Command, Text, _text_matrix
+from .scene import Command, Text
 from .styles import Insets, TextStyle, _finite_number, _resolve_insets
-
-
-_TOLERANCE = 1e-7
+from .validation import TOLERANCE, _identifier
 
 
 def _ink_bounds(command: Command, context: LayoutContext) -> Rect | None:
@@ -24,12 +22,7 @@ def _ink_bounds(command: Command, context: LayoutContext) -> Rect | None:
         return command_bounds(command, context.fonts)
     if bounds.width == 0 or bounds.height == 0:
         return None
-    a, b, c, d = _text_matrix(command.quarter_turns, command.shear_x)
-    corners = [(a * x + c * y, b * x + d * y)
-               for x in (bounds.x, bounds.right) for y in (bounds.y, bounds.bottom)]
-    left, right = min(x for x, _ in corners), max(x for x, _ in corners)
-    top, bottom = min(y for _, y in corners), max(y for _, y in corners)
-    return Rect(command.x + left, command.y + top, right - left, bottom - top)
+    return transformed_text_bounds(command, bounds)
 
 
 @dataclass(frozen=True, slots=True)
@@ -84,15 +77,10 @@ class CellLines:
             object.__setattr__(self, "inner_padding", padding.top)
         if self.align not in ("left", "center", "right"):
             raise ValueError("align must be left, center or right")
-        if not isinstance(self.block_id, str):
-            raise ValueError("block_id must be a string")
+        _identifier(self.block_id)
 
     def measure(self, context: LayoutContext, available_width: float) -> MeasuredBlock:
-        if not isinstance(context, LayoutContext):
-            raise ValueError("context must be a LayoutContext")
-        available_width = _finite_number(available_width, "available_width")
-        if available_width <= 0:
-            raise ValueError("available_width must be positive")
+        available_width = measurement_inputs(context, available_width)
         identifier = self.block_id or "CellLines"
         padding = _resolve_insets(self.inner_padding, "inner_padding")
         horizontal = padding.left + padding.right
@@ -109,7 +97,7 @@ class CellLines:
                 raise FontError(f"{identifier}: line {index + 1}: {exc}") from exc
             if not isinstance(box, MathBox):
                 raise ValueError(f"{identifier}: line {index + 1} must measure to MathBox")
-            if box.width + horizontal > available_width + _TOLERANCE:
+            if box.width + horizontal > available_width + TOLERANCE:
                 raise LayoutOverflowError(f"{identifier}: line {index + 1} exceeds available width",
                                           block_id=identifier, needed=box.width + horizontal, available=available_width)
             boxes.append(box)
@@ -133,13 +121,13 @@ class CellLines:
             ink = []
             for command in translated:
                 bounds = command_bounds(command, context.fonts)
-                if bounds.x < padding.left - _TOLERANCE or bounds.right > width - padding.right + _TOLERANCE:
+                if bounds.x < padding.left - TOLERANCE or bounds.right > width - padding.right + TOLERANCE:
                     # Include displacement, not just command width: leftward
                     # overflow also needs more space at its existing position.
                     needed = max(width - padding.right, bounds.right) - min(padding.left, bounds.x)
                     raise LayoutOverflowError(f"{identifier}: line {index + 1} exceeds reserved content bounds (horizontal)",
                                               block_id=identifier, needed=needed, available=width - horizontal)
-                if bounds.y < padding.top - _TOLERANCE or bounds.bottom > height - padding.bottom + _TOLERANCE:
+                if bounds.y < padding.top - TOLERANCE or bounds.bottom > height - padding.bottom + TOLERANCE:
                     needed = max(height - padding.bottom, bounds.bottom) - min(padding.top, bounds.y)
                     raise LayoutOverflowError(f"{identifier}: line {index + 1} exceeds reserved content bounds (vertical)",
                                               block_id=identifier, needed=needed, available=height - padding.top - padding.bottom)
@@ -147,8 +135,8 @@ class CellLines:
                 if visible is not None:
                     ink.append(visible)
             for previous, other_ink in enumerate(ink_by_line):
-                if any(a.x <= b.right + _TOLERANCE and b.x <= a.right + _TOLERANCE
-                       and a.y <= b.bottom + _TOLERANCE and b.y <= a.bottom + _TOLERANCE
+                if any(a.x <= b.right + TOLERANCE and b.x <= a.right + TOLERANCE
+                       and a.y <= b.bottom + TOLERANCE and b.y <= a.bottom + TOLERANCE
                        for a in ink for b in other_ink):
                     raise LayoutOverflowError(f"{identifier}: line {index + 1} glyph ink touches line {previous + 1}",
                                               block_id=identifier, needed=self.line_advance, available=self.line_advance)

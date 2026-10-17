@@ -9,28 +9,23 @@ from PIL import Image as PILImage, ImageOps
 
 from .bounds import command_bounds
 from .errors import FontError, LayoutOverflowError
-from .layout import LayoutContext, LayoutPart, MeasuredBlock
+from .layout import LayoutContext, LayoutPart, MeasuredBlock, measurement_inputs
 from .scene import Color, Line, Polyline, RasterImage, Rectangle, Text
 from .styles import TextStyle, _finite_number
+from .validation import TOLERANCE, _identifier, _integer
 
 
 def _frame(col_span, rows, block_id):
     for name, value in (("col_span", col_span), ("rows", rows)):
-        if isinstance(value, bool) or not isinstance(value, int) or value <= 0:
-            raise ValueError(f"{name} must be a positive integer")
-    if not isinstance(block_id, str):
-        raise ValueError("block_id must be a string")
+        _integer(value, name, 1, message=f"{name} must be a positive integer")
+    _identifier(block_id)
 
 
 def _frame_size(context, col_span, rows, available_width, block_id):
-    if not isinstance(context, LayoutContext):
-        raise ValueError("context must be a LayoutContext")
-    available_width = _finite_number(available_width, "available_width")
-    if available_width <= 0:
-        raise ValueError("available_width must be positive")
+    available_width = measurement_inputs(context, available_width)
     width = _finite_number(col_span * context.profile.grid.pitch_x, "frame width")
     height = _finite_number(rows * context.profile.grid.pitch_y, "frame height")
-    if width > available_width + 1e-7:
+    if width > available_width + TOLERANCE:
         raise LayoutOverflowError(
             f"{block_id}: frame width {width:g} exceeds available width {available_width:g}",
             block_id=block_id, needed=width, available=available_width)
@@ -147,8 +142,8 @@ class Figure:
             bounds = command_bounds(command, context.fonts)
         except FontError as exc:
             raise FontError(f"{source}.items[{index}]: {exc}") from exc
-        if (bounds.x < -1e-7 or bounds.y < -1e-7 or bounds.right > width + 1e-7
-                or bounds.bottom > height + 1e-7):
+        if (bounds.x < -TOLERANCE or bounds.y < -TOLERANCE or bounds.right > width + TOLERANCE
+                or bounds.bottom > height + TOLERANCE):
             horizontal = bounds.x < 0 or bounds.right > width
             raise LayoutOverflowError(
                 f"{source}.items[{index}]: bounds {bounds} exceed figure frame (0, 0, {width}, {height})",
@@ -190,8 +185,8 @@ class Image:
             raise ValueError("Image requires col_span/rows or width_pt/height_pt")
         if self.col_span is not None:
             _frame(self.col_span, self.rows, self.block_id)
-        elif not isinstance(self.block_id, str):
-            raise ValueError("block_id must be a string")
+        else:
+            _identifier(self.block_id)
         if self.width_pt is not None:
             for name in ("width_pt", "height_pt"):
                 value = _finite_number(getattr(self, name), name)
@@ -233,22 +228,18 @@ class Image:
             width, height = _frame_size(context, self.col_span, self.rows, available_width, source)
             rows = self.rows
         else:
-            if not isinstance(context, LayoutContext):
-                raise ValueError("context must be a LayoutContext")
-            available_width = _finite_number(available_width, "available_width")
-            if available_width <= 0:
-                raise ValueError("available_width must be positive")
+            available_width = measurement_inputs(context, available_width)
             width = self.width_pt
             rows = context.profile.grid.rows_for(self.height_pt)
             height = _finite_number(rows * context.profile.grid.pitch_y, "frame height")
-            if width > available_width + 1e-7:
+            if width > available_width + TOLERANCE:
                 raise LayoutOverflowError(
                     f"{source}: physical width {width:g} exceeds available width {available_width:g}",
                     block_id=source, needed=width, available=available_width)
         if self.width_pt is not None:
             for dimension, needed, available in (("width", self.width_pt, width),
                                                 ("height", self.height_pt, height)):
-                if needed > available + 1e-7:
+                if needed > available + TOLERANCE:
                     raise LayoutOverflowError(
                         f"{source}: physical {dimension} {needed:g} exceeds frame {available:g}",
                         block_id=source, needed=needed, available=available)

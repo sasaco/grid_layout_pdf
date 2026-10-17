@@ -410,3 +410,18 @@ def test_component_overflow_error_retains_dimensions_and_gains_an_identifier(fon
     assert caught.value.__cause__ is original
     assert caught.value.block_id == "source-block"
     assert (caught.value.needed, caught.value.available) == (150, 100)
+
+
+def test_measure_child_keeps_type_errors_unless_the_caller_owns_them(fonts):
+    """Containers let a TypeError through; a cell turns it into input guidance."""
+    context = make_context(fonts)
+
+    class Broken:
+        def measure(self, context, available_width):
+            raise TypeError("not measurable")
+
+    with pytest.raises(TypeError, match="not measurable"):
+        api().measure_child(Broken(), context, 100.0, "Stack.children[0]")
+    with pytest.raises(ValueError, match=r"cells\[0\]: not measurable; needs MathBlock"):
+        api().measure_child(Broken(), context, 100.0, "T.rows[0].cells[0]",
+                            type_errors=True, hint="; needs MathBlock")

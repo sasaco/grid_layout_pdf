@@ -124,18 +124,22 @@ def _prepare(pages, fonts: FontRegistry, debug_grid: bool):
     return tuple(prepared)
 
 
-def render_pdf(pages, path: str | Path, fonts: FontRegistry, debug_grid: bool = False) -> None:
+def render_pdf(pages, path: str | Path, fonts: FontRegistry, debug_grid: bool = False,
+               *, invariant: bool = False) -> None:
     """Validate every page, then atomically replace the destination on success.
 
     Text y values are baselines. Lines use butt caps and round joins. Their
     conservative half-width stroke envelope must fit on paper, as must the union
     of font extents, advance widths and actual glyph ink. Blank pages are kept;
-    an empty sequence is an input error.
+    an empty sequence is an input error. ``invariant=True`` omits the creation
+    time and document ID, so identical pages produce identical bytes.
     """
     if not isinstance(fonts, FontRegistry):
         raise ValueError("fonts must be a FontRegistry")
     if not isinstance(debug_grid, bool):
         raise ValueError("debug_grid must be a boolean")
+    if not isinstance(invariant, bool):
+        raise ValueError("invariant must be a boolean")
     prepared = _prepare(pages, fonts, debug_grid)
     destination = Path(path)
     destination.parent.mkdir(parents=True, exist_ok=True)
@@ -145,7 +149,8 @@ def render_pdf(pages, path: str | Path, fonts: FontRegistry, debug_grid: bool = 
     os.close(descriptor)
     temporary = Path(temporary_name)
     try:
-        canvas = Canvas(str(temporary), pageCompression=1)
+        # None keeps ReportLab's configured default when invariance is not requested.
+        canvas = Canvas(str(temporary), pageCompression=1, invariant=1 if invariant else None)
         for profile, commands in prepared:
             canvas.setPageSize((profile.width, profile.height))
             for command in commands:

@@ -13,4 +13,4 @@
 
 図内部の座標は左上原点のptで、図の局所枠に限定します。`sample_pixels.png` はこのfixture用に新規作成した16×8 RGB画像で、画像枠の縦横比保持を検査する素材です。原本の図や画像を抽出していません。
 
-参照原本のパス・ハッシュ・実測値・ページの役割は `../reference_manifest.json` にあります。生成PDFはリポジトリの `build/reports/` へ出力し、原本ディレクトリ `tests/output/` と `.agents/docs/research/` を上書きしません。原本のバイト列・画素一致は生成PDFの合格基準ではありません。
+参照原本のパス・ハッシュ・実測値・ページの役割は `../reference_manifest.json` にあります。生成PDFはリポジトリの `build/reports/` へ出力し、原本ディレクトリ `tests/output/` と `.claude/docs/research/` を上書きしません。原本のバイト列・画素一致は生成PDFの合格基準ではありません。

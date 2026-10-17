@@ -12,8 +12,8 @@ PyMuPDF matrix `(1.5, 1.5)`、`alpha=False` です。
 
 ```powershell
 $env:PYTHONUTF8 = '1'
-$env:COVERAGE_FILE = '.agents/logs/coverage-visual-golden'
-uv run --locked --extra dev python -X utf8 .agents/skills/_shared/run_tests.py --target tests/visual/test_representative_golden.py --expect pass --label visual-golden-check
+$env:COVERAGE_FILE = '.claude/logs/coverage-visual-golden'
+uv run --locked --extra dev python -X utf8 .claude/skills/_shared/run_tests.py --target tests/visual/test_representative_golden.py --expect pass --label visual-golden-check
 ```
 
 画素・寸法・モードの差分時は、pytest の一時ディレクトリ内の
@@ -60,8 +60,8 @@ uv run --locked --extra dev python -X utf8 .agents/skills/_shared/run_tests.py -
 
 ```powershell
 $env:PYTHONUTF8 = '1'
-$env:COVERAGE_FILE = '.agents/logs/coverage-cantilever-golden'
-uv run --locked --extra dev python -X utf8 .agents/skills/_shared/run_tests.py --target tests/visual/test_cantilever_p01_37_golden.py --expect pass --label cantilever-golden
+$env:COVERAGE_FILE = '.claude/logs/coverage-cantilever-golden'
+uv run --locked --extra dev python -X utf8 .claude/skills/_shared/run_tests.py --target tests/visual/test_cantilever_p01_37_golden.py --expect pass --label cantilever-golden
 ```
 
 意図した変更時も、上記代表帳票と同じく、原因の確認・新候補への出力・全74画像の目視・hashを指定した承認・通常37枚の登録の順を守ります。原本の表示値、固定37頁、原寸図、頁番号省略の条件は画像回帰と別に独立検査します。

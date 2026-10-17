@@ -1,22 +1,14 @@
 """JSON diagnostics for already positioned pages, without layout or reflow."""
 
-from collections.abc import Iterable, Mapping
+from collections.abc import Iterable
 from hashlib import sha256
 
 from .bounds import command_bounds
 from .errors import FontError
 from .fonts import FontRegistry
 from .geometry import Rect
+from .metadata import json_value
 from .scene import Line, Polyline, RasterImage, Rectangle, ScenePage, Text, _text_rotation
-
-
-def _json_value(value):
-    """Copy scene metadata into JSON containers without changing local values."""
-    if isinstance(value, Mapping):
-        return {key: _json_value(item) for key, item in value.items()}
-    if isinstance(value, (list, tuple)):
-        return [_json_value(item) for item in value]
-    return value
 
 
 def _rect(rect: Rect) -> dict:
@@ -87,7 +79,7 @@ def layout_trace(pages: Iterable[ScenePage], fonts: FontRegistry) -> dict:
                 "body_start_row": profile.body_start_row, "body_end_row": profile.body_end_row,
                 "body_rect": _rect(profile.body_rect),
             },
-            "metadata": _json_value(page.metadata),
+            "metadata": json_value(page.metadata),
             "commands": [_command(command, fonts, command_index, f"page[{index}].commands[{command_index}]")
                          for command_index, command in enumerate(page.commands)],
         })

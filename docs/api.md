@@ -31,6 +31,48 @@ report.render("report.pdf")
 
 同じ書体・設定・入力で再計測できるよう、標準部品と計測結果は不変にしている。部品を組み替えるときは新しいインスタンスを作る。
 
+## 帳票全体の設定
+
+`Document(*blocks, fonts, profile=A4_PORTRAIT_REFERENCE, style=ReportStyle(), header=None, footer=None)`が帳票全体の既定を決める。部品側でstyleを省略したときは、この設定を使う。
+
+| 引数 | 既定 | 内容 |
+|---|---|---|
+| `*blocks` | なし | 本文へ流す部品。Stackは展開し、PageBreak・PageSection・Atは配置指示として扱う |
+| `fonts` | 必須 | 登録済みのFontRegistry。書体はTextStyle.fontの名前で選ぶ |
+| `profile` | `A4_PORTRAIT_REFERENCE` | 用紙寸法・グリッド・本文行範囲 |
+| `style` | `ReportStyle()` | 本文と見出しのTextStyle、基線offset、追加字間上限、段落の最小分割行数 |
+| `header` | `None` | 本文上の予約枠に置くPageDecoration |
+| `footer` | `None` | 本文下の予約枠に置くPageDecoration |
+
+書体と用紙をまとめて変更する例：
+
+```python
+from gridlayoutpdf import (
+    A3_LANDSCAPE_REFERENCE, Document, FontRegistry, PageDecoration, ReportStyle, TextStyle,
+)
+
+fonts = FontRegistry()
+fonts.register("mincho", "C:/Windows/Fonts/msmincho.ttc")
+fonts.register("gothic", "C:/Windows/Fonts/msgothic.ttc")
+
+report = Document(
+    *blocks,
+    fonts=fonts,
+    profile=A3_LANDSCAPE_REFERENCE,
+    style=ReportStyle(
+        body=TextStyle("mincho", 10.5),
+        heading=TextStyle("gothic", 12),
+        baseline_offset=11.0,
+        min_first_lines=2,
+        min_last_lines=2,
+    ),
+    header=PageDecoration("橋脚設計計算書", align="right"),
+    footer=PageDecoration("{page} / {pages}", align="center", style=TextStyle("gothic", 9)),
+)
+```
+
+用紙だけを変える場合は`profile=derived_profile("B4", 729, 1032)`のように派生profileを渡す。一部の範囲だけ用紙を変えるときは`PageSection`を使う。`style`を渡したうえで個別の部品に`style=TextStyle(...)`を与えると、その部品だけ上書きできる。`Document`とその設定は不変なので、別の体裁で出すときは新しい`Document`を作る。
+
 ## グリッド・用紙・書体
 
 1マスは配置単位で、文字数とは独立している。本文は既定10pt、基線は行の上端から11pt。大きな字形・分数は必要な整数行を占有し、文字を縮小しない。通常の文章では各文字の自然な送りを使う。
@@ -234,7 +276,7 @@ Imageは静止PNG/JPEGを対象に、指定枠へ縦横比を保って内接さ�
 
 `LayoutOverflowError`にはblock_id、needed、availableがある。幅はpt、文書の高さ予約は行数としてメッセージに単位を示す。識別しやすい`block_id`を部品へ付けると、長い帳票の問題箇所を追いやすい。
 
-`render(..., debug_grid=True)`でグリッドを表示できる。`layout_trace(pages, fonts)`は用紙・配置・ローカルアンカー・描画境界をJSON保存可能なdictへ変換する。画像bytesは含めない。ローカルの基線やアンカーは、配置元のx/yと合わせて解釈する。
+`render(..., debug_grid=True)`でグリッドを表示できる。`render(..., invariant=True)`（`render_pdf`も同じ）は作成日時と文書IDを書き込まず、同じページから同じbytesのPDFを作る。既定値`False`ではReportLabの日時付きメタデータを保つ。`layout_trace(pages, fonts)`は用紙・配置・ローカルアンカー・描画境界をJSON保存可能なdictへ変換する。画像bytesは含めない。ローカルの基線やアンカーは、配置元のx/yと合わせて解釈する。
 
 独自部品は`measure(context, available_width) -> MeasuredBlock`を実装する。計測中にPDF Canvasを触らず、左上原点の相対描画命令をLayoutPartへ入れる。Textのyだけは基線。外側の高さは整数行にし、分割可能な境界ごとにpartを分ける。`measure_block`で型・幅・ピッチ・描画境界を共通検証できる。詳しい責務は[アーキテクチャ](architecture.md)を参照。
 

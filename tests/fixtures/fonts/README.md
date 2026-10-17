@@ -24,7 +24,7 @@
 
 ```powershell
 uv sync --locked --extra dev
-uv run --locked --extra dev python -X utf8 .agents/skills/_shared/run_tests.py --target tests/unit/test_font_assets.py --expect pass --label font-assets
+uv run --locked --extra dev python -X utf8 .claude/skills/_shared/run_tests.py --target tests/unit/test_font_assets.py --expect pass --label font-assets
 ```
 
 未配置・改変・必要字形の欠落はテスト失敗です。書体名の一致だけでは同一ファイルと

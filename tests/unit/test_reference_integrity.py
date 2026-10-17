@@ -17,8 +17,8 @@ ROOT = Path(__file__).resolve().parents[2]
 FIXTURES = ROOT / "tests/fixtures"
 CASES = FIXTURES / "layout_cases"
 EXPECTED_ORIGINALS = {
-    ".agents/docs/research/A4.pdf": "eb6176ec32e60e494605da9e1e0481149eed89183d5ac306245db13ced603f60",
-    ".agents/docs/research/A3.pdf": "3ef244c1085416746b0392fc2ef8898004bb1be49fc35a0f56335482425d9e16",
+    ".claude/docs/research/A4.pdf": "eb6176ec32e60e494605da9e1e0481149eed89183d5ac306245db13ced603f60",
+    ".claude/docs/research/A3.pdf": "3ef244c1085416746b0392fc2ef8898004bb1be49fc35a0f56335482425d9e16",
     "tests/output/04_地盤のモデル化.pdf": "f89ea249e4f9a9998821de7a7309af9bd41019841fa2feef6d0496af43183e3c",
     "tests/output/06_照査の前提.pdf": "ca7436bb4364db6437acb4aa79b6c1e3aed87c23601d54cb00a58b1e4767ec55",
     "tests/output/07_荷重計算.pdf": "23a6358c5a5b8966789668dc80a140095a0d2fe22e6d29943691f900213c3f1b",
@@ -91,7 +91,7 @@ def test_manifest_enumerates_all_originals_and_separates_generated_output():
     assert manifest["generated_output_directory"] == "build/reports"
     generated = (ROOT / manifest["generated_output_directory"]).resolve()
     assert generated.is_relative_to(ROOT)
-    for source_dir in (ROOT / "tests/output", ROOT / ".agents/docs/research"):
+    for source_dir in (ROOT / "tests/output", ROOT / ".claude/docs/research"):
         assert not generated.is_relative_to(source_dir.resolve())
         assert not source_dir.resolve().is_relative_to(generated)
     assert manifest["layout_cases_directory"] == "tests/fixtures/layout_cases"

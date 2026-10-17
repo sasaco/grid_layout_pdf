@@ -232,6 +232,30 @@ def test_grid_stroke_extent_is_also_validated(fonts, tmp_path):
     assert not list(tmp_path.iterdir())
 
 
+def test_invariant_output_is_byte_identical_across_renders(fonts, tmp_path, monkeypatch):
+    import time
+
+    pages = [ScenePage(A4, (Text(60, 80, "再現 Same", TextStyle("body", 10)),))]
+    first, second, stamped = tmp_path / "first.pdf", tmp_path / "second.pdf", tmp_path / "stamped.pdf"
+    backend().render_pdf(pages, first, fonts, invariant=True)
+    clock = time.time()
+    monkeypatch.setattr(time, "time", lambda: clock + 86400 * 400)
+    backend().render_pdf(pages, second, fonts, invariant=True)
+    backend().render_pdf(pages, stamped, fonts)
+    assert first.read_bytes() == second.read_bytes()
+    # The default keeps ReportLab's timestamped metadata.
+    assert stamped.read_bytes() != first.read_bytes()
+    with pymupdf.open(first) as pdf, pymupdf.open(stamped) as dated:
+        assert pdf[0].get_text() == dated[0].get_text()
+
+
+@pytest.mark.parametrize("value", [1, "yes", None])
+def test_invariant_flag_must_be_boolean(fonts, tmp_path, value):
+    with pytest.raises(ValueError, match="invariant"):
+        backend().render_pdf([ScenePage(A4)], tmp_path / "bad.pdf", fonts, invariant=value)
+    assert not list(tmp_path.iterdir())
+
+
 @pytest.mark.parametrize("pages", [[], iter(()), [object()], None])
 def test_empty_or_invalid_page_sequence_fails_without_creating_output(fonts, tmp_path, pages):
     with pytest.raises(ValueError, match="pages"):

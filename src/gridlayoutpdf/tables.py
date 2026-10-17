@@ -1,22 +1,23 @@
 """Grid-sized tables with atomic merged cells and repeatable headers."""
 
 from dataclasses import KW_ONLY, dataclass, field
+from itertools import accumulate
 
 from .blocks import Paragraph
 from .bounds import command_bounds
-from .errors import FontError, LayoutOverflowError
-from .layout import Block, LayoutContext, LayoutPart, MeasuredBlock, measure_block
+from .errors import LayoutOverflowError
+from .layout import (
+    Block, LayoutContext, LayoutPart, MeasuredBlock, block_trace, measure_child,
+    measurement_inputs,
+)
 from .scene import Line
 from .styles import Insets, TextStyle, _finite_number, _resolve_insets
+from .validation import TOLERANCE, _identifier, _integer
 
 
-# Match the absolute roundoff allowance at the shared measurement boundary.
-_ROUNDING_TOLERANCE = 1e-7
-
-
-def _integer(value, name, minimum=0):
-    if isinstance(value, bool) or not isinstance(value, int) or value < minimum:
-        raise ValueError(f"{name} must be an integer >= {minimum}")
+# Content that cannot be measured names the contract it is missing.
+_CONTENT_HINT = ("; content requires Block.measure(context, width); "
+                 "mathematical nodes require MathBlock")
 
 
 def _rule_widths(values, count, name):
@@ -68,6 +69,54 @@ class _PlacedCell:
     row: int
     col: int
     cell: Cell
+
+
+@dataclass(frozen=True, slots=True)
+class _MeasuredCell:
+    """One placed cell with its measured content and height requirement."""
+
+    placed: _PlacedCell
+    path: str
+    padding: Insets
+    align: str
+    content: MeasuredBlock
+    requirement: dict
+
+
+@dataclass(frozen=True, slots=True)
+class _Geometry:
+    """Boundaries as whole grid units, so every pt value rounds exactly once."""
+
+    pitch_x: float
+    pitch_y: float
+    column_starts: tuple[int, ...]
+    row_starts: tuple[int, ...]
+    by_row: tuple[tuple[_MeasuredCell, ...], ...]
+    row_heights: tuple[int, ...]
+    allocations: tuple[dict, ...]
+
+    def x(self, column: int) -> float:
+        return self.column_starts[column] * self.pitch_x
+
+    def y(self, row: int, start: int) -> float:
+        """Return a source row boundary relative to the part starting at start."""
+        return (self.row_starts[row] - self.row_starts[start]) * self.pitch_y
+
+
+@dataclass(frozen=True, slots=True)
+class _CellBox:
+    """A cell's part-local frame with the stroke widths bounding each edge."""
+
+    x0: float
+    x1: float
+    y0: float
+    y1: float
+    width: float
+    strokes: tuple[float, float, float, float]
+
+    @property
+    def height(self) -> float:
+        return self.y1 - self.y0
 
 
 @dataclass(frozen=True, slots=True)
@@ -167,8 +216,7 @@ class Table:
         object.__setattr__(self, "border_color", color)
         object.__setattr__(self, "horizontal_rules", _rule_widths(self.horizontal_rules, len(rows) + 1, "horizontal_rules"))
         object.__setattr__(self, "vertical_rules", _rule_widths(self.vertical_rules, len(columns) + 1, "vertical_rules"))
-        if not isinstance(self.block_id, str):
-            raise ValueError("block_id must be a string")
+        _identifier(self.block_id)
         object.__setattr__(self, "_cells", self._place_cells())
 
     def _place_cells(self):
@@ -193,84 +241,37 @@ class Table:
         return tuple(placed)
 
     def measure(self, context: LayoutContext, available_width: float) -> MeasuredBlock:
-        if not isinstance(context, LayoutContext):
-            raise ValueError("context must be a LayoutContext")
-        available_width = _finite_number(available_width, "available_width")
-        if available_width <= 0:
-            raise ValueError("available_width must be positive")
-        width = sum(self.columns) * context.profile.grid.pitch_x
-        if width > available_width + _ROUNDING_TOLERANCE:
+        available_width = measurement_inputs(context, available_width)
+        pitch_x, pitch = context.profile.grid.pitch_x, context.profile.grid.pitch_y
+        width = sum(self.columns) * pitch_x
+        if width > available_width + TOLERANCE:
             raise LayoutOverflowError(
                 f"{self.block_id or 'Table'}: table width {width} exceeds {available_width}",
                 block_id=self.block_id or "Table", needed=width, available=available_width,
             )
         if not self.rows:
-            return MeasuredBlock(width, context.profile.grid.pitch_y, block_id=self.block_id)
-        pitch = context.profile.grid.pitch_y
-        column_edges = [sum(self.columns[:index]) * context.profile.grid.pitch_x
-                        for index in range(len(self.columns) + 1)]
-        measured = []
-        row_heights = [1] * len(self.rows) if self.row_heights is None else list(self.row_heights)
-        allocations = [{"row": index, "specified_rows": None if self.row_heights is None else height,
-                        "controlling_cell_ids": [], "rowspan_added_rows": 0}
-                       for index, height in enumerate(row_heights)]
-        requirements = {}
-        for placed in self._cells:
-            cell = placed.cell
-            content, align = self._measure_cell(context, placed)
-            measured.append((placed, content, align))
-            padding = _resolve_insets(cell.padding, "padding")
-            required_height = content.height + (padding.top + padding.bottom)
-            required_rows = context.rows_for(required_height)
-            requirements[self._path(placed)] = {
-                "child_reserved_height_pt": content.height,
-                "required_height_pt": required_height,
-                "required_rows": required_rows,
-                "outer_rounding_added_pt": required_rows * pitch - required_height,
-                "child_rounding_then_outer_padding": bool(padding.top + padding.bottom) and any(
-                    part.metadata.get("height_rounding") == "single" for part in content.parts),
-            }
-            if self.row_heights is None and cell.rowspan == 1:
-                previous = row_heights[placed.row]
-                row_heights[placed.row] = max(previous, required_rows)
-                if required_rows >= previous:
-                    controllers = allocations[placed.row]["controlling_cell_ids"]
-                    if required_rows > previous:
-                        controllers.clear()
-                    controllers.append(self._path(placed))
-        for placed, content, _ in sorted(measured, key=lambda item: (item[0].cell.rowspan, item[0].row, item[0].col)):
-            cell = placed.cell
-            stop = placed.row + cell.rowspan
-            if self.row_heights is not None:
-                needed = requirements[self._path(placed)]["required_height_pt"]
-                available = sum(row_heights[placed.row:stop]) * pitch
-                if needed > available + _ROUNDING_TOLERANCE:
-                    raise LayoutOverflowError(
-                        f"{self._path(placed)}: content and padding require {needed} pt "
-                        f"but row_heights provide {available} pt (shortage {needed - available} pt)",
-                        block_id=self._path(placed), needed=needed, available=available,
-                    )
-            elif cell.rowspan > 1:
-                required = requirements[self._path(placed)]["required_rows"]
-                deficit = required - sum(row_heights[placed.row:stop])
-                if deficit > 0:
-                    row_heights[stop - 1] += deficit
-                    allocations[stop - 1]["rowspan_added_rows"] += deficit
-                    allocations[stop - 1]["controlling_cell_ids"].append(self._path(placed))
-        for allocation, height in zip(allocations, row_heights, strict=True):
-            allocation["allocated_rows"] = height
-            allocation["allocated_height_pt"] = height * pitch
+            return MeasuredBlock(width, pitch, block_id=self.block_id)
+        cells = tuple(self._measure_cell(context, placed) for placed in self._cells)
+        row_heights, allocations = self._allocate_rows(cells, pitch)
+        by_row = [[] for _ in self.rows]
+        for cell in cells:
+            by_row[cell.placed.row].append(cell)
+        geometry = _Geometry(
+            pitch_x, pitch,
+            tuple(accumulate(self.columns, initial=0)),
+            tuple(accumulate(row_heights, initial=0)),
+            tuple(tuple(group) for group in by_row),
+            tuple(row_heights), tuple(allocations),
+        )
         groups = self._row_groups() if self.split else [(0, len(self.rows))]
-        parts = tuple(self._make_part(context, start, stop, row_heights, column_edges, measured,
-                                      requirements, allocations)
-                      for start, stop in groups)
+        parts = tuple(self._make_part(context, start, stop, geometry) for start, stop in groups)
         if self.split and self.header_rows and self.header_rows < len(self.rows):
             prefix, body = parts[:1], parts[1:]
         else:
             prefix, body = (), parts
         return MeasuredBlock(width, pitch, body, prefix=prefix, block_id=self.block_id)
 
-    def _measure_cell(self, context: LayoutContext, placed: _PlacedCell) -> tuple[MeasuredBlock, str]:
+    def _measure_cell(self, context: LayoutContext, placed: _PlacedCell) -> _MeasuredCell:
         cell = placed.cell
         cell_width = self._cell_width(placed, context.profile.grid.pitch_x)
         path = self._path(placed)
@@ -283,28 +284,75 @@ class Table:
             )
         align = cell.align or ("right" if cell.colspan == 1 and placed.col in self.numeric_columns else "left")
         block = Paragraph(cell.content, style=cell.style, align=align, block_id=path) if isinstance(cell.content, str) else cell.content
-        try:
-            content = measure_block(block, context, available)
-        except FontError as exc:
-            raise FontError(f"{path}: {exc}") from exc
-        except LayoutOverflowError as exc:
-            raise LayoutOverflowError(
-                f"{path}: {exc}", block_id=path, needed=exc.needed, available=exc.available,
-            ) from exc
-        except (ValueError, TypeError) as exc:
-            raise ValueError(
-                f"{path}: {exc}; content requires Block.measure(context, width); mathematical nodes require MathBlock"
-            ) from exc
-        return content, align
+        content = measure_child(block, context, available, path, own_block_id=True,
+                                type_errors=True, hint=_CONTENT_HINT)
+        required_height = content.height + (padding.top + padding.bottom)
+        required_rows = context.rows_for(required_height)
+        return _MeasuredCell(placed, path, padding, align, content, {
+            "child_reserved_height_pt": content.height,
+            "required_height_pt": required_height,
+            "required_rows": required_rows,
+            "outer_rounding_added_pt": required_rows * context.profile.grid.pitch_y - required_height,
+            "child_rounding_then_outer_padding": bool(padding.top + padding.bottom) and any(
+                part.metadata.get("height_rounding") == "single" for part in content.parts),
+        })
+
+    def _allocate_rows(self, cells: tuple[_MeasuredCell, ...], pitch: float):
+        """Resolve every source row's grid height and record how it was reached."""
+        automatic = self.row_heights is None
+        row_heights = [1] * len(self.rows) if automatic else list(self.row_heights)
+        allocations = [{"row": index, "specified_rows": None if automatic else height,
+                        "controlling_cell_ids": [], "rowspan_added_rows": 0}
+                       for index, height in enumerate(row_heights)]
+        if automatic:
+            for cell in cells:
+                if cell.placed.cell.rowspan != 1:
+                    continue
+                row, required = cell.placed.row, cell.requirement["required_rows"]
+                previous = row_heights[row]
+                row_heights[row] = max(previous, required)
+                if required >= previous:
+                    controllers = allocations[row]["controlling_cell_ids"]
+                    if required > previous:
+                        controllers.clear()
+                    controllers.append(cell.path)
+        order = sorted(cells, key=lambda item: (item.placed.cell.rowspan, item.placed.row, item.placed.col))
+        for cell in order:
+            placed = cell.placed
+            stop = placed.row + placed.cell.rowspan
+            if not automatic:
+                needed = cell.requirement["required_height_pt"]
+                available = sum(row_heights[placed.row:stop]) * pitch
+                if needed > available + TOLERANCE:
+                    raise LayoutOverflowError(
+                        f"{cell.path}: content and padding require {needed} pt "
+                        f"but row_heights provide {available} pt (shortage {needed - available} pt)",
+                        block_id=cell.path, needed=needed, available=available,
+                    )
+            elif placed.cell.rowspan > 1:
+                required = cell.requirement["required_rows"]
+                deficit = required - sum(row_heights[placed.row:stop])
+                if deficit > 0:
+                    row_heights[stop - 1] += deficit
+                    allocations[stop - 1]["rowspan_added_rows"] += deficit
+                    allocations[stop - 1]["controlling_cell_ids"].append(cell.path)
+        for allocation, height in zip(allocations, row_heights, strict=True):
+            allocation["allocated_rows"] = height
+            allocation["allocated_height_pt"] = height * pitch
+        return row_heights, allocations
 
     def _row_groups(self) -> list[tuple[int, int]]:
         """Return the header and body intervals without cutting a rowspan."""
+        crossed = [False] * (len(self.rows) + 1)
+        for placed in self._cells:
+            for boundary in range(placed.row + 1, placed.row + placed.cell.rowspan):
+                crossed[boundary] = True
         groups = []
         if self.header_rows:
             groups.append((0, self.header_rows))
         start = self.header_rows
         for stop in range(start + 1, len(self.rows) + 1):
-            if not any(placed.row < stop < placed.row + placed.cell.rowspan for placed in self._cells):
+            if not crossed[stop]:
                 groups.append((start, stop))
                 start = stop
         return groups
@@ -316,103 +364,163 @@ class Table:
         # Subtracting distant column edges makes equal spans position-dependent.
         return sum(self.columns[placed.col:placed.col + placed.cell.colspan]) * pitch_x
 
-    def _make_part(self, context, start, stop, row_heights, column_edges, measured,
-                   requirements, allocations):
-        pitch = context.profile.grid.pitch_y
-        row_edges = {r: sum(row_heights[start:r]) * pitch for r in range(start, stop + 1)}
-        width, height = column_edges[-1], row_edges[stop]
+    def _make_part(self, context, start, stop, geometry: _Geometry) -> LayoutPart:
+        """Draw and check one row group, then describe it for diagnostics."""
+        width, height = geometry.x(len(self.columns)), geometry.y(stop, start)
         uniform = self.horizontal_rules is None and self.vertical_rules is None
         if uniform and self.border_width >= min(width, height):
             raise LayoutOverflowError(
                 f"{self.block_id or 'Table'}: border_width exceeds part dimensions",
                 block_id=self.block_id or "Table", needed=self.border_width, available=min(width, height),
             )
-        horizontal, vertical = {}, {}
-        commands, cells = [], []
-        for placed, content, align in measured:
-            if not start <= placed.row < stop:
-                continue
-            cell = placed.cell
-            padding = _resolve_insets(cell.padding, "padding")
-            x0, x1 = column_edges[placed.col], column_edges[placed.col + cell.colspan]
-            cell_width = self._cell_width(placed, context.profile.grid.pitch_x)
-            y0, y1 = row_edges[placed.row], row_edges[placed.row + cell.rowspan]
-            left_width = self.border_width if self.vertical_rules is None else self.vertical_rules[placed.col]
-            right_width = self.border_width if self.vertical_rules is None else self.vertical_rules[placed.col + cell.colspan]
-            top_width = self.border_width if self.horizontal_rules is None else self.horizontal_rules[placed.row]
-            bottom_width = self.border_width if self.horizontal_rules is None else self.horizontal_rules[placed.row + cell.rowspan]
-            if uniform and self.border_width >= min(cell_width, y1 - y0):
-                raise LayoutOverflowError(
-                    f"{self._path(placed)}: border_width exceeds cell dimensions",
-                    block_id=self._path(placed), needed=self.border_width,
-                    available=min(cell_width, y1 - y0),
-                )
-            if not uniform:
-                # Each line's conservative envelope expands at its endpoints,
-                # too. A surviving edge of a small cell must fit before it is
-                # merged with neighbors; spans may leave that edge isolated.
-                available = min(cell_width, y1 - y0)
-                for stroke in (left_width, right_width, top_width, bottom_width):
-                    if stroke and stroke >= available:
-                        raise LayoutOverflowError(
-                            f"{self._path(placed)}: rule width exceeds cell or part dimensions",
-                            block_id=self._path(placed), needed=stroke, available=available,
-                        )
-            content_x = x0 + padding.left + (cell_width - (padding.left + padding.right) - content.width) * {"left": 0, "center": 0.5, "right": 1}[align]
-            content_y = y0 + padding.top + (y1 - y0 - (padding.top + padding.bottom) - content.height) * {"top": 0, "middle": 0.5, "bottom": 1}[cell.valign]
-            translated = content.translated(content_x, content_y)
-            left = x0 + (left_width if x0 == 0 else left_width / 2)
-            right = x1 - (right_width if x1 == width else right_width / 2)
-            top = y0 + (top_width if y0 == 0 else top_width / 2)
-            bottom = y1 - (bottom_width if y1 == height else bottom_width / 2)
-            if not uniform and (left >= right or top >= bottom):
-                raise LayoutOverflowError(
-                    f"{self._path(placed)}: opposing rules consume the cell frame",
-                    block_id=self._path(placed),
-                    needed=(left - x0) + (x1 - right) if left >= right else (top - y0) + (y1 - bottom),
-                    available=cell_width if left >= right else y1 - y0,
-                )
-            for command in translated:
-                bounds = command_bounds(command, context.fonts)
-                if ((bounds.x <= left if left_width else bounds.x < x0 - _ROUNDING_TOLERANCE)
-                        or (bounds.right >= right if right_width else bounds.right > x1 + _ROUNDING_TOLERANCE)
-                        or (bounds.y <= top if top_width else bounds.y < y0 - _ROUNDING_TOLERANCE)
-                        or (bounds.bottom >= bottom if bottom_width else bounds.bottom > y1 + _ROUNDING_TOLERANCE)):
-                    raise LayoutOverflowError(
-                        f"{self._path(placed)}: content lacks clearance from border strokes",
-                        block_id=self._path(placed), needed=bounds.width, available=max(0, right - left),
-                    )
-            commands.extend(translated)
-            cells.append({
-                "row": placed.row, "col": placed.col, "rowspan": cell.rowspan, "colspan": cell.colspan,
-                "frame": {"x_pt": x0, "y_pt": y0, "width": cell_width, "height": y1 - y0},
-                "cell_id": self._path(placed),
-                "padding_pt": {edge: getattr(padding, edge) for edge in ("top", "right", "bottom", "left")},
-                "height_allocation": {**requirements[self._path(placed)],
-                                      "allocated_height_pt": y1 - y0,
-                                      "available_content_height_pt": y1 - y0 - padding.top - padding.bottom},
-                "content": _content_trace(content, content_x, content_y),
-            })
-            for edge, stroke in ((y0, top_width), (y1, bottom_width)):
-                if stroke:
-                    half = stroke / 2
-                    y = max(half, min(height - half, edge))
-                    horizontal.setdefault((y, stroke), []).append((max(half, x0), min(width - half, x1)))
-            for edge, stroke in ((x0, left_width), (x1, right_width)):
-                if stroke:
-                    half = stroke / 2
-                    x = max(half, min(width - half, edge))
-                    vertical.setdefault((x, stroke), []).append((max(half, y0), min(height - half, y1)))
-        for (y, stroke), intervals in sorted(horizontal.items()):
-            commands.extend(Line(a, y, b, y, stroke, self.border_color) for a, b in _merged(intervals))
-        for (x, stroke), intervals in sorted(vertical.items()):
-            commands.extend(Line(x, a, x, b, stroke, self.border_color) for a, b in _merged(intervals))
-        return LayoutPart(sum(row_heights[start:stop]), tuple(commands), {
-            "columns_pt": tuple(columns * context.profile.grid.pitch_x for columns in self.columns),
-            "source_rows": tuple(range(start, stop)), "row_heights": tuple(row_heights[start:stop]), "cells": cells,
+        rules = _Rules(width, height)
+        commands, records = [], []
+        for row in range(start, stop):
+            for cell in geometry.by_row[row]:
+                box = self._cell_box(cell, geometry, start)
+                self._check_strokes(cell, box, uniform)
+                content_x, content_y = self._content_origin(cell, box)
+                translated = cell.content.translated(content_x, content_y)
+                self._check_clearance(context, cell, box, translated, uniform, width, height)
+                commands.extend(translated)
+                records.append(self._cell_record(cell, box, content_x, content_y))
+                rules.add(box)
+        commands.extend(rules.commands(self.border_color))
+        return LayoutPart(geometry.row_starts[stop] - geometry.row_starts[start], tuple(commands), {
+            "columns_pt": tuple(columns * geometry.pitch_x for columns in self.columns),
+            "source_rows": tuple(range(start, stop)),
+            "row_heights": tuple(geometry.row_heights[start:stop]), "cells": records,
             "height_mode": "automatic" if self.row_heights is None else "explicit",
-            "row_allocations": allocations[start:stop],
+            "row_allocations": list(geometry.allocations[start:stop]),
         })
+
+    def _cell_box(self, cell: _MeasuredCell, geometry: _Geometry, start: int) -> _CellBox:
+        placed = cell.placed
+        columns, rows = placed.cell.colspan, placed.cell.rowspan
+        vertical, horizontal = self.vertical_rules, self.horizontal_rules
+        return _CellBox(
+            geometry.x(placed.col), geometry.x(placed.col + columns),
+            geometry.y(placed.row, start), geometry.y(placed.row + rows, start),
+            self._cell_width(placed, geometry.pitch_x),
+            (self.border_width if vertical is None else vertical[placed.col],
+             self.border_width if vertical is None else vertical[placed.col + columns],
+             self.border_width if horizontal is None else horizontal[placed.row],
+             self.border_width if horizontal is None else horizontal[placed.row + rows]),
+        )
+
+    def _check_strokes(self, cell: _MeasuredCell, box: _CellBox, uniform: bool) -> None:
+        available = min(box.width, box.height)
+        if uniform:
+            if self.border_width >= available:
+                raise LayoutOverflowError(
+                    f"{cell.path}: border_width exceeds cell dimensions",
+                    block_id=cell.path, needed=self.border_width, available=available,
+                )
+            return
+        # Each line's conservative envelope expands at its endpoints, too. A
+        # surviving edge of a small cell must fit before it is merged with
+        # neighbors; spans may leave that edge isolated.
+        for stroke in box.strokes:
+            if stroke and stroke >= available:
+                raise LayoutOverflowError(
+                    f"{cell.path}: rule width exceeds cell or part dimensions",
+                    block_id=cell.path, needed=stroke, available=available,
+                )
+
+    @staticmethod
+    def _content_origin(cell: _MeasuredCell, box: _CellBox) -> tuple[float, float]:
+        padding, content = cell.padding, cell.content
+        return (
+            box.x0 + padding.left + (box.width - (padding.left + padding.right) - content.width)
+            * {"left": 0, "center": 0.5, "right": 1}[cell.align],
+            box.y0 + padding.top + (box.height - (padding.top + padding.bottom) - content.height)
+            * {"top": 0, "middle": 0.5, "bottom": 1}[cell.placed.cell.valign],
+        )
+
+    @staticmethod
+    def _inner_edges(box: _CellBox, width: float, height: float) -> tuple[float, float, float, float]:
+        """Return the cell's content boundaries inside its own strokes."""
+        left_width, right_width, top_width, bottom_width = box.strokes
+        return (
+            box.x0 + (left_width if box.x0 == 0 else left_width / 2),
+            box.x1 - (right_width if box.x1 == width else right_width / 2),
+            box.y0 + (top_width if box.y0 == 0 else top_width / 2),
+            box.y1 - (bottom_width if box.y1 == height else bottom_width / 2),
+        )
+
+    def _check_clearance(self, context, cell: _MeasuredCell, box: _CellBox, commands,
+                         uniform: bool, width: float, height: float) -> None:
+        left, right, top, bottom = self._inner_edges(box, width, height)
+        left_width, right_width, top_width, bottom_width = box.strokes
+        if not uniform and (left >= right or top >= bottom):
+            raise LayoutOverflowError(
+                f"{cell.path}: opposing rules consume the cell frame", block_id=cell.path,
+                needed=(left - box.x0) + (box.x1 - right) if left >= right else (top - box.y0) + (box.y1 - bottom),
+                available=box.width if left >= right else box.height,
+            )
+        for command in commands:
+            bounds = command_bounds(command, context.fonts)
+            crowded_x = ((bounds.x <= left if left_width else bounds.x < box.x0 - TOLERANCE)
+                         or (bounds.right >= right if right_width else bounds.right > box.x1 + TOLERANCE))
+            crowded_y = ((bounds.y <= top if top_width else bounds.y < box.y0 - TOLERANCE)
+                         or (bounds.bottom >= bottom if bottom_width else bounds.bottom > box.y1 + TOLERANCE))
+            if crowded_x or crowded_y:
+                # Report the axis that is actually short, so the measurement a
+                # caller changes is the one the numbers describe.
+                axis = "horizontal" if crowded_x else "vertical"
+                raise LayoutOverflowError(
+                    f"{cell.path}: content lacks clearance from border strokes ({axis})",
+                    block_id=cell.path,
+                    needed=bounds.width if crowded_x else bounds.height,
+                    available=max(0, right - left) if crowded_x else max(0, bottom - top),
+                )
+
+    def _cell_record(self, cell: _MeasuredCell, box: _CellBox,
+                     content_x: float, content_y: float) -> dict:
+        placed, padding = cell.placed, cell.padding
+        return {
+            "row": placed.row, "col": placed.col,
+            "rowspan": placed.cell.rowspan, "colspan": placed.cell.colspan,
+            "frame": {"x_pt": box.x0, "y_pt": box.y0, "width": box.width, "height": box.height},
+            "cell_id": cell.path,
+            "padding_pt": {edge: getattr(padding, edge) for edge in ("top", "right", "bottom", "left")},
+            "height_allocation": {**cell.requirement,
+                                  "allocated_height_pt": box.height,
+                                  "available_content_height_pt": box.height - padding.top - padding.bottom},
+            "content": block_trace(cell.content, content_x, content_y),
+        }
+
+
+class _Rules:
+    """Collect rule segments per coordinate and stroke width inside one part."""
+
+    def __init__(self, width: float, height: float) -> None:
+        self.width, self.height = width, height
+        self.horizontal: dict[tuple[float, float], list] = {}
+        self.vertical: dict[tuple[float, float], list] = {}
+
+    def add(self, box: _CellBox) -> None:
+        left_width, right_width, top_width, bottom_width = box.strokes
+        for edge, stroke in ((box.y0, top_width), (box.y1, bottom_width)):
+            if stroke:
+                half = stroke / 2
+                y = max(half, min(self.height - half, edge))
+                self.horizontal.setdefault((y, stroke), []).append(
+                    (max(half, box.x0), min(self.width - half, box.x1)))
+        for edge, stroke in ((box.x0, left_width), (box.x1, right_width)):
+            if stroke:
+                half = stroke / 2
+                x = max(half, min(self.width - half, edge))
+                self.vertical.setdefault((x, stroke), []).append(
+                    (max(half, box.y0), min(self.height - half, box.y1)))
+
+    def commands(self, color) -> list[Line]:
+        commands = []
+        for (y, stroke), intervals in sorted(self.horizontal.items()):
+            commands.extend(Line(a, y, b, y, stroke, color) for a, b in _merged(intervals))
+        for (x, stroke), intervals in sorted(self.vertical.items()):
+            commands.extend(Line(x, a, x, b, stroke, color) for a, b in _merged(intervals))
+        return commands
 
 
 def _merged(intervals):
@@ -424,16 +532,3 @@ def _merged(intervals):
         else:
             result.append((start, stop))
     return result
-
-
-def _content_trace(content, x_pt, y_pt):
-    trace = {"block_id": content.block_id, "x_pt": x_pt, "y_pt": y_pt,
-             "width": content.width, "rows": content.rows, "row_pitch": content.row_pitch}
-    row = 0
-    for name, parts in (("prefix", content.prefix), ("parts", content.parts)):
-        descriptors = []
-        for part in parts:
-            descriptors.append({"row": row, "rows": part.rows, "metadata": part.metadata})
-            row += part.rows
-        trace[name] = descriptors
-    return trace

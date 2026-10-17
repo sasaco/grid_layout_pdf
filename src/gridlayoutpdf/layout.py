@@ -4,56 +4,21 @@ from __future__ import annotations
 
 from collections.abc import Iterable, Mapping
 from dataclasses import KW_ONLY, dataclass, field, replace
-import math
-from types import MappingProxyType
 from typing import Protocol, runtime_checkable
 
 from .bounds import command_bounds
 from .errors import FontError, LayoutOverflowError
 from .fonts import FontRegistry
+from .metadata import freeze_metadata
 from .profiles import PageProfile
 from .scene import Command, Line, Polyline, RasterImage, Rectangle, Text
 from .styles import ReportStyle, _finite_number
+from .validation import TOLERANCE, _integer
 
 
 def _has_visible_commands(commands: Iterable[Command]) -> bool:
     """Whitespace reserves layout space but cannot satisfy a heading's keep rule."""
     return any(not isinstance(command, Text) or bool(command.text.strip()) for command in commands)
-
-
-def _positive_int(value, name: str) -> None:
-    if isinstance(value, bool) or not isinstance(value, int) or value < 1:
-        raise ValueError(f"{name} must be a positive integer")
-
-
-def _freeze_metadata(value, active: set[int]):
-    """Internal snapshot helper: JSON values, immutable containers, no cycles.
-
-    Keep layout independent of scene's private implementation. Both boundaries
-    accept the same JSON-shaped metadata contract.
-    """
-    if value is None or isinstance(value, (str, bool, int)):
-        return value
-    if isinstance(value, float):
-        if not math.isfinite(value):
-            raise ValueError("metadata numbers must be finite")
-        return value
-    if isinstance(value, (Mapping, list, tuple)):
-        identity = id(value)
-        if identity in active:
-            raise ValueError("metadata must not contain cycles")
-        active.add(identity)
-        try:
-            if isinstance(value, Mapping):
-                if any(not isinstance(key, str) for key in value):
-                    raise ValueError("metadata keys must be strings")
-                return MappingProxyType({
-                    key: _freeze_metadata(item, active) for key, item in value.items()
-                })
-            return tuple(_freeze_metadata(item, active) for item in value)
-        finally:
-            active.remove(identity)
-    raise ValueError(f"Unsupported metadata value: {type(value).__name__}")
 
 
 @dataclass(frozen=True, slots=True)
@@ -94,6 +59,22 @@ class Block(Protocol):
     def measure(self, context: LayoutContext, available_width: float) -> MeasuredBlock: ...
 
 
+def measurement_inputs(context: LayoutContext, available_width: float) -> float:
+    """Validate the arguments every measure(context, available_width) accepts."""
+    if not isinstance(context, LayoutContext):
+        raise ValueError("context must be a LayoutContext")
+    width = _finite_number(available_width, "available_width")
+    if width <= 0:
+        raise ValueError("available_width must be positive")
+    return width
+
+
+def require_block(block) -> None:
+    """Require the measuring contract before a component is measured."""
+    if not isinstance(block, Block) or not callable(block.measure):
+        raise ValueError("block must implement measure(context, available_width)")
+
+
 @dataclass(frozen=True, slots=True)
 class LayoutPart:
     """An indivisible vertical unit with commands relative to its top-left."""
@@ -103,7 +84,7 @@ class LayoutPart:
     metadata: Mapping[str, object] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
-        _positive_int(self.rows, "rows")
+        _integer(self.rows, "rows", 1, message="rows must be a positive integer")
         try:
             commands = tuple(self.commands)
         except TypeError as exc:
@@ -113,7 +94,7 @@ class LayoutPart:
         if not isinstance(self.metadata, Mapping):
             raise ValueError("metadata must be a mapping")
         object.__setattr__(self, "commands", commands)
-        object.__setattr__(self, "metadata", _freeze_metadata(self.metadata, set()))
+        object.__setattr__(self, "metadata", freeze_metadata(self.metadata))
 
 
 @dataclass(frozen=True, slots=True)
@@ -137,6 +118,7 @@ class MeasuredBlock:
     keep_with_next: bool = False
     prefer_keep: bool = False
     block_id: str = ""
+    _rows: int = field(init=False, repr=False, compare=False, default=0)
 
     def __post_init__(self) -> None:
         for name in ("width", "row_pitch"):
@@ -152,10 +134,11 @@ class MeasuredBlock:
             if any(not isinstance(part, LayoutPart) for part in parts):
                 raise ValueError(f"{name} must contain only LayoutPart objects")
             object.__setattr__(self, name, parts)
+        object.__setattr__(self, "_rows", sum(part.rows for part in (*self.prefix, *self.parts)))
         if self.prefix and not self.parts:
             raise ValueError("prefix requires at least one body part")
         for name in ("min_first", "min_last"):
-            _positive_int(getattr(self, name), name)
+            _integer(getattr(self, name), name, 1, message=f"{name} must be a positive integer")
         for name in ("keep_together", "keep_with_next", "prefer_keep"):
             if not isinstance(getattr(self, name), bool):
                 raise ValueError(f"{name} must be a boolean")
@@ -177,7 +160,8 @@ class MeasuredBlock:
 
     @property
     def rows(self) -> int:
-        return sum(part.rows for part in (*self.prefix, *self.parts))
+        """The validated total, counted once, so flow never re-sums the parts."""
+        return self._rows
 
     @property
     def height(self) -> float:
@@ -237,7 +221,53 @@ class MeasuredBlock:
         )
 
 
-_ROUNDING_TOLERANCE = 1e-7
+def part_descriptors(measured: MeasuredBlock) -> dict[str, list[dict]]:
+    """Describe prefix and body parts by their row offset inside the block."""
+    descriptors: dict[str, list[dict]] = {}
+    row = 0
+    for name, parts in (("prefix", measured.prefix), ("parts", measured.parts)):
+        group = []
+        for part in parts:
+            group.append({"row": row, "rows": part.rows, "metadata": part.metadata})
+            row += part.rows
+        descriptors[name] = group
+    return descriptors
+
+
+def block_trace(measured: MeasuredBlock, x_pt: float, y_pt: float) -> dict:
+    """Snapshot a measured block's origin and part metadata, without commands."""
+    return {
+        "block_id": measured.block_id, "x_pt": x_pt, "y_pt": y_pt,
+        "width": measured.width, "rows": measured.rows, "row_pitch": measured.row_pitch,
+        **part_descriptors(measured),
+    }
+
+
+def measure_child(block: Block, context: LayoutContext, available_width: float, location: str,
+                  *, own_block_id: bool = False, type_errors: bool = False,
+                  hint: str = "") -> MeasuredBlock:
+    """Measure a nested block, keeping its diagnostics inside the caller's path.
+
+    ``own_block_id`` reports ``location`` instead of the child's identifier,
+    for frames that own the failing region. ``type_errors`` also treats a
+    TypeError as an input error, and ``hint`` appends caller guidance to it.
+    """
+    try:
+        return measure_block(block, context, available_width)
+    except FontError as exc:
+        raise FontError(f"{location}: {exc}") from exc
+    except LayoutOverflowError as exc:
+        raise LayoutOverflowError(
+            f"{location}: {exc}",
+            block_id=location if own_block_id else (exc.block_id or location),
+            needed=exc.needed, available=exc.available,
+        ) from exc
+    except ValueError as exc:
+        raise ValueError(f"{location}: {exc}{hint}") from exc
+    except TypeError as exc:
+        if not type_errors:
+            raise
+        raise ValueError(f"{location}: {exc}{hint}") from exc
 
 
 def measure_block(block: Block, context: LayoutContext, available_width: float) -> MeasuredBlock:
@@ -246,13 +276,8 @@ def measure_block(block: Block, context: LayoutContext, available_width: float) 
     Only tiny absolute floating-point roundoff is tolerated. Parts may overlap
     internally, but every command's ink/stroke envelope must fit its own part.
     """
-    if not isinstance(context, LayoutContext):
-        raise ValueError("context must be a LayoutContext")
-    available_width = _finite_number(available_width, "available_width")
-    if available_width <= 0:
-        raise ValueError("available_width must be positive")
-    if not isinstance(block, Block) or not callable(block.measure):
-        raise ValueError("block must implement measure(context, available_width)")
+    available_width = measurement_inputs(context, available_width)
+    require_block(block)
     source_id = getattr(block, "block_id", "")
     source_id = source_id if isinstance(source_id, str) and source_id else type(block).__name__
     try:
@@ -267,12 +292,12 @@ def measure_block(block: Block, context: LayoutContext, available_width: float) 
     if not isinstance(result, MeasuredBlock):
         raise ValueError(f"{source_id}: measure must return a MeasuredBlock")
     block_id = result.block_id or source_id
-    if result.width > available_width + _ROUNDING_TOLERANCE:
+    if result.width > available_width + TOLERANCE:
         raise LayoutOverflowError(
             f"{block_id}: reserved width {result.width} exceeds available width {available_width}",
             block_id=block_id, needed=result.width, available=available_width,
         )
-    if abs(result.row_pitch - context.profile.grid.pitch_y) > _ROUNDING_TOLERANCE:
+    if abs(result.row_pitch - context.profile.grid.pitch_y) > TOLERANCE:
         raise ValueError(f"{block_id}: row_pitch must match the context grid pitch")
     for group_name, parts in (("prefix", result.prefix), ("parts", result.parts)):
         for part_index, part in enumerate(parts):
@@ -283,11 +308,11 @@ def measure_block(block: Block, context: LayoutContext, available_width: float) 
                     bounds = command_bounds(command, context.fonts)
                 except FontError as exc:
                     raise FontError(f"{location}: {exc}") from exc
-                if (bounds.x < -_ROUNDING_TOLERANCE or bounds.y < -_ROUNDING_TOLERANCE
-                        or bounds.right > result.width + _ROUNDING_TOLERANCE
-                        or bounds.bottom > height + _ROUNDING_TOLERANCE):
-                    horizontal = (bounds.x < -_ROUNDING_TOLERANCE
-                                  or bounds.right > result.width + _ROUNDING_TOLERANCE)
+                if (bounds.x < -TOLERANCE or bounds.y < -TOLERANCE
+                        or bounds.right > result.width + TOLERANCE
+                        or bounds.bottom > height + TOLERANCE):
+                    horizontal = (bounds.x < -TOLERANCE
+                                  or bounds.right > result.width + TOLERANCE)
                     raise LayoutOverflowError(
                         f"{location}: {type(command).__name__} bounds "
                         f"({bounds.x}, {bounds.y}, {bounds.right}, {bounds.bottom}) "

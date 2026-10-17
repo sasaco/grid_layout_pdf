@@ -54,6 +54,6 @@ uv run --locked --extra dev python -X utf8 tests/fixtures/cantilever_p01_37/rend
 
 ```powershell
 $env:PYTHONUTF8 = '1'
-$env:COVERAGE_FILE = '.agents/logs/coverage-cantilever-fixture-local'
-uv run --locked --extra dev python -X utf8 .agents/skills/_shared/run_tests.py --target tests/unit/test_cantilever_fixture.py --target tests/integration/test_cantilever_p01_37.py --expect pass --label cantilever-fixture-local
+$env:COVERAGE_FILE = '.claude/logs/coverage-cantilever-fixture-local'
+uv run --locked --extra dev python -X utf8 .claude/skills/_shared/run_tests.py --target tests/unit/test_cantilever_fixture.py --target tests/integration/test_cantilever_p01_37.py --expect pass --label cantilever-fixture-local
 ```

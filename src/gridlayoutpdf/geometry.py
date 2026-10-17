@@ -3,19 +3,8 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-import math
 
-
-def _finite(value: float, name: str) -> None:
-    """Reject non-numeric and non-finite pt values, including booleans."""
-    if isinstance(value, bool) or not isinstance(value, (int, float)):
-        raise ValueError(f"{name} must be a finite number in pt")
-    try:
-        finite = math.isfinite(value)
-    except OverflowError:
-        finite = False
-    if not finite:
-        raise ValueError(f"{name} must be a finite number in pt")
+from .validation import _finite, _integer, whole_units_ceil
 
 
 @dataclass(frozen=True)
@@ -88,8 +77,7 @@ class GridSpec:
                 raise ValueError(f"{name} must be positive")
         for name in ("columns", "rows"):
             value = getattr(self, name)
-            if isinstance(value, bool) or not isinstance(value, int) or value <= 0:
-                raise ValueError(f"{name} must be a positive integer")
+            _integer(value, name, 1, message=f"{name} must be a positive integer")
             _finite(value, name)
         _finite(self.columns * self.pitch_x, "grid width")
         _finite(self.rows * self.pitch_y, "grid height")
@@ -98,13 +86,15 @@ class GridSpec:
 
     def x(self, col: int) -> float:
         """Return the x coordinate of boundary 0 through columns, inclusive."""
-        if isinstance(col, bool) or not isinstance(col, int) or not 0 <= col <= self.columns:
+        _integer(col, "col", 0, message=f"col must be an integer between 0 and {self.columns}")
+        if col > self.columns:
             raise ValueError(f"col must be an integer between 0 and {self.columns}")
         return self.origin_x + col * self.pitch_x
 
     def y(self, row: int) -> float:
         """Return the y coordinate of boundary 0 through rows, inclusive."""
-        if isinstance(row, bool) or not isinstance(row, int) or not 0 <= row <= self.rows:
+        _integer(row, "row", 0, message=f"row must be an integer between 0 and {self.rows}")
+        if row > self.rows:
             raise ValueError(f"row must be an integer between 0 and {self.rows}")
         return self.origin_y + row * self.pitch_y
 
@@ -114,11 +104,4 @@ class GridSpec:
         if height < 0:
             raise ValueError("height must be non-negative")
         _finite(height / self.pitch_y, "height / pitch_y")
-        count = math.ceil(height / self.pitch_y)
-        # Compare actual boundaries rather than adding an epsilon that could
-        # hide a real overflow immediately beyond an exact grid boundary.
-        if count > 0 and (count - 1) * self.pitch_y >= height:
-            count -= 1
-        elif count * self.pitch_y < height:
-            count += 1
-        return count
+        return whole_units_ceil(height, self.pitch_y)
