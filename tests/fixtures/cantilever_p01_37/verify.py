@@ -10,9 +10,11 @@ if not __debug__:
     raise RuntimeError("Cantilever verification requires assertions enabled; do not use -O or PYTHONOPTIMIZE")
 
 from collections import Counter
+from collections.abc import Iterable
 from hashlib import sha256
 from io import BytesIO
 import json
+from math import isfinite
 from pathlib import Path
 import re
 
@@ -23,6 +25,52 @@ from PIL import Image
 EXPECTED = Path(__file__).with_name("expected")
 IDENTITY = (1, 0, 0, 1, 0, 0)
 _SOURCE_SHA256 = "e56bf3ddbe3314ed95517099bedb0e68005df1567b0b3e8f52a2a4066d03393e"
+# Independently frozen ID -> original-region assignments from reviewed commit
+# 3da8b7cb71803c463029c68e155798f377c62e07, expected/p01.json ... p37.json.
+# Each digest covers only sorted [item id, four float coordinates] pairs,
+# serialized as ASCII JSON with separators=(",", ":") and allow_nan=False.
+# Text, directions and scripts are deliberately excluded: they must still be
+# checked against the actual original glyphs below. Do not regenerate these
+# pins from a candidate expected record; a region change needs source review.
+_SOURCE_REGION_SHA256 = {
+    1: "2ec91e0965546c3f007e2b04a96d4e51d65ca565dd0e689861ba63a2c790630f",
+    2: "e6eb4dd96dcedf031306a93297be000e4de71682b30e0a255fa5278ac2662ae6",
+    3: "c808a067cfc86f21c6fb47bbd14fda6339c7928e57382a791aab13e9616a736a",
+    4: "557712eb55d73efb2574524bdd00a6d6e64c926c6229af56291fbe3d5e87c3a3",
+    5: "5765b0e990899ea5b965ae21824fc24378457c7e5fd3bd879b990999d79b8dbc",
+    6: "61a6c5a0e0d38a23ab8b27dbffbe857a3010cf4e390947d49954677e05ccb615",
+    7: "eef4ac51bc01942a951a4dcfac5b43bd7bd1952f76c47568206330515e7b4beb",
+    8: "be6e47d11388335bfd6a9caebda41f66a0b3d44d433781899cc0c01aee5dc6f6",
+    9: "20101987ea94bd28ddafd189c514abacace5be627227b328146891200ca4eed3",
+    10: "d102139d117585a21643fefcb58335a3bd09688cb430586b7a80a1be3b253c34",
+    11: "30a2c377ca8a1bc50e3bcd29ec9548dad54250a1c3019bd420e61b798fb991f9",
+    12: "235881991913aaef812d75fdebf56aec00e6bb3d06ac6a44b825a8110c49bdbd",
+    13: "70aad582523216d5660f1dcbfda55d43af5efe55a72eca8dc0b5daeec8d845b4",
+    14: "a9db0c845d5e3badfe466d825087f6bfedcda0220254fe369e84fc4d174fb710",
+    15: "c629d97370ba98d66684cf6dca705108e341b508a415172589b6dfc72875641c",
+    16: "bb38b224649b859bf92780bdde43d03a0e1cf4d637e5366ee0618e81a4c1836d",
+    17: "3607c007df4b1669154f3ea94a394e50bc71c199c7c5fe36f19d99a9702f58ad",
+    18: "ee11b7fb8f0ca19c98fc78c69371e5bbbb5d7a01d3994f217925ffc36921e3a1",
+    19: "9eb8f759e778516f6013091e512ea60e45de0c4bbd7df101841dce35f4c6c26e",
+    20: "a2b112ae59ca414ae54c4e7ad16767c83d3aed4c94a3bbe8c9d6cedde415c625",
+    21: "9f3900373918cc62f18b88f7e6523db29a755e835d7af274d56ca6896704e011",
+    22: "513cb0312da9002594e971d9fb16f5c7017c97a518b3757d8924504e317c6b2e",
+    23: "4717a71f0c1f28d10e065f07581b12564973d88dbaa10a0945937c827e3ebdf9",
+    24: "23ac6477a1814dc8b002c4bdc436a664d2efca90184ccb8e41f8e1b84ed0b4d4",
+    25: "f97036fc404a9ae3b713315ed4747a7d86705d04e8b5839c05c421310ab1a594",
+    26: "d40e767ec27ed9c259572832299809ab73372baebffcde1b7c81aaad3516f615",
+    27: "5c7ed59fcf69673d9ed025598045067c5602eadc5a0497c4bd0868e6b04abafd",
+    28: "28ee4372ea5ad4a81c59310929ba0b05cfcfa35b210688d61e73b9758c5e005e",
+    29: "2c33b6d659bc89799fa1b20f71b3f1f5eecef4d02704b5dc885978ec7eb8d23c",
+    30: "b942c06e92567d1f24fef07d360d797f4aaf0a750fc00cb6e2ad5462f8d96eaf",
+    31: "615f03cd1691dc81b30f1eabc9c869ae5fd9f9f086570809015691310d5c3bf3",
+    32: "e6a804dbb2c47cb8ba1ff1c4d2bbea2778d82a6c2ddabd459e17b5410b4a3f7f",
+    33: "bc4533a1f6cf30ab6c4a330e073e8d071f68bc89facf18aed037e63a8955a3b0",
+    34: "fdbde4aef72d3f58d04279b808093c7c29be1eb6f1bc0f51ac89975a5db59e70",
+    35: "dcc8a61d0ed98ec64a33994a2bf9c2a8d91c33c6bef6e78522c9445bc5df171e",
+    36: "15c5e8b1a656baa787e8f2f9fec9113afae2d3f9cf9acafb69f5d8f9b70fc3af",
+    37: "927afb397fe4178875424c9398fbc14d08589a756d39dd1e449af82205ff5a1b",
+}
 # The original 9.94/9.96 pt text and explicitly authored 10 pt text differ by
 # <=0.040 pt at these numeric advance endpoints; PDF extraction adds <0.001 pt.
 _ANCHOR_TOLERANCE_PT = .1
@@ -324,14 +372,136 @@ def _dense_anchors(chars, rules, regions, prefix):
             assert abs(observed-expected) <= _ANCHOR_TOLERANCE_PT, f"{prefix}: group bar {index} {coordinate} differs from source"
 
 
-def _source_reference(number):
+def _source_bytes() -> bytes:
     """Read independently hashed source bytes, never authored placement data."""
     sources = tuple((Path(__file__).resolve().parents[2] / "output").glob("13_*.pdf"))
     assert len(sources) == 1, "source PDF identity is ambiguous or missing"
     data = sources[0].read_bytes()
     assert sha256(data).hexdigest() == _SOURCE_SHA256, "source PDF hash mismatch"
-    with pymupdf.open(stream=data, filetype="pdf") as source:
+    return data
+
+
+def _source_reference(number):
+    with pymupdf.open(stream=_source_bytes(), filetype="pdf") as source:
         return _chars(source[number-1]), _black_rules(source[number-1])
+
+
+def _source_pages(source_pages: Iterable[int]) -> tuple[int, ...]:
+    pages = tuple(source_pages)
+    if (not pages or any(type(n) is not int or not 1 <= n <= 37 for n in pages)
+            or len(set(pages)) != len(pages) or pages != tuple(sorted(pages))):
+        raise ValueError("source pages must be unique, increasing integers in 1..37")
+    return pages
+
+
+def _source_records(pages: Iterable[int]) -> list[dict]:
+    records = []
+    for number in pages:
+        file = EXPECTED / f"p{number:02}.json"
+        if not file.is_file():
+            raise ValueError(f"source oracle missing for p{number:02}")
+        records.append(json.loads(file.read_text(encoding="utf-8")))
+    return records
+
+
+def _check_source_regions(record: dict) -> None:
+    """Pin semantic identity before using a candidate record's glyph regions."""
+    number = record["source_page"]
+    message = f"p{number:02}: original region assignment differs from reviewed source"
+    regions = []
+    for block in record["blocks"]:
+        for item in block.get("cells", [block]):
+            box = item["source_bbox"]
+            assert isinstance(item["id"], str), message
+            assert isinstance(box, (tuple, list)) and len(box) == 4, message
+            assert all(type(value) in (int, float) and isfinite(value) for value in box), message
+            regions.append((item["id"], [float(value) for value in box]))
+    canonical = json.dumps(sorted(regions), ensure_ascii=True,
+                           separators=(",", ":"), allow_nan=False).encode("ascii")
+    assert sha256(canonical).hexdigest() == _SOURCE_REGION_SHA256[number], message
+
+
+def _original_item(chars: list[dict], item: dict) -> None:
+    """Check transcription against geometric reading order, including scripts.
+
+    Direction is inferred from the original full-size glyphs. Expected text,
+    script roles, and authored placement data never determine the ordering.
+    """
+    key = item["id"]
+    if not chars:
+        assert not _compact(item["text"]), f"{key}: original text order: empty region"
+        assert not item["source_scripts"], f"{key}: original script in empty region"
+        return
+    major = [char for char in chars if char["size"] >= 8]
+    directions = Counter(char["direction"] for char in major or chars)
+    direction = max(directions, key=lambda value: (directions[value], value))
+    assert tuple(item["direction"]) == direction, f"{key}: original direction"
+    ordered = [(char, baseline) for line, baseline in _ordered_lines(chars, direction)
+               for char in line]
+    actual = "".join(char["c"] for char, _ in ordered)
+    wanted = _compact(item["text"])
+    assert actual == wanted, f"{key}: original text order {actual!r} != expected {wanted!r}"
+    overrides = {entry["character_index"]: tuple(entry["direction"])
+                 for entry in item.get("source_direction_overrides", [])}
+    assert len(overrides) == len(item.get("source_direction_overrides", [])), f"{key}: original direction duplicates"
+    assert all(type(index) is int and 0 <= index < len(ordered) for index in overrides), f"{key}: original direction index"
+    scripts = []
+    dx, dy = direction
+    for index, (char, baseline) in enumerate(ordered):
+        assert char["direction"] == overrides.get(index, direction), f"{key}: original direction at {index}"
+        if char["size"] < 8:
+            x, y = char["origin"]
+            delta = -dy*x + dx*y - baseline
+            assert abs(delta) >= .5, f"{key}: original script has ambiguous baseline"
+            scripts.append((index, char["c"], "subscript" if delta > 0 else "superscript"))
+    expected_scripts = [(script["character_index"], script["text"], script["role"])
+                        for script in item["source_scripts"]]
+    assert scripts == expected_scripts, f"{key}: original script order, text or role"
+
+
+def verify_source_order(source_pages: Iterable[int], *, records: Iterable[dict] | None = None) -> dict:
+    """Validate expected records directly against the immutable original PDF.
+
+    This is additional to output-PDF checks. It retains the source inventory,
+    marker/figure/page-number exclusions, and once-only glyph coverage, so a
+    coordinated change to authored content and expected text cannot pass.
+    Reviewed ID-to-region pins are checked before selecting original glyphs.
+    ``records`` supports inspecting a proposed oracle without writing it.
+    """
+    pages = _source_pages(source_pages)
+    records = _source_records(pages) if records is None else list(records)
+    assert len(records) == len(pages), "original source record count"
+    assets = json.loads(Path(__file__).with_name("assets").joinpath("metadata.json").read_text(encoding="utf-8"))["figures"]
+    verified_items = 0
+    with pymupdf.open(stream=_source_bytes(), filetype="pdf") as source:
+        for number, record in zip(pages, records):
+            prefix = f"p{number:02}"
+            assert record["source_page"] == number, f"{prefix}: original source page identity"
+            assert record["source_sha256"] == _SOURCE_SHA256, f"{prefix}: original source PDF hash"
+            _check_source_regions(record)
+            chars = [char for char in _chars(source[number-1]) if not char["c"].isspace()]
+            omitted = _inside(chars, (500, 30, 570, 62))
+            assert _compact(_reading(omitted, (1, 0))) == f"13-{number}", f"{prefix}: original page number"
+            figure_boxes = [asset["source_bbox"] for asset in assets if asset["source_page"] == number]
+            excluded = {id(char) for char in omitted}
+            excluded.update(id(char) for box in figure_boxes for char in _inside(chars, box))
+            chars = [char for char in chars if id(char) not in excluded]
+            assert Counter(char["c"] for char in chars) == Counter(record["source_character_inventory"]), f"{prefix}: original character inventory"
+            assert sum(char["c"] == "※" for char in chars) == record["marker_count"], f"{prefix}: original marker count"
+            content = [char for char in chars if char["c"] != "※"]
+            covered = Counter()
+            identifiers = set()
+            for block in record["blocks"]:
+                for item in block.get("cells", [block]):
+                    assert item["id"] not in identifiers, f"{prefix}: duplicate original item identity"
+                    identifiers.add(item["id"])
+                    selected = _inside(content, item["source_bbox"])
+                    _original_item(selected, item)
+                    covered.update(id(char) for char in selected)
+                    verified_items += 1
+            assert covered == Counter({id(char): 1 for char in content}), f"{prefix}: original glyph coverage"
+    return {"source_pages": list(pages), "verified_items": verified_items,
+            "complete_37_pages": pages == tuple(range(1, 38))}
 
 
 def _group_bars(rules):
@@ -395,22 +565,15 @@ def verify_pdf(path, *, source_pages, trace=None, grid=False, manifest=None):
     ``oracle_regions`` is a test-only shape used to inspect source controls.
     Real generated output supplies the native ``layout_trace`` structure.
     """
-    pages = tuple(source_pages)
-    if (not pages or any(type(n) is not int or not 1 <= n <= 37 for n in pages)
-            or len(set(pages)) != len(pages) or pages != tuple(sorted(pages))):
-        raise ValueError("source pages must be unique, increasing integers in 1..37")
+    pages = _source_pages(source_pages)
     if not isinstance(grid, bool):
         raise ValueError("grid must be boolean")
     if trace is None:
         raise ValueError("source item regions require a layout trace")
     if isinstance(trace, (str, Path)):
         trace = json.loads(Path(trace).read_text(encoding="utf-8"))
-    expected = []
-    for n in pages:
-        file = EXPECTED / f"p{n:02}.json"
-        if not file.is_file():
-            raise ValueError(f"source oracle missing for p{n:02}")
-        expected.append(json.loads(file.read_text(encoding="utf-8")))
+    expected = _source_records(pages)
+    source_order = verify_source_order(pages, records=expected)
     native_trace = "oracle_regions" not in trace
     regions_by_page = trace["pages"] if native_trace else trace["oracle_regions"]
     assert len(regions_by_page) == len(pages), "trace page count"
@@ -483,4 +646,5 @@ def verify_pdf(path, *, source_pages, trace=None, grid=False, manifest=None):
             if native_trace and 3 <= source <= 8:
                 _train_anchors(chars,record,regions)
     return {"source_pages": list(pages), "verified_items": verified_items,
-            "complete_37_pages": pages == tuple(range(1, 38)), "variant": "grid" if grid else "normal"}
+            "complete_37_pages": pages == tuple(range(1, 38)), "variant": "grid" if grid else "normal",
+            "source_order": source_order}

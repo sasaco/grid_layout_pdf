@@ -16,11 +16,11 @@ import sys
 from copy import deepcopy
 
 from gridlayoutpdf import (
-    A4_PORTRAIT_REFERENCE, Cell, Columns, Document, Equation, EquationAnchors,
+    A4_PORTRAIT_REFERENCE, Cell, CellLines, Columns, Document, Equation, EquationAnchors,
     EquationGroup, Figure, FontRegistry, Fraction, GridSpec, KeepTogether,
     LayoutOverflowError, LayoutPart, Line, Literal, MathBlock, MeasuredBlock,
     Operator, PageBreak, PageProfile, Paragraph, RasterImage, ReportStyle, Row, Script, Spacer, Stack,
-    Table, TextStyle,
+    Table, TextStyle, Insets, Image as LayoutImage,
 )
 
 
@@ -77,11 +77,7 @@ def math_node(value):
 
 @dataclass(frozen=True)
 class CompactCell:
-    """A few explicit math/text baselines, measured at their supplied font size.
-
-    Table still owns widths, row allocation, alignment, merges, and all rules.
-    The local pitch only quantizes the reservation; it never scales glyphs.
-    """
+    """Decode authored JSON lines; public CellLines owns point layout and safety."""
 
     lines: tuple
     style: TextStyle = TextStyle()
@@ -94,31 +90,12 @@ class CompactCell:
     def measure(self, context, available_width):
         if self.line_sizes and len(self.line_sizes) != len(self.lines):
             raise ValueError(f"{self.block_id}: line_sizes must match lines")
-        boxes = [math_node(line).measure(context.fonts, TextStyle(self.style.font, self.line_sizes[index], self.style.tracking)
-                                        if self.line_sizes else self.style)
-                 for index, line in enumerate(self.lines)]
-        if not boxes:
-            return MeasuredBlock(available_width, context.profile.grid.pitch_y, block_id=self.block_id)
-        width = max(box.width for box in boxes) + 2 * self.inline_padding
-        width = width or available_width
-        if width > available_width + 1e-7:
-            raise LayoutOverflowError(
-                f"{self.block_id}: compact cell width {width} exceeds {available_width}",
-                block_id=self.block_id, needed=width, available=available_width,
-            )
-        baseline = boxes[0].ascent
-        top = min(baseline + index * self.line_advance - box.ascent for index, box in enumerate(boxes))
-        bottom = max(baseline + index * self.line_advance + box.descent for index, box in enumerate(boxes))
-        rows = max(1, context.rows_for(max(self.min_height, bottom - top)))
-        height = rows * context.profile.grid.pitch_y
-        offset = (height - (bottom - top)) / 2 - top
-        commands = tuple(command for index, box in enumerate(boxes)
-                         for command in box.translated((width - box.width) / 2,
-                                                       baseline + offset + index * self.line_advance))
-        return MeasuredBlock(width, context.profile.grid.pitch_y,
-                             (LayoutPart(rows, commands, {"line_advance": self.line_advance,
-                                                         "line_count": len(boxes)}),),
-                             block_id=self.block_id)
+        styles = (tuple(replace(self.style, size=size) for size in self.line_sizes)
+                  if self.line_sizes else None)
+        return CellLines(tuple(math_node(line) for line in self.lines), style=self.style,
+                         line_styles=styles, line_advance=self.line_advance, min_height=self.min_height,
+                         inner_padding=Insets(left=self.inline_padding, right=self.inline_padding),
+                         align="center", block_id=self.block_id).measure(context, available_width)
 
 
 @dataclass(frozen=True)
@@ -152,13 +129,26 @@ class SourceFigure:
             raise ValueError(f"{self.block_id}: figure normalized byte hash changed")
         x0, y0, x1, y1 = self.metadata["source_bbox"]
         width, height = x1 - x0, y1 - y0
-        if width > available_width + 1e-7:
-            raise LayoutOverflowError(f"{self.block_id}: source-sized figure exceeds available width",
-                                      block_id=self.block_id, needed=width, available=available_width)
-        return MeasuredBlock(width, context.profile.grid.pitch_y,
-                             (LayoutPart(context.rows_for(height), (RasterImage(0, 0, width, height, normalized_data),),
-                                         {"figure_id": self.metadata["id"], "source_page": self.metadata["source_page"]}),),
-                             keep_together=True, block_id=self.block_id)
+        measured = LayoutImage(path, width_pt=width, height_pt=height, align="left", valign="top",
+                               block_id=self.block_id).measure(context, available_width)
+        # Validate the bytes actually retained by Image, not only our earlier
+        # read: the asset could have changed between provenance and measurement.
+        if len(measured.commands) != 1 or not isinstance(measured.commands[0], RasterImage):
+            raise ValueError(f"{self.block_id}: measured figure must contain one raster snapshot")
+        command = measured.commands[0]
+        if (command.x, command.y, command.width, command.height) != (0, 0, width, height):
+            raise ValueError(f"{self.block_id}: measured figure physical dimensions changed")
+        with Image.open(BytesIO(command.data)) as snapshot:
+            if snapshot.size != (self.metadata["pixel_width"], self.metadata["pixel_height"]):
+                raise ValueError(f"{self.block_id}: measured figure pixel dimensions changed")
+            if sha256(snapshot.convert("RGB").tobytes()).hexdigest() != self.metadata["decoded_pixel_sha256"]:
+                raise ValueError(f"{self.block_id}: measured figure pixel hash changed")
+        normalized_hash = self.metadata.get("normalized_byte_sha256", sha256(normalized_data).hexdigest())
+        if sha256(command.data).hexdigest() != normalized_hash:
+            raise ValueError(f"{self.block_id}: measured figure normalized byte hash changed")
+        return replace(measured, parts=tuple(replace(part, metadata={**part.metadata,
+                       "figure_id": self.metadata["id"], "source_page": self.metadata["source_page"]})
+                       for part in measured.parts))
 
 
 def _style(data):

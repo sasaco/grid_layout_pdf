@@ -7,7 +7,7 @@ from .bounds import command_bounds
 from .errors import FontError, LayoutOverflowError
 from .layout import Block, LayoutContext, LayoutPart, MeasuredBlock, measure_block
 from .scene import Line
-from .styles import TextStyle, _finite_number
+from .styles import Insets, TextStyle, _finite_number, _resolve_insets
 
 
 # Match the absolute roundoff allowance at the shared measurement boundary.
@@ -39,7 +39,7 @@ class Cell:
     rowspan: int = 1
     align: str | None = None
     valign: str = "middle"
-    padding: float = 3.0
+    padding: float | Insets = 3.0
     style: TextStyle | None = None
 
     def __post_init__(self):
@@ -53,10 +53,9 @@ class Cell:
             raise ValueError("align must be None, left, center or right")
         if self.valign not in ("top", "middle", "bottom"):
             raise ValueError("valign must be top, middle or bottom")
-        padding = _finite_number(self.padding, "padding")
-        if padding < 0:
-            raise ValueError("padding must be nonnegative")
-        object.__setattr__(self, "padding", padding)
+        resolved = _resolve_insets(self.padding, "padding")
+        if not isinstance(self.padding, Insets):
+            object.__setattr__(self, "padding", resolved.top)
         if self.style is not None:
             if not isinstance(self.style, TextStyle):
                 raise ValueError("style must be a TextStyle or None")
@@ -86,6 +85,10 @@ class Table:
     Content and padding must fit those exact allocations, including rowspans;
     insufficient space raises instead of expanding rows or shrinking content.
     None preserves automatic row allocation.
+
+    split=False emits one indivisible part including the header. Shared rules
+    are merged within that part. The default True retains independent seams
+    and repeatable headers for pagination.
     """
 
     columns: tuple[int, ...]
@@ -93,6 +96,7 @@ class Table:
     _: KW_ONLY
     header_rows: int = 0
     row_heights: tuple[int, ...] | None = None
+    split: bool = True
     numeric_columns: tuple[int, ...] = ()
     border_width: float = 0.5
     border_color: tuple[float, float, float] = (0, 0, 0)
@@ -137,6 +141,8 @@ class Table:
                 _finite_number(height, "row_heights")
             object.__setattr__(self, "row_heights", heights)
         _integer(self.header_rows, "header_rows")
+        if not isinstance(self.split, bool):
+            raise ValueError("split must be a boolean")
         if self.header_rows > len(rows):
             raise ValueError("header_rows must not exceed the number of rows")
         try:
@@ -205,32 +211,60 @@ class Table:
                         for index in range(len(self.columns) + 1)]
         measured = []
         row_heights = [1] * len(self.rows) if self.row_heights is None else list(self.row_heights)
+        allocations = [{"row": index, "specified_rows": None if self.row_heights is None else height,
+                        "controlling_cell_ids": [], "rowspan_added_rows": 0}
+                       for index, height in enumerate(row_heights)]
+        requirements = {}
         for placed in self._cells:
             cell = placed.cell
             content, align = self._measure_cell(context, placed)
             measured.append((placed, content, align))
+            padding = _resolve_insets(cell.padding, "padding")
+            required_height = content.height + (padding.top + padding.bottom)
+            required_rows = context.rows_for(required_height)
+            requirements[self._path(placed)] = {
+                "child_reserved_height_pt": content.height,
+                "required_height_pt": required_height,
+                "required_rows": required_rows,
+                "outer_rounding_added_pt": required_rows * pitch - required_height,
+                "child_rounding_then_outer_padding": bool(padding.top + padding.bottom) and any(
+                    part.metadata.get("height_rounding") == "single" for part in content.parts),
+            }
             if self.row_heights is None and cell.rowspan == 1:
-                row_heights[placed.row] = max(row_heights[placed.row], context.rows_for(content.height + 2 * cell.padding))
+                previous = row_heights[placed.row]
+                row_heights[placed.row] = max(previous, required_rows)
+                if required_rows >= previous:
+                    controllers = allocations[placed.row]["controlling_cell_ids"]
+                    if required_rows > previous:
+                        controllers.clear()
+                    controllers.append(self._path(placed))
         for placed, content, _ in sorted(measured, key=lambda item: (item[0].cell.rowspan, item[0].row, item[0].col)):
             cell = placed.cell
             stop = placed.row + cell.rowspan
             if self.row_heights is not None:
-                needed = content.height + 2 * cell.padding
+                needed = requirements[self._path(placed)]["required_height_pt"]
                 available = sum(row_heights[placed.row:stop]) * pitch
                 if needed > available + _ROUNDING_TOLERANCE:
                     raise LayoutOverflowError(
                         f"{self._path(placed)}: content and padding require {needed} pt "
-                        f"but row_heights provide {available} pt",
+                        f"but row_heights provide {available} pt (shortage {needed - available} pt)",
                         block_id=self._path(placed), needed=needed, available=available,
                     )
             elif cell.rowspan > 1:
-                required = context.rows_for(content.height + 2 * cell.padding)
+                required = requirements[self._path(placed)]["required_rows"]
                 deficit = required - sum(row_heights[placed.row:stop])
                 if deficit > 0:
                     row_heights[stop - 1] += deficit
-        parts = tuple(self._make_part(context, start, stop, row_heights, column_edges, measured)
-                      for start, stop in self._row_groups())
-        if self.header_rows and self.header_rows < len(self.rows):
+                    allocations[stop - 1]["rowspan_added_rows"] += deficit
+                    allocations[stop - 1]["controlling_cell_ids"].append(self._path(placed))
+        for allocation, height in zip(allocations, row_heights, strict=True):
+            allocation["allocated_rows"] = height
+            allocation["allocated_height_pt"] = height * pitch
+        groups = self._row_groups() if self.split else [(0, len(self.rows))]
+        parts = tuple(self._make_part(context, start, stop, row_heights, column_edges, measured,
+                                      requirements, allocations)
+                      for start, stop in groups)
+        if self.split and self.header_rows and self.header_rows < len(self.rows):
             prefix, body = parts[:1], parts[1:]
         else:
             prefix, body = (), parts
@@ -240,11 +274,12 @@ class Table:
         cell = placed.cell
         cell_width = self._cell_width(placed, context.profile.grid.pitch_x)
         path = self._path(placed)
-        available = cell_width - 2 * cell.padding
+        padding = _resolve_insets(cell.padding, "padding")
+        available = cell_width - (padding.left + padding.right)
         if available <= 0:
             raise LayoutOverflowError(
                 f"{path}: padding leaves no content width", block_id=path,
-                needed=2 * cell.padding, available=cell_width,
+                needed=padding.left + padding.right, available=cell_width,
             )
         align = cell.align or ("right" if cell.colspan == 1 and placed.col in self.numeric_columns else "left")
         block = Paragraph(cell.content, style=cell.style, align=align, block_id=path) if isinstance(cell.content, str) else cell.content
@@ -281,7 +316,8 @@ class Table:
         # Subtracting distant column edges makes equal spans position-dependent.
         return sum(self.columns[placed.col:placed.col + placed.cell.colspan]) * pitch_x
 
-    def _make_part(self, context, start, stop, row_heights, column_edges, measured):
+    def _make_part(self, context, start, stop, row_heights, column_edges, measured,
+                   requirements, allocations):
         pitch = context.profile.grid.pitch_y
         row_edges = {r: sum(row_heights[start:r]) * pitch for r in range(start, stop + 1)}
         width, height = column_edges[-1], row_edges[stop]
@@ -297,6 +333,7 @@ class Table:
             if not start <= placed.row < stop:
                 continue
             cell = placed.cell
+            padding = _resolve_insets(cell.padding, "padding")
             x0, x1 = column_edges[placed.col], column_edges[placed.col + cell.colspan]
             cell_width = self._cell_width(placed, context.profile.grid.pitch_x)
             y0, y1 = row_edges[placed.row], row_edges[placed.row + cell.rowspan]
@@ -321,8 +358,8 @@ class Table:
                             f"{self._path(placed)}: rule width exceeds cell or part dimensions",
                             block_id=self._path(placed), needed=stroke, available=available,
                         )
-            content_x = x0 + cell.padding + (cell_width - 2 * cell.padding - content.width) * {"left": 0, "center": 0.5, "right": 1}[align]
-            content_y = y0 + cell.padding + (y1 - y0 - 2 * cell.padding - content.height) * {"top": 0, "middle": 0.5, "bottom": 1}[cell.valign]
+            content_x = x0 + padding.left + (cell_width - (padding.left + padding.right) - content.width) * {"left": 0, "center": 0.5, "right": 1}[align]
+            content_y = y0 + padding.top + (y1 - y0 - (padding.top + padding.bottom) - content.height) * {"top": 0, "middle": 0.5, "bottom": 1}[cell.valign]
             translated = content.translated(content_x, content_y)
             left = x0 + (left_width if x0 == 0 else left_width / 2)
             right = x1 - (right_width if x1 == width else right_width / 2)
@@ -349,6 +386,11 @@ class Table:
             cells.append({
                 "row": placed.row, "col": placed.col, "rowspan": cell.rowspan, "colspan": cell.colspan,
                 "frame": {"x_pt": x0, "y_pt": y0, "width": cell_width, "height": y1 - y0},
+                "cell_id": self._path(placed),
+                "padding_pt": {edge: getattr(padding, edge) for edge in ("top", "right", "bottom", "left")},
+                "height_allocation": {**requirements[self._path(placed)],
+                                      "allocated_height_pt": y1 - y0,
+                                      "available_content_height_pt": y1 - y0 - padding.top - padding.bottom},
                 "content": _content_trace(content, content_x, content_y),
             })
             for edge, stroke in ((y0, top_width), (y1, bottom_width)):
@@ -368,6 +410,8 @@ class Table:
         return LayoutPart(sum(row_heights[start:stop]), tuple(commands), {
             "columns_pt": tuple(columns * context.profile.grid.pitch_x for columns in self.columns),
             "source_rows": tuple(range(start, stop)), "row_heights": tuple(row_heights[start:stop]), "cells": cells,
+            "height_mode": "automatic" if self.row_heights is None else "explicit",
+            "row_allocations": allocations[start:stop],
         })
 
 

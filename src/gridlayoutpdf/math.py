@@ -2,14 +2,15 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass, replace
+from dataclasses import KW_ONLY, dataclass, replace
 import math as _math
 from typing import Protocol, cast, runtime_checkable
 
+from .bounds import command_bounds
 from .errors import LayoutError
 from .fonts import FontRegistry
-from .geometry import Point
-from .scene import Command, Line, Polyline, Rectangle, Text
+from .geometry import Point, Rect
+from .scene import Command, Line, Polyline, Rectangle, Text, _text_matrix
 from .styles import TextStyle, _finite_number
 
 
@@ -177,13 +178,49 @@ class Fraction:
         )
 
 
+def _script_ink(commands: tuple[Command, ...], fonts: FontRegistry) -> tuple[Rect, ...]:
+    """Actual ink for explicit-script checks, without changing layout bounds."""
+    result = []
+    for command in commands:
+        if isinstance(command, Text):
+            metrics = fonts.measure(fonts.normalize_text(command.text), command.style)
+            bounds = metrics.ink_bounds if metrics.ink_bounds is not None else metrics.bounds
+            if bounds.width == 0 or bounds.height == 0:
+                continue
+            a, b, c, d = _text_matrix(command.quarter_turns, command.shear_x)
+            points = [(a * x + c * y, b * x + d * y)
+                      for x in (bounds.x, bounds.right) for y in (bounds.y, bounds.bottom)]
+            left, right = min(x for x, _ in points), max(x for x, _ in points)
+            top, bottom = min(y for _, y in points), max(y for _, y in points)
+            result.append(Rect(command.x + left, command.y + top, right - left, bottom - top))
+        else:
+            result.append(command_bounds(command, fonts))
+    return tuple(result)
+
+
+def _script_contacts(first: tuple[Rect, ...], second: tuple[Rect, ...]) -> bool:
+    return any(a.x <= b.right + 1e-9 and b.x <= a.right + 1e-9
+               and a.y <= b.bottom + 1e-9 and b.y <= a.bottom + 1e-9
+               for a in first for b in second)
+
+
 @dataclass(frozen=True, slots=True)
 class Script:
-    """A base with optional upper/lower scripts at 65% of its text size."""
+    """A base with scripts, preserving automatic placement by default.
+
+    Explicit rise/drop are positive pt distances from the base baseline. They
+    are never clamped. Opt-in placement validates actual ink roles around the
+    math axis, base contact and upper/lower clearance; only automatic offsets
+    may move to achieve clearance. Box extents remain conservative layout bounds.
+    """
 
     base: MathNode | str
     superscript: MathNode | str | None = None
     subscript: MathNode | str | None = None
+    _: KW_ONLY
+    scale: float = .65
+    superscript_rise: float | None = None
+    subscript_drop: float | None = None
 
     def __post_init__(self) -> None:
         object.__setattr__(self, "base", as_math(self.base))
@@ -191,6 +228,20 @@ class Script:
             value = getattr(self, name)
             if value is not None:
                 object.__setattr__(self, name, as_math(value))
+        scale = _finite_number(self.scale, "scale")
+        if not 0 < scale <= 1:
+            raise ValueError("scale must be greater than zero and at most one")
+        object.__setattr__(self, "scale", scale)
+        for name, child in (("superscript_rise", self.superscript),
+                            ("subscript_drop", self.subscript)):
+            value = getattr(self, name)
+            if value is not None:
+                value = _finite_number(value, name)
+                if value <= 0:
+                    raise ValueError(f"{name} must be positive")
+                if child is None:
+                    raise ValueError(f"{name} requires its corresponding script")
+                object.__setattr__(self, name, value)
 
     def measure(self, fonts: FontRegistry, style: TextStyle) -> MathBox:
         _validate_context(fonts, style)
@@ -202,7 +253,7 @@ class Script:
         commands = list(base.translated(0, base_y))
         if self.superscript is None and self.subscript is None:
             return MathBox(base.width, ascent, descent, tuple(commands), axis)
-        script_style = replace(style, size=style.size * 0.65)
+        script_style = replace(style, size=style.size * self.scale)
         upper_node = cast(MathNode | None, self.superscript)
         lower_node = cast(MathNode | None, self.subscript)
         upper = upper_node.measure(fonts, script_style) if upper_node is not None else None
@@ -214,6 +265,13 @@ class Script:
         if upper is not None and lower is not None:
             lower_y = max(lower_y, upper_y + upper.descent + style.size * 0.15 + lower.ascent)
         script_x = base.width + style.size * 0.1
+        if self.superscript_rise is not None:
+            upper_y = base_y - self.superscript_rise
+        if self.subscript_drop is not None:
+            lower_y = base_y + self.subscript_drop
+        if self.scale != .65 or self.superscript_rise is not None or self.subscript_drop is not None:
+            upper_y, lower_y = self._safe_offsets(
+                fonts, style, base, base_y, upper, lower, script_x, upper_y, lower_y, axis)
         width = base.width
         for box, y in ((upper, upper_y), (lower, lower_y)):
             if box is not None:
@@ -222,6 +280,49 @@ class Script:
                 ascent = max(ascent, box.ascent - y)
                 descent = max(descent, box.descent + y)
         return MathBox(width, ascent, descent, tuple(commands), axis)
+
+    def _safe_offsets(self, fonts: FontRegistry, style: TextStyle, base: MathBox,
+                      base_y: float, upper: MathBox | None, lower: MathBox | None,
+                      script_x: float, upper_y: float, lower_y: float,
+                      axis: float) -> tuple[float, float]:
+        base_ink = _script_ink(base.translated(0, base_y), fonts)
+        gap = style.size * .15
+        positions = [upper_y, lower_y]
+        scripts = (upper, lower)
+        explicit = (self.superscript_rise is not None, self.subscript_drop is not None)
+        for index, box in enumerate(scripts):
+            if box is None:
+                continue
+            ink = _script_ink(box.translated(script_x, positions[index]), fonts)
+            if not ink:
+                continue
+            center = (min(rect.y for rect in ink) + max(rect.bottom for rect in ink)) / 2
+            wrong_role = center >= -axis if index == 0 else center <= -axis
+            name = "superscript" if index == 0 else "subscript"
+            if wrong_role:
+                if explicit[index]:
+                    raise LayoutError(f"Script: explicit {name} ink violates its role around the math axis")
+                positions[index] += -axis - center + (-gap if index == 0 else gap)
+                ink = _script_ink(box.translated(script_x, positions[index]), fonts)
+            if _script_contacts(base_ink, ink):
+                if explicit[index]:
+                    raise LayoutError(f"Script: explicit {name} ink contacts the base")
+                if index == 0:
+                    positions[index] += min(rect.y for rect in base_ink) - gap - max(rect.bottom for rect in ink)
+                else:
+                    positions[index] += max(rect.bottom for rect in base_ink) + gap - min(rect.y for rect in ink)
+        upper_ink = _script_ink(upper.translated(script_x, positions[0]), fonts) if upper else ()
+        lower_ink = _script_ink(lower.translated(script_x, positions[1]), fonts) if lower else ()
+        if upper_ink and lower_ink:
+            missing = max(rect.bottom for rect in upper_ink) + gap - min(rect.y for rect in lower_ink)
+            if missing > 1e-9:
+                if not explicit[1]:
+                    positions[1] += missing
+                elif not explicit[0]:
+                    positions[0] -= missing
+                else:
+                    raise LayoutError("Script: explicit scripts have insufficient ink clearance")
+        return positions[0], positions[1]
 
 
 @dataclass(frozen=True, slots=True)

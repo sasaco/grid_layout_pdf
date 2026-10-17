@@ -66,3 +66,52 @@ def test_equation_proof_extracts_fixed_centers_results_units_order_and_sizes(tmp
     assert any(part["metadata"]["result_line"] for part in trace["pages"][0]["parts"])
     assert trace["pages"][0]["parts"][0]["metadata"]["anchors_pt"]["first_equal"] == pytest.approx(160.8)
     assert len(list((tmp_path / "previews").glob("*.png"))) == 4
+
+
+@pytest.mark.parametrize("font_path", [FONT, Path("C:/Windows/Fonts/msmincho.ttc"),
+                                      Path("C:/Windows/Fonts/msgothic.ttc")])
+def test_explicit_script_p9_size_and_baselines_survive_pdf(font_path, tmp_path):
+    from gridlayoutpdf.fonts import FontRegistry
+    from gridlayoutpdf.math import Script
+    from gridlayoutpdf.profiles import A4_PORTRAIT_REFERENCE
+    from gridlayoutpdf.renderers.reportlab import render_pdf
+    from gridlayoutpdf.scene import ScenePage
+    from gridlayoutpdf.styles import TextStyle
+    if not font_path.is_file():
+        pytest.skip("optional Windows comparison font is not installed")
+    fonts = FontRegistry()
+    fonts.register("body", font_path)
+    box = Script("P", "2", "B", scale=.6639,
+                 superscript_rise=4.92, subscript_drop=1.92).measure(fonts, TextStyle(size=10))
+    output = tmp_path / "explicit-script.pdf"
+    render_pdf((ScenePage(A4_PORTRAIT_REFERENCE, box.translated(70, 80)),), output, fonts)
+    with pymupdf.open(output) as pdf:
+        extracted = {char["c"]: (char, span) for char, span in chars(pdf[0]) if not char["c"].isspace()}
+        assert set(extracted) == {"P", "2", "B"}
+        assert extracted["P"][0]["origin"][1] == pytest.approx(80, abs=.001)
+        assert extracted["2"][0]["origin"][1] == pytest.approx(75.08, abs=.001)
+        assert extracted["B"][0]["origin"][1] == pytest.approx(81.92, abs=.001)
+        for token in ("2", "B"):
+            assert extracted[token][1]["size"] == pytest.approx(6.639, abs=.001)
+        assert extracted["P"][1]["size"] == pytest.approx(10, abs=.001)
+        assert not pdf[0].get_images()
+
+
+def test_explicit_script_extents_propagate_to_mathblock_and_overflow():
+    from gridlayoutpdf.equations import MathBlock
+    from gridlayoutpdf.errors import LayoutOverflowError
+    from gridlayoutpdf.fonts import FontRegistry
+    from gridlayoutpdf.layout import LayoutContext, measure_block
+    from gridlayoutpdf.math import Script
+    from gridlayoutpdf.profiles import A4_PORTRAIT_REFERENCE
+    from gridlayoutpdf.styles import ReportStyle, TextStyle
+    fonts = FontRegistry()
+    fonts.register("body", FONT)
+    context = LayoutContext(fonts, A4_PORTRAIT_REFERENCE, ReportStyle())
+    expression = Script("x", "2", "j", scale=.8, superscript_rise=25, subscript_drop=20)
+    box = expression.measure(fonts, TextStyle(size=10))
+    measured = measure_block(MathBlock(expression, block_id="large-script"), context, 100)
+    assert measured.height >= box.height
+    assert measured.rows > measure_block(MathBlock(Script("x", "2", "j")), context, 100).rows
+    with pytest.raises(LayoutOverflowError, match="large-script"):
+        measure_block(MathBlock(expression, block_id="large-script"), context, box.width - .1)

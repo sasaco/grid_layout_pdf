@@ -124,3 +124,17 @@ rootは再生成した最終候補の通常37枚/grid37枚を個別表示し、�
 追加APIを含むsdist→wheelも、リポジトリ外の新規Python3.12.12/3.13.11で受入済みです。21製品moduleを含み、原本・書体・検証コードを配布物へ含めません。PyMuPDF未導入でQuarterTurn±1、選択罫線、Table.row_heightsと過小高の拒否、Text.shear_x、後続の水平文字を検証し、両環境の画素一致を確認しました。証拠は`build/reports/cantilever-p01-37/wheel-acceptance.json`です。
 
 初回1508件の検証と`20261017T005753Z-7952a1f3f915474c8a478f77d40cf9da`は外観修正前の履歴です。今回の完成版は`versions/20261017T023053Z-a954761644604bd1a289b5fcdd9f20d1/`で、独立レビュー未解決0・全ゲート通過後に有効化しました。`build/reports/cantilever-p01-37/current.json`の解決先、128入力・78成果物のhash、両PDF37頁・A4縦・Rotate0をrootが再確認済みです。記録は同rootの`appearance-correction-current-audit.json`です。
+
+### 片持ち梁の改善計画と共通API
+
+2026-10-17の承認済み改善計画で、`Insets`、`CellLines`、表の行高診断、`Image`の物理寸法、`Script`の明示サイズ・基線offset、`Table(split=False)`を追加しました。既定の分割・丸め・画像fit・添字配置は保持します。`split=False`はheaderを含む全行を1partへまとめ、共有罫線を統合します。任意分割表のページ境界をまたぐ線の統合は対象外です。
+
+レビュー指摘修正後の最終全件検証は **1939 passed（192.16秒）**、行カバレッジは **98.825109%（2979行中2944行）**。ログは`.agents/logs/cantilever-improvements-revised-final.log`、実数は`cantilever-improvements-revised-final-coverage.json`です。原本対expectedの文字順序と添字の役割を直接検査するゲートを、生成前・有効化前へ追加しました。同じ文字集合の桁交換、符号移動、回転セル、添字role/index/textの改変を負例で検査します。さらに基準commitの全37頁・3345項目のIDと原本bboxだけを独立pinし、本文とbboxの連動交換・ID交換・微小bbox変更も拒否します。本文・方向・添字は固定hashへ含めず、原本から直接検査します。
+
+全16図を物理寸法Imageへ、旧CompactCellをCellLinesへ委譲し、829セルと16図を検査しました。非等間隔アンカーを持つ現行SourceCell/SourceScriptと表の原本配置は維持しています。新APIを組み合わせた別3頁の実証では、298セルを独立expectedと実PDFで照合し、通常/grid計6画像をrootも確認しました。密な表に必要な内側余白と局所容量は実証側で明示し、原本の37頁へ転用していません。
+
+初回候補031210の通常/grid計74枚を個別目視しました。修正後の最終候補033209は、その全74枚および外観受入版023053とPNG bytes・画素配列の両方が完全一致することを確認し、同一画像の目視結果を再利用しました。最終候補の代表5頁×通常/gridの10画像も再表示して確認しています。原本PDFとの内容・外観検査は最終候補の全37頁で合格。golden PNGは保持し、manifestの入力hashと目視記録だけを更新しました。原本そのものとの全画素一致を意味しません。
+
+修正後にsdistから再生成したwheelは22製品moduleを含み、Python3.12.12/3.13.11の新規環境へインストールして新APIを描画しました。両版の画素・物理画像寸法・文字内容が一致し、PyMuPDFを導入していないことを確認しました。結果は`build/reports/cantilever-p01-37/improvements-wheel-acceptance.json`、wheel SHA-256は`14ac344e68447ef802580824e14b02cf6a719c6d7b04ea0a92dc28125ac02510`です。
+
+独立レビューのQ01（原本領域対応・Medium）とQ02（枠逸脱診断の軸・Low）を修正して再レビューし、未解決0件となりました。全ゲート通過後に`versions/20261017T033209Z-f93e3db55c094beaa28d3b3029fc2b7d/`を有効化し、129入力・78成果物・currentの解決先・両PDF37頁を再監査済みです。旧versionは保持しています。詳細と成果物へのリンクは[改善計画の実行記録](../.agents/docs/plans/cantilever-p01-37-improvements-execution.md)を参照してください。

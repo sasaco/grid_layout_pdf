@@ -22,6 +22,8 @@ Python の自作 PDF 計算書ライブラリを設計する。A4.pdf の GridLa
 
 2026-10-17 更新：ユーザーがcantilever-pages-01-37計画の実装開始を承認。固定37頁・頁番号不要・回転表原本ままというFR-014を優先して実装・検証する。不足機能・改善候補はresearch/cantilever-p01-37-improvements.mdに根拠、今回の対応、検証状況を継続記録する。
 
+2026-10-17 P7移行の新規依頼: K:/ニュージャパンコンサルタンツ/26_LRT鉄道照査/P7橋脚/pier_designのPDF生成を6帳票すべてGridLayoutPdfへ移行する計画を策定する。計算ロジック・入力画面・入出力仕様の維持、Example橋脚/outputの体裁だけを参照、全6帳票の可変ページ数をgrillで確認済み。これまでのP7移行範囲外という記録は初期ライブラリ/片持ち梁作業の境界として残し、今回の独立した依頼にはFR-016/017を適用する。計画slugはpier-report-grid-migration。具体的計画の作成・レビュー・提示は継続中。
+
 ## 機能要件 (Functional Requirements)
 
 | ID | Requirement | Priority | Notes |
@@ -41,6 +43,9 @@ Python の自作 PDF 計算書ライブラリを設計する。A4.pdf の GridLa
 | FR-013 | 片持ち梁照査p30〜37の大表は、原本どおりA4縦の紙面内で90度回転した配置を保つ | Must | 2026-10-17 grill-with-docsでA3横正規化またはA4分割を提示したところ、ユーザーは『原本まま』と回答。文字・数式・表の画像化で対応せず、元の読み順・表構造と独立したページ番号を保持する。この回答は大表の扱いへの指定であり、全37ページの原本座標・改ページ完全一致という新要件には拡張しない。 |
 | FR-014 | 片持ち梁p1〜37は原本ページと出力ページを1対1に固定し、あふれをエラーとして停止する。右上ページ番号は全ページで省く | Must | 2026-10-17 grill第2問でユーザーが『出力ページが増えたらエラー（原本再現できず）として止まってください。右上のページ番号は全ページ不要』と指定。今回の再現テストに限り、FR-012の注記『出力37ページ固定を意味しない』とFR-013の頁番号保持を上書きする。全37ページ・各原本ページの内容境界を保持し、欠落による頁数減少も成功にしない。既存ライブラリ一般の自動改ページ機能は維持する。 |
 | FR-015 | 片持ち梁p1〜37の再現では、原本の書体、階層別インデント、等号の紙面内位置、表の行高を保持する | Must | 2026-10-17 ユーザーが生成版のfont・indent・equals位置・table row heightの相違を指摘。今回の再現fixtureについて、従来のIPAex/標準グリッドへの体裁統一をこれらの項目へ適用しない。全37頁固定・頁番号省略・あふれ時停止・native本文/数式/表を継続する。原本と生成物の直接比較で検証し、生成物同士のgolden一致だけでは受入しない。 |
+| FR-016 | P7橋脚アプリのPDF生成部分を6帳票すべてGridLayoutPdfへ移行し、既存計算・入力画面・入出力仕様を維持する | Must | 2026-10-17 grill第1問にユーザーがyesと回答。対象は0500/0600/0610/0620/0710/0720と、それらが用いる本文・数式・表・図の生成。Example橋脚/outputの4PDFは体裁見本であり計算仕様・期待数値へ置き換えない。 |
+| FR-017 | P7の全6帳票は見本の書体・字下げ・等号揃え・表行高を踏襲し、内容に応じたページ数の増減を許す | Must | 2026-10-17 grill第2問でユーザーが全6帳票の増減を選択。既存0710=3頁/0720=4頁固定も今回の移行では解除し、計算式や表のまとまりを保持して改ページする。原本69頁への固定や、片持ち梁fixtureの37頁固定・全頁番号省略をP7へ転用しない。 |
+| FR-018 | P7移行後の本文・数値・表を白黒に統一する | Must | 2026-10-17 grill第3問でユーザーが白黒統一を選択。見本の赤/青数値は黒、黄色表見出しは白地に変更し、書体・字下げ・等号揃え・表構造を保持する。今回のためのカラー文字/背景API拡張は不要。 |
 
 ## 非機能要件 (Non-Functional Requirements)
 
@@ -107,6 +112,11 @@ Python の自作 PDF 計算書ライブラリを設計する。A4.pdf の GridLa
 | Keep exact row heights and synthetic italic explicit and opt-in | 原本p1/p21の行高と人工斜体Dを復元するため、Table.row_heightsを正の局所整数行数、Text.shear_xを有限の横傾斜係数として追加する。既定None/0は既存表示を保持する。指定行高不足はLayoutOverflowError、傾斜の字送りは維持しbounds・回転・PDF文字行列・traceを整合させる。実PDFの原本比較、負例、配布環境の検証を伴う。 | 文字の縮小、描画後の画像化、fixture限定の私的renderer操作。 | 2026-10-17 |
 | Preserve source whitespace and compare actual ink for vertical punctuation | 原本の非空白文字一致と抽出bbox一致だけでは数式内の有意空白欠落とIdentity-V括弧の描画位置差を見逃した。意味行の空白と式のASTを両立させ、縦括弧は実描画のinkを原本と比較する。文字ごとの座標再生や式画像は使わない。 | 非空白inventoryだけで合格、自己goldenだけで合格、元PDFページを再利用。 | 2026-10-17 |
 | Compare native glyph positions in both axes and keep table ink measurement local | 外観再レビューで横位置だけの比較では上付きや意味runの縦ずれを見逃した。原本の基線差を意味ASTに保持し、進行方向と直交方向を独立に検査する。狭い原本表はfixture専用の実glyph ink計測で配置し、元FontRegistryと製品の保守的boundsは変更しない。原本罫線に接触する明示8セルのみ最大0.05ptの補正を許し、実inkと下辺余裕を検証する。全37頁で直交基線21204字、最大差0.043419pt、縦ずれ負例も合格。 | 全基線の許容を広げる、font boxを理由に本文全体を一律移動する、基準画像の自己一致だけで合格する。 | 2026-10-17 |
+| Implement explicit cell, image and script layout options while preserving the accepted source appearance | 2026-10-17ユーザーがcantilever-p01-37-improvementsの全8工程を承認。Insetsによる四辺余白と診断、CellLinesのpt内側配置後の一度の行丸め、Imageの物理寸法、Scriptの明示scale/基線offset、Tableの不可分モードをopt-inとして追加する。既定の計測・分割・描画を維持し、FR-015のSourceCell/SourceScript固有アンカーと局所ink測定は等価な範囲のみ共通化する。 | 全Blockの予約行規則を変更する、原本アンカーを汎用APIへ強制置換する、任意の分割表の罫線方式まで再設計する。 | 2026-10-17 |
+| Gate cantilever bundles on independent source glyph order as well as inventory and appearance | 同じセル内の数字順序交換はCounter一致だけでは検出できない。原本37頁の方向・基線・添字役割から独立した順序を確認し、prepare/activate双方で有効化を阻止する。既存の一回被覆・文字集合・generated-to-expected・原本外観比較は維持する。 | expectedをbuilderから再生成する、画素goldenまたは文字集合の一致だけを内容の根拠にする。 | 2026-10-17 |
+| Migrate all six P7 PDF report generators while preserving calculations and application interfaces | ユーザーがPDF生成部分すべての移行を確定。既存計算結果・表示値の意味・入力UI・CLI/GUIの操作・成果物一式の公開仕様を保ち、Example橋脚/outputの体裁を現在の計算内容へ適用する。 | 入力画面や計算処理も再設計する、4見本に対応する帳票だけを移行する、見本の数値・ケースへ現計算を戻す。 | 2026-10-17 |
+| Allow all P7 report page counts to vary while preserving reference typography and semantic groups | ユーザーが全6帳票のページ増減を選択。固定頁へ収めるための文字縮小を避け、見本の書体・字下げ・等号・表の行高と現在の全計算内容を両立する。0710/0720の旧固定頁条件を今回の移行について上書きする。 | 0710=3頁/0720=4頁だけを維持する、全6帳票の旧ページ割りを維持する、見本のページ数へ固定する。 | 2026-10-17 |
+| Use monochrome text, values and tables in migrated P7 reports | ユーザーは見本の色分け維持という提案に対して、本文・数値・表の白黒統一を選択した。色差を意図した変更として書式検査へ反映し、値や意味的な項目区分は保持する。 | 見本の赤/青数値と黄色表見出しを維持する。 | 2026-10-17 |
 
 ## TODO / Open Questions
 

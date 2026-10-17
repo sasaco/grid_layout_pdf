@@ -86,6 +86,7 @@ def prepare_bundle(output, fonts, *, source_pages=builder.SOURCE_PAGES):
     to activate_bundle. A proof subset is permanently ineligible for activation.
     """
     selected = builder._selection(source_pages)
+    source_order = _sibling("verify").verify_source_order(selected)
     inputs = _input_hashes(selected, fonts)
     pages = builder.layout_report(fonts, source_pages=selected)
     scene_image_count = _sibling("verify").verify_scene_images(
@@ -102,7 +103,7 @@ def prepare_bundle(output, fonts, *, source_pages=builder.SOURCE_PAGES):
                                               "block_id": f"p{source:02}"}
                                              for index, source in enumerate(selected, 1)])
     _previews(directory, selected)
-    checks = {"scene_image_count": scene_image_count}
+    checks = {"scene_image_count": scene_image_count, "source_order": source_order}
     for variant in ("normal", "grid"):
         checks[variant] = _verify_pdf(directory / f"{variant}.pdf", source_pages=selected,
                                       trace=trace, grid=variant == "grid", manifest=builder.load_manifest())
@@ -161,6 +162,7 @@ def activate_bundle(output, bundle, visual_review):
     required = expected_previews | {"normal.pdf", "grid.pdf", "trace.json", "mapping.json"}
     if not required.issubset(manifest["artifacts"]):
         raise ValueError("37-page bundle is missing required artifacts")
+    _sibling("verify").verify_source_order(builder.SOURCE_PAGES)
     for variant in ("normal", "grid"):
         _verify_pdf(directory / f"{variant}.pdf", source_pages=builder.SOURCE_PAGES,
                     trace=directory / "trace.json", grid=variant == "grid", manifest=builder.load_manifest())

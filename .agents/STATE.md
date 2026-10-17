@@ -264,3 +264,41 @@ root単独全体1738 passed / 107.30秒、製品行coverage98.923134%（2664/269
 ### Next
 
 今回の承認済み原本再現と外観修正に未完了工程なし。別途改善計画の汎用Script/辺別padding/物理寸法Image/罫線統合/実ink APIは未実装の将来候補として保持する。細罫のアンチエイリアス差があるため原本との全画素一致は主張しない。コミット・外部公開は行っていない。
+
+---
+
+## Current Feature: Cantilever improvements implementation approved and started
+<!-- orchestra:block-id: cantilever-improvements-start-20261017 -->
+
+### Status
+
+ユーザーのOK GOによりcantilever-p01-37-improvements全8工程を承認。team-execute/tddに従い原本順序検証、表/CellLines、画像/添字を所有分離して開始。実装・受入は未完了。
+
+### Baseline
+
+HEAD3da8b7cb71803c463029c68e155798f377c62e07、開始時clean。最新appearance受入023053を維持。全1738件合格67.63秒、logs/cantilever-improvements-baseline.log。入力・成果物hash一致、170ファイルをlogs/cantilever-improvements-start.jsonへ固定。
+
+### Execution
+
+docs/plans/cantilever-p01-37-improvements-execution.md。所有preflight合格。FR014/015、最新row_heights/shear_x/SourceCell/SourceScript/局所ink契約を維持し、一般API化6件と原本順序ゲートを実装。原本/旧bundleを変更せず、新不変bundleは独立検証・目視後にのみ有効化する。
+
+---
+
+## Current Feature: Cantilever improvements implementation completed
+<!-- orchestra:block-id: cantilever-improvements-complete-20261017 -->
+
+### Status
+
+ユーザーOK GOで承認したcantilever-p01-37-improvements全8工程を実装・検証済み。Insets/CellLines/行高診断/Image物理寸法/Script明示offset/Table不可分と原本順序ゲートを追加。固定37頁と最新原本外観を保持。独立3観点レビューのQ01 Medium・Q02 Lowを修正し、再レビュー未解決0。
+
+### Verification
+
+修正後root単独全体1939 passed /192.16秒、製品行coverage98.825109%（2944/2979）。logs/cantilever-improvements-revised-final.logとrevised-final-coverage.json。全16図・829セル・298セルの独立PDF照合、原本順序変異、prepare/activate拒否、snapshot差替え負例を検査。基準commitの37頁3345 ID/bboxを独立pinし、本文は原本glyphから直接検証。sdist由来wheelはPython3.12.12/3.13.11で新APIを描画して画素一致、PyMuPDF未導入。
+
+### Artifacts
+
+完成版build/reports/cantilever-p01-37/versions/20261017T033209Z-f93e3db55c094beaa28d3b3029fc2b7d/。通常/grid各37頁・3345項目・原本外観error0。初回031210でrootが全74画像を個別目視し、最終033209はその画像および受入023053とbytes/画素完全一致を確認して同一画像の目視結果を再利用。最終候補の代表10画像も再表示。golden PNG不変。129入力・78成果物・current pointer・wheel22moduleを再監査。improvements-visual-review.json、improvements-current-audit.json、improvements-wheel-acceptance.json。旧versionを保持。
+
+### Boundaries and Next
+
+原稿/expected/source-layout/font-profile・原本・書体・既存goldenを保持。SourceCell/SourceScriptの非等間隔アンカー/字送りとfixture局所inkは残し、既定Table分割動作も維持。PageFrame48行予約を維持して実内容47行内を検査。独立API実証の内側1.01pt余白/p30局所504pt容量は再現37頁へ適用しない。詳細docs/plans/cantilever-p01-37-improvements-execution.md。承認範囲に未完了工程なし。別作業のCONTEXT.md/pier-report研究文書は保持。コミット・外部公開は行っていない。

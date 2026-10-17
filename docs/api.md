@@ -112,6 +112,8 @@ group = EquationGroup(
 
 単独の数式や表セルには`MathBlock(expression)`を使う。MathNodeと通常部品はmeasureの引数が違うため、数式をそのままCellへ渡さない。
 
+`Script(base, superscript=None, subscript=None, *, scale=.65, superscript_rise=None, subscript_drop=None)`は、添字のサイズ比と基線位置を明示できる。scaleは有限の`0 < scale <= 1`、rise/dropは基底の基線から上／下への正のpt距離。指定しないoffsetは従来の安全な自動配置を使う。添字がない側へのoffset指定、不正な役割や字形の接触は拒否し、明示値を自動補正しない。既定引数の描画は従来どおり。
+
 ## 結合セル表
 
 ```python
@@ -144,6 +146,32 @@ columnsは表の各列幅をグリッド列数で指定する。numeric_columns�
 `row_heights=(...)`は各元行の高さを局所グリッドの正の整数行数で固定する。元の表の行数と同じ個数を指定し、`None`では従来どおり自動計測する。例えば局所`pitch_y=.01`なら`row_heights=(1428, 1428)`は各14.28ptとなる。セルの計測高と上下paddingが指定高を超える場合、`LayoutOverflowError`に必要量・使用可能量・セルIDを含めて停止する。行の拡大や文字の縮小は行わない。rowspanは結合した行の合計高を使い、改ページ時の繰返しヘッダーも指定高を保持する。
 
 結合セルを横切る線は指定があっても描かない。分割・ヘッダー再掲後も元の行列番号を保ち、0指定の断片端へ外枠を補わない。線幅は1ストロークの幅なので、隣接する独立行群の境界には従来と同じ二重線の性質が残る。字形と罫線の余裕は各辺の実線幅で検証し、線がない辺でもセル枠外へのはみ出しは拒否する。
+
+`Table(..., split=False)`はヘッダーを含む全行を一つの不可分な表として計測する。同じ境界の罫線を統合し、共有横境界を1本に、連続する縦線を一続きにする。明示行高・結合セル・選択罫線を維持し、ページに入らない表はエラーになる。既定の`split=True`は従来の分割・ヘッダー再掲・行群ごとの罫線を維持する。
+
+## 密なセルと四辺の余白
+
+`Cell.padding`は既存の数値（全辺共通pt）に加え、不変の`Insets(top=0, right=0, bottom=0, left=0)`を受け付ける。値は有限の非負数で、boolは拒否する。左右の余白だけを増やせば、上下の予約高は変わらない。必要高は子の予約高＋上余白＋下余白で、明示`row_heights`へ収まらない場合は行を拡大せず停止する。
+
+```python
+from gridlayoutpdf import Cell, CellLines, Insets, Script, Table, TextStyle
+
+dense = Table(
+    (8, 8),
+    [[Cell(CellLines(("荷重", "12.50"), line_advance=12.8,
+                     style=TextStyle(size=10), align="center"),
+           padding=Insets(left=.6, right=.6)),
+      Cell(CellLines((Script("m", superscript="2"),),
+                     inner_padding=Insets(top=1, right=.6, bottom=1, left=.6)), padding=0)]],
+    split=False,
+)
+```
+
+`CellLines(lines, *, style=None, line_styles=None, line_advance=12.8, min_height=0, inner_padding=0, align='left', block_id='')`は文字列またはMathNodeの明示行を組むBlock。自動改行はせず、各行をpt単位で配置した後、内側余白・最低高を含む高さを一度だけ整数グリッド行へ切り上げる。空行を消さず、全空行でも正の領域を予約する。行別styleを指定する場合は行数を一致させる。alignは各行を部品内で揃える指定で、Cell.alignによる部品全体の配置とは別。
+
+密なセルでは`Cell(..., padding=0)`とし、`CellLines.inner_padding`へ必要な余白を含めると、子の丸め後に再び上下余白を足すことを避けられる。外側paddingを指定した場合も無視せず加算する。幅不足、指定行間での字形接触、枠外へのはみ出しは部品IDと行番号を含むエラーになる。文字サイズ・行間を自動で縮める機能はない。
+
+Tableの確定metadataには解決した四辺余白、子の予約高、丸め前の必要pt高、必要行数と割当高、自動／明示モード、行高を支配したセルとrowspan追加分を含む。`layout_trace`から、小さい上下余白でも追加行が必要になった理由を確認できる。
 
 ## 表や部品の90度回転
 
@@ -185,6 +213,10 @@ photo = Image("detail.png", col_span=20, rows=10)
 Labelのyは基線、xはleft/center/rightのアンカー。Arrowは終点に開いた矢印を付ける。ゼロ長の矢印や枠外の文字・線は拒否する。
 
 Imageは静止PNG/JPEGを対象に、指定枠へ縦横比を保って内接させる。alignはleft/center/right、valignはtop/middle/bottom。透明度とEXIF方向を処理し、計測時に画像bytesを固定する。配置結果を描画するまでに元ファイルが変わっても、出力画像は変わらない。
+
+`Image("detail.png", width_pt=123.25, height_pt=80.5, align="left", valign="top")`のように物理寸法のペアを渡すと、指定ptで描き、幅はそのまま、高さだけ整数行へ切り上げて予約する。画像の比率と寸法を一致させる必要があり、許容する差はEXIF補正後の各軸±0.5pixelに相当する丸めだけ。受理したpt値を変更しない。
+
+`col_span`／`rows`のペアも指定すれば、そのグリッド枠内でalign／valignに従って配置する。既定はcenter／middleなので、物理寸法だけでも予約行の余りへ縦中央配置する。上端に固定する場合は`valign="top"`を指定する。寸法の片方だけの指定、比率不一致、枠不足を拒否し、縮小や切り抜きで収容しない。物理寸法を省略した既存のfit動作は変わらない。
 
 ## 改ページ・位置指定・用紙混在
 

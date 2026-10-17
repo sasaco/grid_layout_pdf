@@ -247,6 +247,129 @@ def test_script_rejects_invalid_children(values):
         Script(*values)
 
 
+def test_script_explicit_scale_and_baseline_offsets_preserve_requested_values():
+    assert {"scale", "superscript_rise", "subscript_drop"} <= Script.__dataclass_fields__.keys()
+    box = Script("x", "2", "i", scale=.8,
+                 superscript_rise=7.25, subscript_drop=4.75).measure(FONTS, STYLE)
+    base, upper, lower = box.commands
+    assert (upper.y, lower.y) == (-7.25, 4.75)
+    assert (upper.style.size, lower.style.size) == (8, 8)
+    assert (base.x, base.y, base.style.size) == (0, 0, 10)
+    assert (box.width, box.ascent, box.descent) == pytest.approx((11.8, 13.65, 6.35))
+    assert_commands_fit(box)
+
+
+@pytest.mark.parametrize("field, invalid", [
+    *(('scale', value) for value in (True, 0, -1, 1.01, float('inf'), float('nan'), '0.5')),
+    *((field, value) for field in ('superscript_rise', 'subscript_drop')
+      for value in (True, 0, -1, float('inf'), float('nan'), '2')),
+])
+def test_script_rejects_invalid_explicit_style(field, invalid):
+    with pytest.raises(ValueError, match=field):
+        Script("x", "2", "i", **{field: invalid})
+
+
+@pytest.mark.parametrize("kwargs", [{"superscript_rise": 4}, {"subscript_drop": 4}])
+def test_script_rejects_offset_without_corresponding_child(kwargs):
+    with pytest.raises(ValueError, match="requires"):
+        Script("x", **kwargs)
+
+
+def test_script_explicit_arguments_are_keyword_only():
+    with pytest.raises(TypeError):
+        Script("x", "2", "i", .5)
+
+
+@pytest.mark.parametrize("kwargs", [
+    {"superscript": "2", "superscript_rise": .01},
+    {"subscript": "2", "scale": 1, "subscript_drop": .01},
+])
+def test_script_rejects_explicit_ink_on_wrong_side_of_math_axis(kwargs):
+    from gridlayoutpdf.errors import LayoutError
+    with pytest.raises(LayoutError, match="role"):
+        Script("x", **kwargs).measure(FONTS, STYLE)
+
+
+def test_script_explicit_scripts_must_have_clearance_without_changing_offsets():
+    from gridlayoutpdf.errors import LayoutError
+    with pytest.raises(LayoutError, match="clearance"):
+        Script("x", "2", "i", superscript_rise=2, subscript_drop=.1).measure(FONTS, STYLE)
+
+
+@pytest.mark.parametrize("fixed_side", ["upper", "lower"])
+def test_script_moves_only_auto_side_to_preserve_clearance(fixed_side):
+    kwargs = {"superscript_rise": 2} if fixed_side == "upper" else {"subscript_drop": .1}
+    box = Script("x", "2", "i", **kwargs).measure(FONTS, STYLE)
+    base, upper, lower = box.commands
+    assert upper.y == -2 if fixed_side == "upper" else lower.y == .1
+    assert command_bounds(lower)[1] - command_bounds(upper)[3] >= 1.5 - 1e-9
+    assert_commands_fit(box)
+
+
+def test_script_explicit_offsets_follow_base_baseline_when_axis_differs():
+    class ShiftedBase:
+        def measure(self, fonts, style):
+            return MathBox(6, 8, 2, (Text(0, 0, "x", style),), 4.5)
+    box = Script(ShiftedBase(), "2", "i", superscript_rise=7, subscript_drop=4).measure(FONTS, STYLE)
+    assert [command.y for command in box.commands] == [2, -5, 6]
+    assert_commands_fit(box)
+
+
+def test_script_default_keywords_have_exact_legacy_output():
+    implicit = Script(Fraction("a", "b"), Fraction("c", "d"), Root("e"))
+    explicit = Script(Fraction("a", "b"), Fraction("c", "d"), Root("e"), scale=.65,
+                      superscript_rise=None, subscript_drop=None)
+    assert implicit.measure(FONTS, STYLE) == explicit.measure(FONTS, STYLE)
+
+
+@pytest.mark.parametrize("node", [
+    Script("j", "Å", "g", scale=.8, superscript_rise=8, subscript_drop=6),
+    Script(Fraction("a", "b"), Root("j"), "g", scale=.7, superscript_rise=16, subscript_drop=8),
+    Script(Root("x"), Script("j", "2"), Fraction("1", "g"), scale=.75,
+           superscript_rise=14, subscript_drop=12),
+    Script("x", "", " ", scale=1, superscript_rise=1, subscript_drop=1),
+])
+def test_explicit_scripts_keep_real_glyph_and_nested_stroke_extents(real_fonts, node):
+    box = node.measure(real_fonts, STYLE)
+    assert_commands_fit(box, real_fonts)
+    assert box == node.measure(real_fonts, STYLE)
+
+
+def test_explicit_role_uses_glyph_ink_instead_of_typographic_rectangle(real_fonts):
+    # A small serif digit's real ink lies above the axis, though its conservative
+    # typographic rectangle has its center below it at this requested rise.
+    box = Script("x", "2", superscript_rise=.5).measure(real_fonts, STYLE)
+    assert box.commands[1].y == -.5
+    assert_commands_fit(box, real_fonts)
+    from gridlayoutpdf.errors import LayoutError
+    with pytest.raises(LayoutError, match="role"):
+        Script("x", "g", superscript_rise=.01).measure(real_fonts, STYLE)
+
+
+@pytest.mark.parametrize("side", ["upper", "lower"])
+def test_explicit_script_rejects_base_ink_contact_from_custom_node(side):
+    from gridlayoutpdf.errors import LayoutError
+    class OverhangingBase:
+        def measure(self, fonts, style):
+            # Deliberately underspecified custom box: the public Script still
+            # checks its rendered commands instead of trusting width alone.
+            return MathBox(1, 8, 2, (Text(0, 0, "base", style),), 2.5)
+    kwargs = {"superscript": "2", "superscript_rise": 4} if side == "upper" else {
+        "subscript": "g", "subscript_drop": 3}
+    with pytest.raises(LayoutError, match="contacts the base"):
+        Script(OverhangingBase(), **kwargs).measure(FONTS, STYLE)
+
+
+@pytest.mark.parametrize("scale", [.5, 1])
+def test_explicit_scale_with_auto_offsets_preserves_roles_and_clearance(scale):
+    box = Script("x", Fraction("1", "2"), Fraction("3", "4"), scale=scale).measure(FONTS, STYLE)
+    assert_commands_fit(box)
+    assert {c.style.size for c in box.commands[1:] if isinstance(c, Text)} == {10 * scale}
+    upper = [command_bounds(c) for c in box.commands[1:4]]
+    lower = [command_bounds(c) for c in box.commands[4:]]
+    assert min(r[1] for r in lower) - max(r[3] for r in upper) >= 1.5 - 1e-9
+
+
 def test_root_uses_a_vector_checkmark_and_overbar_above_greek_text():
     root = Root("αβ")
     box = root.measure(FONTS, STYLE)

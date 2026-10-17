@@ -157,3 +157,103 @@ def test_raster_image_rejects_nonfinite_derived_edges_and_translation():
         RasterImage(1e308, 0, 1e308, 10, image_bytes())
     with pytest.raises(ValueError):
         RasterImage(0, 0, 10, 10, image_bytes()).translated(float("inf"), 0)
+
+
+def test_physical_image_reserves_exact_width_and_complete_grid_rows(context, tmp_path):
+    assert {"width_pt", "height_pt"} <= Image.__dataclass_fields__.keys()
+    path = tmp_path / "physical.png"
+    path.write_bytes(image_bytes(size=(99, 51)))
+    block = Image(path, width_pt=24.75, height_pt=12.75, align="left", valign="top")
+    measured = measure_block(block, context, 25)
+    command, = measured.commands
+    assert (measured.width, measured.rows, measured.height) == (24.75, 2, 20)
+    assert (command.x, command.y, command.width, command.height) == (0, 0, 24.75, 12.75)
+    assert measured.keep_together and measured.split(1) is None
+    path.write_bytes(image_bytes(size=(99, 51), color=(0, 0, 255, 64)))
+    assert block.measure(context, 25).commands[0].data != command.data
+    with PILImage.open(BytesIO(command.data)) as decoded:
+        assert decoded.getpixel((0, 0)) == (255, 0, 0, 128)
+
+
+@pytest.mark.parametrize("align, x", [("left", 0), ("center", 7.625), ("right", 15.25)])
+@pytest.mark.parametrize("valign, y", [("top", 0), ("middle", 8.625), ("bottom", 17.25)])
+def test_physical_image_optional_grid_frame_aligns_without_scaling(context, tmp_path, align, x, valign, y):
+    path = tmp_path / "physical.png"
+    path.write_bytes(image_bytes(size=(99, 51)))
+    measured = Image(path, width_pt=24.75, height_pt=12.75,
+                     col_span=4, rows=3, align=align, valign=valign).measure(context, 40)
+    command, = measured.commands
+    assert (measured.width, measured.rows) == (40, 3)
+    assert (command.x, command.y, command.width, command.height) == (x, y, 24.75, 12.75)
+
+
+@pytest.mark.parametrize("kwargs", [
+    {}, {"width_pt": 20}, {"height_pt": 10}, {"col_span": 2}, {"rows": 2},
+    {"width_pt": 20, "height_pt": 10, "col_span": 2},
+    {"width_pt": 20, "height_pt": 10, "rows": 2},
+    *({"width_pt": value, "height_pt": 10} for value in
+      [True, 0, -1, float("inf"), float("nan"), "20"]),
+    *({"width_pt": 20, "height_pt": value} for value in
+      [False, 0, -1, float("inf"), float("nan"), "10"]),
+])
+def test_physical_image_validates_complete_positive_pairs(kwargs):
+    with pytest.raises(ValueError):
+        Image("unused.png", **kwargs)
+
+
+@pytest.mark.parametrize("kwargs, available", [
+    ({"width_pt": 40.001, "height_pt": 20}, 40),
+    ({"width_pt": 20.001, "height_pt": 10, "col_span": 2, "rows": 2}, 40),
+    ({"width_pt": 20, "height_pt": 20.001, "col_span": 2, "rows": 2}, 40),
+])
+def test_physical_image_rejects_insufficient_frame_without_reading_file(context, kwargs, available):
+    from gridlayoutpdf.errors import LayoutOverflowError
+    with pytest.raises(LayoutOverflowError, match="physical"):
+        Image("missing.png", block_id="physical", **kwargs).measure(context, available)
+
+
+@pytest.mark.parametrize("height, accepted", [(9.9, True), (10.1, True), (9.8, False), (10.2, False)])
+def test_physical_image_allows_only_half_pixel_rounding_on_each_axis(context, tmp_path, height, accepted):
+    path = tmp_path / "ratio.png"
+    path.write_bytes(image_bytes(size=(80, 40)))
+    block = Image(path, width_pt=20, height_pt=height)
+    if accepted:
+        command, = block.measure(context, 20).commands
+        assert (command.width, command.height) == (20, height)
+    else:
+        with pytest.raises(ValueError, match="aspect ratio"):
+            block.measure(context, 20)
+
+
+def test_physical_image_checks_ratio_after_exif_orientation(context, tmp_path):
+    path = tmp_path / "oriented.jpg"
+    exif = PILImage.Exif()
+    exif[274] = 6
+    PILImage.new("RGB", (80, 20), "red").save(path, exif=exif)
+    command, = Image(path, width_pt=5, height_pt=20).measure(context, 20).commands
+    assert (command.width, command.height) == (5, 20)
+    with PILImage.open(BytesIO(command.data)) as decoded:
+        assert decoded.size == (20, 80)
+    with pytest.raises(ValueError, match="aspect ratio"):
+        Image(path, width_pt=20, height_pt=5).measure(context, 20)
+
+
+def test_physical_image_ratio_boundary_includes_both_axis_rounding(context, tmp_path):
+    path = tmp_path / "ratio-boundary.png"
+    path.write_bytes(image_bytes(size=(80, 40)))
+    # One common density is .5 pixel/pt: x rounds 80.5 down, y rounds 39.5 up.
+    command, = Image(path, width_pt=161, height_pt=79).measure(context, 200).commands
+    assert (command.width, command.height, command.y) == (161, 79, .5)
+    with pytest.raises(ValueError, match="aspect ratio"):
+        Image(path, width_pt=161.0001, height_pt=79).measure(context, 200)
+
+
+def test_physical_image_validates_context_width_and_id_before_loading(context):
+    with pytest.raises(ValueError, match="block_id"):
+        Image("missing.png", width_pt=20, height_pt=10, block_id=42)
+    block = Image("missing.png", width_pt=20, height_pt=10)
+    with pytest.raises(ValueError, match="context"):
+        block.measure(None, 20)
+    for width in (0, -1, True, float("inf")):
+        with pytest.raises(ValueError, match="available_width"):
+            block.measure(context, width)

@@ -65,6 +65,8 @@ report.render("report.pdf")
 
 数式の計算や値の丸めは利用アプリで行い、表示用文字列を渡します。部品の詳しい組み方は [APIガイド](docs/api.md)、責務の分離は [アーキテクチャ](docs/architecture.md)、検証条件は [検証方法](docs/validation.md) を参照してください。
 
+密な表には`CellLines`の明示行間と`Insets`の四辺余白を使えます。`Table(split=False)`は不可分表の共有罫線を統合し、`Image(width_pt=..., height_pt=...)`は物理寸法を保持します。添字のサイズと基線位置も`Script`で明示できます。
+
 数式・結合表・寸法図・画像とA4／A3を組み合わせた [代表帳票の例](examples/README.md) も用意しています。リポジトリ内では次のコマンドで通常PDF、グリッド付きPDF、配置JSONを生成できます。
 
 ```powershell

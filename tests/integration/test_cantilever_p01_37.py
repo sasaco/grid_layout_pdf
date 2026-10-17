@@ -124,6 +124,39 @@ def test_all_37_pages_from_public_api(complete_report, verifier, tmp_path, grid)
     assert result["verified_items"] == 3345
 
 
+def test_coordinated_expected_and_native_text_change_fails_original_gate(builder, verifier, tmp_path, monkeypatch):
+    """An internally consistent false number must fail before PDF self-checks."""
+    fonts = builder.fixture_fonts()
+    pages = builder.layout_report(fonts, source_pages=(1,))
+    trace = layout_trace(pages, fonts)
+    regions, _ = verifier._trace_regions(trace["pages"][0])
+    x0, y0, x1, y1 = regions["p01-dead-loads.r1.c3"]
+    commands = []
+    changed = 0
+    for command in pages[0].commands:
+        if (isinstance(command, Text) and command.text == "1530.0"
+                and x0 <= command.x < x1 and y0 <= command.y < y1):
+            command = replace(command, text="1350.0")
+            changed += 1
+        commands.append(command)
+    assert changed == 1
+    record = oracle(1)
+    cell = next(item for block in record["blocks"] for item in block.get("cells", [block])
+                if item["id"] == "p01-dead-loads.r1.c3")
+    cell["text"] = "1350.0"
+    expected = tmp_path / "expected"
+    expected.mkdir()
+    (expected / "p01.json").write_text(json.dumps(record), encoding="utf-8")
+    assets = tmp_path / "assets"
+    assets.mkdir()
+    (assets / "metadata.json").write_bytes((FIXTURE / "assets/metadata.json").read_bytes())
+    monkeypatch.setattr(verifier, "EXPECTED", expected)
+    path = tmp_path / "coordinated-wrong-value.pdf"
+    render_pdf((ScenePage(pages[0].profile, tuple(commands), pages[0].metadata),), path, fonts)
+    with pytest.raises(AssertionError, match="original text order"):
+        verifier.verify_pdf(path, source_pages=(1,), trace=trace, manifest=builder.load_manifest())
+
+
 def test_scene_images_have_independent_allowlist_validation(complete_report, verifier):
     _, pages, _, manifest = complete_report
     assert hasattr(verifier, "verify_scene_images"), "scene image bytes/provenance validation is absent"

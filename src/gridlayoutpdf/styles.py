@@ -18,6 +18,32 @@ def _finite_number(value: Real, name: str) -> float:
 
 
 @dataclass(frozen=True, slots=True)
+class Insets:
+    """Nonnegative point distances in top, right, bottom, left order."""
+
+    top: float = 0.0
+    right: float = 0.0
+    bottom: float = 0.0
+    left: float = 0.0
+
+    def __post_init__(self) -> None:
+        for name in ("top", "right", "bottom", "left"):
+            value = _finite_number(getattr(self, name), name)
+            if value < 0:
+                raise ValueError(f"{name} must be nonnegative")
+            object.__setattr__(self, name, value)
+
+
+def _resolve_insets(value: float | Insets, name: str) -> Insets:
+    if isinstance(value, Insets):
+        return value
+    scalar = _finite_number(value, name)
+    if scalar < 0:
+        raise ValueError(f"{name} must be nonnegative")
+    return Insets(scalar, scalar, scalar, scalar)
+
+
+@dataclass(frozen=True, slots=True)
 class TextStyle:
     """A named font, point size, and extra spacing between characters."""
 

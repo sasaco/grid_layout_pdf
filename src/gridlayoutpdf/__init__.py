@@ -2,6 +2,7 @@
 
 from .blocks import Heading, PageBreak, Paragraph, Spacer
 from .bounds import command_bounds
+from .cell_content import CellLines
 from .containers import At, Columns, KeepTogether, Stack
 from .diagnostics import layout_trace
 from .document import Document, PageDecoration, PageSection
@@ -21,18 +22,18 @@ from .profiles import (
 from .renderers.reportlab import render_pdf
 from .rotation import QuarterTurn
 from .scene import Color, Command, Line, Polyline, RasterImage, Rectangle, ScenePage, Text
-from .styles import ReportStyle, TextStyle
+from .styles import Insets, ReportStyle, TextStyle
 from .tables import Cell, Table
 from .text import TextLine, fit_tracking, wrap_text
 
 
 __all__ = [
     "A3_LANDSCAPE_REFERENCE", "A4_PORTRAIT_REFERENCE", "PageProfile", "derived_profile",
-    "Point", "Rect", "GridSpec", "TextStyle", "ReportStyle",
+    "Point", "Rect", "GridSpec", "TextStyle", "ReportStyle", "Insets",
     "FontRegistry", "FontFace", "TextMetrics", "FontError", "LayoutError", "LayoutOverflowError",
     "Block", "LayoutContext", "LayoutPart", "MeasuredBlock", "measure_block",
     "Document", "PageDecoration", "PageSection", "Paragraph", "Heading", "Spacer", "PageBreak",
-    "Stack", "Columns", "KeepTogether", "At", "QuarterTurn", "Cell", "Table", "Figure", "Image", "Arrow", "Label",
+    "Stack", "Columns", "KeepTogether", "At", "QuarterTurn", "Cell", "CellLines", "Table", "Figure", "Image", "Arrow", "Label",
     "MathNode", "MathBox", "Literal", "Symbol", "Operator", "Row", "Fraction", "Root", "Script",
     "Delimited", "BreakHint", "as_math", "MathBlock", "Equation", "EquationGroup", "EquationAnchors",
     "wrap_math", "TextLine", "wrap_text", "fit_tracking",

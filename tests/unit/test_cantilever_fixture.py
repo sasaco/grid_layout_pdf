@@ -105,6 +105,27 @@ def test_compact_cell_keeps_source_line_sizes_and_horizontal_clearance(fonts):
     assert [new.x - old.x for new, old in zip(second.commands, first.commands)] == pytest.approx([.6, .6])
 
 
+def test_compact_adapter_exposes_public_single_rounding_and_edge_padding(fonts):
+    from gridlayoutpdf import A4_PORTRAIT_REFERENCE, LayoutContext, ReportStyle, measure_block
+    context = LayoutContext(fonts, A4_PORTRAIT_REFERENCE, ReportStyle())
+    cell = module("builder").CompactCell(("1.35", "3679.84"), line_sizes=(10, 8),
+                                         line_advance=12.8, inline_padding=.6, min_height=40)
+    measured = measure_block(cell, context, 60)
+    metadata = measured.parts[0].metadata
+    assert metadata.get("height_rounding") == "single"
+    assert metadata["minimum_height_pt"] == 40
+    assert dict(metadata["inner_padding_pt"]) == {"top": 0, "right": .6, "bottom": 0, "left": .6}
+    assert metadata["baselines_pt"][1] - metadata["baselines_pt"][0] == pytest.approx(12.8)
+
+
+def test_compact_adapter_rejects_touching_explicit_lines_instead_of_moving_them(fonts):
+    from gridlayoutpdf import A4_PORTRAIT_REFERENCE, LayoutContext, ReportStyle, measure_block
+    context = LayoutContext(fonts, A4_PORTRAIT_REFERENCE, ReportStyle())
+    cell = module("builder").CompactCell(("888", "888"), line_advance=1, block_id="touching")
+    with pytest.raises(LayoutOverflowError, match="touching.*line 2.*line 1"):
+        measure_block(cell, context, 40)
+
+
 def test_guard_catches_wrong_page_descendant_despite_correct_wrapper(fonts):
     from gridlayoutpdf import Paragraph
     with pytest.raises(LayoutOverflowError, match="p16.*p17-content"):
@@ -179,6 +200,29 @@ def test_source_figure_preserves_physical_size_and_normalized_pixels(fonts, tmp_
     asset.write_bytes(b"modified")
     with pytest.raises(ValueError, match="hash"):
         measure_block(source, context, 200)
+
+
+def test_source_figure_checks_measured_snapshot_after_asset_race(fonts, tmp_path, monkeypatch):
+    from PIL import Image as PILImage
+    from gridlayoutpdf import A4_PORTRAIT_REFERENCE, Image, LayoutContext, ReportStyle, measure_block
+    asset = tmp_path / "figure.png"
+    PILImage.new("RGB", (240, 80), "white").save(asset)
+    metadata = {"id": "race", "file": asset.name, "source_page": 1,
+                "source_bbox": [70, 100, 190, 140], "sha256": sha256(asset.read_bytes()).hexdigest(),
+                "pixel_width": 240, "pixel_height": 80,
+                "decoded_pixel_sha256": sha256(PILImage.new("RGB", (240, 80), "white").tobytes()).hexdigest()}
+    snapshot = Image._snapshot
+    calls = []
+    def substitute(self):
+        calls.append(self.path)
+        PILImage.new("RGB", (240, 80), "black").save(asset)
+        return snapshot(self)
+    monkeypatch.setattr(Image, "_snapshot", substitute)
+    source = module("builder").SourceFigure(metadata, asset_root=tmp_path, block_id="race")
+    context = LayoutContext(fonts, A4_PORTRAIT_REFERENCE, ReportStyle())
+    with pytest.raises(ValueError, match="measured.*pixel hash"):
+        measure_block(source, context, 200)
+    assert calls == [asset]
 
 
 def _bundle_test_environment(monkeypatch, fonts):

@@ -148,3 +148,21 @@ def test_standalone_figure_proof_has_vector_dimensions_and_undistorted_image(tmp
         assert (image["bbox"][2] - image["bbox"][0]) / (image["bbox"][3] - image["bbox"][1]) == pytest.approx(2, abs=.001)
     assert (tmp_path / "previews/figure-proof-page-1.png").is_file()
     assert (tmp_path / "previews/figure-proof-grid-page-1.png").is_file()
+
+
+def test_physical_image_pdf_preserves_fractional_size_and_snapshot_alpha(context, tmp_path):
+    path = tmp_path / "physical.png"
+    PILImage.new("RGBA", (99, 51), (20, 80, 140, 96)).save(path)
+    measured = measure_block(Image(path, width_pt=24.75, height_pt=12.75,
+                                   align="left", valign="top"), context, 25)
+    path.unlink()
+    output = tmp_path / "physical.pdf"
+    backend.render_pdf((ScenePage(context.profile, measured.translated(13.125, 27.375)),),
+                       output, context.fonts)
+    with pymupdf.open(output) as pdf:
+        info, = pdf[0].get_image_info()
+        assert info["bbox"] == pytest.approx((13.125, 27.375, 37.875, 40.125), abs=.0001)
+        assert (info["width"], info["height"]) == (99, 51)
+        image_ref, mask_ref = pdf[0].get_images()[0][:2]
+        assert pymupdf.Pixmap(pdf, image_ref).pixel(0, 0) == (20, 80, 140)
+        assert pymupdf.Pixmap(pdf, mask_ref).pixel(0, 0) == (96,)

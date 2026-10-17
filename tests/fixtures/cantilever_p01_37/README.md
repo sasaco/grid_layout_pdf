@@ -17,7 +17,9 @@
 - 原本基線で実 ink が上罫線に接する8セルだけ、上端の実測不足量＋0.001 ptを下へ移す。対象は p30/31/34/35 の `*-r0-cell1`、p32/33 の `*-r0-cell1` と `*-r0-cell2`（「組合せ」「せん断」）。最大移動はそれぞれ0.043421875 / 0.01271875 ptで、明示ID以外には適用せず、0.05 ptを超えれば停止する。独立した原本基線比較の許容0.20 ptは変更しない。行高拡張や文字縮小は行わない。
 - p30〜37 は Table / Cell が列・結合・罫線を管理し、QuarterTurn(turns=1) が A4 紙面内で反時計回り90度にする。文字は原本の9.9 ptを使い、ページの /Rotate は0。
 - p21/22 の縦見出しは漢字の向きを保ち、括弧だけ90度回転する。原本の縦用括弧の font glyph bounds に基づいて意味行の ink 中心を合わせ、抽出上の typographic bbox の一致による「破」との重なりを防ぐ。
-- image は SourceFigure が許可済み素材の hash・画素・寸法を検査して、公開 RasterImage にする。原本 crop の物理幅・高さを保ち、収まらない場合はエラーにする。図だけを画像とし、本文・数式・表は含めない。素材の作成方法と個別目視記録は `assets/README.md` と `assets/crop-review.json` に置く。
+- image は SourceFigure が許可済み素材のpath・hash・画素・寸法を検査し、公開 `Image(width_pt=..., height_pt=..., align='left', valign='top')` へ寸法配置を委ねる。返された実snapshotのbytes・画素も台帳と照合し、事前検査後の入力差替えを見逃さない。原本 crop の物理幅・高さを保ち、収まらない場合はエラーにする。図だけを画像とし、本文・数式・表は含めない。素材の作成方法と個別目視記録は `assets/README.md` と `assets/crop-review.json` に置く。
+
+公開`CellLines`は等間隔の明示行に使い、旧CompactCellは原稿をMathNodeへ変換する薄いadapterとして残す。原本固有の非等間隔start_x/baselineや字送りを持つSourceCell/SourceScriptは保持する。現行source表は原本の罫線中心と二分したseam幅を保持するため既定`split=True`を使う。公開`Table(split=False)`の共有罫線統合は別の実証で検証し、原本外観を無条件に置き換えない。
 
 `#######`、原本の見切れた文章、係数・単位・重複値の不整合はそのまま保持する。推測した値に置き換えない。本文・数式・表の画像化は不可。図を追加する際は figure ID、原本 crop、素材 hash、デコード画素 hash・寸法、出力範囲・許可回数を manifest に記録する。
 
@@ -37,6 +39,8 @@ uv run --locked --extra dev python -X utf8 tests/fixtures/cantilever_p01_37/rend
 ```
 
 出力は `build/reports/cantilever-p01-37/.staging/<bundle-id>/`。`normal.pdf`、`grid.pdf`、`trace.json`、`mapping.json`、各版の全ページ PNG、`bundle.json` を一式で保存する。入力・製品ソース・依存 lock・書体・原本・ツール版・成果物 hash と独立検証結果を記録する。生成前のあふれや、PDF / JSON / preview / 独立抽出の途中失敗でも既存 current を変更しない。
+
+`verify_source_order`は原本PDFからglyphを直接読み、全37頁のexpectedについて文字集合・一回被覆・読み順・方向・添字役割を検証する。原本の描画命令順を読み順とせず、幾何から並べる。`verify_pdf`に加えprepareの配置開始前とactivateの再検証で実行し、原稿とexpectedの両方を同じ桁順へ誤変更しても有効化を拒否する。既存のgenerated-to-expected照合、原本との外観直接比較、画像回帰は別々に維持する。
 
 `--pages 16,17,26,30,36` の指定は先行実証の再検証に使える。完成版では `--pages` を省略する。通常・grid の全 74 画像を目視し、同じ bundle の全 artifact hash、確認者、日時、`result: "pass"` を持つレビュー JSON を作ってから有効化する。生成直後の自動承認は行わない。
 

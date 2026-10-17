@@ -18,6 +18,51 @@ def ruled_table(*args, **kwargs):
     return Table(*args, **kwargs)
 
 
+def atomic_table(*args, **kwargs):
+    assert "split" in Table.__dataclass_fields__, "Table needs an opt-in indivisible mode"
+    return Table(*args, split=False, **kwargs)
+
+
+def test_indivisible_table_merges_selected_seams_and_retains_header_source_ids(context):
+    result = measure_block(atomic_table((3, 3, 3), (("", "", ""),) * 3, header_rows=1,
+                           horizontal_rules=(2, .5, 0, 2), vertical_rules=(0, .5, 0, 0),
+                           row_heights=(1, 2, 1), block_id="atomic"), context, 100)
+    assert result.rows == 4 and len(result.parts) == 1 and result.prefix == ()
+    assert result.split(3) is None
+    metadata = result.parts[0].metadata
+    assert metadata["source_rows"] == (0, 1, 2) and metadata["row_heights"] == (1, 2, 1)
+    assert [c["cell_id"] for c in metadata["cells"]] == [f"atomic.rows[{r}].cells[{c}]" for r in range(3) for c in range(3)]
+    horizontal = [c for c in result.commands if c.y1 == c.y2]
+    vertical = [c for c in result.commands if c.x1 == c.x2]
+    assert horizontal == [Line(1, 1, 89, 1, 2), Line(.25, 20, 89.75, 20, .5), Line(1, 79, 89, 79, 2)]
+    assert vertical == [Line(30, .25, 30, 79.75, .5)]
+
+
+def test_indivisible_merged_header_and_rowspan_keep_suppressed_interiors(context):
+    result = measure_block(atomic_table((3, 3), (
+        (Cell("", colspan=2),), (Cell("", rowspan=2), ""), ("",),
+    ), header_rows=1, horizontal_rules=(2, 1, .5, 2), vertical_rules=(1, 3, 1)), context, 100)
+    assert len(result.parts) == 1 and result.prefix == ()
+    assert Line(30, 40, 59.75, 40, .5) in result.commands
+    vertical = [line for line in result.commands if line.x1 == line.x2 == 30]
+    assert vertical == [Line(30, 20, 30, 58.5, 3)]
+
+
+@pytest.mark.parametrize("headers", [0, 2])
+def test_indivisible_all_header_or_no_header_and_empty_tables(context, headers):
+    result = atomic_table((3,), (("",), ("",)), header_rows=headers).measure(context, 100)
+    assert len(result.parts) == 1 and result.prefix == () and result.split(1) is None
+    empty = atomic_table((3,), (), row_heights=()).measure(context, 100)
+    assert empty.rows == 0 and not empty.parts
+
+
+@pytest.mark.parametrize("value", [None, 0, 1, "false"])
+def test_split_option_rejects_non_boolean(value):
+    assert "split" in Table.__dataclass_fields__
+    with pytest.raises(ValueError, match="split"):
+        Table((3,), (("",),), split=value)
+
+
 @pytest.fixture
 def context():
     fonts = FontRegistry()

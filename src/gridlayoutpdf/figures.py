@@ -160,6 +160,12 @@ class Figure:
 class Image:
     """Snapshot one PNG/JPEG at measurement time and fit it without distortion.
 
+    ``width_pt`` and ``height_pt`` request an exact physical size. Without a
+    grid frame, width is reserved exactly and height rounds up to complete rows.
+    An optional ``col_span``/``rows`` pair supplies a larger alignment frame;
+    physical dimensions are never shrunk to fit. Pixel rounding is limited to
+    half a pixel on each axis after EXIF orientation.
+
     EXIF orientation is applied before sizing. RGB/RGBA PNG snapshot bytes keep
     alpha and are independent of the source path after measurement. Repeating
     measurement reads the current file again, without changing an earlier result.
@@ -167,14 +173,31 @@ class Image:
 
     path: Path
     _: KW_ONLY
-    col_span: int
-    rows: int
+    col_span: int | None = None
+    rows: int | None = None
+    width_pt: float | None = None
+    height_pt: float | None = None
     align: str = "center"
     valign: str = "middle"
     block_id: str = ""
 
     def __post_init__(self) -> None:
-        _frame(self.col_span, self.rows, self.block_id)
+        if (self.col_span is None) != (self.rows is None):
+            raise ValueError("col_span and rows must be specified together")
+        if (self.width_pt is None) != (self.height_pt is None):
+            raise ValueError("width_pt and height_pt must be specified together")
+        if self.col_span is None and self.width_pt is None:
+            raise ValueError("Image requires col_span/rows or width_pt/height_pt")
+        if self.col_span is not None:
+            _frame(self.col_span, self.rows, self.block_id)
+        elif not isinstance(self.block_id, str):
+            raise ValueError("block_id must be a string")
+        if self.width_pt is not None:
+            for name in ("width_pt", "height_pt"):
+                value = _finite_number(getattr(self, name), name)
+                if value <= 0:
+                    raise ValueError(f"{name} must be positive")
+                object.__setattr__(self, name, value)
         try:
             object.__setattr__(self, "path", Path(self.path))
         except TypeError as exc:
@@ -205,15 +228,46 @@ class Image:
             raise ValueError(f"{self.block_id or 'Image'}: cannot load {self.path}: {exc}") from exc
 
     def measure(self, context: LayoutContext, available_width: float) -> MeasuredBlock:
-        width, height = _frame_size(context, self.col_span, self.rows, available_width,
-                                    self.block_id or "Image")
+        source = self.block_id or "Image"
+        if self.col_span is not None:
+            width, height = _frame_size(context, self.col_span, self.rows, available_width, source)
+            rows = self.rows
+        else:
+            if not isinstance(context, LayoutContext):
+                raise ValueError("context must be a LayoutContext")
+            available_width = _finite_number(available_width, "available_width")
+            if available_width <= 0:
+                raise ValueError("available_width must be positive")
+            width = self.width_pt
+            rows = context.profile.grid.rows_for(self.height_pt)
+            height = _finite_number(rows * context.profile.grid.pitch_y, "frame height")
+            if width > available_width + 1e-7:
+                raise LayoutOverflowError(
+                    f"{source}: physical width {width:g} exceeds available width {available_width:g}",
+                    block_id=source, needed=width, available=available_width)
+        if self.width_pt is not None:
+            for dimension, needed, available in (("width", self.width_pt, width),
+                                                ("height", self.height_pt, height)):
+                if needed > available + 1e-7:
+                    raise LayoutOverflowError(
+                        f"{source}: physical {dimension} {needed:g} exceeds frame {available:g}",
+                        block_id=source, needed=needed, available=available)
         data, image_width, image_height = self._snapshot()
-        scale = min(width / image_width, height / image_height)
-        image_width, image_height = image_width * scale, image_height * scale
+        if self.width_pt is None:
+            scale = min(width / image_width, height / image_height)
+            image_width, image_height = image_width * scale, image_height * scale
+        else:
+            lower = max(_finite_number((image_width - .5) / self.width_pt, "pixel scale"),
+                        _finite_number((image_height - .5) / self.height_pt, "pixel scale"))
+            upper = min(_finite_number((image_width + .5) / self.width_pt, "pixel scale"),
+                        _finite_number((image_height + .5) / self.height_pt, "pixel scale"))
+            if lower > upper:
+                raise ValueError(f"{source}: physical aspect ratio differs by more than half a pixel per axis")
+            image_width, image_height = self.width_pt, self.height_pt
         x = {"left": 0, "center": (width - image_width) / 2, "right": width - image_width}[self.align]
         y = {"top": 0, "middle": (height - image_height) / 2, "bottom": height - image_height}[self.valign]
         command = RasterImage(x, y,
                               image_width, image_height, data)
         return MeasuredBlock(width, context.profile.grid.pitch_y,
-                             (LayoutPart(self.rows, (command,)),), keep_together=True,
+                             (LayoutPart(rows, (command,)),), keep_together=True,
                              block_id=self.block_id)
