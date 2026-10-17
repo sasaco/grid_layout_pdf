@@ -44,10 +44,18 @@ def _word_character(character: str) -> bool:
     return unicodedata.category(character).startswith("N") or "LATIN" in unicodedata.name(character, "")
 
 
+def _numeric_separator(text, index):
+    """A decimal point or digit-group comma between two digits joins one number (UAX #14, IS between NU)."""
+    return (index >= 2 and text[index - 1] in ".," and unicodedata.category(text[index - 2]) == "Nd"
+            and unicodedata.category(text[index]) == "Nd")
+
+
 def _breaks(text):
     for index in range(1, len(text) + 1):
         if index < len(text):
             if _word_character(text[index - 1]) and _word_character(text[index]):
+                continue
+            if _numeric_separator(text, index):
                 continue
             left, right = text[:index].rstrip(" "), text[index:].lstrip(" ")
             if (left and left[-1] in _OPENING) or (right and right[0] in _CLOSING):

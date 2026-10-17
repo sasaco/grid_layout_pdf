@@ -269,3 +269,12 @@ def test_cjk_numerals_are_breakable_but_fullwidth_latin_numbers_are_words(fonts)
     assert [line.text for line in wrap_text("一二三四", fonts, TextStyle(), 20)] == ["一二", "三四"]
     with pytest.raises(LayoutOverflowError):
         wrap_text("ＡＢ１２", fonts, TextStyle(), 30)
+
+
+def test_a_decimal_point_or_digit_group_separator_between_digits_is_not_a_break(fonts):
+    # UAX #14 (IS between NU): 2.200 and 1,234.5 are one number; the line breaks before them.
+    assert [line.text for line in wrap_text("日本語2.200", fonts, TextStyle(), 45)] == ["日本語", "2.200"]
+    assert [line.text for line in wrap_text("長さ1,234.5", fonts, TextStyle(), 50)] == ["長さ", "1,234.5"]
+    # A separator not between two digits still allows the break after it.
+    assert [line.text for line in wrap_text("日本語2.日本", fonts, TextStyle(), 45)] == ["日本語2.", "日本"]
+    assert [line.text for line in wrap_text("日本語、200", fonts, TextStyle(), 45)] == ["日本語、", "200"]
