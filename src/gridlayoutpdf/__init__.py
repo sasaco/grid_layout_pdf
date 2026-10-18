@@ -3,7 +3,7 @@
 from .blocks import Heading, PageBreak, Paragraph, Spacer
 from .bounds import command_bounds
 from .cell_content import CellLines
-from .containers import At, Columns, Indent, KeepTogether, KeepWithNext, Leading, PreferKeepTogether, Stack
+from .containers import At, Columns, Indent, KeepTogether, KeepWithNext, Leading, PreferKeepTogether, SideRule, Stack
 from .diagnostics import layout_trace
 from .document import Document, PageDecoration, PageSection
 from .equations import Equation, EquationAnchors, EquationGroup, MathBlock, wrap_math
@@ -33,7 +33,7 @@ __all__ = [
     "FontRegistry", "FontFace", "TextMetrics", "FontError", "LayoutError", "LayoutOverflowError",
     "Block", "LayoutContext", "LayoutPart", "MeasuredBlock", "measure_block",
     "Document", "PageDecoration", "PageSection", "Paragraph", "Heading", "Spacer", "PageBreak",
-    "Stack", "Columns", "KeepTogether", "KeepWithNext", "PreferKeepTogether", "Indent", "Leading",
+    "Stack", "Columns", "KeepTogether", "KeepWithNext", "PreferKeepTogether", "Indent", "Leading", "SideRule",
     "At", "QuarterTurn", "Cell", "CellLines", "Table", "proportional_spans", "Figure", "Image", "Arrow", "Label", "TextBox", "TextDiamond", "Connector",
     "MathNode", "MathBox", "Literal", "Symbol", "Operator", "Row", "Fraction", "Root", "Script",
     "Delimited", "BreakHint", "TermStop", "as_math", "MathBlock", "Equation", "EquationGroup", "EquationAnchors",

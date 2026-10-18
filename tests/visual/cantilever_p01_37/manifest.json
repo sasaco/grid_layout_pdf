@@ -64,11 +64,11 @@
     "tests/output/13_片持ち梁照査.pdf": "e56bf3ddbe3314ed95517099bedb0e68005df1567b0b3e8f52a2a4066d03393e",
     "uv.lock": "c138d77c2246e1513955fb46592b074477be143c361d71e7974391d5d18e0e8e",
     "pyproject.toml": "d4fed4129fcbafe56b4c8705ce4a1a4d05facaa32361f668621cc463da079b4d",
-    "src/gridlayoutpdf/__init__.py": "a5b09e276500582aeff8f3fc65bff97aa4d2833c4d92b60e9a59276d56ecf39e",
+    "src/gridlayoutpdf/__init__.py": "e6a5ba21efb4bbb9da247ce726ead87a77c52b29aff072fca28ca7da3ba6ba9d",
     "src/gridlayoutpdf/blocks.py": "cec6da57d75b04b743ec7b518ade1213f3ce8a8cd56a1326b7e9113897014da7",
     "src/gridlayoutpdf/bounds.py": "ca2dcd4de164e0002d832432b56cc800378b41039c88d5b340e97a662a50bc35",
     "src/gridlayoutpdf/cell_content.py": "2f657e7f0ddc89395ae503c0bf1027a5bebab1e85acb65ae28f6fd80a02ddff7",
-    "src/gridlayoutpdf/containers.py": "b29d2502c3924fe88443f426d289d76f7726c59aa420c9ff8beec590c0061281",
+    "src/gridlayoutpdf/containers.py": "55de5bb69f0823aaf1907e78987ccfa72210686bacf1b90742059a6dcdaeb74b",
     "src/gridlayoutpdf/diagnostics.py": "4afcaed8c3fc1911314c895f57cb25732ffbfce8847b1391dc01780ed6e11073",
     "src/gridlayoutpdf/document.py": "f4ced7ab011ae5748073958e327949a52ce0bf268266324e280ef52285e149d7",
     "src/gridlayoutpdf/equations.py": "c3f8ea73362b1a7e6cb163a133490d59f75a71dd97623865138ab24a54d45689",
@@ -412,7 +412,8 @@
       "All 37 golden PNGs and their hashes remain unchanged; only source input pins and this approval record are refreshed.",
       "2026-10-17: opt-in render_pdf/Document.render invariant flag added; the default path is unchanged. Only the document.py and renderers/reportlab.py pins are refreshed; the pixel comparison of all 37 pages decides whether images are unchanged.",
       "2026-10-18: opt-in Line/Polyline dash, Rectangle fill/stroke, Circle, KeepWithNext, PreferKeepTogether, Indent, Leading, CellLines(wrap=True) and proportional_spans added; default drawing operators are unchanged. Only the changed src/gridlayoutpdf pins are refreshed; the pixel comparison of all 37 pages decides whether images are unchanged.",
-      "2026-10-18: opt-in flowchart parts TextBox, TextDiamond and Connector, and Rectangle corner_radius (default 0, drawn with the unchanged rect operator) added; default drawing operators are unchanged. Only the changed src/gridlayoutpdf pins are refreshed; the pixel comparison of all 37 pages decides whether images are unchanged."
+      "2026-10-18: opt-in flowchart parts TextBox, TextDiamond and Connector, and Rectangle corner_radius (default 0, drawn with the unchanged rect operator) added; default drawing operators are unchanged. Only the changed src/gridlayoutpdf pins are refreshed; the pixel comparison of all 37 pages decides whether images are unchanged.",
+      "2026-10-18: opt-in SideRule container (a filled vertical bar per part, for WebPier decision 53) added; existing blocks and drawing operators are unchanged. Only the __init__.py and containers.py pins are refreshed; the pixel comparison of all 37 pages decides whether images are unchanged."
     ]
   },
   "pages": [

@@ -106,6 +106,7 @@ report = Document(
 | `PreferKeepTogether(block)` | 空ページに収まれば次ページへ送って分割を避け、1ページを超えるときだけ合法な位置で分割する |
 | `Indent(block, left)` | 子をleft pt狭く計測し、右へleft pt移す。各partに`indent_pt`を記録する |
 | `Leading(block, rows, *, minimum=False, overhang=0.0)` | 本文の各part（表示行）をrows行にそろえる。不足する行は`LayoutOverflowError`、`minimum=True`では短い行だけ伸ばす。`overhang` ptまでの超過は行送りを保ってはみ出させる。繰返しprefixは拒否 |
+| `SideRule(block, x, *, width=0.72, top=0.0, bottom=0.0, color=(0, 0, 0))` | 子の左端からx ptの位置に、各partの高さ全体の縦線を引く。`top`は最初の本文part、`bottom`は最後の本文partの線を縮める。各partに`side_rule_pt`を記録する |
 
 `Paragraph.align`はleft/right/center/justify。justifyは最終行と明示改行の直前を自然な字間にし、それ以外の行だけ追加字間を試す。既定上限は1間隔0.05em。上限内で幅を埋められなければ合法な折り返し位置と自然な字間を使う。字形を横へ伸縮しない。
 
@@ -114,6 +115,12 @@ report = Document(
 `Leading(block, rows, overhang=0.12)`は、行送りを固定したまま、字形が行の下へわずかにはみ出す表示行を許す。各partの測定行数がrowsを超えても、超過分（行数差×行ピッチ）が`overhang` pt以内ならそのpartをrows行に固定し、描画コマンドはそのまま次の行へはみ出させる。はみ出した量は各partのmetadataに`overhang_pt`として記録され（入れ子では合算）、`measure_block`はその量だけpartの下端より下のインクを許す。超過が`overhang`を超えるpartは従来どおり、`minimum=False`では`LayoutOverflowError`、`minimum=True`では伸ばしたままにする。`overhang`は有限の非負数（pt、boolは不可）で、既定の0では従来と同じ結果になる。はみ出しは次の行の字形との接触を検査しないため、下付き添字のような小さな超過に限って使う。`Stack`・`Columns`の中では全体を1つのpartとして計測するため、最終行のはみ出しは外側のpartを超えて`LayoutOverflowError`になる。
 
 `Spacer(rows, discard_at_page_top=True)`は、LaTeXの`\vspace`（`\vspace*`ではない）のように頁頭で消える空白になる。文書の流し込みで、その頁にまだ何も置かれていない状態（文書の先頭、改ページの直後、頁末に収まらず次頁へ送られた場合を含む）で置こうとすると、行を進めずplacementも記録せずに捨てる。頁の途中では通常どおり行を確保する。印は`MeasuredBlock.discard_at_page_top`に載り、`KeepWithNext`・`KeepTogether`・`PreferKeepTogether`・`Indent`・`Leading`を通しても保たれる。`Stack`・`Columns`の中では全体を1つの部品として計測するため印は外側へ伝わらず、`At`の明示配置では捨てない。既定の`False`では従来どおり頁頭にも空白を残す。
+
+`SideRule(block, x, top=…, bottom=…)`は、式のまとまりを左の縦線で括るときに使う。線は子の各part（繰返しprefixを含む）に、幅`width`の塗りの縦棒（`Rectangle(stroke=False)`）として足すので、インクはpartの中に収まり、同じ頁で続くpartの線はつながる。改ページではその頁の最後のpartで切れ、次の頁の先頭のpartから続く。`top`・`bottom`（pt、有限の非負数）は線の始まりと終わりを行の中で縮め、partの高さを使い切る値は`ValueError`。幅・flag（`keep_with_next`・`discard_at_page_top`など）・分割規則は子のまま保ち、xが子の幅より右なら利用可能幅までの範囲で予約幅を広げ、超えれば`LayoutOverflowError`。いくつかの部品をまとめて括るときは、部品ごとに同じxで包み、最初の部品に`top`、最後の部品に`bottom`を渡す。頁頭で捨てられる`Spacer`を包めば、線も一緒に捨てられる。
+
+```python
+from gridlayoutpdf import SideRule
+```
 
 段落は既定で、改ページ前後に表示上の行を2行以上残す。`min_first`／`min_last`で変更できる。グリッドの占有行数と表示上の行数は別に数える。ColumnsやKeepTogether内のStackは全体を分割しないため、大き過ぎる場合は明示エラーになる。
 

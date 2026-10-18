@@ -7,6 +7,7 @@ from .layout import (
     Block, LayoutContext, LayoutPart, MeasuredBlock, _has_visible_commands,
     block_trace, measure_child, measurement_inputs, require_block,
 )
+from .scene import Rectangle
 from .validation import TOLERANCE, _finite_number, _identifier, _integer
 
 
@@ -204,6 +205,65 @@ class Indent:
 
         return replace(child, width=child.width + self.left, parts=shifted(child.parts),
                        prefix=shifted(child.prefix), block_id=self.block_id or child.block_id)
+
+
+@dataclass(frozen=True, slots=True)
+class SideRule:
+    """Draw a vertical rule ``x`` pt from the block's left edge beside every part.
+
+    Each part, prefix included, gets a filled bar of ``width`` over its whole
+    height, so the bars of adjacent parts join on a page and the rule breaks
+    with the page. ``top`` shortens the bar of the first body part and
+    ``bottom`` that of the last one. The child's measurement and flow flags are
+    otherwise unchanged; every part records ``side_rule_pt`` metadata.
+    """
+
+    block: Block
+    x: float
+    _: KW_ONLY
+    width: float = 0.72
+    top: float = 0.0
+    bottom: float = 0.0
+    color: tuple[float, float, float] = (0, 0, 0)
+    block_id: str = ""
+
+    def __post_init__(self) -> None:
+        _identifier(self.block_id)
+        require_block(self.block)
+        for name in ("x", "width", "top", "bottom"):
+            value = _finite_number(getattr(self, name), name)
+            if value < 0 or (name == "width" and value == 0):
+                raise ValueError(f"{name} must be {'positive' if name == 'width' else 'nonnegative'}")
+            object.__setattr__(self, name, value)
+        if self.x < self.width / 2:
+            raise ValueError("x must leave half the rule width at the left edge")
+        Rectangle(0, 0, self.width, 1, fill=self.color, stroke=False)  # validates the color
+
+    def measure(self, context: LayoutContext, available_width: float) -> MeasuredBlock:
+        available_width = measurement_inputs(context, available_width)
+        location = self.block_id or "SideRule"
+        right = self.x + self.width / 2
+        if right > available_width + TOLERANCE:
+            raise LayoutOverflowError(
+                f"{location}: rule at {self.x} exceeds available width {available_width}",
+                block_id=location, needed=right, available=available_width,
+            )
+        child = measure_child(self.block, context, available_width, f"{location}.block")
+        pitch = child.row_pitch
+
+        def ruled(part: LayoutPart, top: float, bottom: float) -> LayoutPart:
+            height = part.rows * pitch - top - bottom
+            if height <= 0:
+                raise ValueError(f"{location}: top and bottom leave no rule in a part of {part.rows * pitch} pt")
+            bar = Rectangle(self.x - self.width / 2, top, self.width, height, fill=self.color, stroke=False)
+            return replace(part, commands=(*part.commands, bar), metadata={**part.metadata, "side_rule_pt": self.x})
+
+        last = len(child.parts) - 1
+        parts = tuple(ruled(part, self.top if index == 0 else 0.0, self.bottom if index == last else 0.0)
+                      for index, part in enumerate(child.parts))
+        prefix = tuple(ruled(part, 0.0, 0.0) for part in child.prefix)
+        return replace(child, width=max(child.width, right), parts=parts, prefix=prefix,
+                       block_id=self.block_id or child.block_id)
 
 
 @dataclass(frozen=True, slots=True)
