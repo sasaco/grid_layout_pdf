@@ -1,6 +1,6 @@
 """Grid-height paragraph, heading and spacing components."""
 
-from dataclasses import dataclass, replace
+from dataclasses import KW_ONLY, dataclass, replace
 
 from .layout import LayoutContext, LayoutPart, MeasuredBlock, measurement_inputs
 from .scene import Text
@@ -78,17 +78,26 @@ class Heading(Paragraph):
 
 @dataclass(frozen=True, slots=True)
 class Spacer:
-    """Reserve a whole number of grid rows; zero produces an empty block."""
+    """Reserve a whole number of grid rows; zero produces an empty block.
+
+    With ``discard_at_page_top=True`` document flow drops the rows when they
+    would come first on a page, like LaTeX's ``\\vspace`` (not ``\\vspace*``).
+    """
 
     rows: int
+    _: KW_ONLY
+    discard_at_page_top: bool = False
 
     def __post_init__(self) -> None:
         _integer(self.rows, "rows", 0, message="rows must be a nonnegative integer")
+        if not isinstance(self.discard_at_page_top, bool):
+            raise ValueError("discard_at_page_top must be a boolean")
 
     def measure(self, context: LayoutContext, available_width: float) -> MeasuredBlock:
         available_width = measurement_inputs(context, available_width)
         parts = (LayoutPart(self.rows),) if self.rows else ()
-        return MeasuredBlock(available_width, context.profile.grid.pitch_y, parts)
+        return MeasuredBlock(available_width, context.profile.grid.pitch_y, parts,
+                             discard_at_page_top=self.discard_at_page_top)
 
 
 @dataclass(frozen=True, slots=True)

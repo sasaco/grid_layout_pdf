@@ -97,7 +97,7 @@ report = Document(
 |---|---|
 | `Paragraph(text, style=None, align='left', ...)` | 日本語の基本禁則と英数字の連続語を保って折り返す |
 | `Heading(text, ...)` | 分割せず、次の可視部品の最小fragmentと同じページに置く |
-| `Spacer(rows)` | 整数グリッド行の空白。0行も可 |
+| `Spacer(rows, *, discard_at_page_top=False)` | 整数グリッド行の空白。0行も可 |
 | `PageBreak()` | 明示改ページ。先頭・末尾・連続指定で空ページを増やさない |
 | `Stack(*blocks)` | 縦に並べる。通常フローでは子の分割規則を維持する |
 | `Columns(*blocks, col_spans=(...), gap_cols=1)` | 整数グリッド列幅で横に並べる。全体は分割せず、高さは子の最大値 |
@@ -105,11 +105,15 @@ report = Document(
 | `KeepWithNext(block)` | Headingと同様に、次の可視部品の最小fragmentと同じページに置く。子の分割規則は変えない |
 | `PreferKeepTogether(block)` | 空ページに収まれば次ページへ送って分割を避け、1ページを超えるときだけ合法な位置で分割する |
 | `Indent(block, left)` | 子をleft pt狭く計測し、右へleft pt移す。各partに`indent_pt`を記録する |
-| `Leading(block, rows, *, minimum=False)` | 本文の各part（表示行）をrows行にそろえる。不足する行は`LayoutOverflowError`、`minimum=True`では短い行だけ伸ばす。繰返しprefixは拒否 |
+| `Leading(block, rows, *, minimum=False, overhang=0.0)` | 本文の各part（表示行）をrows行にそろえる。不足する行は`LayoutOverflowError`、`minimum=True`では短い行だけ伸ばす。`overhang` ptまでの超過は行送りを保ってはみ出させる。繰返しprefixは拒否 |
 
 `Paragraph.align`はleft/right/center/justify。justifyは最終行と明示改行の直前を自然な字間にし、それ以外の行だけ追加字間を試す。既定上限は1間隔0.05em。上限内で幅を埋められなければ合法な折り返し位置と自然な字間を使う。字形を横へ伸縮しない。
 
 `fit_tracking(text, fonts, style, target_width)`は、分割しないラベル等のための厳密な幅合わせ。上限内で追加字間だけでは届かない場合に`LayoutOverflowError`を返す。行頭・行末のASCII空白は文章の折り返しで除き、内部空白と明示改行による空行は保持する。tabは拒否する。
+
+`Leading(block, rows, overhang=0.12)`は、行送りを固定したまま、字形が行の下へわずかにはみ出す表示行を許す。各partの測定行数がrowsを超えても、超過分（行数差×行ピッチ）が`overhang` pt以内ならそのpartをrows行に固定し、描画コマンドはそのまま次の行へはみ出させる。はみ出した量は各partのmetadataに`overhang_pt`として記録され（入れ子では合算）、`measure_block`はその量だけpartの下端より下のインクを許す。超過が`overhang`を超えるpartは従来どおり、`minimum=False`では`LayoutOverflowError`、`minimum=True`では伸ばしたままにする。`overhang`は有限の非負数（pt、boolは不可）で、既定の0では従来と同じ結果になる。はみ出しは次の行の字形との接触を検査しないため、下付き添字のような小さな超過に限って使う。`Stack`・`Columns`の中では全体を1つのpartとして計測するため、最終行のはみ出しは外側のpartを超えて`LayoutOverflowError`になる。
+
+`Spacer(rows, discard_at_page_top=True)`は、LaTeXの`\vspace`（`\vspace*`ではない）のように頁頭で消える空白になる。文書の流し込みで、その頁にまだ何も置かれていない状態（文書の先頭、改ページの直後、頁末に収まらず次頁へ送られた場合を含む）で置こうとすると、行を進めずplacementも記録せずに捨てる。頁の途中では通常どおり行を確保する。印は`MeasuredBlock.discard_at_page_top`に載り、`KeepWithNext`・`KeepTogether`・`PreferKeepTogether`・`Indent`・`Leading`を通しても保たれる。`Stack`・`Columns`の中では全体を1つの部品として計測するため印は外側へ伝わらず、`At`の明示配置では捨てない。既定の`False`では従来どおり頁頭にも空白を残す。
 
 段落は既定で、改ページ前後に表示上の行を2行以上残す。`min_first`／`min_last`で変更できる。グリッドの占有行数と表示上の行数は別に数える。ColumnsやKeepTogether内のStackは全体を分割しないため、大き過ぎる場合は明示エラーになる。
 
@@ -155,6 +159,20 @@ group = EquationGroup(
 折り返しは最上位のRowだけを対象にし、強制改行、preferred hint、関係演算子、加減算、allowed hintの順で候補を選ぶ。関係演算子や加減算記号は継続行の先頭へ残す。分数・根号・添字・括弧・入れ子Rowの内部は分断しない。
 
 通常は結果列を先に予約する。その幅へ原子的な右辺が入らず、結果列を含む全幅なら入る場合、結果を専用の最終行へ送る。結果・単位のアンカーは保持する。それでも入らなければエラーとなり、文字サイズや用紙を自動変更しない。
+
+```python
+from gridlayoutpdf import Equation, EquationGroup, Operator, Row, TermStop
+
+def kv(alpha):
+    return Row("5.1", TermStop("center"), Operator("×"), TermStop("right"), alpha,
+               TermStop("center"), Operator("×"), TermStop("right"), "68600")
+
+group = EquationGroup(Equation("kv", kv("0.5"), result="174930", unit="kN/m"),
+                      Equation("kv", kv("1.0"), result="349860", unit="kN/m"),
+                      term_gap=4)
+```
+
+右辺の最上位`Row`に幅のない`TermStop(align='left', width=None)`を置くと、その式は項の列揃えの式になる。TermStopで区切った区間が列となり、最初のTermStopより前の区間が左揃えの列0（先頭のTermStopは列0の揃えと最小幅を定める）。グループ内の列揃えの式で同じ番号の列は、最も広い区間（`width`の最小幅があればそれ以上）を列幅として共有し、`align`（left・center・right）に従って列内に置く。列の間隔は`EquationGroup(term_gap=...)`で、省略すると`gap`。同じ列番号でalignが食い違う場合と末尾のTermStopはValueError。列揃えで1行に置く式は`BreakHint`を無視し（幅0）、全列が通常の右辺幅に入らなければ結果を専用の最終行へ送る。1行に収まるかの判定はその式自身の最後の列までの幅で行い、同じグループの列の多い式に引きずられない。自身の列だけで並べても1行が全幅（結果のない式は通常の右辺幅）に入らない式は「退避」とし、退避した式を除いて列を決め直し、共有の列で入らなくなった式も退避する（退避が増えなくなるまで繰り返す）。退避した式は列幅の共有に加わらず、先頭以外の各TermStopの位置に`BreakHint('allowed')`を置いた`Row`（元の`gap`と`BreakHint`はそのまま）として通常の折り返しをし、それでも入らなければLayoutOverflowErrorとなる。各行のmetadataの`term_columns_pt`にその式が使う列の左端・幅・揃え（ブロック左端からのpt）を記録し、退避した式の行は`term_columns_pt`の代わりに`term_fallback: True`を持つ。TermStopを含まない式の配置は変わらない。
 
 単独の数式や表セルには`MathBlock(expression)`を使う。MathNodeと通常部品はmeasureの引数が違うため、数式をそのままCellへ渡さない。
 
@@ -278,6 +296,21 @@ marks = Figure(
 ```
 
 Labelのyは基線、xはleft/center/rightのアンカー。Arrowは終点に開いた矢印を付ける。ゼロ長の矢印や枠外の文字・線は拒否する。
+
+フローチャートの部品も`Figure`に置ける。`TextBox(x, y, width, height, lines, *, style=None, leading=None, padding=3.0, rounded=False, stroke_width=.6, color=(0,0,0))`は箱の中央に複数行の文字を置く処理の箱で、`rounded=True`なら短辺の半分を半径とする角丸の端子になる。`TextDiamond(x, y, width, height, lines, ...)`は外接する箱(x, y, width, height)の菱形に文字を置く判定、`Connector(points, *, head_length=6.0, head_width=4.0, width=.6, color=(0,0,0))`は折れ線の終点にArrowと同じ矢じりを付ける線である。行送り`leading`は基線から基線までで、既定は文字サイズの1.4倍。文字は自動縮小せず、箱では`padding`を除いた内側、菱形では各行の字形の高さでの菱形の内側（輪郭から横方向に`padding`）に収まらなければ`LayoutOverflowError`になる。Yes/Noなどの注記には`Label`を使う。角丸は`Rectangle(..., corner_radius=r)`（0以上、短辺の半分以下）で、範囲は角丸のない箱と同じ。
+
+```python
+from gridlayoutpdf import Connector, Figure, Label, TextBox, TextDiamond
+
+flow = Figure(
+    20, 12,
+    TextBox(100, 2, 80, 24, ("START",), rounded=True),
+    Connector(((140, 26), (140, 44))),
+    TextDiamond(80, 44, 120, 40, ("σb ≦ σbl",)),
+    Connector(((200, 64), (250, 64), (250, 100))),
+    Label(205, 60, "No"),
+)
+```
 
 Imageは静止PNG/JPEGを対象に、指定枠へ縦横比を保って内接させる。alignはleft/center/right、valignはtop/middle/bottom。透明度とEXIF方向を処理し、計測時に画像bytesを固定する。配置結果を描画するまでに元ファイルが変わっても、出力画像は変わらない。
 

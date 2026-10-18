@@ -65,8 +65,12 @@ def _draw(canvas: Canvas, command, height: float, fonts: FontRegistry) -> None:
         if isinstance(command, Line):
             canvas.line(command.x1, height - command.y1, command.x2, height - command.y2)
         elif isinstance(command, Rectangle):
-            canvas.rect(command.x, height - command.y - command.height,
-                        command.width, command.height, **paint)
+            if command.corner_radius:
+                canvas.roundRect(command.x, height - command.y - command.height,
+                                 command.width, command.height, command.corner_radius, **paint)
+            else:
+                canvas.rect(command.x, height - command.y - command.height,
+                            command.width, command.height, **paint)
         elif isinstance(command, Circle):
             canvas.circle(command.x, height - command.y, command.radius, **paint)
         else:

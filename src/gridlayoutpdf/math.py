@@ -130,6 +130,26 @@ class BreakHint:
         raise LayoutError("BreakHint requires equation wrapping")
 
 
+@dataclass(frozen=True, slots=True)
+class TermStop:
+    """A zero-width boundary in a top-level equation RHS Row starting an aligned term column."""
+
+    align: str = "left"
+    width: float | None = None
+
+    def __post_init__(self) -> None:
+        if not isinstance(self.align, str) or self.align not in ("left", "center", "right"):
+            raise ValueError("align must be left, center, or right")
+        if self.width is not None:
+            width = _finite_number(self.width, "width")
+            if width <= 0:
+                raise ValueError("width must be positive")
+            object.__setattr__(self, "width", width)
+
+    def measure(self, fonts: FontRegistry, style: TextStyle) -> MathBox:
+        raise LayoutError("TermStop requires equation layout")
+
+
 @dataclass(frozen=True, slots=True, init=False)
 class Row:
     """Math atoms on a shared axis; default gaps are 0.15 times text size."""

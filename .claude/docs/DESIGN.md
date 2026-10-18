@@ -48,6 +48,7 @@ Python の自作 PDF 計算書ライブラリを設計する。A4.pdf の GridLa
 | FR-016 | P7橋脚アプリのPDF生成部分を6帳票すべてGridLayoutPdfへ移行し、既存計算・入力画面・入出力仕様を維持する | Must | 2026-10-17 grill第1問にユーザーがyesと回答。対象は0500/0600/0610/0620/0710/0720と、それらが用いる本文・数式・表・図の生成。Example橋脚/outputの4PDFは体裁見本であり計算仕様・期待数値へ置き換えない。 |
 | FR-017 | P7の全6帳票は見本の書体・字下げ・等号揃え・表行高を踏襲し、内容に応じたページ数の増減を許す | Must | 2026-10-17 grill第2問でユーザーが全6帳票の増減を選択。既存0710=3頁/0720=4頁固定も今回の移行では解除し、計算式や表のまとまりを保持して改ページする。原本69頁への固定や、片持ち梁fixtureの37頁固定・全頁番号省略をP7へ転用しない。 |
 | FR-018 | P7移行後の本文・数値・表を白黒に統一する | Must | 2026-10-17 grill第3問でユーザーが白黒統一を選択。見本の赤/青数値は黒、黄色表見出しは白地に変更し、書体・字下げ・等号揃え・表構造を保持する。今回のためのカラー文字/背景API拡張は不要。 |
+| FR-019 | フローチャートを汎用の図部品で描ける（処理の箱・角丸の端子・菱形の判定・折れ線の矢印。Yes/No などの注記は Label） | Must | 2026-10-18 WebPier 決定48（0611 柱の断面照査の曲げひび割れの検討の流れ図）からの依頼。TextBox（rounded で端子）・TextDiamond・Connector と Rectangle の corner_radius を Figure の部品として追加。文字は自動縮小せず、収まらなければ LayoutOverflowError。橋脚固有の文言は持ち込まない。 |
 
 ## 非機能要件 (Non-Functional Requirements)
 
@@ -124,6 +125,9 @@ Python の自作 PDF 計算書ライブラリを設計する。A4.pdf の GridLa
 | Report the short axis in table clearance diagnostics | 2026-10-17のレビュー指摘を承認して修正。罫線に接触した内容のneeded/availableを不足している軸の値にし、メッセージへ(horizontal)/(vertical)を付けた。CellLinesの既存表記に合わせ、利用者が変更すべき寸法と数値を一致させる。 | 常に横方向の幅と余地を報告する従来形式を維持する。 | 2026-10-17 |
 | Keep one validation and metadata module for every boundary | 2026-10-17のレビュー指摘を承認して修正。許容誤差1e-7、整数・識別子検証、グリッド丸め、metadataの凍結とJSON化を validation.py と metadata.py に集約し、計測引数・子部品計測・部品traceの重複を layout.py の共通関数へ寄せた。丸めは whole_units_ceil / whole_units_in の2関数に統一し、同値を数値で確認した。 | 各モジュールが独自の検証と丸めを持つ従来構成を維持する。 | 2026-10-17 |
 | Provide generic flow wrappers, cell wrapping, column spans and vector paint for client reports | WebPier（橋脚帳票）が局所実装していた汎用機能をライブラリへ移した。KeepWithNext・PreferKeepTogether（1頁に収まれば次頁へ送り、超えれば合法位置で分割）・Indent（子をpt単位で狭めて右へ移す）・Leading（各表示行を整数グリッド行へ固定、minimum=Trueは下限）・CellLines(wrap=True)・proportional_spans（累積比の丸めで合計を保つ列配分）、Line/Polylineのdash、Rectangleのfill/stroke、Circleを追加。既定値では描画命令・trace・PDFバイトが従来と同一で、片持ち梁37頁の画素も一致した。 | 利用側でのLine重ね塗り・短線分割による擬似塗り/破線、およびMeasuredBlockのフラグを直接置換する利用側ラッパーを維持する。 | 2026-10-18 |
+| Align equation RHS terms in explicit columns with opt-in TermStop | WebPier の計算書で見本（Excel の列配置）どおり代入式の数値・演算子を複数行で縦にそろえるため。既定の折り返しは維持し、列揃えの式は折り返さず結果行の分離だけを許す | 式ごとの絶対座標指定、表（Table）で式を組む、Row の gap 調整だけで近似 | 2026-10-18 |
+| Discard opt-in spacers at the top of a page | 計算書の見出し前後・まとまり間の空き行が改ページで頁頭に残ると、頁の1行目の位置が頁ごとに変わるため。既定は従来どおり | 利用側で改ページ位置を推測して空きを外す、全 Spacer の既定を変える | 2026-10-18 |
+| Allow an opt-in glyph overhang under a fixed Leading | 下付き添字の字形が固定行送り 14.28pt をわずかに超えて行送りが乱れるため。見本も添字は次の行へはみ出す | 添字の位置や大きさを変える、行送りを広げる | 2026-10-18 |
 
 ## TODO / Open Questions
 

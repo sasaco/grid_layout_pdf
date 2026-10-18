@@ -1,6 +1,6 @@
 """Semantic equation wrapping without resizing or splitting math atoms."""
 
-from dataclasses import KW_ONLY, dataclass
+from dataclasses import KW_ONLY, dataclass, replace
 import math
 from typing import NoReturn
 
@@ -9,7 +9,7 @@ from .errors import FontError, LayoutOverflowError
 from .fonts import FontRegistry
 from .layout import LayoutContext, LayoutPart, MeasuredBlock, measurement_inputs
 from .math import (
-    BreakHint, MathBox, MathNode, Operator, Row, as_math, compose_row, literal_box,
+    BreakHint, MathBox, MathNode, Operator, Row, TermStop, as_math, compose_row, literal_box,
 )
 from .styles import TextStyle, _finite_number
 from .validation import _identifier, _integer
@@ -76,17 +76,27 @@ class Equation:
 
 @dataclass(frozen=True, slots=True, init=False)
 class EquationGroup:
-    """Share grid-column anchors across immutable equations and display lines."""
+    """Share grid-column anchors across immutable equations and display lines.
+
+    A top-level RHS Row containing TermStop atoms is laid out in term columns
+    shared by the group's other such rows; term_gap (default: gap) separates
+    the columns. A fitting row ignores its BreakHints and only its result may move
+    to its own line. A row whose aligned line exceeds the full RHS width falls
+    back to ordinary wrapping, with an allowed break at each non-leading TermStop,
+    and no longer contributes to the shared columns.
+    """
 
     equations: tuple[Equation, ...]
     anchors: EquationAnchors | None
     label_columns: int | None
     gap: float
+    term_gap: float | None
     style: TextStyle | None
     block_id: str
 
     def __init__(self, *equations: Equation, anchors: EquationAnchors | None = None,
                  label_columns: int | None = None, gap: float = 4.0,
+                 term_gap: float | None = None,
                  style: TextStyle | None = None, block_id: str = "") -> None:
         if any(not isinstance(equation, Equation) for equation in equations):
             raise ValueError("equations must contain only Equation objects")
@@ -97,10 +107,14 @@ class EquationGroup:
         gap = _finite_number(gap, "gap")
         if gap < 0:
             raise ValueError("gap must be nonnegative")
+        if term_gap is not None:
+            term_gap = _finite_number(term_gap, "term_gap")
+            if term_gap < 0:
+                raise ValueError("term_gap must be nonnegative")
         _style_and_id(style, block_id)
         for name, value in (("equations", tuple(equations)), ("anchors", anchors),
                             ("label_columns", label_columns), ("gap", gap),
-                            ("style", style), ("block_id", block_id)):
+                            ("term_gap", term_gap), ("style", style), ("block_id", block_id)):
             object.__setattr__(self, name, value)
 
     def measure(self, context: LayoutContext, available_width: float) -> MeasuredBlock:
@@ -125,6 +139,9 @@ class EquationGroup:
         second_left = max((item.second.left for item in measured if item.second), default=0)
         second_right = max((item.second.right for item in measured if item.second), default=0)
         rhs_start = _ceil_column(points["first_equal"] + first_right + self.gap, pitch) * pitch
+        segments, columns, fallback = _term_layout(
+            measured, tuple(_term_segments(item, context) for item in measured), rhs_start,
+            available_width - rhs_start, self.gap if self.term_gap is None else self.term_gap)
         parts = []
         for index, item in enumerate(measured):
             first = points["first_equal"]
@@ -147,14 +164,26 @@ class EquationGroup:
                 _require_width(self.gap, unit_start - points["result_right"], item.path + ".unit")
                 _require_width(item.unit.width, available_width - unit_start, item.path + ".unit")
                 trailing.append((item.unit, unit_start))
-            rhs_lines, separate_result = _wrap_rhs(item, context, rhs_end - rhs_start,
-                                                   available_width - rhs_start)
+            if segments[index] is None:
+                wrapped = item
+                if fallback[index]:
+                    wrapped = replace(item, equation=replace(
+                        item.equation, rhs=_term_fallback_row(item.equation.rhs)))
+                rhs_lines, separate_result = _wrap_rhs(wrapped, context, rhs_end - rhs_start,
+                                                       available_width - rhs_start)
+            else:
+                rhs_lines, separate_result = _term_rhs(item, segments[index], columns, rhs_start,
+                                                       rhs_end - rhs_start)
             if not rhs_lines:
                 rhs_lines = (MathBox(0, 0, 0, (), item.style.size * .25),)
             label = Paragraph(item.equation.label, style=item.style, block_id=item.path + ".label",
                               min_first=1, min_last=1).measure(context, label_width) if item.equation.label else None
             common_metadata = {"equation_index": index, "anchors_pt": points,
                                "rhs_start_pt": rhs_start, "label_width_pt": label_width}
+            if segments[index] is not None:
+                common_metadata["term_columns_pt"] = columns[:len(segments[index])]
+            if fallback[index]:
+                common_metadata["term_fallback"] = True
             for line_index, rhs in enumerate(rhs_lines):
                 positioned = (leading if line_index == 0 else []) + [(rhs, rhs_start)]
                 if line_index == len(rhs_lines) - 1 and not separate_result:
@@ -204,6 +233,114 @@ def _wrap_rhs(item: _EquationMeasure, context: LayoutContext, normal_width: floa
         return _wrap_without_rhs_space(item, context, full_width), False
     return wrap_math(item.equation.rhs, context.fonts, item.style,
                      full_width, block_id=item.path), item.result is not None
+
+
+def _term_segments(item: _EquationMeasure,
+                   context: LayoutContext) -> tuple[tuple[TermStop, MathBox], ...] | None:
+    """Split a top-level RHS Row at TermStop atoms; None keeps ordinary wrapping."""
+    rhs = item.equation.rhs
+    if not isinstance(rhs, Row) or not any(isinstance(atom, TermStop) for atom in rhs.items):
+        return None
+    path = item.path + ".rhs"
+    if isinstance(rhs.items[-1], TermStop):
+        raise ValueError(f"{path}: TermStop requires a following term (no trailing stop)")
+    stops: list[TermStop] = [TermStop()]
+    groups: list[list[MathBox]] = [[]]
+    for index, atom in enumerate(rhs.items):
+        if isinstance(atom, BreakHint):
+            continue  # Hints take no space; they matter only after a fallback.
+        if isinstance(atom, TermStop):
+            if index == 0:
+                stops[0] = atom
+            else:
+                stops.append(atom)
+                groups.append([])
+            continue
+        groups[-1].append(_measure(atom, context.fonts, item.style, f"{path}[{index}]"))
+    gap = item.style.size * 0.15 if rhs.gap is None else rhs.gap
+    return tuple((stop, compose_row(boxes, gap, item.style.size * .25))
+                 for stop, boxes in zip(stops, groups))
+
+
+def _term_columns(items: tuple[_EquationMeasure, ...],
+                  segments: tuple[tuple[tuple[TermStop, MathBox], ...] | None, ...],
+                  rhs_start: float, term_gap: float) -> tuple[tuple[float, float, str], ...] | None:
+    """Share each column's alignment and widest term (or minimum width) across the group."""
+    aligns: list[str] = []
+    widths: list[float] = []
+    for item, row in zip(items, segments):
+        for column, (stop, box) in enumerate(row or ()):
+            if column == len(aligns):
+                aligns.append(stop.align)
+                widths.append(0.0)
+            elif aligns[column] != stop.align:
+                raise ValueError(f"{item.path}.rhs: term column {column} align {stop.align!r} "
+                                 f"conflicts with {aligns[column]!r}")
+            widths[column] = max(widths[column], box.width, stop.width or 0.0)
+    if not aligns:
+        return None
+    columns = []
+    left = rhs_start
+    for align, width in zip(aligns, widths):
+        columns.append((left, width, align))
+        left += width + term_gap
+    return tuple(columns)
+
+
+def _term_layout(items: tuple[_EquationMeasure, ...],
+                 segments: tuple[tuple[tuple[TermStop, MathBox], ...] | None, ...],
+                 rhs_start: float, full_width: float, term_gap: float,
+                 ) -> tuple[tuple, tuple[tuple[float, float, str], ...] | None, tuple[bool, ...]]:
+    """Drop rows whose aligned line exceeds the full RHS width until the columns settle.
+
+    A row first falls back when its own columns alone are too wide, so a long row
+    never drags the others; the rest are then rechecked in their shared columns.
+    Without a result the normal RHS region already spans the full width, so one
+    limit serves every row. Removing rows only narrows columns, so this ends.
+    """
+    def too_wide(row, columns) -> bool:
+        left, width, _ = columns[len(row) - 1]
+        return left + width - rhs_start > max(0, full_width)
+
+    _term_columns(items, segments, rhs_start, term_gap)  # Alignment is shared by every row.
+    fallback = [row is not None and too_wide(row, _term_columns((item,), (row,), rhs_start, term_gap))
+                for item, row in zip(items, segments)]
+    while True:
+        kept = tuple(None if dropped else row for dropped, row in zip(fallback, segments))
+        columns = _term_columns(items, kept, rhs_start, term_gap)
+        added = False
+        for index, row in enumerate(kept):
+            if row is not None and too_wide(row, columns):
+                fallback[index] = added = True
+        if not added:
+            return kept, columns, tuple(fallback)
+
+
+def _term_fallback_row(rhs: Row) -> Row:
+    """Replace each non-leading TermStop with an allowed break, keeping hints and gap."""
+    return Row(*(BreakHint("allowed") if isinstance(atom, TermStop) else atom
+                 for index, atom in enumerate(rhs.items)
+                 if index or not isinstance(atom, TermStop)), gap=rhs.gap)
+
+
+def _term_rhs(item: _EquationMeasure, row: tuple[tuple[TermStop, MathBox], ...],
+              columns: tuple[tuple[float, float, str], ...], rhs_start: float,
+              normal_width: float) -> tuple[tuple[MathBox, ...], bool]:
+    """Place one term-aligned RHS, known to fit the full width, on a single line."""
+    axis = item.style.size * .25
+    commands = []
+    ascent = descent = 0.0
+    for (_, box), (left, width, align) in zip(row, columns):
+        slack = width - box.width
+        x = left - rhs_start + (slack if align == "right" else slack / 2 if align == "center" else 0)
+        dy = box.axis - axis
+        commands.extend(box.translated(x, dy))
+        ascent = max(ascent, box.ascent - dy)
+        descent = max(descent, box.descent + dy)
+    last_left, last_width, _ = columns[len(row) - 1]
+    line = MathBox(last_left + last_width - rhs_start, ascent, descent, tuple(commands), axis)
+    # Only an equation with a result has a normal region narrower than the full width.
+    return (line,), line.width > max(0, normal_width)
 
 
 def _wrap_without_rhs_space(item: _EquationMeasure, context: LayoutContext,

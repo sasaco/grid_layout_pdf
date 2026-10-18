@@ -103,7 +103,8 @@ class MeasuredBlock:
 
     min_first/min_last count body parts (display lines), not physical grid rows.
     prefix parts are repeated on every fragment and never count toward those
-    minimum line counts.
+    minimum line counts. discard_at_page_top drops the block when flow would
+    place it before anything else on a page.
     """
 
     width: float
@@ -117,6 +118,7 @@ class MeasuredBlock:
     keep_together: bool = False
     keep_with_next: bool = False
     prefer_keep: bool = False
+    discard_at_page_top: bool = False
     block_id: str = ""
     _rows: int = field(init=False, repr=False, compare=False, default=0)
 
@@ -139,7 +141,7 @@ class MeasuredBlock:
             raise ValueError("prefix requires at least one body part")
         for name in ("min_first", "min_last"):
             _integer(getattr(self, name), name, 1, message=f"{name} must be a positive integer")
-        for name in ("keep_together", "keep_with_next", "prefer_keep"):
+        for name in ("keep_together", "keep_with_next", "prefer_keep", "discard_at_page_top"):
             if not isinstance(getattr(self, name), bool):
                 raise ValueError(f"{name} must be a boolean")
         if not isinstance(self.block_id, str):
@@ -275,6 +277,8 @@ def measure_block(block: Block, context: LayoutContext, available_width: float) 
 
     Only tiny absolute floating-point roundoff is tolerated. Parts may overlap
     internally, but every command's ink/stroke envelope must fit its own part.
+    A part whose metadata records ``overhang_pt`` (set by ``Leading``) may
+    extend that far below its last row.
     """
     available_width = measurement_inputs(context, available_width)
     require_block(block)
@@ -302,6 +306,11 @@ def measure_block(block: Block, context: LayoutContext, available_width: float) 
     for group_name, parts in (("prefix", result.prefix), ("parts", result.parts)):
         for part_index, part in enumerate(parts):
             height = part.rows * result.row_pitch
+            overhang = _finite_number(part.metadata.get("overhang_pt", 0.0),
+                                      f"{block_id}.{group_name}[{part_index}] overhang_pt")
+            if overhang < 0:
+                raise ValueError(f"{block_id}.{group_name}[{part_index}] overhang_pt must not be negative")
+            height += overhang
             for command_index, command in enumerate(part.commands):
                 location = f"{block_id}.{group_name}[{part_index}].commands[{command_index}]"
                 try:

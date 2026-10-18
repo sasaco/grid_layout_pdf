@@ -211,7 +211,7 @@ class _Paginator:
                 if reserve > self.profile.body_end_row - self.cursor:
                     self.flush()
                 for heading_event in events[start:end]:
-                    if heading_event.measured.rows:
+                    if heading_event.measured.rows and not self.discards(heading_event.measured):
                         self.place(heading_event, heading_event.measured)
                 self.flow(event, measured, suppress_prefer=whole > self.capacity)
                 return end + 1
@@ -223,6 +223,8 @@ class _Paginator:
 
     def flow(self, event: _Event, measured: MeasuredBlock, *, suppress_prefer: bool = False) -> None:
         while measured.rows:
+            if self.discards(measured):
+                return
             available = self.profile.body_end_row - self.cursor
             if measured.rows <= available:
                 self.place(event, measured)
@@ -248,6 +250,11 @@ class _Paginator:
                 self.flush()
                 continue
             _row_overflow(measured.block_id or event.source_path, measured.minimum_rows, self.capacity)
+
+    def discards(self, measured: MeasuredBlock) -> bool:
+        """Drop an opt-in spacer that would be the first thing on a page."""
+        return (measured.discard_at_page_top and not self.placements
+                and self.cursor == self.profile.body_start_row)
 
     def place(self, event: _Event, measured: MeasuredBlock, *, col: int = 0) -> None:
         grid = self.profile.grid

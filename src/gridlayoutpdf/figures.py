@@ -111,8 +111,9 @@ class Figure:
 
     def __init__(self, col_span, rows, *items, block_id=""):
         _frame(col_span, rows, block_id)
-        if any(not isinstance(item, (Line, Polyline, Rectangle, Circle, Text, Arrow, Label)) for item in items):
-            raise ValueError("items must contain drawing commands, Arrow or Label")
+        if any(not isinstance(item, (Line, Polyline, Rectangle, Circle, Text, Arrow, Label, TextBox, TextDiamond,
+                                     Connector)) for item in items):
+            raise ValueError("items must contain drawing commands, Arrow, Label, TextBox, TextDiamond or Connector")
         object.__setattr__(self, "col_span", col_span)
         object.__setattr__(self, "rows", rows)
         object.__setattr__(self, "items", tuple(items))
@@ -124,7 +125,8 @@ class Figure:
         commands = []
         for index, item in enumerate(self.items):
             try:
-                expanded = (item._commands() if isinstance(item, Arrow) else
+                expanded = (item._commands() if isinstance(item, (Arrow, Connector)) else
+                            item._commands(context, source) if isinstance(item, (TextBox, TextDiamond)) else
                             (item._command(context),) if isinstance(item, Label) else (item,))
             except FontError as exc:
                 raise FontError(f"{source}.items[{index}]: {exc}") from exc
@@ -262,3 +264,165 @@ class Image:
         return MeasuredBlock(width, context.profile.grid.pitch_y,
                              (LayoutPart(rows, (command,)),), keep_together=True,
                              block_id=self.block_id)
+
+
+def _lines(lines) -> tuple[str, ...]:
+    if isinstance(lines, str) or not isinstance(lines, (tuple, list)):
+        raise ValueError("lines must be a tuple or list of strings")
+    lines = tuple(lines)
+    if not lines:
+        raise ValueError("lines must contain at least one line")
+    for line in lines:
+        if not isinstance(line, str) or not line or any(char in line for char in "\r\n\t"):
+            raise ValueError("each line must be a nonempty single line without tabs")
+    return lines
+
+
+def _text_shape(item) -> None:
+    """Validate the frame, lines, text settings and outline of a TextBox or TextDiamond."""
+    for name in ("x", "y", "width", "height", "padding"):
+        object.__setattr__(item, name, _finite_number(getattr(item, name), name))
+    for name in ("width", "height"):
+        if getattr(item, name) <= 0:
+            raise ValueError(f"{name} must be positive")
+    if item.padding < 0:
+        raise ValueError("padding must be nonnegative")
+    object.__setattr__(item, "lines", _lines(item.lines))
+    if item.style is not None and not isinstance(item.style, TextStyle):
+        raise ValueError("style must be a TextStyle or None")
+    if item.leading is not None:
+        leading = _finite_number(item.leading, "leading")
+        if leading <= 0:
+            raise ValueError("leading must be positive")
+        object.__setattr__(item, "leading", leading)
+    outline = Rectangle(item.x, item.y, item.width, item.height, item.stroke_width, item.color)
+    for name in ("stroke_width", "color"):
+        object.__setattr__(item, name, getattr(outline, name))
+
+
+def _centred_lines(item, context: LayoutContext, source: str, cx: float, cy: float, height: float,
+                   half_width) -> tuple[Text, ...]:
+    """The lines of *item* centred on (cx, cy), ``leading`` apart (1.4 × the size by default).
+
+    The lines from the first ascent to the last descent must fit in *height*; a line whose ink reaches *dy* from cy
+    must fit in ``2 × half_width(dy)``. Nothing is shrunk: a line that does not fit is a LayoutOverflowError.
+    """
+    style = item.style if item.style is not None else context.style.body
+    leading = item.leading if item.leading is not None else 1.4 * style.size
+    texts = [context.fonts.normalize_text(line) for line in item.lines]
+    metrics = [context.fonts.measure(text, style) for text in texts]
+    span = metrics[0].ascent + (len(texts) - 1) * leading + metrics[-1].descent
+    if span > height + TOLERANCE:
+        raise LayoutOverflowError(f"{source}: {len(texts)} lines need {span:g} pt of height; {height:g} pt is free",
+                                  block_id=source, needed=span, available=height)
+    first = cy - span / 2 + metrics[0].ascent
+    commands = []
+    for index, (text, metric) in enumerate(zip(texts, metrics)):
+        y = first + index * leading
+        bounds = metric.bounds
+        free = max(0.0, half_width(max(abs(y - metric.ascent - cy), abs(y + metric.descent - cy))))
+        if bounds.width > 2 * free + TOLERANCE:
+            raise LayoutOverflowError(f"{source}: line {index} needs {bounds.width:g} pt; {2 * free:g} pt is free",
+                                      block_id=source, needed=bounds.width, available=2 * free)
+        commands.append(Text(cx - bounds.x - bounds.width / 2, y, text, style))
+    return tuple(commands)
+
+
+@dataclass(frozen=True, slots=True)
+class TextBox:
+    """A flowchart step: a box at (x, y) with its lines of text centred in it.
+
+    ``rounded`` makes it a terminal, its ends rounded with half the shorter side. The lines must fit inside the box
+    less ``padding`` on every side; ``leading`` is baseline to baseline (1.4 × the size by default).
+    """
+
+    x: float
+    y: float
+    width: float
+    height: float
+    lines: tuple[str, ...]
+    _: KW_ONLY
+    style: TextStyle | None = None
+    leading: float | None = None
+    padding: float = 3.0
+    rounded: bool = False
+    stroke_width: float = .6
+    color: Color = (0, 0, 0)
+
+    def __post_init__(self) -> None:
+        _text_shape(self)
+        if not isinstance(self.rounded, bool):
+            raise ValueError("rounded must be a boolean")
+
+    def _commands(self, context: LayoutContext, source: str) -> tuple:
+        radius = min(self.width, self.height) / 2 if self.rounded else 0.0
+        outline = Rectangle(self.x, self.y, self.width, self.height, self.stroke_width, self.color,
+                            corner_radius=radius)
+        inner = self.width - 2 * self.padding
+        texts = _centred_lines(self, context, source, self.x + self.width / 2, self.y + self.height / 2,
+                               self.height - 2 * self.padding, lambda dy: inner / 2)
+        return (outline, *texts)
+
+
+@dataclass(frozen=True, slots=True)
+class TextDiamond:
+    """A flowchart decision: a rhombus in the box (x, y, width, height) with its lines of text centred in it.
+
+    Each line must fit inside the rhombus at the height of its ink, ``padding`` from the outline measured across,
+    and the lines together within the height less ``padding`` above and below.
+    """
+
+    x: float
+    y: float
+    width: float
+    height: float
+    lines: tuple[str, ...]
+    _: KW_ONLY
+    style: TextStyle | None = None
+    leading: float | None = None
+    padding: float = 3.0
+    stroke_width: float = .6
+    color: Color = (0, 0, 0)
+
+    def __post_init__(self) -> None:
+        _text_shape(self)
+
+    def _commands(self, context: LayoutContext, source: str) -> tuple:
+        cx, cy = self.x + self.width / 2, self.y + self.height / 2
+        outline = Polyline(((cx, self.y), (self.x + self.width, cy), (cx, self.y + self.height), (self.x, cy)),
+                           self.stroke_width, self.color, closed=True)
+        texts = _centred_lines(self, context, source, cx, cy, self.height - 2 * self.padding,
+                               lambda dy: self.width / 2 * (1 - dy / (self.height / 2)) - self.padding)
+        return (outline, *texts)
+
+
+@dataclass(frozen=True, slots=True)
+class Connector:
+    """A flowchart line along ``points`` with an open arrow head at the last point, as Arrow draws it on the last
+    segment. Consecutive points must differ, and the last segment must be at least ``head_length`` long."""
+
+    points: tuple
+    _: KW_ONLY
+    head_length: float = 6.0
+    head_width: float = 4.0
+    width: float = .6
+    color: Color = (0, 0, 0)
+
+    def __post_init__(self) -> None:
+        if isinstance(self.points, str) or not isinstance(self.points, (tuple, list)) or len(self.points) < 2:
+            raise ValueError("points must hold at least two points")
+        path = Polyline(tuple(self.points), self.width, self.color)
+        if any(first == second for first, second in zip(path.points, path.points[1:])):
+            raise ValueError("consecutive points must differ")
+        start, end = path.points[-2], path.points[-1]
+        head = Arrow(start.x, start.y, end.x, end.y, head_length=self.head_length, head_width=self.head_width,
+                     width=self.width, color=self.color)
+        object.__setattr__(self, "points", path.points)
+        for name in ("head_length", "head_width", "width", "color"):
+            object.__setattr__(self, name, getattr(head, name))
+
+    def _commands(self) -> tuple[Polyline, Polyline]:
+        start, end = self.points[-2], self.points[-1]
+        head = Arrow(start.x, start.y, end.x, end.y, head_length=self.head_length, head_width=self.head_width,
+                     width=self.width, color=self.color)._commands()[1]
+        return Polyline(self.points, self.width, self.color), head

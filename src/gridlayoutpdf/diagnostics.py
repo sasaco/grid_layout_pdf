@@ -43,6 +43,8 @@ def _command(command, fonts: FontRegistry, index: int, location: str) -> dict:
     elif isinstance(command, Rectangle):
         trace.update(x=command.x, y=command.y, width=command.width, height=command.height,
                      stroke_width=command.stroke_width, color=list(command.color))
+        if command.corner_radius:
+            trace["corner_radius"] = command.corner_radius
     elif isinstance(command, Circle):
         trace.update(x=command.x, y=command.y, radius=command.radius,
                      stroke_width=command.stroke_width, color=list(command.color))

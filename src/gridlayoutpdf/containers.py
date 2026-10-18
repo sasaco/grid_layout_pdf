@@ -212,6 +212,9 @@ class Leading:
 
     A part needing more rows raises an overflow. ``minimum=True`` instead
     raises only shorter parts to ``rows`` and leaves taller ones unchanged.
+    ``overhang`` (pt) lets a part exceed ``rows`` by at most that height and
+    still advance by ``rows``; its drawing is unchanged and spills into the
+    next line, and the excess is recorded as ``overhang_pt`` in its metadata.
     Repeating prefix parts are rejected, because their advance is ambiguous.
     """
 
@@ -219,6 +222,7 @@ class Leading:
     rows: int
     _: KW_ONLY
     minimum: bool = False
+    overhang: float = 0.0
     block_id: str = ""
 
     def __post_init__(self) -> None:
@@ -227,6 +231,10 @@ class Leading:
         _integer(self.rows, "rows", 1, message="rows must be a positive integer")
         if not isinstance(self.minimum, bool):
             raise ValueError("minimum must be a boolean")
+        overhang = _finite_number(self.overhang, "overhang")
+        if overhang < 0:
+            raise ValueError("overhang must be a finite non-negative number")
+        object.__setattr__(self, "overhang", overhang)
 
     def measure(self, context: LayoutContext, available_width: float) -> MeasuredBlock:
         available_width = measurement_inputs(context, available_width)
@@ -234,17 +242,23 @@ class Leading:
         child = measure_child(self.block, context, available_width, f"{location}.block")
         if child.prefix:
             raise ValueError(f"{location}: Leading applies to body lines, not a repeating prefix")
-        if not self.minimum:
-            for part in child.parts:
-                if part.rows > self.rows:
-                    raise LayoutOverflowError(
-                        f"{location}: leading of {self.rows} rows is smaller than a measured "
-                        f"line of {part.rows} rows",
-                        block_id=self.block_id or child.block_id or location,
-                        needed=part.rows * child.row_pitch, available=self.rows * child.row_pitch,
-                    )
-        parts = tuple(replace(part, rows=max(part.rows, self.rows)) for part in child.parts)
-        return replace(child, parts=parts, block_id=self.block_id or child.block_id)
+        parts = []
+        for part in child.parts:
+            excess = (part.rows - self.rows) * child.row_pitch
+            total = excess + part.metadata.get("overhang_pt", 0.0)
+            if excess > 0 and total <= self.overhang + TOLERANCE:
+                parts.append(replace(part, rows=self.rows,
+                                     metadata={**part.metadata, "overhang_pt": total}))
+            elif excess > 0 and not self.minimum:
+                raise LayoutOverflowError(
+                    f"{location}: leading of {self.rows} rows is smaller than a measured "
+                    f"line of {part.rows} rows",
+                    block_id=self.block_id or child.block_id or location,
+                    needed=part.rows * child.row_pitch, available=self.rows * child.row_pitch,
+                )
+            else:
+                parts.append(replace(part, rows=max(part.rows, self.rows)))
+        return replace(child, parts=tuple(parts), block_id=self.block_id or child.block_id)
 
 
 @dataclass(frozen=True, slots=True)

@@ -166,6 +166,7 @@ class Rectangle:
     """An axis-aligned box stroked in ``color`` and optionally filled.
 
     ``stroke=False`` paints only ``fill``; the bounds are then the exact box.
+    A positive ``corner_radius`` rounds the corners (at most half the shorter side); the bounds stay the box.
     """
 
     x: float
@@ -177,6 +178,7 @@ class Rectangle:
     _: KW_ONLY
     fill: Color | None = None
     stroke: bool = True
+    corner_radius: float = 0.0
 
     def __post_init__(self) -> None:
         _coordinates(self, "x", "y", "width", "height")
@@ -186,6 +188,10 @@ class Rectangle:
         _finite_number(self.x + self.width, "right")
         _finite_number(self.y + self.height, "bottom")
         _paint(self)
+        radius = _finite_number(self.corner_radius, "corner_radius")
+        if radius < 0 or radius > min(self.width, self.height) / 2:
+            raise ValueError("corner_radius must be between 0 and half the shorter side")
+        object.__setattr__(self, "corner_radius", radius)
 
     def translated(self, dx: float, dy: float) -> "Rectangle":
         dx, dy = _offset(dx, dy)
