@@ -15,6 +15,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
+    "openpyxl>=3.1.5",
     "pymupdf>=1.28.2",
     "pytest>=9.1.1",
     "pytest-cov>=7.1.0",
@@ -33,6 +34,7 @@ addopts = "-ra"
 [dependency-groups]
 # Keep test tools installed for the shared runner's plain `uv run pytest`.
 dev = [
+    "openpyxl>=3.1.5",
     "pymupdf>=1.28.2",
     "pytest>=9.1.1",
     "pytest-cov>=7.1.0",
