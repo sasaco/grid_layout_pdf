@@ -22,13 +22,13 @@ uv run --locked --extra dev python -X utf8 .claude/skills/_shared/run_tests.py -
 - 通常PDFとグリッド付きPDFを画像化し、接触・切断・欠字・数式の見た目・改ページ前後を目視します。グリッドは描画の検査用で、通常出力の配置を変えません。
 - 固定書体の代表帳票は、目視した生成画像を回帰基準にします。更新時は画像を機械的に置き換えず、差分の原因と通常／グリッド両方の外観を確認します。
 
-PDF検証用のPyMuPDFは開発依存です。利用アプリにPDF抽出器やテスト用フォントの配置は要求しません。
+PDF検証用のPyMuPDFは開発依存です。利用アプリにPDF抽出器やテスト用フォントの配置は要求しません。既定の書体IPAex明朝はパッケージに同梱しています（FR-024）。
 
 ## 固定条件
 
 | 項目 | 条件 |
 |---|---|
-| 検証書体 | IPAex明朝004.01、face 0。実ファイルと利用条件は `tests/fixtures/fonts/manifest.json` |
+| 検証書体 | IPAex明朝004.01、face 0。既定の書体名`IPAex明朝`で同梱の `src/gridlayoutpdf/font_data/ipaexm.ttf` に解決する。同じファイルを `tests/fixtures/fonts/` にも置き、利用条件は各 `manifest.json` |
 | フォントSHA-256 | `7a306386f930fee80922f71eebf4ffe0f1ff2817da8e619230953487673d71c7` |
 | 本文 | 10pt、基線offset 11pt、追加字間上限0.05em |
 | 添字 | 基本サイズの0.65倍。幅超過への自動縮小とは別の明示組版 |
@@ -80,7 +80,9 @@ Windowsの検証ではPopplerが配置されていないため、PyMuPDFを画�
 
 ### 配布物と互換性
 
-`uv build` によりsdistを作り、そのsdistからwheelを生成しました。wheelは20個の製品Pythonファイルとパッケージ情報の計23エントリー、sdistは24エントリーです。書体・参照PDF・画像・テスト・`.claude`は配布物へ含まれません。
+2026-10-20（FR-024）からは、sdistとwheelの両方に同梱書体を含めます。`gridlayoutpdf/font_data/` にIPAex明朝・IPAexゴシック（004.01、無改変）、IPAフォントライセンスv1.0の原文、配布元のReadme、SHA-256を固定した `manifest.json` が入ることを、`uv build` の出力と新しい仮想環境へのwheelの導入（site-packagesの同梱書体へ名前で解決すること）で確かめました。参照PDF・画像・テスト・`.claude`は引き続き配布物へ含めません。
+
+それ以前の記録：`uv build` によりsdistを作り、そのsdistからwheelを生成しました。wheelは20個の製品Pythonファイルとパッケージ情報の計23エントリー、sdistは24エントリーで、当時は書体を配布物へ含めていませんでした。
 
 Python 3.12.12／3.13.11の新規仮想環境へwheelを通常インストールし、リポジトリ外へコピーした例・画像・利用者側フォントで出力しました。`python -I`で実行し、site-packagesからの読込みとPyMuPDF未導入を確認しています。各環境の標準5ページは、本文・用紙寸法・全画素が承認した出力と一致しました。これは3.12で全開発テストを実行したという意味ではなく、両バージョンの配布物・実行時機能の検証です。
 
@@ -121,7 +123,7 @@ rootは再生成した最終候補の通常37枚/grid37枚を個別表示し、�
 
 独立レビューで見つかった最適化Python起動時の検査消失、添字や意味runの基線ずれ、未対応ASTの黙示省略、relationの別文字への置換、行/style数不一致による行欠落を修正し、負例を追加しました。原本に対する非空白文字の一回被覆・方向・読み順も検査します。検証器は`-O`/`-OO`/`PYTHONOPTIMIZE`を明示拒否します。
 
-追加APIを含むsdist→wheelも、リポジトリ外の新規Python3.12.12/3.13.11で受入済みです。21製品moduleを含み、原本・書体・検証コードを配布物へ含めません。PyMuPDF未導入でQuarterTurn±1、選択罫線、Table.row_heightsと過小高の拒否、Text.shear_x、後続の水平文字を検証し、両環境の画素一致を確認しました。証拠は`build/reports/cantilever-p01-37/wheel-acceptance.json`です。
+追加APIを含むsdist→wheelも、リポジトリ外の新規Python3.12.12/3.13.11で受入済みです。21製品moduleを含み、原本・書体・検証コードを配布物へ含めていませんでした（書体はFR-024以降、同梱の2書体だけを含めます）。PyMuPDF未導入でQuarterTurn±1、選択罫線、Table.row_heightsと過小高の拒否、Text.shear_x、後続の水平文字を検証し、両環境の画素一致を確認しました。証拠は`build/reports/cantilever-p01-37/wheel-acceptance.json`です。
 
 初回1508件の検証と`20261017T005753Z-7952a1f3f915474c8a478f77d40cf9da`は外観修正前の履歴です。今回の完成版は`versions/20261017T023053Z-a954761644604bd1a289b5fcdd9f20d1/`で、独立レビュー未解決0・全ゲート通過後に有効化しました。`build/reports/cantilever-p01-37/current.json`の解決先、128入力・78成果物のhash、両PDF37頁・A4縦・Rotate0をrootが再確認済みです。記録は同rootの`appearance-correction-current-audit.json`です。
 

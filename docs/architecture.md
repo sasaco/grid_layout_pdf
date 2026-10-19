@@ -21,7 +21,7 @@ flowchart LR
 | モジュール | 責務 |
 |---|---|
 | geometry / profiles | 有限な幾何、グリッド境界、実測／生成した用紙、本文行範囲 |
-| styles / fonts | 文字設定、明示的な書体登録、NFC、欠字検査、送り幅と実字形境界 |
+| styles / fonts / fontfinder | 文字設定、書体名から同梱・Windowsの書体ファイルを引く解決、NFC、欠字検査、送り幅と実字形境界 |
 | scene / bounds | 不変の描画命令とページ、線幅・実字形を含む共通境界 |
 | math | 分数・根号・添字・括弧等の局所計測。MathBoxは基線と数式軸を保持 |
 | text / blocks | 行組、基本禁則、上限付き字間、段落・見出し・空白 |
@@ -59,6 +59,8 @@ MathBoxは送りと実字形を含む幅、ascent/descent、数式軸、相対�
 EquationGroupはラベル・左辺・関係記号・結果・単位を先に計測してアンカーを確定し、残り幅で右辺を折り返す。ページ内の位置に応じてアンカーを変更する循環は作らない。同じprofile・幅での分割ではアンカーを保持し、profile・利用幅に応じて再計測する。
 
 ## 書体・描画・失敗時の挙動
+
+書体は`TextStyle.font`の書体名で指定する。`fontfinder`が書体ファイルのnameテーブル（英語・日本語のファミリー名とフルネーム）を標準ライブラリで読み、同梱のIPAex明朝・IPAexゴシック、`%WINDIR%\Fonts`、`%LOCALAPPDATA%\Microsoft\Windows\Fonts`の順に探す（Windows以外は同梱だけ）。import時やstyleの生成時には探さず、`FontRegistry.resolve`が初めて呼ばれたときに探して、名前ごとに結果を保つ。同梱の書体は`font_data/manifest.json`のSHA-256と照合する。
 
 送り幅と実字形境界は別に保持する。特に斜体的な張り出しや下降文字を、文字列の送り幅だけで枠内と判定しない。グリフの存在を幅計測と独立に検査し、欠字を代替字形で黙って出力しない。
 

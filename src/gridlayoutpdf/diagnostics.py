@@ -5,7 +5,7 @@ from hashlib import sha256
 
 from .bounds import command_bounds
 from .errors import FontError
-from .fonts import FontRegistry
+from .fonts import FontRegistry, default_fonts
 from .geometry import Rect
 from .metadata import json_value
 from .scene import Circle, Line, Polyline, RasterImage, Rectangle, ScenePage, Text, _text_rotation
@@ -62,7 +62,7 @@ def _command(command, fonts: FontRegistry, index: int, location: str) -> dict:
     return trace
 
 
-def layout_trace(pages: Iterable[ScenePage], fonts: FontRegistry) -> dict:
+def layout_trace(pages: Iterable[ScenePage], fonts: FontRegistry | None = None) -> dict:
     """Describe fixed pages as JSON-compatible data using the rendering fonts.
 
     Page numbers are 1-based positions in the supplied sequence. Command
@@ -70,7 +70,11 @@ def layout_trace(pages: Iterable[ScenePage], fonts: FontRegistry) -> dict:
     verbatim, including any block-local anchors, baselines and origins.
     Images are represented by their byte count and SHA-256, never raw bytes.
     No component measurement, pagination or PDF rendering is performed.
+    Omitting ``fonts`` uses the shared default registry; pass the registry
+    the pages were laid out with when it is not the default one.
     """
+    if fonts is None:
+        fonts = default_fonts()
     if not isinstance(fonts, FontRegistry):
         raise ValueError("fonts must be a FontRegistry")
     try:

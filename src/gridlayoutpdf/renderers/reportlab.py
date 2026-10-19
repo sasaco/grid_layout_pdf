@@ -10,7 +10,7 @@ from reportlab.pdfgen.canvas import Canvas
 from reportlab.lib.utils import ImageReader
 
 from ..bounds import command_bounds
-from ..fonts import FontRegistry
+from ..fonts import FontRegistry, default_fonts
 from ..errors import FontError, LayoutOverflowError
 from ..geometry import Rect
 from ..scene import Circle, Line, Polyline, RasterImage, Rectangle, ScenePage, Text, _text_matrix
@@ -134,7 +134,7 @@ def _prepare(pages, fonts: FontRegistry, debug_grid: bool):
     return tuple(prepared)
 
 
-def render_pdf(pages, path: str | Path, fonts: FontRegistry, debug_grid: bool = False,
+def render_pdf(pages, path: str | Path, fonts: FontRegistry | None = None, debug_grid: bool = False,
                *, invariant: bool = False) -> None:
     """Validate every page, then atomically replace the destination on success.
 
@@ -143,7 +143,11 @@ def render_pdf(pages, path: str | Path, fonts: FontRegistry, debug_grid: bool = 
     of font extents, advance widths and actual glyph ink. Blank pages are kept;
     an empty sequence is an input error. ``invariant=True`` omits the creation
     time and document ID, so identical pages produce identical bytes.
+    Omitting ``fonts`` uses the shared default registry; pass the registry
+    the pages were laid out with when it is not the default one.
     """
+    if fonts is None:
+        fonts = default_fonts()
     if not isinstance(fonts, FontRegistry):
         raise ValueError("fonts must be a FontRegistry")
     if not isinstance(debug_grid, bool):

@@ -9,7 +9,7 @@ import sys
 
 import pytest
 
-from gridlayoutpdf import FontRegistry, LayoutOverflowError, Spacer
+from gridlayoutpdf import LayoutOverflowError, Spacer
 
 
 ROOT = Path(__file__).parents[2]
@@ -71,8 +71,8 @@ def test_compact_cell_preserves_font_size_and_rejects_overwide_content(fonts):
     from gridlayoutpdf import A4_PORTRAIT_REFERENCE, GridSpec, LayoutContext, PageProfile, ReportStyle, Text, TextStyle, measure_block
     builder = module("builder")
     local = PageProfile("test-local", 700, 480, GridSpec(0, 0, .12, .12, 5800, 4000))
-    context = LayoutContext(fonts, local, ReportStyle())
-    cell = builder.CompactCell(("1.35", "3679.84"), style=TextStyle(size=10), line_advance=10.8)
+    context = LayoutContext(fonts, local, module("builder").SOURCE_STYLE)
+    cell = builder.CompactCell(("1.35", "3679.84"), style=TextStyle("MS Mincho", size=10), line_advance=10.8)
     measured = measure_block(cell, context, 48)
     texts = [command for command in measured.commands if isinstance(command, Text)]
     assert [command.text for command in texts] == ["1.35", "3679.84"]
@@ -84,7 +84,7 @@ def test_compact_cell_preserves_font_size_and_rejects_overwide_content(fonts):
 
 def test_compact_empty_cells_reserve_width_without_printing_fake_zero(fonts):
     from gridlayoutpdf import A4_PORTRAIT_REFERENCE, LayoutContext, ReportStyle, measure_block
-    context = LayoutContext(fonts, A4_PORTRAIT_REFERENCE, ReportStyle())
+    context = LayoutContext(fonts, A4_PORTRAIT_REFERENCE, module("builder").SOURCE_STYLE)
     for lines in ((), ("",)):
         result = measure_block(module("builder").CompactCell(lines), context, 30)
         assert result.width > 0
@@ -93,7 +93,7 @@ def test_compact_empty_cells_reserve_width_without_printing_fake_zero(fonts):
 
 def test_compact_cell_keeps_source_line_sizes_and_horizontal_clearance(fonts):
     from gridlayoutpdf import GridSpec, LayoutContext, PageProfile, ReportStyle, Text, measure_block
-    context = LayoutContext(fonts, PageProfile("local", 100, 100, GridSpec(0, 0, .12, .12, 800, 800)), ReportStyle())
+    context = LayoutContext(fonts, PageProfile("local", 100, 100, GridSpec(0, 0, .12, .12, 800, 800)), module("builder").SOURCE_STYLE)
     builder = module("builder")
     plain = builder.CompactCell(("ABC", "short"), line_sizes=(10, 8.056))
     padded = replace(plain, inline_padding=.6)
@@ -107,7 +107,7 @@ def test_compact_cell_keeps_source_line_sizes_and_horizontal_clearance(fonts):
 
 def test_compact_adapter_exposes_public_single_rounding_and_edge_padding(fonts):
     from gridlayoutpdf import A4_PORTRAIT_REFERENCE, LayoutContext, ReportStyle, measure_block
-    context = LayoutContext(fonts, A4_PORTRAIT_REFERENCE, ReportStyle())
+    context = LayoutContext(fonts, A4_PORTRAIT_REFERENCE, module("builder").SOURCE_STYLE)
     cell = module("builder").CompactCell(("1.35", "3679.84"), line_sizes=(10, 8),
                                          line_advance=12.8, inline_padding=.6, min_height=40)
     measured = measure_block(cell, context, 60)
@@ -120,7 +120,7 @@ def test_compact_adapter_exposes_public_single_rounding_and_edge_padding(fonts):
 
 def test_compact_adapter_rejects_touching_explicit_lines_instead_of_moving_them(fonts):
     from gridlayoutpdf import A4_PORTRAIT_REFERENCE, LayoutContext, ReportStyle, measure_block
-    context = LayoutContext(fonts, A4_PORTRAIT_REFERENCE, ReportStyle())
+    context = LayoutContext(fonts, A4_PORTRAIT_REFERENCE, module("builder").SOURCE_STYLE)
     cell = module("builder").CompactCell(("888", "888"), line_advance=1, block_id="touching")
     with pytest.raises(LayoutOverflowError, match="touching.*line 2.*line 1"):
         measure_block(cell, context, 40)
@@ -160,7 +160,7 @@ def test_actual_proof_overflow_is_an_error_without_pagination(fonts, tmp_path):
 
 def test_snow_subscript_and_next_cell_line_have_separate_ink(fonts):
     from gridlayoutpdf import GridSpec, LayoutContext, PageProfile, Rect, ReportStyle, measure_block
-    context = LayoutContext(fonts, PageProfile("local", 100, 100, GridSpec(0, 0, .12, .12, 800, 800)), ReportStyle())
+    context = LayoutContext(fonts, PageProfile("local", 100, 100, GridSpec(0, 0, .12, .12, 800, 800)), module("builder").SOURCE_STYLE)
     cell = module("builder").CompactCell((
         {"type": "row", "items": ["1.0", {"type": "script", "base": "S", "sub": "30"}]},
         "703.13"), line_advance=12.8)
@@ -186,7 +186,7 @@ def test_source_figure_preserves_physical_size_and_normalized_pixels(fonts, tmp_
                 "source_bbox": [70, 100, 190, 140], "sha256": sha256(content).hexdigest(),
                 "pixel_width": 240, "pixel_height": 80,
                 "decoded_pixel_sha256": sha256(Image.new("RGB", (240, 80), "white").tobytes()).hexdigest()}
-    context = LayoutContext(fonts, A4_PORTRAIT_REFERENCE, ReportStyle())
+    context = LayoutContext(fonts, A4_PORTRAIT_REFERENCE, module("builder").SOURCE_STYLE)
     assert hasattr(module("builder"), "SourceFigure"), "source-sized figure block is not implemented"
     source = module("builder").SourceFigure(metadata, asset_root=tmp_path, block_id="p01-test-figure")
     measured = measure_block(source, context, 200)
@@ -219,7 +219,7 @@ def test_source_figure_checks_measured_snapshot_after_asset_race(fonts, tmp_path
         return snapshot(self)
     monkeypatch.setattr(Image, "_snapshot", substitute)
     source = module("builder").SourceFigure(metadata, asset_root=tmp_path, block_id="race")
-    context = LayoutContext(fonts, A4_PORTRAIT_REFERENCE, ReportStyle())
+    context = LayoutContext(fonts, A4_PORTRAIT_REFERENCE, module("builder").SOURCE_STYLE)
     with pytest.raises(ValueError, match="measured.*pixel hash"):
         measure_block(source, context, 200)
     assert calls == [asset]

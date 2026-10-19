@@ -88,11 +88,11 @@ TDD で進める。各工程は、失敗するテストを先に書いて `--exp
 
 #### Step 2: 書体を名前で引く（FR-024）
 
-- [ ] Red: 英語名・日本語名・TTC の書体番号・同梱の優先・見つからない時の `FontError`・import 時にファイルを探さないこと。
-- [ ] `fontfinder.py` と同梱の書体（IPAexゴシックの取得と hash の固定を含む）、`FontRegistry` の resolver 化、`fonts` 引数の省略、`TextStyle` の既定の書体名。
-- [ ] テスト・例・文書の `register` を書体名の指定へ直す。片持ち梁は MS 明朝・MS ゴシックを名前で引く（`render.py --font` の差し替えは廃止）。
-- [ ] `uv build` の配布物に書体とライセンスが入ることを確かめる（`docs/validation.md` の配布物の記述も直す）。
-- [ ] 代表例の PNG 正解が変わらないことを確かめる（同じ書体ファイルに解決するため）。
+- [x] ✅ Red: 英語名・日本語名・TTC の書体番号・同梱の優先・見つからない時の `FontError`・import 時にファイルを探さないこと。
+- [x] ✅ `fontfinder.py` と同梱の書体（IPAexゴシックの取得と hash の固定を含む）、`FontRegistry` の resolver 化、`fonts` 引数の省略、`TextStyle` の既定の書体名。同梱先は `fonts.py` との名前の衝突を避けて `src/gridlayoutpdf/font_data/`（New files の `fonts/` から変更）。
+- [x] ✅ テスト・例・文書の `register` を書体名の指定へ直す。片持ち梁は MS 明朝・MS ゴシックを名前で引く（`render.py --font` の差し替えは廃止）。
+- [x] ✅ `uv build` の配布物に書体とライセンスが入ることを確かめる（`docs/validation.md` の配布物の記述も直す）。
+- [x] ✅ 代表例の PNG 正解が変わらないことを確かめる（同じ書体ファイルに解決するため）。片持ち梁も hash の検査を外した確認で37ページ画素一致（正解のテスト自体は `source_inputs` の hash 不一致で失敗し、最終工程で作り直す）。
 
 #### Step 3: 文字サイズを 0.5 pt 刻みにする（FR-023）
 

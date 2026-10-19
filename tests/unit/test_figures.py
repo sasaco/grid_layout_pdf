@@ -17,7 +17,6 @@ from gridlayoutpdf.styles import ReportStyle, TextStyle
 @pytest.fixture(scope="module")
 def context():
     fonts = FontRegistry()
-    fonts.register("body", Path(__file__).resolve().parents[1] / "fixtures/fonts/ipaexm.ttf")
     profile = PageProfile("figure", 200, 200, GridSpec(0, 0, 10, 10, 20, 20))
     return LayoutContext(fonts, profile, ReportStyle())
 

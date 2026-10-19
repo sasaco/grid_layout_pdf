@@ -1,0 +1,3 @@
+# Bundled IPAex files are pinned by SHA-256 in font_data/manifest.json (FR-024).
+src/gridlayoutpdf/font_data/*.ttf binary
+src/gridlayoutpdf/font_data/*.txt -text

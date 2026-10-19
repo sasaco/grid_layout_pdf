@@ -20,7 +20,6 @@ from gridlayoutpdf.styles import ReportStyle, TextStyle
 @pytest.fixture
 def context():
     fonts = FontRegistry()
-    fonts.register("body", Path(__file__).resolve().parents[1] / "fixtures/fonts/ipaexm.ttf")
     return LayoutContext(fonts, PageProfile("proof", 200, 200,
                          GridSpec(0, 0, 10, 10, 20, 20)), ReportStyle())
 
@@ -130,7 +129,7 @@ def test_standalone_figure_proof_has_vector_dimensions_and_undistorted_image(tmp
     spec = importlib.util.spec_from_file_location("figure_proof", example)
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
-    plain, grid, trace_path = module.write_proof(tmp_path, root / "tests/fixtures/fonts/ipaexm.ttf")
+    plain, grid, trace_path = module.write_proof(tmp_path)
     trace = json.loads(trace_path.read_text(encoding="utf-8"))
     assert trace["font_sha256"] == "7a306386f930fee80922f71eebf4ffe0f1ff2817da8e619230953487673d71c7"
     with pymupdf.open(plain) as document, pymupdf.open(grid) as debug:

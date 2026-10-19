@@ -17,13 +17,11 @@ from gridlayoutpdf.tables import Cell, Table
 
 
 ROOT = Path(__file__).resolve().parents[2]
-FONT = ROOT / "tests/fixtures/fonts/ipaexm.ttf"
 
 
 @pytest.fixture
 def fonts():
     registry = FontRegistry()
-    registry.register("body", FONT)
     return registry
 
 
@@ -94,7 +92,7 @@ def test_pagination_proof_has_ordered_content_scoped_table_and_fixed_page_number
     spec = importlib.util.spec_from_file_location("pagination_proof", source)
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
-    module.write_proof(tmp_path, FONT)
+    module.write_proof(tmp_path)
     with pymupdf.open(tmp_path / "pagination-proof.pdf") as pdf, pymupdf.open(tmp_path / "pagination-proof-grid.pdf") as debug:
         assert [tuple(page.rect)[2:] for page in pdf] == [(595, 842)] * 3 + [(1191, 842), (595, 842)]
         texts = [page.get_text() for page in pdf]

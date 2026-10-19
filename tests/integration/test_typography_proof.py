@@ -11,7 +11,6 @@ from gridlayoutpdf.fonts import FontRegistry
 
 
 ROOT = Path(__file__).resolve().parents[2]
-FONT = ROOT / "tests/fixtures/fonts/ipaexm.ttf"
 
 
 def proof_module():
@@ -33,7 +32,7 @@ def pdf_chars(page):
 
 
 def test_proof_outputs_have_independent_anchors_mixed_pages_and_debug_trace(tmp_path):
-    proof_module().write_proof(tmp_path, FONT)
+    proof_module().write_proof(tmp_path)
     plain = tmp_path / "typography-proof.pdf"
     debug = tmp_path / "typography-proof-grid.pdf"
     trace = json.loads((tmp_path / "typography-proof.json").read_text(encoding="utf-8"))
@@ -84,10 +83,9 @@ def test_proof_outputs_have_independent_anchors_mixed_pages_and_debug_trace(tmp_
 def test_proof_trace_serializes_frozen_metadata_and_text_bounds(tmp_path):
     module = proof_module()
     fonts = FontRegistry()
-    fonts.register("body", FONT)
     pages = module.build_pages(fonts)
     assert len(pages) == 3
-    module.write_proof(tmp_path, FONT)
+    module.write_proof(tmp_path)
     trace = json.loads((tmp_path / "typography-proof.json").read_text(encoding="utf-8"))
     for page in trace["pages"]:
         assert page["commands"]
@@ -98,7 +96,7 @@ def test_proof_trace_serializes_frozen_metadata_and_text_bounds(tmp_path):
 
 
 def test_complex_math_is_vector_text_with_fractions_scripts_root_and_tall_brackets(tmp_path):
-    proof_module().write_proof(tmp_path, FONT)
+    proof_module().write_proof(tmp_path)
     trace = json.loads((tmp_path / "typography-proof.json").read_text(encoding="utf-8"))
     assert all("complex_math" in page["metadata"] for page in trace["pages"])
     with pymupdf.open(tmp_path / "typography-proof.pdf") as pdf:

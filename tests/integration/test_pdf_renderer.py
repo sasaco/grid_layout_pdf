@@ -20,7 +20,6 @@ from gridlayoutpdf.styles import TextStyle
 @pytest.fixture
 def fonts():
     registry = FontRegistry()
-    registry.register("body", Path(__file__).parents[1] / "fixtures/fonts/ipaexm.ttf")
     return registry
 
 
@@ -235,7 +234,7 @@ def test_grid_stroke_extent_is_also_validated(fonts, tmp_path):
 def test_invariant_output_is_byte_identical_across_renders(fonts, tmp_path, monkeypatch):
     import time
 
-    pages = [ScenePage(A4, (Text(60, 80, "再現 Same", TextStyle("body", 10)),))]
+    pages = [ScenePage(A4, (Text(60, 80, "再現 Same", TextStyle("IPAex明朝", 10)),))]
     first, second, stamped = tmp_path / "first.pdf", tmp_path / "second.pdf", tmp_path / "stamped.pdf"
     backend().render_pdf(pages, first, fonts, invariant=True)
     clock = time.time()
@@ -420,3 +419,11 @@ def test_undashed_unfilled_vectors_keep_their_existing_pdf_operators(fonts, tmp_
     with pymupdf.open(output) as pdf:
         stream = pdf[0].read_contents().decode("latin-1")
     assert " rg" not in stream and " f\n" not in stream and "[] 0 d" in stream
+
+
+def test_render_without_fonts_uses_the_shared_default_registry(fonts, tmp_path):
+    pages = [ScenePage(A4, (Text(60, 80, "再現 Same", TextStyle()),))]
+    explicit, implicit = tmp_path / "explicit.pdf", tmp_path / "implicit.pdf"
+    backend().render_pdf(pages, explicit, fonts, invariant=True)
+    backend().render_pdf(pages, implicit, invariant=True)
+    assert explicit.read_bytes() == implicit.read_bytes()

@@ -462,7 +462,6 @@ def test_zero_width_atoms_still_reserve_nonzero_gaps_at_rhs_boundary():
 @pytest.mark.parametrize("unit", ["m", Row()])
 def test_zero_or_tiny_gap_keeps_automatic_result_and_unit_anchors_distinct(gap, unit):
     fonts = FontRegistry()
-    fonts.register("body", Path(__file__).resolve().parents[1] / "fixtures/fonts/ipaexm.ttf")
     context = LayoutContext(fonts, A4_PORTRAIT_REFERENCE, ReportStyle())
     group = EquationGroup(Equation("A", "2", result="2", unit=unit),
                           Equation("B", "3", result="3", unit=unit, style=TextStyle(size=12)), gap=gap)

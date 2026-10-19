@@ -54,9 +54,8 @@ def build_document(fonts: FontRegistry) -> Document:
     )
 
 
-def write_proof(output_dir: str | Path, font_path: str | Path) -> tuple[Path, Path, Path]:
+def write_proof(output_dir: str | Path) -> tuple[Path, Path, Path]:
     fonts = FontRegistry()
-    fonts.register("body", font_path)
     document = build_document(fonts)
     pages = document.layout()
     output = Path(output_dir)
@@ -80,10 +79,9 @@ def write_proof(output_dir: str | Path, font_path: str | Path) -> tuple[Path, Pa
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--font", type=Path, default=ROOT / "tests/fixtures/fonts/ipaexm.ttf")
     parser.add_argument("--output-dir", type=Path, default=ROOT / "build/reports/pagination")
     options = parser.parse_args()
-    for path in write_proof(options.output_dir, options.font):
+    for path in write_proof(options.output_dir):
         print(path)
 
 

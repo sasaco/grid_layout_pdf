@@ -194,7 +194,6 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, default=builder.REPOSITORY_ROOT / "build/reports/cantilever-p01-37")
     parser.add_argument("--pages", help="comma-separated original pages; omitted means all 37")
-    parser.add_argument("--font", type=Path)
     parser.add_argument("--activate", type=Path, help="previously prepared complete staging bundle")
     parser.add_argument("--visual-review", type=Path)
     options = parser.parse_args(argv)
@@ -205,7 +204,7 @@ def main(argv=None):
         print(activate_bundle(options.output, options.activate, review))
     else:
         selected = tuple(int(item) for item in options.pages.split(",")) if options.pages else builder.SOURCE_PAGES
-        print(prepare_bundle(options.output, builder.fixture_fonts(options.font), source_pages=selected))
+        print(prepare_bundle(options.output, builder.fixture_fonts(), source_pages=selected))
 
 
 if __name__ == "__main__":

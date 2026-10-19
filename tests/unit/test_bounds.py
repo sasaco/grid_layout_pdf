@@ -21,7 +21,6 @@ def command_bounds(command, fonts):
 @pytest.fixture
 def fonts():
     result = FontRegistry()
-    result.register("body", Path(__file__).parents[1] / "fixtures/fonts/ipaexm.ttf")
     return result
 
 
@@ -58,3 +57,10 @@ def test_text_rotates_all_asymmetric_ink_corners_about_baseline(fonts, turns, ex
     assert "quarter_turns" in Text.__dataclass_fields__
     command = Text(20, 30, "jÅ", TextStyle(tracking=0.25), quarter_turns=turns)
     assert command_bounds(command, fonts) == expected
+
+
+def test_text_bounds_without_fonts_use_the_shared_default_registry(fonts):
+    from gridlayoutpdf.bounds import command_bounds as direct
+
+    command = Text(20, 30, "jÅ", TextStyle(tracking=0.25))
+    assert direct(command) == direct(command, fonts)

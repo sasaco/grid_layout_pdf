@@ -7,7 +7,7 @@ from gridlayoutpdf.styles import TextStyle
 
 def test_text_style_defaults_and_explicit_settings_are_immutable():
     style = TextStyle()
-    assert (style.font, style.size, style.tracking) == ("body", 10.0, 0.0)
+    assert (style.font, style.size, style.tracking) == ("IPAex明朝", 10.0, 0.0)
     custom = TextStyle(font="math", size=7.5, tracking=0.2)
     assert (custom.font, custom.size, custom.tracking) == ("math", 7.5, 0.2)
     with pytest.raises(FrozenInstanceError):

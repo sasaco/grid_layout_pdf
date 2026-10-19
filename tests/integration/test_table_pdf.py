@@ -9,7 +9,6 @@ import pytest
 
 
 ROOT = Path(__file__).resolve().parents[2]
-FONT = ROOT / "tests/fixtures/fonts/ipaexm.ttf"
 
 
 def proof_module():
@@ -22,7 +21,7 @@ def proof_module():
 
 
 def test_table_proof_pdf_text_numeric_alignment_and_stroked_frame(tmp_path):
-    proof_module().write_proof(tmp_path, FONT)
+    proof_module().write_proof(tmp_path)
     with pymupdf.open(tmp_path / "table-proof.pdf") as plain, pymupdf.open(tmp_path / "table-proof-grid.pdf") as debug:
         assert len(plain) == len(debug) == 2
         full_text = "".join(page.get_text() for page in plain)
@@ -45,7 +44,7 @@ def test_table_proof_pdf_text_numeric_alignment_and_stroked_frame(tmp_path):
 
 
 def test_table_proof_trace_keeps_original_rows_and_cell_content_metadata(tmp_path):
-    proof_module().write_proof(tmp_path, FONT)
+    proof_module().write_proof(tmp_path)
     trace = json.loads((tmp_path / "table-proof.json").read_text(encoding="utf-8"))
     assert trace["schema_version"] == 1 and len(trace["pages"]) == 2
     body_rows = []
@@ -67,7 +66,6 @@ def test_selective_table_rules_are_native_paths_with_requested_per_stroke_widths
 
     assert "horizontal_rules" in Table.__dataclass_fields__
     fonts = FontRegistry()
-    fonts.register("body", FONT)
     profile = PageProfile("rules", 300, 400, GridSpec(20, 20, 10, 20, 20, 18))
     table = Table((5, 5, 5), (("荷重", "G1", "G2"), ("終点", "12.50", "-3.00"), ("起点", "0.00", "4.50")),
                   header_rows=1, horizontal_rules=(2, 0.5, 0, 2), vertical_rules=(0, 0.5, 0, 0))
@@ -94,7 +92,6 @@ def test_indivisible_table_pdf_has_single_shared_rule_and_continuous_vertical_pa
 
     assert "split" in Table.__dataclass_fields__
     fonts = FontRegistry()
-    fonts.register("body", FONT)
     profile = PageProfile("atomic", 300, 400, GridSpec(20, 20, 10, 20, 20, 18))
     table = Table((5, 5, 5), (("荷重", "G1", "G2"), ("終点", "12.50", "-3.00"), ("起点", "0.00", "4.50")),
                   header_rows=1, horizontal_rules=(2, .5, 0, 2), vertical_rules=(0, .5, 0, 0), split=False)
@@ -120,7 +117,6 @@ def test_rotated_nested_cell_lines_keep_ink_size_and_json_diagnostics(tmp_path, 
                               PageProfile, QuarterTurn, Table, TextStyle, layout_trace)
 
     fonts = FontRegistry()
-    fonts.register("body", FONT)
     profile = PageProfile("nested", 300, 400, GridSpec(20, 20, 10, 20, 25, 18))
     content = CellLines(("G1", "12.50"), style=TextStyle(size=10), line_advance=12.8,
                         inner_padding=Insets(top=1, right=2, bottom=1, left=2), block_id="lines")
@@ -152,7 +148,6 @@ def test_indivisible_table_moves_whole_and_rejects_oversize_without_new_fragment
                               LayoutOverflowError, PageProfile, Spacer, Table)
 
     fonts = FontRegistry()
-    fonts.register("body", FONT)
     profile = PageProfile("small", 200, 200, GridSpec(20, 20, 10, 20, 16, 8))
     table = Table((8,), ((Cell(CellLines(("A",), inner_padding=1), padding=0),),) * 3,
                   row_heights=(2, 2, 2), split=False, header_rows=1)

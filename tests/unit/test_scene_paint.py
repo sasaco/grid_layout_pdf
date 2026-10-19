@@ -16,7 +16,6 @@ from gridlayoutpdf import (
 @pytest.fixture
 def fonts():
     registry = FontRegistry()
-    registry.register("body", Path(__file__).parents[1] / "fixtures/fonts/ipaexm.ttf")
     return registry
 
 

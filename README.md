@@ -38,16 +38,13 @@ uv pip install -e "C:/Users/sasai/Documents/GridLayoutPdf"
 
 インストール先の Python で実行します。ソースディレクトリの追加や `PYTHONPATH` の設定は不要です。
 
-埋め込み可能なTrueTypeフォントを用意して、パスを置き換えます。
+書体は既定で同梱の IPAex明朝 を使います。書体ファイルの用意や登録は不要です。
 
 ```python
 from gridlayoutpdf import (
-    Document, Equation, EquationGroup, FontRegistry, Heading,
+    Document, Equation, EquationGroup, Heading,
     Operator, PageDecoration, Paragraph, Row, Script,
 )
-
-fonts = FontRegistry()
-fonts.register("body", "C:/path/to/ipaexm.ttf")
 
 report = Document(
     Heading("断面諸量"),
@@ -57,7 +54,6 @@ report = Document(
                  label="断面積", result="12.150",
                  unit=Script("m", superscript="2")),
     ),
-    fonts=fonts,
     footer=PageDecoration("{page} / {pages}", align="center"),
 )
 report.render("report.pdf")
@@ -70,7 +66,7 @@ report.render("report.pdf")
 数式・結合表・寸法図・画像とA4／A3を組み合わせた [代表帳票の例](examples/README.md) も用意しています。リポジトリ内では次のコマンドで通常PDF、グリッド付きPDF、配置JSONを生成できます。
 
 ```powershell
-uv run --locked python examples/representative_report.py --font tests/fixtures/fonts/ipaexm.ttf --output build/reports/representative/standard
+uv run --locked python examples/representative_report.py --output build/reports/representative/standard
 ```
 
 グリッドや書体計測も単独で利用できます。
@@ -84,18 +80,18 @@ print(page.grid.columns, page.grid.rows)  # 30, 47
 print(page.grid.x(1), page.grid.y(1))     # 66.96, 70.078 (pt)
 ```
 
-文字幅の計測では、利用するフォントファイルを明示して登録します。
-フォントはパッケージに同梱せず、OS からの自動検索もしません。
-使用する文字を含む TrueType フォントを用意し、次のパスを置き換えてください。
-TrueType collection (TTC) は `face_index` で書体を指定できます。CFF 形式の OpenType フォントには対応していません。
+書体は `TextStyle(font=...)` に書体名で指定し、ライブラリが書体ファイルを探します。
+書体名は書体ファイルにある英語名・日本語名のファミリー名かフルネーム（例: `IPAex明朝`、`IPAexGothic`、`MS Mincho`、`ＭＳ 明朝`）です。
+探す順は、同梱の IPAex明朝・IPAexゴシック（004.01、IPA フォントライセンス v1.0）、`%WINDIR%\Fonts`、`%LOCALAPPDATA%\Microsoft\Windows\Fonts` です。
+macOS・Linux では同梱の書体だけを探し、それ以外の書体名は `FontError` になります。
+TrueType collection (TTC) の書体番号は名前から決まります。CFF 形式の OpenType フォントには対応していません。
 
 ```python
 from gridlayoutpdf.fonts import FontRegistry
 from gridlayoutpdf.styles import TextStyle
 
 fonts = FontRegistry()
-fonts.register("body", "C:/path/to/ipaexm.ttf")
-metrics = fonts.measure("計算書", TextStyle(font="body", size=10))
+metrics = fonts.measure("計算書", TextStyle(font="IPAex明朝", size=10))
 print(metrics.width, metrics.ascent, metrics.descent)  # 単位は pt
 ```
 
@@ -110,4 +106,4 @@ uv build
 ```
 
 `uv build` は `dist/` に wheel とソース配布物を作成します。
-配布物にはライブラリ本体とパッケージ情報を含め、テスト・参照 PDF・テスト用フォントは含めません。
+配布物にはライブラリ本体、パッケージ情報、同梱書体（IPAex明朝・IPAexゴシック）とそのライセンス文書を含め、テスト・参照 PDF・テスト用の書体の複製は含めません。

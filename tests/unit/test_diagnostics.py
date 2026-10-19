@@ -23,7 +23,6 @@ def api():
 @pytest.fixture
 def fonts():
     registry = FontRegistry()
-    registry.register("body", Path(__file__).parents[1] / "fixtures/fonts/ipaexm.ttf")
     return registry
 
 
@@ -57,7 +56,7 @@ def test_trace_text_retains_style_baseline_and_actual_glyph_overhang(fonts):
     command = api().layout_trace((page,), fonts)["pages"][0]["commands"][0]
     assert (command["type"], command["index"], command["text"], command["normalized_text"]) == ("Text", 0, "jÅ", "jÅ")
     assert (command["x"], command["baseline_y"]) == (20, 30)
-    assert command["style"] == {"font": "body", "size": 10, "tracking": 0}
+    assert command["style"] == {"font": "IPAex明朝", "size": 10, "tracking": 0}
     # Pinned glyf/advance values at 10pt with no added tracking.
     assert command["bounds"] == pytest.approx({"x": 19.4580078125, "y": 20.849609375,
         "width": 10.8935546875, "height": 11.1376953125})
@@ -69,7 +68,7 @@ def test_trace_text_preserves_source_and_reports_normalized_rendered_text(fonts)
     traced = api().layout_trace((ScenePage(A4_PORTRAIT_REFERENCE, (command,)),), fonts)["pages"][0]["commands"][0]
     assert traced["text"] == "か\u3099Ａ"
     assert traced["normalized_text"] == "がＡ"
-    assert traced["style"] == {"font": "body", "size": 12, "tracking": 0.25}
+    assert traced["style"] == {"font": "IPAex明朝", "size": 12, "tracking": 0.25}
     assert command.text == "か\u3099Ａ" and command.style is style
 
 
@@ -125,8 +124,8 @@ def test_trace_missing_glyph_uses_supplied_registry_and_reports_page_command(fon
     with pytest.raises(FontError, match="page\\[2\\].commands\\[1\\].*U\\+10FFFF") as caught:
         api().layout_trace(pages, fonts)
     assert isinstance(caught.value.__cause__, FontError)
-    page = ScenePage(A4_PORTRAIT_REFERENCE, (Text(20, 30, "A", TextStyle()),))
-    with pytest.raises(FontError, match="page\\[1\\].commands\\[0\\].*body"):
+    page = ScenePage(A4_PORTRAIT_REFERENCE, (Text(20, 30, "A", TextStyle("GLP Missing Font")),))
+    with pytest.raises(FontError, match="page\\[1\\].commands\\[0\\].*GLP Missing Font"):
         api().layout_trace((page,), FontRegistry())
 
 
@@ -138,7 +137,12 @@ def test_trace_rejects_invalid_pages_with_clear_diagnostic(fonts, pages):
 
 def test_trace_rejects_invalid_font_registry():
     with pytest.raises(ValueError, match="fonts"):
-        api().layout_trace((), None)
+        api().layout_trace((), "IPAex明朝")
+
+
+def test_trace_without_fonts_uses_the_shared_default_registry(fonts):
+    page = ScenePage(A4_PORTRAIT_REFERENCE, (Text(20, 30, "日本", TextStyle()),))
+    assert api().layout_trace((page,)) == api().layout_trace((page,), fonts)
 
 
 def test_rotated_text_trace_records_orientation_without_changing_horizontal_shape(fonts):

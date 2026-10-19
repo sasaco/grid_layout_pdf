@@ -7,7 +7,7 @@ from string import Formatter
 from .blocks import PageBreak, Paragraph
 from .containers import At, Stack
 from .errors import LayoutError, LayoutOverflowError
-from .fonts import FontRegistry
+from .fonts import FontRegistry, default_fonts
 from .layout import (
     LayoutContext, MeasuredBlock, _has_visible_commands, measure_child, part_descriptors,
 )
@@ -68,9 +68,11 @@ class Document:
     header: PageDecoration | None
     footer: PageDecoration | None
 
-    def __init__(self, *blocks, fonts: FontRegistry,
+    def __init__(self, *blocks, fonts: FontRegistry | None = None,
                  profile: PageProfile = A4_PORTRAIT_REFERENCE,
                  style: ReportStyle = ReportStyle(), header=None, footer=None) -> None:
+        if fonts is None:
+            fonts = default_fonts()
         for name, value, expected in (("fonts", fonts, FontRegistry), ("profile", profile, PageProfile),
                                       ("style", style, ReportStyle)):
             if not isinstance(value, expected):

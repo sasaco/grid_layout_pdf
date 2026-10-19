@@ -149,7 +149,7 @@ def test_native_appearance_mutations_are_rejected(category, tmp_path):
     if category in ("font", "indent"):
         index = next(i for i, command in enumerate(commands) if isinstance(command, Text))
         old = commands[index]
-        commands[index] = (replace(old, style=replace(old.style, font="body")) if category == "font"
+        commands[index] = (replace(old, style=replace(old.style, font="MS Mincho")) if category == "font"
                            else replace(old, x=old.x + 1))
     elif category == "equals":
         index = next(i for i, command in enumerate(commands) if isinstance(command, Text) and command.text == "=")

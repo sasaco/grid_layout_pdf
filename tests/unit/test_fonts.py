@@ -1,110 +1,114 @@
 from dataclasses import FrozenInstanceError
 from hashlib import sha256
 from pathlib import Path
-import struct
 
 import pytest
 from reportlab.pdfbase import pdfmetrics
-from reportlab.pdfbase.ttfonts import TTFont
 
+from gridlayoutpdf import fontfinder
 from gridlayoutpdf.errors import FontError
-from gridlayoutpdf.fonts import FontRegistry, TextMetrics
+from gridlayoutpdf.fonts import FontRegistry, TextMetrics, default_fonts
 from gridlayoutpdf.geometry import Rect
 from gridlayoutpdf.styles import TextStyle
 
+from _sfnt import FIXTURE_FONT, renamed, widened_capital_a, write_font, zero_units_per_em
 
-FONT_PATH = Path(__file__).resolve().parents[1] / "fixtures" / "fonts" / "ipaexm.ttf"
+
+BUNDLED_MINCHO = Path(__file__).resolve().parents[2] / "src" / "gridlayoutpdf" / "font_data" / "ipaexm.ttf"
 
 
-def _different_font(tmp_path):
-    """A valid temporary derivative with the same names and a wider ASCII A."""
-    data = bytearray(FONT_PATH.read_bytes())
-    records = {}
-    for index in range(struct.unpack_from(">H", data, 4)[0]):
-        record = 12 + 16 * index
-        tag, _, offset, length = struct.unpack_from(">4sIII", data, record)
-        records[tag] = (record, offset, length)
-    original = TTFont("original-fixture", str(FONT_PATH))
-    glyph = original.face.charToGlyph[ord("A")]
-    width_offset = records[b"hmtx"][1] + 4 * glyph
-    advance = struct.unpack_from(">H", data, width_offset)[0]
-    struct.pack_into(">H", data, width_offset, advance + 64)
-
-    def checksum(raw):
-        raw = bytes(raw) + b"\x00" * ((-len(raw)) % 4)
-        return sum(struct.unpack(f">{len(raw) // 4}I", raw)) & 0xFFFFFFFF
-
-    record, offset, length = records[b"hmtx"]
-    struct.pack_into(">I", data, record + 4, checksum(data[offset : offset + length]))
-    head = records[b"head"][1]
-    struct.pack_into(">I", data, head + 8, 0)
-    struct.pack_into(">I", data, head + 8, (0xB1B0AFBA - checksum(data)) & 0xFFFFFFFF)
-    result = tmp_path / "changed.ttf"
-    result.write_bytes(data)
-    return result
+@pytest.fixture
+def windows(tmp_path, monkeypatch):
+    """A temporary Windows font folder searched after the bundled fonts."""
+    system = tmp_path / "windir" / "Fonts"
+    system.mkdir(parents=True)
+    monkeypatch.setenv("WINDIR", str(tmp_path / "windir"))
+    monkeypatch.delenv("LOCALAPPDATA", raising=False)
+    monkeypatch.setattr(fontfinder, "_is_windows", lambda: True)
+    return system
 
 
 @pytest.fixture
 def fonts():
-    registry = FontRegistry()
-    registry.register("body", FONT_PATH)
-    return registry
+    return FontRegistry()
 
 
-def test_registration_records_exact_face_and_is_idempotent(fonts):
-    face = fonts.resolve("body")
-    assert (face.name, face.path, face.face_index) == ("body", FONT_PATH.resolve(), 0)
-    assert face.sha256 == sha256(FONT_PATH.read_bytes()).hexdigest()
+def test_resolve_records_the_named_face_and_is_idempotent(fonts):
+    face = fonts.resolve("IPAex明朝")
+    assert (face.name, face.path, face.face_index, face.family) == (
+        "IPAex明朝", BUNDLED_MINCHO.resolve(), 0, "IPAexMincho")
+    assert face.sha256 == sha256(FIXTURE_FONT.read_bytes()).hexdigest()
     assert face.sha256 in face.pdf_name
     assert pdfmetrics.getFont(face.pdf_name).face.name == face.pdf_name.encode("ascii")
-    fonts.register("body", FONT_PATH)
-    assert fonts.resolve("body") is face
-    other = FontRegistry()
-    other.register("same-file-another-name", FONT_PATH)
-    assert other.resolve("same-file-another-name").pdf_name == face.pdf_name
+    assert fonts.resolve("IPAex明朝") is face
+    english = fonts.resolve("IPAexMincho")
+    assert english.name == "IPAexMincho" and english.pdf_name == face.pdf_name
+    assert FontRegistry().resolve("IPAex明朝").pdf_name == face.pdf_name
     with pytest.raises(FrozenInstanceError):
         face.name = "different"
 
 
-def test_registration_rejects_missing_unreadable_or_unsupported_font(tmp_path):
-    registry = FontRegistry()
-    with pytest.raises(FontError, match="missing.ttf"):
-        registry.register("missing", tmp_path / "missing.ttf")
-    with pytest.raises(FontError):
-        registry.register("directory", tmp_path)
-    for data in (b"not a font", b"OTTO" + bytes(32), b"\x00\x01\x00\x00" + bytes(32)):
-        invalid = tmp_path / "invalid.ttf"
-        invalid.write_bytes(data)
-        with pytest.raises(FontError, match="invalid.ttf"):
-            registry.register("invalid", invalid)
+def test_register_is_no_longer_part_of_the_resolver():
+    assert not hasattr(FontRegistry, "register")
 
 
-@pytest.mark.parametrize("index", [-1, True, 1.5, 1, 99])
-def test_registration_rejects_invalid_or_nonexistent_face(index):
-    with pytest.raises(FontError, match="face"):
-        FontRegistry().register("body", FONT_PATH, face_index=index)
+def test_default_registry_is_shared_and_lazy():
+    assert default_fonts() is default_fonts()
+    assert isinstance(default_fonts(), FontRegistry)
+
+
+def test_bundled_gothic_measures_with_its_own_face(fonts):
+    gothic = fonts.resolve("IPAexゴシック")
+    assert gothic.path.name == "ipaexg.ttf" and gothic.family == "IPAexGothic"
+    assert gothic.pdf_name != fonts.resolve("IPAex明朝").pdf_name
+    assert fonts.measure("日本", TextStyle(font="IPAexゴシック")).width == pytest.approx(20)
+
+
+def test_cff_outlines_found_by_name_are_rejected(fonts, windows):
+    write_font(windows / "cff.otf", renamed("GLP CFF Face"), version=b"OTTO")
+    with pytest.raises(FontError, match="cff.otf") as caught:
+        fonts.resolve("GLP CFF Face")
+    assert "Unsupported" in str(caught.value)
 
 
 @pytest.mark.parametrize("name", ["", " ", None, 2])
-def test_registration_rejects_invalid_logical_name(name):
+def test_resolve_rejects_invalid_names(fonts, name):
     with pytest.raises(FontError, match="name"):
-        FontRegistry().register(name, FONT_PATH)
+        fonts.resolve(name)
 
 
-def test_unknown_name_and_conflicting_re_registration_are_diagnostic(fonts, tmp_path):
-    with pytest.raises(FontError, match="unknown"):
-        fonts.resolve("unknown")
-    original = fonts.resolve("body")
-    with pytest.raises(FontError, match="body"):
-        fonts.register("body", _different_font(tmp_path))
-    assert fonts.resolve("body") is original
+def test_unknown_name_is_diagnostic_and_not_cached(fonts, windows):
+    with pytest.raises(FontError, match="GLP Unknown"):
+        fonts.resolve("GLP Unknown")
+    write_font(windows / "late.ttf", renamed("GLP Unknown"))
+    assert fonts.resolve("GLP Unknown").path.name == "late.ttf"
+
+
+def test_bundled_font_bytes_must_match_the_manifest(fonts, monkeypatch, tmp_path):
+    import json
+    import shutil
+
+    copy = tmp_path / "font_data"
+    shutil.copytree(BUNDLED_MINCHO.parent, copy)
+    manifest = json.loads((copy / "manifest.json").read_text(encoding="utf-8"))
+    for entry in manifest["fonts"]:
+        if entry["file"] == "ipaexg.ttf":
+            entry["sha256"] = "0" * 64
+    (copy / "manifest.json").write_text(json.dumps(manifest), encoding="utf-8")
+    monkeypatch.setattr(fontfinder, "BUNDLED_DIRECTORY", copy)
+    fontfinder._bundled_manifest.cache_clear()
+    try:
+        with pytest.raises(FontError, match="bundled"):
+            fonts.resolve("IPAexGothic")
+    finally:
+        fontfinder._bundled_manifest.cache_clear()
 
 
 def test_measure_uses_the_registered_face_and_positive_vertical_extents(fonts):
     style = TextStyle()
     text = "日本語 橋脚 計算書 σ τ φ Σ √ × ÷ ≦ ≧ ± = ＝ α β γ μ ² ³ − ABC xyz 123"
     metrics = fonts.measure(text, style)
-    registered = pdfmetrics.getFont(fonts.resolve("body").pdf_name)
+    registered = pdfmetrics.getFont(fonts.resolve("IPAex明朝").pdf_name)
     assert metrics.width == pytest.approx(registered.stringWidth(text, 10))
     assert metrics.ascent == pytest.approx(8.798828125)
     assert metrics.descent == pytest.approx(1.9482421875)  # The y ink exceeds OS/2 descent.
@@ -122,18 +126,18 @@ def test_tracking_adds_only_the_gaps_between_characters(fonts):
     assert fonts.measure("", style).width == 0
 
 
-def test_different_files_with_same_postscript_name_do_not_collide(fonts, tmp_path):
-    second = FontRegistry()
-    second.register("body", _different_font(tmp_path))
-    first_face = fonts.resolve("body")
-    second_face = second.resolve("body")
+def test_different_files_with_same_postscript_name_do_not_collide(fonts, windows):
+    write_font(windows / "wide.ttf", widened_capital_a(renamed("GLP Wide Mincho")))
+    first_face = fonts.resolve("IPAex明朝")
+    second_face = fonts.resolve("GLP Wide Mincho")
     assert first_face.pdf_name != second_face.pdf_name
     first_registered = pdfmetrics.getFont(first_face.pdf_name)
     second_registered = pdfmetrics.getFont(second_face.pdf_name)
     assert first_registered is not second_registered
     assert first_registered.face is not second_registered.face
-    assert second.measure("A", TextStyle()).width - fonts.measure("A", TextStyle()).width == pytest.approx(0.3125)
-    assert second_registered.stringWidth("A", 10) == second.measure("A", TextStyle()).width
+    wide = TextStyle(font="GLP Wide Mincho")
+    assert fonts.measure("A", wide).width - fonts.measure("A", TextStyle()).width == pytest.approx(0.3125)
+    assert second_registered.stringWidth("A", 10) == fonts.measure("A", wide).width
 
 
 def test_nfc_normalization_is_shared_and_tracking_counts_composed_characters(fonts):
@@ -148,10 +152,10 @@ def test_missing_glyphs_are_reported_before_any_width_is_returned(fonts, text):
     for _ in range(2):
         with pytest.raises(FontError, match="U\\+") as caught:
             fonts.measure(text, TextStyle())
-        assert "body" in str(caught.value)
+        assert "IPAex明朝" in str(caught.value)
 
 
-def test_unknown_font_and_invalid_text_input_are_diagnostic(fonts):
+def test_unknown_font_and_invalid_text_input_are_diagnostic(fonts, windows):
     with pytest.raises(FontError, match="unknown"):
         fonts.measure("日本", TextStyle(font="unknown"))
     with pytest.raises(ValueError, match="text"):
@@ -228,53 +232,135 @@ def test_empty_and_space_runs_have_zero_ink_but_retain_typographic_extents(fonts
     assert metrics.bounds == Rect(0, -8.798828125, metrics.width, 10)
 
 
-def test_each_registry_caches_boxes_from_the_registered_face_not_the_later_path(
-    fonts, tmp_path, monkeypatch
-):
-    copied = tmp_path / "copied.ttf"
-    copied.write_bytes(FONT_PATH.read_bytes())
-    second = FontRegistry()
-    second.register("body", copied)
-    first_face = fonts.resolve("body")
-    second_face = second.resolve("body")
-    assert second_face.pdf_name == first_face.pdf_name
+def test_resolved_faces_measure_from_cached_boxes_after_the_file_changes(fonts, windows, monkeypatch):
+    copied = write_font(windows / "copied.ttf", renamed("GLP Copied Mincho"))
+    second_face = fonts.resolve("GLP Copied Mincho")
     assert second_face.path == copied.resolve()
-    copied.write_bytes(b"file changed after registration")
+    copied.write_bytes(b"file changed after resolution")
 
     def unexpected_read(*args, **kwargs):
         raise AssertionError("Measuring must use the previously cached glyph boxes")
 
     monkeypatch.setattr(Path, "read_bytes", unexpected_read)
-    monkeypatch.setattr(pdfmetrics.getFont(first_face.pdf_name).face, "get_table", unexpected_read)
-    measured = second.measure("jÅ", TextStyle(tracking=0.25))
+    monkeypatch.setattr(pdfmetrics.getFont(second_face.pdf_name).face, "get_table", unexpected_read)
+    measured = fonts.measure("jÅ", TextStyle(font="GLP Copied Mincho", tracking=0.25))
     assert measured.ink_bounds == Rect(-0.5419921875, -9.150390625, 11.1435546875, 11.1376953125)
-    assert measured == fonts.measure("jÅ", TextStyle(tracking=0.25))
-    assert second.resolve("body").sha256 == first_face.sha256
+    assert fonts.resolve("GLP Copied Mincho") is second_face
 
 
-def test_zero_units_per_em_is_a_chained_font_error_and_registration_is_atomic(fonts, tmp_path):
-    data = bytearray(FONT_PATH.read_bytes())
-    for index in range(struct.unpack_from(">H", data, 4)[0]):
-        tag, _, offset, _ = struct.unpack_from(">4sIII", data, 12 + 16 * index)
-        if tag == b"head":
-            struct.pack_into(">H", data, offset + 18, 0)
-            break
-    else:
-        pytest.fail("The pinned test font must have a head table")
-    invalid = tmp_path / "zero-units.ttf"
-    invalid.write_bytes(data)
-    original = fonts.resolve("body")
-    invalid_pdf_name = f"GLP_{sha256(data).hexdigest()}_f0"
+def test_zero_units_per_em_is_a_chained_font_error_and_resolution_is_atomic(fonts, windows):
+    invalid = write_font(windows / "zero-units.ttf", zero_units_per_em(renamed("GLP Bad Metrics")))
+    original = fonts.resolve("IPAex明朝")
+    invalid_pdf_name = f"GLP_{sha256(invalid.read_bytes()).hexdigest()}_f0"
     with pytest.raises(FontError) as caught:
-        fonts.register("bad-metrics", invalid)
+        fonts.resolve("GLP Bad Metrics")
     message = str(caught.value)
-    assert "bad-metrics" in message
-    assert str(invalid) in message
+    assert "GLP Bad Metrics" in message
+    assert str(invalid.resolve()) in message
     assert "face 0" in message
     assert isinstance(caught.value.__cause__, ZeroDivisionError)
-    assert fonts.resolve("body") is original
-    with pytest.raises(FontError, match="bad-metrics"):
-        fonts.resolve("bad-metrics")
+    assert fonts.resolve("IPAex明朝") is original
     assert invalid_pdf_name not in pdfmetrics.getRegisteredFontNames()
-    fonts.register("bad-metrics", FONT_PATH)
-    assert fonts.measure("j", TextStyle(font="bad-metrics")) == fonts.measure("j", TextStyle())
+    write_font(invalid, renamed("GLP Bad Metrics"))
+    assert fonts.measure("j", TextStyle(font="GLP Bad Metrics")) == fonts.measure("j", TextStyle())
+
+
+def test_collection_faces_load_and_measure_by_name(fonts, windows, tmp_path):
+    from _sfnt import build_collection
+    import pymupdf
+
+    from gridlayoutpdf import A4_PORTRAIT_REFERENCE, ScenePage, Text, render_pdf
+
+    (windows / "pair.ttc").write_bytes(build_collection([
+        renamed("GLP Pair Alpha"), widened_capital_a(renamed("GLP Pair Beta"))]))
+    alpha, beta = fonts.resolve("GLP Pair Alpha"), fonts.resolve("GLP Pair Beta")
+    assert (alpha.face_index, beta.face_index) == (0, 1)
+    assert alpha.pdf_name.endswith("_f0") and beta.pdf_name.endswith("_f1")
+    assert alpha.sha256 == beta.sha256
+    width = fonts.measure("A", TextStyle(font="GLP Pair Beta")).width
+    assert width - fonts.measure("A", TextStyle(font="GLP Pair Alpha")).width == pytest.approx(0.3125)
+    output = tmp_path / "beta.pdf"
+    render_pdf((ScenePage(A4_PORTRAIT_REFERENCE, (Text(60, 80, "A", TextStyle(font="GLP Pair Beta")),)),),
+               output, fonts)
+    with pymupdf.open(output) as pdf:
+        assert any(beta.pdf_name in entry[3] for entry in pdf[0].get_fonts(full=True))
+
+
+def test_decomposed_names_resolve_to_the_composed_face(fonts):
+    import unicodedata
+
+    decomposed = unicodedata.normalize("NFD", "IPAexゴシック")
+    assert decomposed != "IPAexゴシック"
+    assert fonts.resolve(decomposed) is fonts.resolve("IPAexゴシック")
+    assert fonts.resolve(decomposed).name == "IPAexゴシック"
+
+
+def test_a_file_renamed_after_indexing_is_rejected_by_its_loaded_names(fonts, windows):
+    import os
+
+    path = write_font(windows / "same.ttf", renamed("GLP AAAA"))
+    from gridlayoutpdf import fontfinder as finder
+
+    assert finder.find_font("GLP AAAA").path.name == "same.ttf"
+    stat = path.stat()
+    write_font(path, renamed("GLP BBBB"))
+    os.utime(path, ns=(stat.st_atime_ns, stat.st_mtime_ns))
+    assert path.stat().st_size == stat.st_size
+    with pytest.raises(FontError, match="no longer named"):
+        fonts.resolve("GLP AAAA")
+    assert fonts.resolve("GLP BBBB").path.name == "same.ttf"
+
+
+def test_a_stale_index_is_dropped_for_every_folder_spelling(fonts, windows):
+    """A junction may make the resolved file's parent differ from the indexed folder."""
+    import os
+
+    from gridlayoutpdf import fontfinder as finder
+
+    path = write_font(windows / "spelled.ttf", renamed("GLP CCCC"))
+    assert finder.find_font("GLP CCCC").path.name == "spelled.ttf"
+    assert finder._INDEXES
+    stat = path.stat()
+    write_font(path, renamed("GLP DDDD"))
+    os.utime(path, ns=(stat.st_atime_ns, stat.st_mtime_ns))
+    with pytest.raises(FontError, match="no longer named"):
+        fonts.resolve("GLP CCCC")
+    assert not finder._INDEXES
+    assert fonts.resolve("GLP DDDD").path.name == "spelled.ttf"
+
+
+def test_a_subclass_returning_an_unloaded_face_gets_a_font_error():
+    from gridlayoutpdf.fonts import FontFace
+
+    class Foreign(FontRegistry):
+        def resolve(self, name):
+            return FontFace(name, Path("x.ttf").resolve(), 0, "0" * 64, "Helvetica")
+
+    with pytest.raises(FontError, match="did not load"):
+        Foreign().measure("A", TextStyle())
+
+
+def test_a_requested_face_damaged_after_indexing_is_a_wrapped_font_error(fonts, windows):
+    import os
+    import struct
+
+    from _sfnt import build_collection
+
+    from gridlayoutpdf import fontfinder as finder
+
+    path = windows / "pair.ttc"
+    data = bytearray(build_collection([renamed("GLP X0"), renamed("GLP X1")]))
+    path.write_bytes(bytes(data))
+    assert finder.find_font("GLP X1").face_index == 1
+    stat = path.stat()
+    struct.pack_into(">I", data, 16, len(data) + 1000)  # Face 1 now points outside the file.
+    path.write_bytes(bytes(data))
+    os.utime(path, ns=(stat.st_atime_ns, stat.st_mtime_ns))
+    with pytest.raises(FontError, match="GLP X1") as caught:
+        fonts.resolve("GLP X1")
+    assert str(path.resolve()) in str(caught.value) and "face 1" in str(caught.value)
+    assert isinstance(caught.value.__cause__, FontError)
+    assert not finder._INDEXES
+    with pytest.raises(FontError, match="unreadable"):
+        finder.find_font("GLP X1")
+    assert fonts.resolve("GLP X0").face_index == 0

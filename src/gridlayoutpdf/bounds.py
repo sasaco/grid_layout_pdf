@@ -1,6 +1,6 @@
 """Shared real-ink and stroke envelopes for scene and layout validation."""
 
-from .fonts import FontRegistry
+from .fonts import FontRegistry, default_fonts
 from .geometry import Rect
 from .scene import Circle, Line, Polyline, RasterImage, Rectangle, Text, _text_matrix
 
@@ -20,15 +20,18 @@ def transformed_text_bounds(command: Text, bounds: Rect) -> Rect:
     return Rect(command.x + left, command.y + top, right - left, bottom - top)
 
 
-def command_bounds(command, fonts: FontRegistry) -> Rect:
+def command_bounds(command, fonts: FontRegistry | None = None) -> Rect:
     """Return a command's top-origin bounds, including ink and half stroke.
 
     Stroke envelopes assume bounded joins (the renderer uses round joins).
     Overlapping commands are valid; this function only describes one envelope.
+    Omitting ``fonts`` measures text with the shared default registry.
     """
     if isinstance(command, RasterImage):
         return Rect(command.x, command.y, command.width, command.height)
     if isinstance(command, Text):
+        if fonts is None:
+            fonts = default_fonts()
         bounds = fonts.measure(fonts.normalize_text(command.text), command.style).bounds
         if command.quarter_turns == 0 and command.shear_x == 0:
             return Rect(command.x + bounds.x, command.y + bounds.y,

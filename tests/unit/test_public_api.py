@@ -32,7 +32,7 @@ def test_public_types_support_document_composition_and_custom_block_measurement(
     )
 
     fonts = FontRegistry()
-    face = fonts.register("body", ROOT / "tests/fixtures/fonts/ipaexm.ttf")
+    face = fonts.resolve("IPAex明朝")
     assert isinstance(face, FontFace)
     context = LayoutContext(fonts, A4_PORTRAIT_REFERENCE, ReportStyle())
     symbol = Symbol("A")

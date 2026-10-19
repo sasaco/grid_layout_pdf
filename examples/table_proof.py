@@ -79,13 +79,12 @@ def build_pages(fonts):
     return tuple(pages), trace
 
 
-def write_proof(output_dir, font_path):
+def write_proof(output_dir):
     import pymupdf
 
     output_dir = Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
     fonts = FontRegistry()
-    fonts.register("body", font_path)
     pages, trace = build_pages(fonts)
     previews = output_dir / "previews"
     previews.mkdir(exist_ok=True)
@@ -101,4 +100,4 @@ def write_proof(output_dir, font_path):
 
 
 if __name__ == "__main__":
-    write_proof(ROOT / "build/reports", ROOT / "tests/fixtures/fonts/ipaexm.ttf")
+    write_proof(ROOT / "build/reports")

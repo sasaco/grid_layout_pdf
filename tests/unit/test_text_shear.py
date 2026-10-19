@@ -16,7 +16,6 @@ from gridlayoutpdf.bounds import command_bounds
 @pytest.fixture
 def fonts():
     result = FontRegistry()
-    result.register("body", Path(__file__).parents[1] / "fixtures/fonts/ipaexm.ttf")
     return result
 
 

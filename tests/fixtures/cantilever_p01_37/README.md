@@ -25,7 +25,7 @@
 
 ## 書体
 
-本文は Windows の `C:/Windows/Fonts/msmincho.ttc` face0（MS Mincho）、見出しは `C:/Windows/Fonts/msgothic.ttc` face0（MS Gothic）。各 TTC の SHA-256 を `font-profile.json` に固定し、フォントファイルはこの fixture に複製・配布しない。face1 の MS PMincho / MS UI Gothic は使わない。ファイル不在や hash 不一致はエラーであり、自動代替は行わない。`--font` は診断用の明示上書きで、原本の書体検証を免除しない。
+本文は書体名 `MS Mincho`（`msmincho.ttc` face0）、見出しは `MS Gothic`（`msgothic.ttc` face0）。`font-profile.json` の書体の指定は書体名で書き、`fixture_fonts()` がライブラリの書体名による解決（FR-024: 同梱 → `%WINDIR%\Fonts` → `%LOCALAPPDATA%\Microsoft\Windows\Fonts`）で引いたファイルの名前・face・SHA-256 を `font-profile.json` の固定値と照合する。フォントファイルはこの fixture に複製・配布しない。face1 の MS PMincho / MS UI Gothic は使わない。書体が見つからない場合や hash 不一致はエラーであり、自動代替は行わない。以前の `render.py --font`（ファイルの差し替え）は書体ファイルの登録の廃止とともに廃止した。
 
 原本は通常10 pt、回転表9.9 pt、添字6.7/6.6 pt。SourceLiteral は自然 advance の0.8%（10 pt の半角0.04 / 全角0.08 pt）を字間に足す。MS の半角固定幅5 ptと全角10 ptを保ち、文字の縦横倍率を変えない。p21/22 見出し末尾の「4 箇所」等は MS Mincho の意味runに切り替える。p1 の D 4文字は native Text の `shear_x=.342` で原本の人工斜体を保ち、添字は傾けず1.68 ptの明示gapで元の開始位置を保つ。抽出のsynthetic空白は通常のspace文字として扱わない。
 

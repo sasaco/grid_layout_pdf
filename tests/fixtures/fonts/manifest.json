@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "purpose": "Pinned fonts for offline, reproducible layout tests; callers supply explicit fonts in the product API.",
+  "purpose": "Pinned fonts for offline, reproducible layout tests. ipaexm.ttf is the same file the product bundles as IPAex明朝 (FR-024); tests also derive renamed fonts from it.",
   "required_text": "日本語 橋脚 計算書 σ τ φ Σ √ × ÷ ≦ ≧ ± = ＝ α β γ μ ² ³ − ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789 ()[]{}.,:/",
   "fonts": [
     {

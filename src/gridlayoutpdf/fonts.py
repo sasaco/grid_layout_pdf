@@ -1,4 +1,4 @@
-"""Explicit font files and the shared text measuring path."""
+"""Fonts resolved by name and the shared text measuring path."""
 
 from dataclasses import dataclass
 from hashlib import sha256
@@ -11,17 +11,25 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFError, TTFont
 
 from .errors import FontError
+from .fontfinder import FontLocation, face_names_at, find_font, forget
 from .geometry import Rect
 from .styles import TextStyle, _finite_number
 
 
 @dataclass(frozen=True, slots=True)
 class FontFace:
+    """A resolved face: the requested name, its file and the PDF font name.
+
+    ``family`` is the face's English family name (nameID 1), the name Windows
+    and Excel use; ``name`` is the name the caller asked for.
+    """
+
     name: str
     path: Path
     face_index: int
     sha256: str
     pdf_name: str
+    family: str = ""
 
 
 @dataclass(frozen=True, slots=True)
@@ -82,73 +90,88 @@ def _read_glyph_boxes(font: TTFont) -> tuple[GlyphBox | None, ...]:
     return tuple(boxes)
 
 
+# Glyph boxes depend only on the font bytes, which the PDF name pins by SHA-256.
+_GLYPH_BOXES: dict[str, tuple[GlyphBox | None, ...]] = {}
+
+
+def _load_face(name: str, location: FontLocation) -> FontFace:
+    """Read, verify and register one located face with ReportLab."""
+    path, face_index = location.path, location.face_index
+    try:
+        data = path.read_bytes()
+    except OSError as exc:
+        raise FontError(f"Cannot read font {name!r} from {path}: {exc}") from exc
+    signature = data[:4]
+    if signature not in (b"\x00\x01\x00\x00", b"true", b"ttcf"):
+        raise FontError(f"Unsupported font format for {name!r} (TrueType outlines are required): {path}")
+    digest = sha256(data).hexdigest()
+    if location.expected_sha256 is not None and digest != location.expected_sha256:
+        raise FontError(f"The bundled font {path.name} does not match its pinned SHA-256; "
+                        "reinstall gridlayoutpdf")
+    # A folder index may predate a replaced file; trust only the bytes read now.
+    try:
+        names = face_names_at(BytesIO(data), face_index)
+    except FontError as exc:
+        forget()
+        raise FontError(f"Cannot read font {name!r} from {path} face {face_index}: {exc}") from exc
+    if name not in names.names:
+        forget()
+        raise FontError(f"Font {name!r} is no longer named in {path} face {face_index}; "
+                        "the font file changed after it was indexed")
+    pdf_name = f"GLP_{digest}_f{face_index}"
+    registered = pdf_name in pdfmetrics.getRegisteredFontNames()
+    try:
+        if registered:
+            font = pdfmetrics.getFont(pdf_name)
+        else:
+            font = TTFont(pdf_name, BytesIO(data), subfontIndex=face_index, shapable=False)
+        boxes = _GLYPH_BOXES.get(pdf_name)
+        if boxes is None:
+            boxes = _read_glyph_boxes(font)
+    except (
+        TTFError, ValueError, KeyError, IndexError, EOFError, struct.error, ArithmeticError
+    ) as exc:
+        raise FontError(f"Cannot load font {name!r}, face {face_index}, {path}: {exc}") from exc
+    if not registered:
+        # ReportLab also aliases by face.name, even when fontName differs.
+        font.face.name = pdf_name.encode("ascii")
+        pdfmetrics.registerFont(font)
+    _GLYPH_BOXES[pdf_name] = boxes
+    return FontFace(name, path, face_index, digest, pdf_name, location.family)
+
+
 class FontRegistry:
-    """Resolve named fonts without searching the operating system."""
+    """Resolve font names to bundled or Windows font files on first use.
+
+    ``TextStyle.font`` holds a family or full name, in English or Japanese,
+    from the font's name table. Names are looked up by
+    :func:`gridlayoutpdf.fontfinder.find_font` only when first measured or
+    drawn; each registry then keeps the resolved face for that name.
+    Subclasses may override :meth:`resolve` and :meth:`measure`.
+    """
 
     def __init__(self) -> None:
         self._faces: dict[str, FontFace] = {}
-        self._glyph_boxes: dict[str, tuple[GlyphBox | None, ...]] = {}
-
-    def register(self, name: str, path: str | Path, face_index: int = 0) -> FontFace:
-        if not isinstance(name, str) or not name.strip():
-            raise FontError("Font name must be nonempty text")
-        if isinstance(face_index, bool) or not isinstance(face_index, int) or face_index < 0:
-            raise FontError(f"Invalid font face index: {face_index!r}")
-        try:
-            path = Path(path).resolve()
-            data = path.read_bytes()
-        except (TypeError, ValueError, OSError) as exc:
-            raise FontError(f"Cannot read font {name!r} from {path!s}: {exc}") from exc
-        signature = data[:4]
-        if signature not in (b"\x00\x01\x00\x00", b"true", b"ttcf"):
-            raise FontError(f"Unsupported font format for {name!r}: {path}")
-        if signature == b"ttcf":
-            count = struct.unpack_from(">I", data, 8)[0] if len(data) >= 12 else 0
-        else:
-            count = 1
-        if face_index >= count:
-            raise FontError(f"Font face {face_index} is absent from {path}")
-        digest = sha256(data).hexdigest()
-        pdf_name = f"GLP_{digest}_f{face_index}"
-        if name in self._faces:
-            previous = self._faces[name]
-            if (previous.sha256, previous.face_index) != (digest, face_index):
-                raise FontError(f"Font name {name!r} is already registered to a different face")
-            return previous
-        registered = pdf_name in pdfmetrics.getRegisteredFontNames()
-        try:
-            if registered:
-                font = pdfmetrics.getFont(pdf_name)
-            else:
-                font = TTFont(pdf_name, BytesIO(data), subfontIndex=face_index, shapable=False)
-            boxes = self._glyph_boxes.get(pdf_name)
-            if boxes is None:
-                boxes = _read_glyph_boxes(font)
-        except (
-            TTFError, ValueError, KeyError, IndexError, EOFError, struct.error, ArithmeticError
-        ) as exc:
-            raise FontError(f"Cannot load font {name!r}, face {face_index}, {path}: {exc}") from exc
-        if not registered:
-            # ReportLab also aliases by face.name, even when fontName differs.
-            font.face.name = pdf_name.encode("ascii")
-            pdfmetrics.registerFont(font)
-        face = FontFace(name, path, face_index, digest, pdf_name)
-        self._glyph_boxes[pdf_name] = boxes
-        self._faces[name] = face
-        return face
 
     def resolve(self, name: str) -> FontFace:
-        if not isinstance(name, str) or name not in self._faces:
-            raise FontError(f"Unknown font name: {name!r}")
-        return self._faces[name]
+        if isinstance(name, str):
+            name = unicodedata.normalize("NFC", name)
+        face = self._faces.get(name) if isinstance(name, str) else None
+        if face is None:
+            face = _load_face(name, find_font(name))
+            self._faces[name] = face
+        return face
 
     def measure(self, text: str, style: TextStyle) -> TextMetrics:
         if not isinstance(style, TextStyle):
             raise ValueError("style must be a TextStyle")
         text = self.normalize_text(text)
         face = self.resolve(style.font)
+        boxes = _GLYPH_BOXES.get(face.pdf_name)
+        if boxes is None:
+            raise FontError(f"Font {style.font!r} resolved to {face.pdf_name!r}, which FontRegistry did "
+                            "not load; a subclass's resolve must return a face from FontRegistry.resolve")
         font = pdfmetrics.getFont(face.pdf_name)
-        boxes = self._glyph_boxes[face.pdf_name]
         scale = style.size / font.face.unitsPerEm
         cursor = 0.0
         ink_extents: tuple[float, float, float, float] | None = None
@@ -196,3 +219,14 @@ class FontRegistry:
         if not isinstance(text, str):
             raise ValueError("text must be a string")
         return unicodedata.normalize("NFC", text)
+
+
+_DEFAULT_FONTS: FontRegistry | None = None
+
+
+def default_fonts() -> FontRegistry:
+    """The registry shared by calls that omit ``fonts``; created on first use."""
+    global _DEFAULT_FONTS
+    if _DEFAULT_FONTS is None:
+        _DEFAULT_FONTS = FontRegistry()
+    return _DEFAULT_FONTS

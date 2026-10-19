@@ -66,7 +66,6 @@ def test_split_option_rejects_non_boolean(value):
 @pytest.fixture
 def context():
     fonts = FontRegistry()
-    fonts.register("body", Path(__file__).parents[1] / "fixtures/fonts/ipaexm.ttf")
     return LayoutContext(fonts, PageProfile("rules", 300, 400, GridSpec(20, 20, 10, 20, 20, 18)), ReportStyle())
 
 

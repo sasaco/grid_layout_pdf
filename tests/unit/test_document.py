@@ -110,10 +110,18 @@ def test_document_snapshots_input_sequence_and_is_immutable():
         document.profile = SMALL
 
 
-@pytest.mark.parametrize("values", [{"fonts": None}, {"profile": "A4"}, {"style": None}, {"header": "text"}, {"footer": 3}])
+@pytest.mark.parametrize("values", [{"fonts": "IPAex明朝"}, {"profile": "A4"}, {"style": None}, {"header": "text"}, {"footer": 3}])
 def test_document_rejects_invalid_configuration(values):
     with pytest.raises(ValueError):
         Document(**{"fonts": FONTS, **values})
+
+
+def test_document_without_fonts_uses_the_shared_default_registry():
+    from gridlayoutpdf.fonts import default_fonts
+    document = Document(Paragraph("日本"))
+    assert document.fonts is default_fonts()
+    assert Document(Paragraph("日本"), fonts=None).fonts is default_fonts()
+    assert document.layout()[0].commands
 
 
 def test_invalid_flow_node_is_rejected_with_source_path():
@@ -391,7 +399,6 @@ def test_total_page_count_transition_from_nine_to_ten_revalidates_fixed_frame():
 @pytest.fixture
 def real_fonts():
     fonts = FontRegistry()
-    fonts.register("body", Path(__file__).parents[1] / "fixtures/fonts/ipaexm.ttf")
     return fonts
 
 

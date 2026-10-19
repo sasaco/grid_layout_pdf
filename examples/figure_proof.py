@@ -75,14 +75,14 @@ def build_pages(fonts: FontRegistry, image_path: Path) -> tuple[ScenePage, ...]:
     return (ScenePage(profile, commands),)
 
 
-def write_proof(output_dir: str | Path, font_path: str | Path) -> tuple[Path, Path, Path]:
+def write_proof(output_dir: str | Path) -> tuple[Path, Path, Path]:
     """Write normal/grid PDFs, a trace and independent 144dpi previews."""
     output_dir = Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
     image_path = output_dir / "figure-proof-source.png"
     _sample_image(image_path)
     fonts = FontRegistry()
-    face = fonts.register("body", font_path)
+    face = fonts.resolve(TextStyle().font)
     pages = build_pages(fonts, image_path)
     plain, grid = output_dir / "figure-proof.pdf", output_dir / "figure-proof-grid.pdf"
     render_pdf(pages, plain, fonts)
@@ -111,10 +111,9 @@ def write_proof(output_dir: str | Path, font_path: str | Path) -> tuple[Path, Pa
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--font", type=Path, default=ROOT / "tests/fixtures/fonts/ipaexm.ttf")
     parser.add_argument("--output-dir", type=Path, default=ROOT / "build/reports")
     arguments = parser.parse_args()
-    for path in write_proof(arguments.output_dir, arguments.font):
+    for path in write_proof(arguments.output_dir):
         print(path)
 
 

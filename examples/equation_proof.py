@@ -2,7 +2,7 @@
 
 Run with uv run --locked --extra dev python examples/equation_proof.py.
 The supplied values are display specimens; this example performs no engineering
-calculation. Callers provide a font; the default is the pinned test fixture.
+calculation. Text uses the default font name, the bundled IPAex明朝.
 """
 
 from __future__ import annotations
@@ -85,9 +85,8 @@ def _json_value(value):
     return value
 
 
-def write_proof(output_dir: str | Path, font_path: str | Path) -> tuple[Path, Path, Path]:
+def write_proof(output_dir: str | Path) -> tuple[Path, Path, Path]:
     fonts = FontRegistry()
-    fonts.register("body", font_path)
     pages = build_pages(fonts)
     output_dir = Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -126,10 +125,9 @@ def write_proof(output_dir: str | Path, font_path: str | Path) -> tuple[Path, Pa
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--font", type=Path, default=ROOT / "tests/fixtures/fonts/ipaexm.ttf")
     parser.add_argument("--output-dir", type=Path, default=ROOT / "build/reports/equations")
     options = parser.parse_args()
-    for path in write_proof(options.output_dir, options.font):
+    for path in write_proof(options.output_dir):
         print(path)
 
 

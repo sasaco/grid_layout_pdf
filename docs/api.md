@@ -6,12 +6,9 @@
 
 ```python
 from gridlayoutpdf import (
-    Document, Equation, EquationGroup, FontRegistry, Heading,
+    Document, Equation, EquationGroup, Heading,
     Operator, PageDecoration, Paragraph, Row, Script,
 )
-
-fonts = FontRegistry()
-fonts.register("body", "C:/path/to/ipaexm.ttf")
 
 report = Document(
     Heading("断面諸量"),
@@ -23,22 +20,23 @@ report = Document(
             unit=Script("m", superscript="2"),
         ),
     ),
-    fonts=fonts,
     footer=PageDecoration("{page} / {pages}", align="center"),
 )
 report.render("report.pdf")
 ```
 
+書体は既定で同梱のIPAex明朝を使う。ファイルの登録は要らない。
+
 同じ書体・設定・入力で再計測できるよう、標準部品と計測結果は不変にしている。部品を組み替えるときは新しいインスタンスを作る。
 
 ## 帳票全体の設定
 
-`Document(*blocks, fonts, profile=A4_PORTRAIT_REFERENCE, style=ReportStyle(), header=None, footer=None)`が帳票全体の既定を決める。部品側でstyleを省略したときは、この設定を使う。
+`Document(*blocks, fonts=None, profile=A4_PORTRAIT_REFERENCE, style=ReportStyle(), header=None, footer=None)`が帳票全体の既定を決める。部品側でstyleを省略したときは、この設定を使う。
 
 | 引数 | 既定 | 内容 |
 |---|---|---|
 | `*blocks` | なし | 本文へ流す部品。Stackは展開し、PageBreak・PageSection・Atは配置指示として扱う |
-| `fonts` | 必須 | 登録済みのFontRegistry。書体はTextStyle.fontの名前で選ぶ |
+| `fonts` | `None` | 書体名を書体ファイルへ引くFontRegistry。省略すると共有の既定のFontRegistryを使う。書体はTextStyle.fontの書体名で選ぶ |
 | `profile` | `A4_PORTRAIT_REFERENCE` | 用紙寸法・グリッド・本文行範囲 |
 | `style` | `ReportStyle()` | 本文と見出しのTextStyle、基線offset、追加字間上限、段落の最小分割行数 |
 | `header` | `None` | 本文上の予約枠に置くPageDecoration |
@@ -48,28 +46,25 @@ report.render("report.pdf")
 
 ```python
 from gridlayoutpdf import (
-    A3_LANDSCAPE_REFERENCE, Document, FontRegistry, PageDecoration, ReportStyle, TextStyle,
+    A3_LANDSCAPE_REFERENCE, Document, PageDecoration, ReportStyle, TextStyle,
 )
-
-fonts = FontRegistry()
-fonts.register("mincho", "C:/Windows/Fonts/msmincho.ttc")
-fonts.register("gothic", "C:/Windows/Fonts/msgothic.ttc")
 
 report = Document(
     *blocks,
-    fonts=fonts,
     profile=A3_LANDSCAPE_REFERENCE,
     style=ReportStyle(
-        body=TextStyle("mincho", 10.5),
-        heading=TextStyle("gothic", 12),
+        body=TextStyle("ＭＳ 明朝", 10.5),
+        heading=TextStyle("IPAexゴシック", 12),
         baseline_offset=11.0,
         min_first_lines=2,
         min_last_lines=2,
     ),
     header=PageDecoration("橋脚設計計算書", align="right"),
-    footer=PageDecoration("{page} / {pages}", align="center", style=TextStyle("gothic", 9)),
+    footer=PageDecoration("{page} / {pages}", align="center", style=TextStyle("IPAexゴシック", 9)),
 )
 ```
+
+`ＭＳ 明朝`はWindowsの書体フォルダから名前で引く（英語名`MS Mincho`でもよい）。Windows以外では同梱の書体だけを探すため、この例は`FontError`になる。
 
 用紙だけを変える場合は`profile=derived_profile("B4", 729, 1032)`のように派生profileを渡す。一部の範囲だけ用紙を変えるときは`PageSection`を使う。`style`を渡したうえで個別の部品に`style=TextStyle(...)`を与えると、その部品だけ上書きできる。`Document`とその設定は不変なので、別の体裁で出すときは新しい`Document`を作る。
 
@@ -84,10 +79,14 @@ report = Document(
 | 共通のグリッド | 原点50.88／54.598pt、横16.08／縦15.48pt |
 | `derived_profile(name, width, height)` | 同じピッチと参照余白で別の用紙を作る。寸法はpt |
 | `PageProfile(..., body_start_row=0, body_end_row=None)` | グリッド内の本文行範囲を指定する。終端行は含まない |
-| `TextStyle(font='body', size=10, tracking=0)` | 書体名・文字サイズ・明示的な追加字間 |
+| `TextStyle(font='IPAex明朝', size=10, tracking=0)` | 書体名・文字サイズ・明示的な追加字間 |
 | `ReportStyle(...)` | 本文／見出しstyle、基線offset、追加字間上限、段落の最小分割行数 |
 
-フォントは`FontRegistry.register(name, path, face_index=0)`で明示登録する。TrueTypeとTrueType collectionを扱い、CFF OpenTypeは対象外。ファイルのハッシュとfaceを使って計測・描画を揃える。パッケージに書体は同梱せず、OSの書体を自動検索しない。太字などは別の書体を登録し、`TextStyle(font=...)`で選べる。
+書体は`TextStyle(font=...)`に書体名で書く。ライブラリが書体名から書体ファイルを探す。書体名は書体ファイルのnameテーブルにあるファミリー名（nameID 1と16）またはフルネーム（nameID 4）の英語名・日本語名のどれか（例: `MS Mincho`・`ＭＳ 明朝`・`IPAexMincho`・`IPAex明朝`）で、表記は完全に一致させる。TrueType collectionの書体番号も名前から決まる（`MS PMincho`は`msmincho.ttc`の1番）。
+
+探す順は、(1) パッケージに同梱したIPAex明朝・IPAexゴシック（004.01、IPAフォントライセンスv1.0、無改変）、(2) `%WINDIR%\Fonts`、(3) `%LOCALAPPDATA%\Microsoft\Windows\Fonts`。macOS・Linuxでは同梱の書体だけを探し、それ以外の書体名は`FontError`になる。同じ名前は先に探すフォルダのものを使う。同じフォルダの中では、フルネーム（nameID 4）、ファミリー名（nameID 1）、typographic family（nameID 16）の順に一致を調べ、同じ段階で別の書体が2つ以上一致すれば曖昧として`FontError`にする。エラーには候補のフルネームを示す（例: 同じファミリー名の標準と太字があるときは、`Yu Gothic Regular`のようにフルネームで1つに決める）。見つからないときは探したフォルダと同梱の書体名を示す`FontError`になる。書体フォルダの読めない・壊れたファイルは飛ばしてその数を示すが、フォルダそのものを一覧できないときは`FontError`で止める。同梱の書体が欠けている・壊れている・名前が違うときは、Windowsの同名の書体へ切り替えず`FontError`にする。`%WINDIR%`がなければ`%SystemRoot%`を使い、絶対パスでない値は使わない。
+
+書体ファイルは、import時や`TextStyle`の生成時には探さず、初めて計測・描画するときに探す。`fonts`を省略した`Document`・`render_pdf`・`layout_trace`・`command_bounds`は共有の既定の`FontRegistry`を使う。`FontRegistry`は名前ごとに解決した`FontFace`（`name`は指定した書体名、`path`・`face_index`・`sha256`・`pdf_name`、`family`はWindows・Excelが使う英語のファミリー名nameID 1）を保ち、`resolve(name)`・`measure(text, style)`・`normalize_text(text)`を持つ。計測を差し替えるときは継承して`resolve`・`measure`を上書きする（`resolve`は`FontRegistry.resolve`が返した`FontFace`を返す）。`fonts`を明示して組んだページは、同じ`FontRegistry`を`render_pdf`・`layout_trace`にも渡す。TrueTypeとTrueType collectionを扱い、CFF OpenTypeは対象外。ファイルのハッシュとfaceを使って計測・描画を揃え、同梱の書体はmanifestのSHA-256と一致することも確かめる。`FontRegistry.register`による書体ファイルの登録は廃止した。
 
 文字列はNFCで正規化する。書体にない文字と、正規化後に残る結合マークは`FontError`になる。数式の上付き・下付きは、専用Unicode文字の代わりに`Script`で組める。
 
@@ -341,7 +340,7 @@ Imageは静止PNG/JPEGを対象に、指定枠へ縦横比を保って内接さ�
 
 `LayoutOverflowError`にはblock_id、needed、availableがある。幅はpt、文書の高さ予約は行数としてメッセージに単位を示す。識別しやすい`block_id`を部品へ付けると、長い帳票の問題箇所を追いやすい。
 
-`render(..., debug_grid=True)`でグリッドを表示できる。`render(..., invariant=True)`（`render_pdf`も同じ）は作成日時と文書IDを書き込まず、同じページから同じbytesのPDFを作る。既定値`False`ではReportLabの日時付きメタデータを保つ。`layout_trace(pages, fonts)`は用紙・配置・ローカルアンカー・描画境界をJSON保存可能なdictへ変換する。画像bytesは含めない。ローカルの基線やアンカーは、配置元のx/yと合わせて解釈する。
+`render(..., debug_grid=True)`でグリッドを表示できる。`render(..., invariant=True)`（`render_pdf`も同じ）は作成日時と文書IDを書き込まず、同じページから同じbytesのPDFを作る。既定値`False`ではReportLabの日時付きメタデータを保つ。`layout_trace(pages, fonts=None)`は用紙・配置・ローカルアンカー・描画境界をJSON保存可能なdictへ変換する。画像bytesは含めない。ローカルの基線やアンカーは、配置元のx/yと合わせて解釈する。
 
 独自部品は`measure(context, available_width) -> MeasuredBlock`を実装する。計測中にPDF Canvasを触らず、左上原点の相対描画命令をLayoutPartへ入れる。Textのyだけは基線。外側の高さは整数行にし、分割可能な境界ごとにpartを分ける。`measure_block`で型・幅・ピッチ・描画境界を共通検証できる。詳しい責務は[アーキテクチャ](architecture.md)を参照。
 

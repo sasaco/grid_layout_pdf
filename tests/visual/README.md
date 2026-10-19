@@ -31,8 +31,8 @@ uv run --locked --extra dev python -X utf8 .claude/skills/_shared/run_tests.py -
 2. 既存基準を保持したまま、新しい候補ディレクトリへ標準・長文の両方を出力します。
 
    ```powershell
-   uv run --locked --extra dev python examples/representative_report.py --font tests/fixtures/fonts/ipaexm.ttf --output build/reports/visual-candidate/standard --variant standard --preview
-   uv run --locked --extra dev python examples/representative_report.py --font tests/fixtures/fonts/ipaexm.ttf --output build/reports/visual-candidate/long --variant long --preview
+   uv run --locked --extra dev python examples/representative_report.py --output build/reports/visual-candidate/standard --variant standard --preview
+   uv run --locked --extra dev python examples/representative_report.py --output build/reports/visual-candidate/long --variant long --preview
    ```
 
 3. 代表帳票の統合テストを実行し、候補の通常版・グリッド版の全ページを目視します。

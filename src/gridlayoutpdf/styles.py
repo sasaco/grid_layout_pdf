@@ -33,9 +33,13 @@ def _resolve_insets(value: float | Insets, name: str) -> Insets:
 
 @dataclass(frozen=True, slots=True)
 class TextStyle:
-    """A named font, point size, and extra spacing between characters."""
+    """A font name, point size, and extra spacing between characters.
 
-    font: str = "body"
+    ``font`` is a family or full name from the font file, in English or
+    Japanese. It is looked up only when text is measured or drawn.
+    """
+
+    font: str = "IPAex明朝"
     size: float = 10.0
     tracking: float = 0.0
 

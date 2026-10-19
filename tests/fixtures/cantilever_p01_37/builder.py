@@ -41,6 +41,11 @@ def _appearance():
     return sys.modules[key]
 
 
+# Font names from the original PDF; resolved from the Windows font folder (FR-024).
+BODY_FONT, HEADING_FONT = "MS Mincho", "MS Gothic"
+SOURCE_STYLE = ReportStyle(body=TextStyle(BODY_FONT), heading=TextStyle(BODY_FONT, size=12))
+
+
 def font_profile():
     return json.loads((FIXTURE_ROOT / "font-profile.json").read_text(encoding="utf-8"))
 
@@ -80,7 +85,7 @@ class CompactCell:
     """Decode authored JSON lines; public CellLines owns point layout and safety."""
 
     lines: tuple
-    style: TextStyle = TextStyle()
+    style: TextStyle = TextStyle(BODY_FONT)
     line_advance: float = 10.8
     min_height: float = 0
     block_id: str = ""
@@ -153,7 +158,7 @@ class SourceFigure:
 
 def _style(data):
     source = font_profile()["items"].get(data.get("id"), {})
-    return TextStyle(font=data.get("font",source.get("font","body")),
+    return TextStyle(font=data.get("font",source.get("font",BODY_FONT)),
                      size=source.get("size",data.get("size",10)), tracking=data.get("tracking",0))
 
 
@@ -202,7 +207,7 @@ def build_block(data, geometry=None):
             for index, raw in enumerate(source_row):
                 cell = {"lines": [raw]} if isinstance(raw, str) else raw
                 content = CompactCell(tuple(cell.get("lines", ())),
-                                      style=TextStyle(size=cell.get("size", data.get("size", 10))),
+                                      style=TextStyle(BODY_FONT, size=cell.get("size", data.get("size", 10))),
                                       line_advance=cell.get("line_advance", data.get("line_advance", 10.8)),
                                       min_height=cell.get("min_height", data.get("cell_min_height", 0)),
                                       line_sizes=tuple(cell.get("line_sizes", ())),
@@ -246,7 +251,7 @@ def _source_table(data,geometry):
             for anchor in anchors:
                 anchor["local_quarter_turns"]=(anchor.get("quarter_turns",geometry.get("turns",0))-geometry.get("turns",0))%4
             profile=profiles.get(descriptor["id"],{})
-            style=TextStyle(profile.get("font","body"),profile.get("size",9.9 if geometry.get("turns") else 10))
+            style=TextStyle(profile.get("font",BODY_FONT),profile.get("size",9.9 if geometry.get("turns") else 10))
             raw_lines=cell.get("lines",())
             styles=tuple(replace_style_size(style,size) for size in profile.get("line_sizes",cell.get("line_sizes",[style.size]*len(raw_lines))))
             nodes=tuple(appearance.shear_atoms(math_node(line),profile.get("shear_atoms",())) for line in raw_lines)
@@ -390,6 +395,8 @@ def build_document(fonts, *, source_pages=SOURCE_PAGES, pages_root=None):
 
 
 def _document(fonts, groups):
+    if fonts is None:
+        raise ValueError("fixture documents need fixture_fonts(), which pins the original font files")
     groups=tuple(groups)
     source_frame=any(isinstance(block,_appearance().PageFrame) for _,content in groups for block in content)
     blocks = []
@@ -398,7 +405,7 @@ def _document(fonts, groups):
             blocks.append(PageBreak())
         inner=content[0] if len(content)==1 and isinstance(content[0],_appearance().PageFrame) else Stack(*content,block_id=f"p{number:02}-content")
         blocks.append(KeepTogether(inner,block_id=f"p{number:02}"))
-    return Document(*blocks, fonts=fonts, profile=SOURCE_PROFILE if source_frame else A4_PORTRAIT_REFERENCE, style=ReportStyle())
+    return Document(*blocks, fonts=fonts, profile=SOURCE_PROFILE if source_frame else A4_PORTRAIT_REFERENCE, style=SOURCE_STYLE)
 
 
 def guard_fixed_pages(pages, source_pages, declared_blocks=None):
@@ -467,11 +474,13 @@ def layout_report(fonts, *, source_pages=SOURCE_PAGES, pages_root=None):
     return layout_blocks(fonts, groups)
 
 
-def fixture_fonts(font_path=None):
+def fixture_fonts():
+    """Resolve the original faces by name and pin each resolved file and face."""
     fonts = FontRegistry()
     for name,definition in font_profile()["fonts"].items():
-        path=Path(font_path) if font_path else Path(definition["path"])
-        face=fonts.register(name,path,0 if font_path else definition["face_index"])
-        if not font_path and face.sha256!=definition["sha256"]:
-            raise ValueError(f"Original font hash changed: {name} at {path}")
+        face=fonts.resolve(name)
+        if face.path.name.lower()!=definition["file"] or face.face_index!=definition["face_index"]:
+            raise ValueError(f"Original font moved: {name} resolved to {face.path} face {face.face_index}")
+        if face.sha256!=definition["sha256"]:
+            raise ValueError(f"Original font hash changed: {name} at {face.path}")
     return fonts

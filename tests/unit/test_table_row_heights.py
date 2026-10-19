@@ -20,7 +20,6 @@ def sized_table(*args, **kwargs) -> Table:
 @pytest.fixture
 def context() -> LayoutContext:
     fonts = FontRegistry()
-    fonts.register("body", Path(__file__).parents[1] / "fixtures/fonts/ipaexm.ttf")
     profile = PageProfile("fine-table", 240, 400, GridSpec(20, 20, .01, .01, 20000, 36000))
     return LayoutContext(fonts, profile, ReportStyle())
 

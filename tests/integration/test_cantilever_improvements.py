@@ -41,7 +41,7 @@ def _authored_tables(number):
 
 def _local_context(fonts):
     return LayoutContext(fonts, PageProfile("public-cells", 800, 800,
-                         GridSpec(0, 0, .12, .12, 6600, 6600)), ReportStyle())
+                         GridSpec(0, 0, .12, .12, 6600, 6600)), _module("builder").SOURCE_STYLE)
 
 
 def _public_table(data, *, local):
@@ -78,7 +78,7 @@ def test_all_authored_table_cells_use_single_rounding_and_explicit_clearance(num
     for data in _authored_tables(number):
         # Existing manuscript parameters remain usable through the thin adapter.
         original = measure_block(builder.build_block(data),
-                                 LayoutContext(fonts, builder.SOURCE_PROFILE, ReportStyle()), 498.48)
+                                 LayoutContext(fonts, builder.SOURCE_PROFILE, builder.SOURCE_STYLE), 498.48)
         assert original.commands
         measured = measure_block(_public_table(data, local=True), context, 780)
         assert len(measured.parts) == 1 and not measured.break_after
@@ -99,7 +99,7 @@ def test_all_authored_table_cells_use_single_rounding_and_explicit_clearance(num
 
 def test_all_16_source_figures_preserve_physical_snapshot_and_provenance():
     builder = _module("builder")
-    context = LayoutContext(builder.fixture_fonts(), builder.SOURCE_PROFILE, ReportStyle())
+    context = LayoutContext(builder.fixture_fonts(), builder.SOURCE_PROFILE, builder.SOURCE_STYLE)
     assets = builder.load_manifest()["figures"]
     assert len(assets) == 16
     for asset in assets:
@@ -141,7 +141,7 @@ def _nested_script_table():
     content = CellLines((Script("S", subscript="30", scale=.6, subscript_drop=4),
                          Script("x", superscript=Script("2", superscript="n"),
                                 scale=.6, superscript_rise=8)),
-                        style=TextStyle(size=10), line_advance=24,
+                        style=TextStyle("MS Mincho", size=10), line_advance=24,
                         inner_padding=Insets(1, 2, 1, 2), block_id="public-script-lines")
     table = Table((20,), ((Cell(content, padding=Insets(1, 2, 1, 2)),),),
                   row_heights=(12,), split=False, block_id="public-script-table")

@@ -12,7 +12,6 @@ from gridlayoutpdf.text import TextLine, fit_tracking, wrap_text
 @pytest.fixture(scope="module")
 def fonts():
     registry = FontRegistry()
-    registry.register("body", Path(__file__).resolve().parents[1] / "fixtures/fonts/ipaexm.ttf")
     return registry
 
 

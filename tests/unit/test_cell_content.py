@@ -22,7 +22,6 @@ def lines(*args, **kwargs):
 @pytest.fixture
 def context():
     fonts = FontRegistry()
-    fonts.register("body", Path(__file__).parents[1] / "fixtures/fonts/ipaexm.ttf")
     return LayoutContext(fonts, A4_PORTRAIT_REFERENCE, ReportStyle())
 
 

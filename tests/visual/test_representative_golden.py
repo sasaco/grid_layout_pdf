@@ -51,7 +51,11 @@ def test_standard_report_matches_all_approved_golden_pixels(tmp_path):
     spec = importlib.util.spec_from_file_location("representative_visual_example", source)
     example = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(example)
-    example.write_report(tmp_path, font, image_path=image_path, variant="standard", preview=True)
+    from gridlayoutpdf import FontRegistry
+    resolved = FontRegistry().resolve(example.DEFAULT_FONT)
+    assert resolved.sha256 == manifest["font"]["sha256"], (
+        f"The default font name {example.DEFAULT_FONT!r} no longer resolves to the golden font bytes")
+    example.write_report(tmp_path, image_path=image_path, variant="standard", preview=True)
     actual_paths = sorted((tmp_path / "previews").glob("representative-report-page-*.png"))
     assert [path.name for path in actual_paths] == [page["file"] for page in manifest["pages"]], (
         f"Golden page count or filenames changed; generated images: {tmp_path / 'previews'}")

@@ -12,7 +12,7 @@ import pymupdf
 import pytest
 from PIL import Image as PILImage
 
-from gridlayoutpdf import Document, FontRegistry, LayoutOverflowError, render_pdf
+from gridlayoutpdf import Document, LayoutOverflowError, render_pdf
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -29,23 +29,21 @@ def example():
 
 @pytest.fixture(scope="module")
 def inputs(tmp_path_factory):
-    fonts = FontRegistry()
-    fonts.register("body", ROOT / "tests/fixtures/fonts/ipaexm.ttf")
     picture = tmp_path_factory.mktemp("report-input") / "picture.png"
     with PILImage.new("RGB", (240, 160), (220, 232, 238)) as image:
         image.save(picture)
-    return fonts, picture
+    return (picture,)
 
 
 def test_standard_report_uses_mixed_paper_and_preserves_chapter_order(example, inputs, tmp_path):
-    fonts, image = inputs
-    report = example.build_report(fonts, image)
+    (image,) = inputs
+    report = example.build_report(image)
     assert isinstance(report, Document)
     pages = report.layout()
     assert 4 <= len(pages) <= 6, "The complete sample must contain all report chapters"
     assert report.layout() == pages
     path = tmp_path / "report.pdf"
-    render_pdf(pages, path, fonts)
+    render_pdf(pages, path)
     with pymupdf.open(path) as pdf:
         dimensions = [(page.rect.width, page.rect.height) for page in pdf]
         assert dimensions[0] == dimensions[-1] == (595, 842)
@@ -73,9 +71,9 @@ def _pdf_chars(page):
 
 
 def test_pdf_has_two_equal_columns_right_results_and_ten_point_prose(example, inputs, tmp_path):
-    fonts, image = inputs
+    (image,) = inputs
     path = tmp_path / "anchors.pdf"
-    example.build_report(fonts, image).render(path)
+    example.build_report(image).render(path)
     with pymupdf.open(path) as pdf:
         page = next(page for page in pdf if "2 断面諸量" in page.get_text())
         equals = [character for character in _pdf_chars(page) if character["c"] == "="]
@@ -102,12 +100,12 @@ def test_pdf_has_two_equal_columns_right_results_and_ten_point_prose(example, in
 
 
 def test_long_variant_reflows_more_text_without_changing_display_values(example, inputs, tmp_path):
-    fonts, image = inputs
-    standard, long = (example.build_report(fonts, image, variant=variant) for variant in ("standard", "long"))
+    (image,) = inputs
+    standard, long = (example.build_report(image, variant=variant) for variant in ("standard", "long"))
     standard_pages, long_pages = standard.layout(), long.layout()
     standard_path, long_path = tmp_path / "standard.pdf", tmp_path / "long.pdf"
-    render_pdf(standard_pages, standard_path, fonts)
-    render_pdf(long_pages, long_path, fonts)
+    render_pdf(standard_pages, standard_path)
+    render_pdf(long_pages, long_path)
     with pymupdf.open(standard_path) as short_pdf, pymupdf.open(long_path) as long_pdf:
         short_text = "".join(page.get_text() for page in short_pdf)
         long_text = "".join(page.get_text() for page in long_pdf)
@@ -132,7 +130,7 @@ def test_variant_rejects_unknown_values(example, inputs, variant):
 def test_writer_emits_matching_normal_grid_trace_and_optional_previews(example, inputs, tmp_path, pdf_output):
     assert callable(getattr(example, "write_report", None)), "The example needs a reusable output writer"
     output = tmp_path / ("custom.pdf" if pdf_output else "output")
-    files = example.write_report(output, ROOT / "tests/fixtures/fonts/ipaexm.ttf", image_path=inputs[1], preview=True)
+    files = example.write_report(output, image_path=inputs[0], preview=True)
     assert len(files) == 3 and all(path.is_file() for path in files)
     normal, grid, trace_path = files
     assert normal == (output if pdf_output else output / "representative-report.pdf")
@@ -156,8 +154,7 @@ def test_copied_cli_uses_public_api_default_asset_without_pymupdf(tmp_path):
     shutil.copyfile(asset, tmp_path / "assets/bridge-overview.png")
     (tmp_path / "pymupdf.py").write_text("raise ImportError('runtime must not import development preview package')\n", encoding="utf-8")
     output = tmp_path / "reports"
-    result = subprocess.run([sys.executable, "-X", "utf8", str(script), "--font",
-                             str(ROOT / "tests/fixtures/fonts/ipaexm.ttf"), "--output", str(output),
+    result = subprocess.run([sys.executable, "-X", "utf8", str(script), "--output", str(output),
                              "--variant", "long"], cwd=tmp_path, text=True, encoding="utf-8", capture_output=True)
     assert result.returncode == 0, result.stdout + result.stderr
     assert (output / "representative-report.pdf").is_file()
@@ -172,10 +169,11 @@ def test_copied_cli_uses_public_api_default_asset_without_pymupdf(tmp_path):
     assert "reportlab" not in script.read_text(encoding="utf-8").lower()
 
 
-def test_cli_requires_explicit_font(tmp_path):
+def test_cli_reports_an_unknown_font_name(tmp_path):
     result = subprocess.run([sys.executable, "-X", "utf8", str(ROOT / "examples/representative_report.py"),
-                             "--output", str(tmp_path / "report.pdf")], text=True, encoding="utf-8", capture_output=True)
-    assert result.returncode == 2 and "--font" in result.stderr
+                             "--font", "GLP No Such Font", "--output", str(tmp_path / "report.pdf")],
+                            text=True, encoding="utf-8", capture_output=True)
+    assert result.returncode == 2 and "--font" in result.stderr and "GLP No Such Font" in result.stderr
     assert not (tmp_path / "report.pdf").exists()
 
 

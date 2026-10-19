@@ -9,7 +9,6 @@ import pytest
 
 
 ROOT = Path(__file__).resolve().parents[2]
-FONT = ROOT / "tests/fixtures/fonts/ipaexm.ttf"
 
 
 def proof_module():
@@ -27,7 +26,7 @@ def chars(page):
 
 
 def test_equation_proof_extracts_fixed_centers_results_units_order_and_sizes(tmp_path):
-    proof_module().write_proof(tmp_path, FONT)
+    proof_module().write_proof(tmp_path)
     with pymupdf.open(tmp_path / "equation-proof.pdf") as pdf, pymupdf.open(tmp_path / "equation-proof-grid.pdf") as debug:
         assert [(page.rect.width, page.rect.height) for page in pdf] == [(595, 842), (1191, 842)]
         page = pdf[0]
@@ -68,21 +67,26 @@ def test_equation_proof_extracts_fixed_centers_results_units_order_and_sizes(tmp
     assert len(list((tmp_path / "previews").glob("*.png"))) == 4
 
 
-@pytest.mark.parametrize("font_path", [FONT, Path("C:/Windows/Fonts/msmincho.ttc"),
-                                      Path("C:/Windows/Fonts/msgothic.ttc")])
-def test_explicit_script_p9_size_and_baselines_survive_pdf(font_path, tmp_path):
+@pytest.mark.parametrize("font_name", ["IPAex明朝", "MS Mincho", "MS Gothic"])
+def test_explicit_script_p9_size_and_baselines_survive_pdf(font_name, tmp_path):
+    from gridlayoutpdf.errors import FontError
     from gridlayoutpdf.fonts import FontRegistry
     from gridlayoutpdf.math import Script
     from gridlayoutpdf.profiles import A4_PORTRAIT_REFERENCE
     from gridlayoutpdf.renderers.reportlab import render_pdf
     from gridlayoutpdf.scene import ScenePage
     from gridlayoutpdf.styles import TextStyle
-    if not font_path.is_file():
-        pytest.skip("optional Windows comparison font is not installed")
     fonts = FontRegistry()
-    fonts.register("body", font_path)
+    try:
+        fonts.resolve(font_name)
+    except FontError as exc:
+        # Only the optional Windows faces may be absent; the bundled face must load.
+        message = str(exc)
+        if font_name == "IPAex明朝" or "was not found" not in message or "unreadable" in message:
+            raise
+        pytest.skip("optional Windows comparison font is not installed")
     box = Script("P", "2", "B", scale=.6639,
-                 superscript_rise=4.92, subscript_drop=1.92).measure(fonts, TextStyle(size=10))
+                 superscript_rise=4.92, subscript_drop=1.92).measure(fonts, TextStyle(font_name, size=10))
     output = tmp_path / "explicit-script.pdf"
     render_pdf((ScenePage(A4_PORTRAIT_REFERENCE, box.translated(70, 80)),), output, fonts)
     with pymupdf.open(output) as pdf:
@@ -106,7 +110,6 @@ def test_explicit_script_extents_propagate_to_mathblock_and_overflow():
     from gridlayoutpdf.profiles import A4_PORTRAIT_REFERENCE
     from gridlayoutpdf.styles import ReportStyle, TextStyle
     fonts = FontRegistry()
-    fonts.register("body", FONT)
     context = LayoutContext(fonts, A4_PORTRAIT_REFERENCE, ReportStyle())
     expression = Script("x", "2", "j", scale=.8, superscript_rise=25, subscript_drop=20)
     box = expression.measure(fonts, TextStyle(size=10))

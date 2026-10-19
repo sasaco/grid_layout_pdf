@@ -1,6 +1,8 @@
 """A public-API example of a mixed-size Japanese calculation report.
 
 All numbers are supplied display data. No engineering solver is implemented.
+Text uses one font name for body and headings; the default is the bundled
+IPAex明朝, and Windows font names such as "MS Mincho" also work.
 """
 
 import argparse
@@ -11,10 +13,12 @@ from pathlib import Path
 from gridlayoutpdf import (
     A3_LANDSCAPE_REFERENCE, Arrow, BreakHint, Cell, Columns, Delimited,
     Document, Equation, EquationAnchors, EquationGroup, Figure, Fraction,
-    FontRegistry, Heading, Image, Label, Line, MathBlock, Operator, PageBreak,
-    PageDecoration, PageSection, Paragraph, Rectangle, Root, Row, Script,
-    Spacer, Stack, Table, layout_trace, render_pdf,
+    FontError, Heading, Image, Label, Line, MathBlock, Operator, PageBreak,
+    PageDecoration, PageSection, Paragraph, Rectangle, ReportStyle, Root, Row, Script,
+    Spacer, Stack, Table, TextStyle, layout_trace, render_pdf,
 )
+
+DEFAULT_FONT = "IPAex明朝"
 
 
 def _load_figure():
@@ -84,8 +88,8 @@ def _load_equations(values, *, long=False):
     )
 
 
-def build_report(fonts, image_path, *, variant="standard", display_values=None) -> Document:
-    """Build a report from caller fonts, image and already-formatted result strings.
+def build_report(image_path, *, font=DEFAULT_FONT, variant="standard", display_values=None) -> Document:
+    """Build a report from a font name, image and already-formatted result strings.
 
     display_values replaces known results only; the sample expressions and input
     conditions are authored separately. Values are never calculated or rounded.
@@ -184,29 +188,27 @@ def build_report(fonts, image_path, *, variant="standard", display_values=None) 
                   "・変更した条件に関連する計算値を一括して更新する。"),
         Spacer(1),
         Paragraph("記録欄：条件確認日、担当者、参照資料番号を案件の管理方法に従って記入する。"),
-        fonts=fonts,
+        style=ReportStyle(body=TextStyle(font), heading=TextStyle(font, size=12)),
         header=PageDecoration("橋脚部材の計算整理"),
         footer=PageDecoration("{page} / {pages}", align="right"),
     )
 
 
-def write_report(output, font_path, *, image_path=None, variant="standard", preview=False):
+def write_report(output, *, font=DEFAULT_FONT, image_path=None, variant="standard", preview=False):
     """Write normal/grid PDFs and JSON from one immutable layout result.
 
     A .pdf output selects the exact normal filename; other paths are directories.
     Only --preview needs the optional development package PyMuPDF.
     """
-    fonts = FontRegistry()
-    fonts.register("body", font_path)
     image_path = Path(image_path) if image_path is not None else Path(__file__).resolve().parent / "assets/bridge-overview.png"
-    pages = build_report(fonts, image_path, variant=variant).layout()
+    pages = build_report(image_path, font=font, variant=variant).layout()
     output = Path(output)
     normal = output if output.suffix.lower() == ".pdf" else output / "representative-report.pdf"
     grid = normal.with_name(normal.stem + "-grid.pdf")
     trace = normal.with_suffix(".json")
-    render_pdf(pages, normal, fonts)
-    render_pdf(pages, grid, fonts, debug_grid=True)
-    trace.write_text(json.dumps(layout_trace(pages, fonts), ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    render_pdf(pages, normal)
+    render_pdf(pages, grid, debug_grid=True)
+    trace.write_text(json.dumps(layout_trace(pages), ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     if preview:
         try:
             import pymupdf
@@ -224,14 +226,19 @@ def write_report(output, font_path, *, image_path=None, variant="standard", prev
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--font", type=Path, required=True, help="Embeddable TrueType font supporting Japanese and math symbols")
+    parser.add_argument("--font", default=DEFAULT_FONT,
+                        help="Font name (bundled IPAex明朝/IPAexゴシック or a Windows font such as MS Mincho)")
     parser.add_argument("--output", type=Path, required=True, help="Output directory or normal PDF filename")
     parser.add_argument("--image", type=Path, help="PNG/JPEG; defaults to assets/bridge-overview.png beside this script")
     parser.add_argument("--variant", choices=("standard", "long"), default="standard")
     parser.add_argument("--preview", action="store_true", help="Render all pages as PNG (development dependency PyMuPDF)")
     options = parser.parse_args(argv)
-    for path in write_report(options.output, options.font, image_path=options.image,
-                             variant=options.variant, preview=options.preview):
+    try:
+        paths = write_report(options.output, font=options.font, image_path=options.image,
+                             variant=options.variant, preview=options.preview)
+    except FontError as exc:
+        parser.error(f"--font: {exc}")
+    for path in paths:
         print(path)
 
 

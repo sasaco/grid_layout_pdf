@@ -434,7 +434,6 @@ def test_delimited_rejects_invalid_body():
 @pytest.fixture(scope="module")
 def real_fonts():
     fonts = FontRegistry()
-    fonts.register("body", Path(__file__).resolve().parents[1] / "fixtures/fonts/ipaexm.ttf")
     return fonts
 
 
