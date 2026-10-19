@@ -4,9 +4,11 @@ from dataclasses import dataclass, replace
 
 import pytest
 
+import gridlayoutpdf
 from gridlayoutpdf import (
-    A4_PORTRAIT_REFERENCE, Document, FontRegistry, KeepWithNext, LayoutContext, LayoutOverflowError,
-    LayoutPart, MeasuredBlock, Rectangle, ReportStyle, SideRule, Spacer, Text, TextMetrics, measure_block,
+    A4_PORTRAIT_REFERENCE, Document, FontRegistry, KeepWithNext, LayoutContext,
+    LayoutOverflowError, LayoutPart, Line, MeasuredBlock, Rectangle, ReportStyle, SideRule, Spacer, Text,
+    TextMetrics, measure_block,
 )
 
 
@@ -42,14 +44,15 @@ def rules(part):
 
 
 def test_every_part_gets_a_rule_over_its_whole_height():
-    measured = measure_block(SideRule(PartsBlock((1, 2, 1)), 10, width=.72), CONTEXT, 100)
+    measured = measure_block(SideRule(PartsBlock((1, 2, 1)), 10, style=gridlayoutpdf.BorderStyle.MEDIUM), CONTEXT, 100)
     for part, rows in zip(measured.parts, (1, 2, 1)):
         rule, = rules(part)
-        assert (rule.x, rule.y, rule.width, rule.height) == pytest.approx((10 - .36, 0, .72, rows * PITCH))
+        assert (rule.x, rule.y, rule.width, rule.height) == pytest.approx((10 - .5, 0, 1, rows * PITCH))
         assert (rule.stroke, rule.fill) == (False, (0, 0, 0))
         assert part.commands[:-1] == measure_block(PartsBlock((1, 2, 1)), CONTEXT, 100).parts[
             part.metadata["n"]].commands
         assert part.metadata["side_rule_pt"] == 10
+        assert part.metadata["side_rule_style"] == "medium"
 
 
 def test_top_and_bottom_shorten_only_the_first_and_last_parts():
@@ -94,19 +97,52 @@ def test_the_rule_breaks_with_the_page_and_continues_at_the_next_page_top():
 
 
 def test_a_child_narrower_than_the_rule_is_widened_up_to_the_available_width():
-    measured = measure_block(SideRule(PartsBlock((1,), width=30), 50, width=1), CONTEXT, 100)
+    measured = measure_block(SideRule(PartsBlock((1,), width=30), 50, style="medium"), CONTEXT, 100)
     assert measured.width == pytest.approx(50.5)
     with pytest.raises(LayoutOverflowError, match="rule"):
-        measure_block(SideRule(PartsBlock((1,), width=30), 99.8, width=1), CONTEXT, 100)
+        measure_block(SideRule(PartsBlock((1,), width=30), 99.8, style="medium"), CONTEXT, 100)
+
+
+def test_the_default_style_is_thin():
+    assert SideRule(PartsBlock((1,)), 10).style is gridlayoutpdf.BorderStyle.THIN
+    rule, = rules(measure_block(SideRule(PartsBlock((1,)), 10), CONTEXT, 100).parts[0])
+    assert (rule.x, rule.width) == pytest.approx((9.75, .5))
+
+
+def test_a_double_rule_is_two_bars_whose_centres_are_one_pt_apart():
+    part, = measure_block(SideRule(PartsBlock((2,)), 10, style="double", top=3), CONTEXT, 100).parts
+    left, right = rules(part)
+    assert [(bar.x, bar.width) for bar in (left, right)] == pytest.approx([(9.25, .5), (10.25, .5)])
+    assert all((bar.y, bar.height) == pytest.approx((3, 2 * PITCH - 3)) for bar in (left, right))
+
+
+def test_a_dashed_rule_is_a_dashed_line_kept_inside_each_part():
+    measured = measure_block(SideRule(PartsBlock((1, 1)), 10, style=gridlayoutpdf.BorderStyle.MEDIUM_DASHED, top=3),
+                             CONTEXT, 100)
+    first, second = ([c for c in part.commands if isinstance(c, Line)] for part in measured.parts)
+    assert first == [Line(10, 3, 10, PITCH - .5, 1, dash=(6, 2))]
+    assert second == [Line(10, .5, 10, PITCH - .5, 1, dash=(6, 2))]
+    assert not rules(measured.parts[0])
 
 
 @pytest.mark.parametrize("options", [
-    {"x": -1}, {"x": float("nan")}, {"x": .2, "width": .72}, {"x": 10, "width": 0}, {"x": 10, "width": True},
+    {"x": -1}, {"x": float("nan")}, {"x": .2}, {"x": .7, "style": "thick"}, {"x": 10, "style": .72},
+    {"x": 10, "style": 1}, {"x": 10, "style": None}, {"x": 10, "style": True}, {"x": 10, "style": "solid"},
     {"x": 10, "top": -1}, {"x": 10, "bottom": float("inf")}, {"x": 10, "color": "black"},
 ])
 def test_invalid_options_are_rejected(options):
     with pytest.raises(ValueError):
         SideRule(PartsBlock((1,)), **options)
+
+
+def test_the_old_pt_width_keyword_is_gone():
+    with pytest.raises(TypeError, match="width"):
+        SideRule(PartsBlock((1,)), 10, width=.72)
+
+
+def test_a_dashed_rule_with_no_room_inside_its_part_is_rejected():
+    with pytest.raises(ValueError, match="no dashed rule"):
+        measure_block(SideRule(PartsBlock((1,)), 10, style="dashed", top=PITCH - .1), CONTEXT, 100)
 
 
 def test_a_rule_shortened_to_nothing_is_rejected():

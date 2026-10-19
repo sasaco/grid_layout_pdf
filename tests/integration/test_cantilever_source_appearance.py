@@ -329,3 +329,23 @@ def test_deferred_entries_must_name_a_known_category_and_hold_one_difference_eac
     error = {"category": entry["category"], "id": entry["id"], "detail": entry["detail"], "delta": .6}
     remaining, held = verifier._apply_deferrals([error, dict(error)], (entry,), (36,), {"spacing"})
     assert len(held) == 1 and remaining == [error]
+
+
+def test_output_rules_must_have_their_border_styles_thickness(tmp_path):
+    """FR-027: the original's 0.12 pt is not a tolerance; output hairlines are hair 0.25 pt."""
+    builder = module("builder")
+    fonts = builder.fixture_fonts()
+    pages = builder.layout_report(fonts, source_pages=(1,))
+    commands = tuple(replace(command, width=.12) if isinstance(command, Line) and command.width == .25
+                     else command for command in pages[0].commands)
+    assert commands != pages[0].commands
+    path = tmp_path / "source-width-rules.pdf"
+    render_pdf([ScenePage(pages[0].profile, commands, pages[0].metadata)], path, fonts)
+    trace = layout_trace(pages, fonts)
+    verifier = module("verify_appearance")
+    report = verifier.appearance_report(path, source_pages=(1,), trace=trace, categories=("table",))
+    wrong = [error for error in report["errors"] if error["detail"].endswith("rule thickness (border style)")]
+    assert wrong and all(error["expected"] == .25 and error["actual"] == pytest.approx(.12) for error in wrong)
+    native = tmp_path / "native.pdf"
+    render_pdf(pages, native, fonts)
+    assert not verifier.appearance_report(native, source_pages=(1,), trace=trace, categories=("table",))["errors"]

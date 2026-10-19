@@ -1,6 +1,7 @@
 """Grid-aligned PDF calculation reports."""
 
-from .blocks import Heading, PageBreak, Paragraph, Spacer
+from .blocks import Heading, PageBreak, Paragraph, Rule, Spacer
+from .borders import BorderStyle, TableBorders
 from .bounds import command_bounds
 from .cell_content import CellLines
 from .containers import At, Columns, Indent, KeepTogether, KeepWithNext, Leading, PreferKeepTogether, SideRule, Stack
@@ -32,9 +33,9 @@ __all__ = [
     "Point", "Rect", "GridSpec", "TextStyle", "ReportStyle", "Insets",
     "FontRegistry", "FontFace", "TextMetrics", "FontError", "LayoutError", "LayoutOverflowError",
     "Block", "LayoutContext", "LayoutPart", "MeasuredBlock", "measure_block",
-    "Document", "PageDecoration", "PageSection", "Paragraph", "Heading", "Spacer", "PageBreak",
+    "Document", "PageDecoration", "PageSection", "Paragraph", "Heading", "Spacer", "PageBreak", "Rule",
     "Stack", "Columns", "KeepTogether", "KeepWithNext", "PreferKeepTogether", "Indent", "Leading", "SideRule",
-    "At", "QuarterTurn", "Cell", "CellLines", "Table", "proportional_spans", "Figure", "Image", "Arrow", "Label", "TextBox", "TextDiamond", "Connector",
+    "At", "QuarterTurn", "BorderStyle", "TableBorders", "Cell", "CellLines", "Table", "proportional_spans", "Figure", "Image", "Arrow", "Label", "TextBox", "TextDiamond", "Connector",
     "MathNode", "MathBox", "Literal", "Symbol", "Operator", "Row", "Fraction", "Root", "Script",
     "Delimited", "BreakHint", "TermStop", "as_math", "MathBlock", "Equation", "EquationGroup", "EquationAnchors",
     "wrap_math", "TextLine", "wrap_text", "fit_tracking",

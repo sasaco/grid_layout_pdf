@@ -61,14 +61,16 @@ def test_table_proof_trace_keeps_original_rows_and_cell_content_metadata(tmp_pat
     assert all(pymupdf.Pixmap(path).height == 1684 for path in previews)
 
 
-def test_selective_table_rules_are_native_paths_with_requested_per_stroke_widths(tmp_path):
-    from gridlayoutpdf import Cell, Document, FontRegistry, GridSpec, PageProfile, Table, TextStyle
+SELECTED = {"horizontal": {0: "thick", 1: "thin", 3: "thick"}, "vertical": {1: "thin"}}
 
-    assert "horizontal_rules" in Table.__dataclass_fields__
+
+def test_selective_table_rules_are_native_paths_with_each_styles_stroke_width(tmp_path):
+    from gridlayoutpdf import Document, FontRegistry, GridSpec, PageProfile, Table, TableBorders
+
     fonts = FontRegistry()
     profile = PageProfile("rules", 300, 400, GridSpec(20, 20, 10, 20, 20, 18))
     table = Table((5, 5, 5), (("荷重", "G1", "G2"), ("終点", "12.50", "-3.00"), ("起点", "0.00", "4.50")),
-                  header_rows=1, horizontal_rules=(2, 0.5, 0, 2), vertical_rules=(0, 0.5, 0, 0))
+                  header_rows=1, borders=TableBorders(None, **SELECTED))
     document = Document(table, fonts=fonts, profile=profile)
     output = tmp_path / "rules.pdf"
     document.render(output)
@@ -78,23 +80,28 @@ def test_selective_table_rules_are_native_paths_with_requested_per_stroke_widths
         assert page.get_images() == []
         assert "12.50" in page.get_text() and "-3.00" in page.get_text()
         drawings = page.get_drawings()
-        assert len(drawings) == 7
+        # The header seam is one stroke, centred on its boundary; the two lower row groups
+        # bridge their vertical line's top half stroke up to the boundary above them.
+        assert len(drawings) == 8
         horizontal = [p for p in drawings if abs(p["items"][0][1].y - p["items"][0][2].y) < 0.001]
         vertical = [p for p in drawings if abs(p["items"][0][1].x - p["items"][0][2].x) < 0.001]
-        assert [p["width"] for p in horizontal] == pytest.approx([2, 0.5, 0.5, 2])
-        assert [p["items"][0][1].y for p in horizontal] == pytest.approx([21, 59.75, 60.25, 139], abs=0.001)
-        assert [p["width"] for p in vertical] == pytest.approx([0.5] * 3)
+        assert [p["width"] for p in horizontal] == pytest.approx([1.5, 0.5, 1.5])
+        assert [p["items"][0][1].y for p in horizontal] == pytest.approx([20.75, 60, 139.25], abs=0.001)
+        assert [p["width"] for p in vertical] == pytest.approx([0.5] * 5)
+        spans = sorted((p["items"][0][1].y, p["items"][0][2].y) for p in vertical)
+        assert spans[0][0] == pytest.approx(20.25) and spans[-1][1] == pytest.approx(139.75)
+        assert all(after[0] <= before[1] + 1e-9 for before, after in zip(spans, spans[1:]))
         assert all(p["items"][0][1].x == pytest.approx(70) for p in vertical)
 
 
 def test_indivisible_table_pdf_has_single_shared_rule_and_continuous_vertical_path(tmp_path):
-    from gridlayoutpdf import Document, FontRegistry, GridSpec, PageProfile, Table
+    from gridlayoutpdf import Document, FontRegistry, GridSpec, PageProfile, Table, TableBorders
 
     assert "split" in Table.__dataclass_fields__
     fonts = FontRegistry()
     profile = PageProfile("atomic", 300, 400, GridSpec(20, 20, 10, 20, 20, 18))
     table = Table((5, 5, 5), (("荷重", "G1", "G2"), ("終点", "12.50", "-3.00"), ("起点", "0.00", "4.50")),
-                  header_rows=1, horizontal_rules=(2, .5, 0, 2), vertical_rules=(0, .5, 0, 0), split=False)
+                  header_rows=1, borders=TableBorders(None, **SELECTED), split=False)
     for debug in (False, True):
         path = tmp_path / f"atomic-{debug}.pdf"
         Document(table, fonts=fonts, profile=profile).render(path, debug_grid=debug)

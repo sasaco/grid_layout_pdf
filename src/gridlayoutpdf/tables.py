@@ -4,6 +4,7 @@ from dataclasses import KW_ONLY, dataclass, field
 from itertools import accumulate
 
 from .blocks import Paragraph
+from .borders import BorderStyle, TableBorders, _table_borders
 from .bounds import command_bounds
 from .errors import LayoutOverflowError
 from .layout import (
@@ -18,18 +19,6 @@ from .validation import TOLERANCE, _identifier, _integer
 # Content that cannot be measured names the contract it is missing.
 _CONTENT_HINT = ("; content requires Block.measure(context, width); "
                  "mathematical nodes require MathBlock")
-
-
-def _rule_widths(values, count, name):
-    if values is None:
-        return None
-    try:
-        widths = tuple(_finite_number(value, name) for value in values)
-    except TypeError as exc:
-        raise ValueError(f"{name} must be a sequence of rule widths or None") from exc
-    if len(widths) != count or any(width < 0 for width in widths):
-        raise ValueError(f"{name} must contain {count} finite nonnegative rule widths")
-    return widths
 
 
 def proportional_spans(weights, total: int) -> tuple[int, ...]:
@@ -126,7 +115,11 @@ class _Geometry:
 
 @dataclass(frozen=True, slots=True)
 class _CellBox:
-    """A cell's part-local frame with the stroke widths bounding each edge."""
+    """A cell's part-local frame with the border thickness on each side.
+
+    ``strokes`` is (left, right, top, bottom): the thickest style along that
+    side, 0 where no line is drawn.
+    """
 
     x0: float
     x1: float
@@ -144,21 +137,30 @@ class _CellBox:
 class Table:
     """A table with independently contained merged row groups and headers.
 
-    None rules use border_width on every edge, preserving closed fragments.
-    Explicit horizontal_rules/vertical_rules address original row/column
-    boundaries; zero omits an edge. Spans suppress interior edges. Widths are
-    per stroke: adjacent groups draw their shared edge independently inside
-    their own bounds, so a shared seam can appear twice as thick. Splitting
-    retains source boundary indices and does not invent fragment frames.
+    ``borders`` gives every edge an Excel border style or no line (FR-022,
+    FR-026): a TableBorders, one BorderStyle for every edge, or None for none.
+    Every edge is thin by default. Edges inside a merged cell are never drawn.
+    The outer frame lies inside the table; other edges are centred on their
+    boundary. A boundary between two row groups is drawn once, by the upper
+    group, as when the table is not split. When a page break cuts the table
+    there, the upper group closes the page with that boundary inside it and
+    the lower group draws it as its top inside itself, at the next page top.
+    A repeated header keeps its own lower boundary and the body group below
+    it draws no second top. Content keeps clear of each line it may meet: the
+    whole thickness at the top and bottom of a row group, half of it inside,
+    and the body groups also keep clear of half the repeated header's lower
+    line, which lies over whichever of them follows it on a later page.
+    On one page a split table has the same solid ink as an indivisible one;
+    a dashed pattern starts afresh in each row group.
 
     row_heights optionally fixes each source row's height in local grid rows.
     Content and padding must fit those exact allocations, including rowspans;
     insufficient space raises instead of expanding rows or shrinking content.
     None preserves automatic row allocation.
 
-    split=False emits one indivisible part including the header. Shared rules
-    are merged within that part. The default True retains independent seams
-    and repeatable headers for pagination.
+    split=False emits one indivisible part including the header. The default
+    True keeps row groups and the repeatable header as separate parts for
+    pagination, with each boundary between them drawn once.
     """
 
     columns: tuple[int, ...]
@@ -168,12 +170,13 @@ class Table:
     row_heights: tuple[int, ...] | None = None
     split: bool = True
     numeric_columns: tuple[int, ...] = ()
-    border_width: float = 0.5
+    borders: TableBorders = TableBorders()
     border_color: tuple[float, float, float] = (0, 0, 0)
-    horizontal_rules: tuple[float, ...] | None = None
-    vertical_rules: tuple[float, ...] | None = None
     block_id: str = ""
     _cells: tuple[_PlacedCell, ...] = field(init=False, repr=False)
+    # Resolved styles, None inside merged cells: [row boundary][column] and [row][column boundary].
+    _horizontal: tuple[tuple[BorderStyle | None, ...], ...] = field(init=False, repr=False, compare=False)
+    _vertical: tuple[tuple[BorderStyle | None, ...], ...] = field(init=False, repr=False, compare=False)
 
     def __post_init__(self):
         try:
@@ -224,10 +227,7 @@ class Table:
             if index >= len(columns):
                 raise ValueError("numeric_columns index is outside the table")
         object.__setattr__(self, "numeric_columns", tuple(sorted(set(numeric))))
-        width = _finite_number(self.border_width, "border_width")
-        if width <= 0:
-            raise ValueError("border_width must be positive")
-        object.__setattr__(self, "border_width", width)
+        object.__setattr__(self, "borders", _table_borders(self.borders))
         try:
             color = tuple(_finite_number(c, "border_color") for c in self.border_color)
         except TypeError as exc:
@@ -235,10 +235,33 @@ class Table:
         if len(color) != 3 or any(c < 0 or c > 1 for c in color):
             raise ValueError("border_color must have three components between 0 and 1")
         object.__setattr__(self, "border_color", color)
-        object.__setattr__(self, "horizontal_rules", _rule_widths(self.horizontal_rules, len(rows) + 1, "horizontal_rules"))
-        object.__setattr__(self, "vertical_rules", _rule_widths(self.vertical_rules, len(columns) + 1, "vertical_rules"))
         _identifier(self.block_id)
+        self.borders._check(len(rows), len(columns), self.block_id or "Table")
         object.__setattr__(self, "_cells", self._place_cells())
+        self._resolve_borders()
+
+    def _resolve_borders(self) -> None:
+        """Resolve every edge's style and clear the edges inside merged cells."""
+        horizontal, vertical = self.borders.resolve(len(self.rows), len(self.columns))
+        horizontal = [list(boundary) for boundary in horizontal]
+        vertical = [list(row) for row in vertical]
+        inside_h, inside_v = set(), set()
+        for placed in self._cells:
+            rows = range(placed.row, placed.row + placed.cell.rowspan)
+            columns = range(placed.col, placed.col + placed.cell.colspan)
+            inside_h.update((boundary, column) for boundary in rows[1:] for column in columns)
+            inside_v.update((row, boundary) for row in rows for boundary in columns[1:])
+        location = self.block_id or "Table"
+        for name, inside in (("horizontal_edges", inside_h), ("vertical_edges", inside_v)):
+            for edge, _ in getattr(self.borders, name):
+                if edge in inside:
+                    raise ValueError(f"{location}: borders.{name} edge {edge} lies inside a merged cell")
+        for boundary, column in inside_h:
+            horizontal[boundary][column] = None
+        for row, boundary in inside_v:
+            vertical[row][boundary] = None
+        object.__setattr__(self, "_horizontal", tuple(tuple(boundary) for boundary in horizontal))
+        object.__setattr__(self, "_vertical", tuple(tuple(row) for row in vertical))
 
     def _place_cells(self):
         occupied = [[False] * len(self.columns) for _ in self.rows]
@@ -285,8 +308,14 @@ class Table:
             tuple(row_heights), tuple(allocations),
         )
         groups = self._row_groups() if self.split else [(0, len(self.rows))]
-        parts = tuple(self._make_part(context, start, stop, geometry) for start, stop in groups)
-        if self.split and self.header_rows and self.header_rows < len(self.rows):
+        repeated = self.split and self.header_rows and self.header_rows < len(self.rows)
+        # Any body group can lie under the repeated header's centred lower line.
+        under = tuple(style.thickness / 2 if style else 0.0
+                      for style in self._horizontal[self.header_rows]) if repeated else None
+        parts = tuple(self._make_part(context, start, stop, geometry,
+                                      under if repeated and index else None)
+                      for index, (start, stop) in enumerate(groups))
+        if repeated:
             prefix, body = parts[:1], parts[1:]
         else:
             prefix, body = (), parts
@@ -385,66 +414,71 @@ class Table:
         # Subtracting distant column edges makes equal spans position-dependent.
         return sum(self.columns[placed.col:placed.col + placed.cell.colspan]) * pitch_x
 
-    def _make_part(self, context, start, stop, geometry: _Geometry) -> LayoutPart:
-        """Draw and check one row group, then describe it for diagnostics."""
+    def _make_part(self, context, start, stop, geometry: _Geometry,
+                   under: tuple[float, ...] | None) -> LayoutPart:
+        """Draw and check one row group, then describe it for diagnostics.
+
+        ``under`` gives, per column, how far a repeated header's lower line
+        reaches into this group when the header lies directly above it.
+        """
         width, height = geometry.x(len(self.columns)), geometry.y(stop, start)
-        uniform = self.horizontal_rules is None and self.vertical_rules is None
-        if uniform and self.border_width >= min(width, height):
-            raise LayoutOverflowError(
-                f"{self.block_id or 'Table'}: border_width exceeds part dimensions",
-                block_id=self.block_id or "Table", needed=self.border_width, available=min(width, height),
-            )
-        rules = _Rules(width, height)
         commands, records = [], []
         for row in range(start, stop):
             for cell in geometry.by_row[row]:
-                box = self._cell_box(cell, geometry, start)
-                self._check_strokes(cell, box, uniform)
+                box = self._cell_box(cell, geometry, start, under)
+                self._check_strokes(cell, box)
                 content_x, content_y = self._content_origin(cell, box)
                 translated = cell.content.translated(content_x, content_y)
-                self._check_clearance(context, cell, box, translated, uniform, width, height)
+                self._check_clearance(context, cell, box, translated, width, height)
                 commands.extend(translated)
                 records.append(self._cell_record(cell, box, content_x, content_y))
-                rules.add(box)
-        commands.extend(rules.commands(self.border_color))
+        edges = _Edges(self, geometry, start, stop, width, height)
+        commands.extend(edges.always)
         return LayoutPart(geometry.row_starts[stop] - geometry.row_starts[start], tuple(commands), {
             "columns_pt": tuple(columns * geometry.pitch_x for columns in self.columns),
             "source_rows": tuple(range(start, stop)),
             "row_heights": tuple(geometry.row_heights[start:stop]), "cells": records,
             "height_mode": "automatic" if self.row_heights is None else "explicit",
             "row_allocations": list(geometry.allocations[start:stop]),
-        })
+        }, opening=tuple(edges.opening), continuing=tuple(edges.continuing),
+           joining=tuple(edges.joining), closing=tuple(edges.closing))
 
-    def _cell_box(self, cell: _MeasuredCell, geometry: _Geometry, start: int) -> _CellBox:
+    def _cell_edges(self, placed: _PlacedCell) -> dict[str, list[BorderStyle | None]]:
+        """Return the style of every grid edge around one placed cell."""
+        rows = range(placed.row, placed.row + placed.cell.rowspan)
+        columns = range(placed.col, placed.col + placed.cell.colspan)
+        return {
+            "top": [self._horizontal[rows.start][column] for column in columns],
+            "bottom": [self._horizontal[rows.stop][column] for column in columns],
+            "left": [self._vertical[row][columns.start] for row in rows],
+            "right": [self._vertical[row][columns.stop] for row in rows],
+        }
+
+    def _cell_box(self, cell: _MeasuredCell, geometry: _Geometry, start: int,
+                  under: tuple[float, ...] | None = None) -> _CellBox:
         placed = cell.placed
         columns, rows = placed.cell.colspan, placed.cell.rowspan
-        vertical, horizontal = self.vertical_rules, self.horizontal_rules
+        edges = self._cell_edges(placed)
+        thickness = {side: max((style.thickness for style in styles if style is not None), default=0)
+                     for side, styles in edges.items()}
+        if under is not None and placed.row == start:
+            thickness["top"] = max(thickness["top"], *under[placed.col:placed.col + columns])
         return _CellBox(
             geometry.x(placed.col), geometry.x(placed.col + columns),
             geometry.y(placed.row, start), geometry.y(placed.row + rows, start),
             self._cell_width(placed, geometry.pitch_x),
-            (self.border_width if vertical is None else vertical[placed.col],
-             self.border_width if vertical is None else vertical[placed.col + columns],
-             self.border_width if horizontal is None else horizontal[placed.row],
-             self.border_width if horizontal is None else horizontal[placed.row + rows]),
+            (thickness["left"], thickness["right"], thickness["top"], thickness["bottom"]),
         )
 
-    def _check_strokes(self, cell: _MeasuredCell, box: _CellBox, uniform: bool) -> None:
+    def _check_strokes(self, cell: _MeasuredCell, box: _CellBox) -> None:
         available = min(box.width, box.height)
-        if uniform:
-            if self.border_width >= available:
-                raise LayoutOverflowError(
-                    f"{cell.path}: border_width exceeds cell dimensions",
-                    block_id=cell.path, needed=self.border_width, available=available,
-                )
-            return
         # Each line's conservative envelope expands at its endpoints, too. A
         # surviving edge of a small cell must fit before it is merged with
         # neighbors; spans may leave that edge isolated.
         for stroke in box.strokes:
             if stroke and stroke >= available:
                 raise LayoutOverflowError(
-                    f"{cell.path}: rule width exceeds cell or part dimensions",
+                    f"{cell.path}: border thickness exceeds cell dimensions",
                     block_id=cell.path, needed=stroke, available=available,
                 )
 
@@ -460,7 +494,12 @@ class Table:
 
     @staticmethod
     def _inner_edges(box: _CellBox, width: float, height: float) -> tuple[float, float, float, float]:
-        """Return the cell's content boundaries inside its own strokes."""
+        """Return the cell's content boundaries inside its own strokes.
+
+        A line on the part's edge may lie wholly inside the part (the frame,
+        or a row-group boundary drawn at a page break), so content keeps clear
+        of its whole thickness there; elsewhere a line is centred on its edge.
+        """
         left_width, right_width, top_width, bottom_width = box.strokes
         return (
             box.x0 + (left_width if box.x0 == 0 else left_width / 2),
@@ -470,10 +509,10 @@ class Table:
         )
 
     def _check_clearance(self, context, cell: _MeasuredCell, box: _CellBox, commands,
-                         uniform: bool, width: float, height: float) -> None:
+                         width: float, height: float) -> None:
         left, right, top, bottom = self._inner_edges(box, width, height)
         left_width, right_width, top_width, bottom_width = box.strokes
-        if not uniform and (left >= right or top >= bottom):
+        if left >= right or top >= bottom:
             raise LayoutOverflowError(
                 f"{cell.path}: opposing rules consume the cell frame", block_id=cell.path,
                 needed=(left - box.x0) + (box.x1 - right) if left >= right else (top - box.y0) + (box.y1 - bottom),
@@ -504,6 +543,9 @@ class Table:
             "rowspan": placed.cell.rowspan, "colspan": placed.cell.colspan,
             "frame": {"x_pt": box.x0, "y_pt": box.y0, "width": box.width, "height": box.height},
             "cell_id": cell.path,
+            "align": cell.align, "valign": placed.cell.valign,
+            "borders": {side: [None if style is None else style.value for style in styles]
+                        for side, styles in self._cell_edges(placed).items()},
             "padding_pt": {edge: getattr(padding, edge) for edge in ("top", "right", "bottom", "left")},
             "height_allocation": {**cell.requirement,
                                   "allocated_height_pt": box.height,
@@ -512,44 +554,76 @@ class Table:
         }
 
 
-class _Rules:
-    """Collect rule segments per coordinate and stroke width inside one part."""
+class _Edges:
+    """The border lines of one row group, sorted by when they are drawn.
 
-    def __init__(self, width: float, height: float) -> None:
+    Every edge run is one call to ``BorderStyle.lines`` (one line, or two for
+    ``double``) for one style along one boundary, so a line can always be
+    traced back to its boundary, its columns or rows and its style.
+    ``always`` holds the frame and inner lines. A group below another one
+    draws its top only in ``opening`` (at a page top). A group above another
+    one draws its bottom centred on the boundary in ``joining``, or inside
+    itself in ``closing`` when a page break follows it; its vertical lines
+    reaching that boundary end on it, or half a stroke above it. A group
+    below another one starts its vertical lines half a stroke down, and in
+    ``continuing`` bridges that half stroke up to the boundary, so the lines
+    meet whatever group comes above it.
+    """
+
+    def __init__(self, table: Table, geometry: _Geometry, start: int, stop: int,
+                 width: float, height: float) -> None:
+        self.always: list[Line] = []
+        self.opening: list[Line] = []
+        self.continuing: list[Line] = []
+        self.joining: list[Line] = []
+        self.closing: list[Line] = []
+        self.color = table.border_color
         self.width, self.height = width, height
-        self.horizontal: dict[tuple[float, float], list] = {}
-        self.vertical: dict[tuple[float, float], list] = {}
+        seam_above, seam_below = start > 0, stop < len(table.rows)
+        for boundary in range(start, stop + 1):
+            for style, first, stop_column in _runs(table._horizontal[boundary]):
+                x0, x1 = geometry.x(first), geometry.x(stop_column)
+                if boundary == start:
+                    self._horizontal(self.opening if seam_above else self.always, style, x0, x1,
+                                     style.thickness / 2)
+                elif boundary == stop and seam_below:
+                    self._horizontal(self.joining, style, x0, x1, height)
+                    self._horizontal(self.closing, style, x0, x1, height - style.thickness / 2)
+                elif boundary == stop:
+                    self._horizontal(self.always, style, x0, x1, height - style.thickness / 2)
+                else:
+                    self._horizontal(self.always, style, x0, x1, geometry.y(boundary, start))
+        columns = len(table.columns)
+        for boundary in range(columns + 1):
+            for style, first, stop_row in _runs(tuple(table._vertical[row][boundary] for row in range(start, stop))):
+                x = (style.thickness / 2 if boundary == 0 else
+                     width - style.thickness / 2 if boundary == columns else geometry.x(boundary))
+                half = style.stroke_width / 2
+                y0 = max(half, geometry.y(start + first, start))
+                y1 = geometry.y(start + stop_row, start)
+                if first == 0 and seam_above:
+                    self._vertical(self.continuing, style, x, 0.0, y0)
+                if start + stop_row < stop:
+                    self._vertical(self.always, style, x, y0, min(height - half, y1))
+                elif not seam_below:
+                    self._vertical(self.always, style, x, y0, height - half)
+                else:
+                    self._vertical(self.joining, style, x, y0, height)
+                    self._vertical(self.closing, style, x, y0, height - half)
 
-    def add(self, box: _CellBox) -> None:
-        left_width, right_width, top_width, bottom_width = box.strokes
-        for edge, stroke in ((box.y0, top_width), (box.y1, bottom_width)):
-            if stroke:
-                half = stroke / 2
-                y = max(half, min(self.height - half, edge))
-                self.horizontal.setdefault((y, stroke), []).append(
-                    (max(half, box.x0), min(self.width - half, box.x1)))
-        for edge, stroke in ((box.x0, left_width), (box.x1, right_width)):
-            if stroke:
-                half = stroke / 2
-                x = max(half, min(self.width - half, edge))
-                self.vertical.setdefault((x, stroke), []).append(
-                    (max(half, box.y0), min(self.height - half, box.y1)))
+    def _horizontal(self, target: list, style: BorderStyle, x0: float, x1: float, y: float) -> None:
+        half = style.stroke_width / 2
+        target.extend(style.lines(max(half, x0), y, min(self.width - half, x1), y, self.color))
 
-    def commands(self, color) -> list[Line]:
-        commands = []
-        for (y, stroke), intervals in sorted(self.horizontal.items()):
-            commands.extend(Line(a, y, b, y, stroke, color) for a, b in _merged(intervals))
-        for (x, stroke), intervals in sorted(self.vertical.items()):
-            commands.extend(Line(x, a, x, b, stroke, color) for a, b in _merged(intervals))
-        return commands
+    def _vertical(self, target: list, style: BorderStyle, x: float, y0: float, y1: float) -> None:
+        target.extend(style.lines(x, y0, x, y1, self.color))
 
 
-def _merged(intervals):
-    """Merge collinear shared edges without painting any segment twice."""
-    result = []
-    for start, stop in sorted(intervals):
-        if result and start <= result[-1][1]:
-            result[-1] = (result[-1][0], max(result[-1][1], stop))
-        else:
-            result.append((start, stop))
-    return result
+def _runs(styles: tuple[BorderStyle | None, ...]):
+    """Yield (style, first, stop) for each run of equal, drawn styles; stop is exclusive."""
+    first = 0
+    for index in range(1, len(styles) + 1):
+        if index == len(styles) or styles[index] != styles[first]:
+            if styles[first] is not None:
+                yield styles[first], first, index
+            first = index

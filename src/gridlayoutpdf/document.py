@@ -9,7 +9,7 @@ from .containers import At, Stack
 from .errors import LayoutError, LayoutOverflowError
 from .fonts import FontRegistry, default_fonts
 from .layout import (
-    LayoutContext, MeasuredBlock, _has_visible_commands, measure_child, part_descriptors,
+    LayoutContext, LayoutPart, MeasuredBlock, _has_visible_commands, measure_child, part_descriptors,
 )
 from .profiles import A4_PORTRAIT_REFERENCE, PageProfile
 from .renderers.reportlab import render_pdf
@@ -285,12 +285,27 @@ def _row_overflow(block_id: str, needed: int, available: int) -> None:
     )
 
 
+def _part_visible(part: LayoutPart, first: bool, prefix: bool = False) -> bool:
+    """Whether a part draws something where it lands after a keep chain.
+
+    The first part of the fragment draws its opening, any other its
+    continuing. A body part draws its joining or its closing lines, depending
+    on the cut; a prefix part is always followed by a body part, so it draws
+    its joining.
+    """
+    return (_has_visible_commands(part.commands)
+            or _has_visible_commands(part.opening if first else part.continuing)
+            or (_has_visible_commands(part.joining)
+                and (prefix or _has_visible_commands(part.closing))))
+
+
 def _minimum_visible_rows(measured: MeasuredBlock) -> int:
     """Reserve the first legal fragment containing actual text or artwork."""
     first_visible = 0
-    if not any(_has_visible_commands(part.commands) for part in measured.prefix):
+    if not any(_part_visible(part, index == 0, prefix=True) for index, part in enumerate(measured.prefix)):
         first_visible = next((index for index, part in enumerate(measured.parts, start=1)
-                              if _has_visible_commands(part.commands)), len(measured.parts))
+                              if _part_visible(part, not measured.prefix and index == 1)),
+                             len(measured.parts))
     return next((rows for cut, rows in measured._valid_cuts() if cut >= first_visible), measured.rows)
 
 

@@ -16,11 +16,11 @@ import sys
 from copy import deepcopy
 
 from gridlayoutpdf import (
-    A4_PORTRAIT_REFERENCE, Cell, CellLines, Columns, Document, Equation, EquationAnchors,
+    A4_PORTRAIT_REFERENCE, BorderStyle, Cell, CellLines, Columns, Document, Equation, EquationAnchors,
     EquationGroup, Figure, FontRegistry, Fraction, GridSpec, KeepTogether,
     LayoutOverflowError, LayoutPart, Line, Literal, MathBlock, MeasuredBlock,
     Operator, PageBreak, PageProfile, Paragraph, RasterImage, ReportStyle, Row, Script, Spacer, Stack,
-    Table, TextStyle, Insets, Image as LayoutImage,
+    Table, TableBorders, TextStyle, Insets, Image as LayoutImage,
 )
 
 
@@ -44,6 +44,39 @@ def _appearance():
 # Font names from the original PDF; resolved from the Windows font folder (FR-024).
 BODY_FONT, HEADING_FONT = "MS Mincho", "MS Gothic"
 SOURCE_STYLE = ReportStyle(body=TextStyle(BODY_FONT), heading=TextStyle(BODY_FONT, size=12))
+
+
+# Source rule widths in pt become border styles (FR-022, FR-027): the original's
+# 0.12 pt hairlines become hair (0.25 pt, the minimum) and its 0.96 pt rules
+# medium (1.0 pt). The hand-authored pages/*.json widths map the same way:
+# 0.24 -> hair, 0.4/0.5 -> thin, 0.7 and 1 (the source's heavy rules) -> medium.
+_RULE_STYLES = ((0.0, None), (0.12, BorderStyle.HAIR), (0.1201, BorderStyle.HAIR),
+                (0.24, BorderStyle.HAIR), (0.4, BorderStyle.THIN), (0.5, BorderStyle.THIN),
+                (0.7, BorderStyle.MEDIUM), (0.96, BorderStyle.MEDIUM), (1.0, BorderStyle.MEDIUM))
+
+
+def rule_style(width):
+    """Return the border style that replaces an authored rule width, or None for 0."""
+    for source, style in _RULE_STYLES:
+        if abs(width - source) < 1e-9:
+            return style
+    raise ValueError(f"no border style is assigned to the authored rule width {width} pt")
+
+
+def rule_thickness(width):
+    style = rule_style(width)
+    return 0.0 if style is None else style.thickness
+
+
+def _rule_borders(data, default):
+    """Boundary styles for every authored rule, over the table's default style."""
+    for key, count in (("horizontal_rules", len(data.get("rows", data.get("row_heights", ()))) + 1),
+                       ("vertical_rules", len(data["columns"]) + 1)):
+        if key in data and len(data[key]) != count:
+            raise ValueError(f"{data.get('id', 'table')}: {key} must list {count} boundary widths")
+    return TableBorders(rule_style(default),
+                        horizontal={index: rule_style(width) for index, width in enumerate(data.get("horizontal_rules", ()))},
+                        vertical={index: rule_style(width) for index, width in enumerate(data.get("vertical_rules", ()))})
 
 
 def font_profile():
@@ -216,9 +249,8 @@ def build_block(data, geometry=None):
                 cells.append(Cell(content, colspan=cell.get("colspan", 1), rowspan=cell.get("rowspan", 1),
                                   align=cell.get("align", "center"), padding=cell.get("padding", data.get("padding", .6))))
             rows.append(cells)
-        rules = {key: tuple(data[key]) for key in ("horizontal_rules", "vertical_rules") if key in data}
         table = Table(tuple(data["columns"]), tuple(rows), header_rows=data.get("header_rows", 0),
-                      border_width=data.get("border_width", .4), block_id=identifier, **rules)
+                      borders=_rule_borders(data, data.get("border_width", .4)), block_id=identifier)
         if data.get("turns"):
             from gridlayoutpdf import QuarterTurn
             grid = GridSpec(0, 0, **data["local_grid"])
@@ -234,7 +266,6 @@ def _source_table(data,geometry):
     identifier=data["id"]
     by_position={(cell["row"],cell["col"]):cell for cell in geometry["cells"]}
     occupancy=set()
-    row_spans=[]
     rows=[]
     typography=font_profile()
     profiles=typography["items"]
@@ -245,7 +276,6 @@ def _source_table(data,geometry):
             while (row_index,col) in occupancy:col+=1
             cell={"lines":[raw]} if isinstance(raw,str) else raw
             rowspan,colspan=cell.get("rowspan",1),cell.get("colspan",1)
-            row_spans.append((row_index,row_index+rowspan))
             descriptor=by_position[(row_index,col)]
             anchors=deepcopy(descriptor["lines"])
             for anchor in anchors:
@@ -259,22 +289,18 @@ def _source_table(data,geometry):
                                           tuple(anchors),sum(geometry["row_heights"][row_index:row_index+rowspan]),
                                           block_id=f"{identifier}-r{row_index}-cell{len(cells)}",
                                           vertical_glyphs=typography.get("vertical_glyphs"),
-                                          clearance=(geometry["vertical_rules"][col]/(1 if col==0 else 2)+.001,
-                                                     geometry["horizontal_rules"][row_index]+.001,
-                                                     geometry["vertical_rules"][col+colspan]/(1 if col+colspan==len(geometry["columns"]) else 2)+.001,
-                                                     geometry["horizontal_rules"][row_index+rowspan]+.001))
+                                          clearance=(rule_thickness(geometry["vertical_rules"][col])/(1 if col==0 else 2)+.001,
+                                                     rule_thickness(geometry["horizontal_rules"][row_index])+.001,
+                                                     rule_thickness(geometry["vertical_rules"][col+colspan])/(1 if col+colspan==len(geometry["columns"]) else 2)+.001,
+                                                     rule_thickness(geometry["horizontal_rules"][row_index+rowspan])+.001))
             cells.append(Cell(content,colspan=colspan,rowspan=rowspan,align="left",padding=0))
             occupancy.update((r,c) for r in range(row_index,row_index+rowspan) for c in range(col,col+colspan))
             col+=colspan
         rows.append(cells)
-    seams={boundary for boundary in range(1,len(rows)) if not any(start<boundary<stop for start,stop in row_spans)}
-    horizontal=tuple(width/2 if boundary in seams else width for boundary,width in enumerate(geometry["horizontal_rules"]))
-    rows=tuple(tuple(replace(cell,content=replace(cell.content,clearance=(cell.content.clearance[0],
-                horizontal[r]+.001,cell.content.clearance[2],horizontal[r+cell.rowspan]+.001)))
-                for cell in row) for r,row in enumerate(rows))
+    # Every boundary is authored, so the default style is never used. A row-group
+    # seam is one line drawn by the library (FR-026); it is no longer halved here.
     table=Table(tuple(round(width/appearance.PITCH) for width in geometry["columns"]),rows,
-                header_rows=data.get("header_rows",0),border_width=data.get("border_width",.4),
-                horizontal_rules=horizontal,vertical_rules=tuple(geometry["vertical_rules"]),
+                header_rows=data.get("header_rows",0),borders=_rule_borders(geometry,data.get("border_width",.4)),
                 row_heights=tuple(round(height/appearance.PITCH) for height in geometry["row_heights"]),block_id=identifier)
     if geometry.get("turns"):
         grid=GridSpec(0,0,appearance.PITCH,appearance.PITCH,
@@ -285,10 +311,14 @@ def _source_table(data,geometry):
 
 
 def _table_outer_edges(source):
-    """Convert authored source rule centres into Table's outside frame edges."""
+    """Convert authored source rule centres into Table's outside frame edges.
+
+    The frame lies inside the table, so each edge moves out by half the
+    thickness of the border style that replaces the source rule.
+    """
     geometry=deepcopy(source)
-    top,bottom=geometry["horizontal_rules"][0]/2,geometry["horizontal_rules"][-1]/2
-    left,right=geometry["vertical_rules"][0]/2,geometry["vertical_rules"][-1]/2
+    top,bottom=rule_thickness(geometry["horizontal_rules"][0])/2,rule_thickness(geometry["horizontal_rules"][-1])/2
+    left,right=rule_thickness(geometry["vertical_rules"][0])/2,rule_thickness(geometry["vertical_rules"][-1])/2
     geometry["row_heights"][0]+=top
     geometry["row_heights"][-1]+=bottom
     geometry["columns"][0]+=left

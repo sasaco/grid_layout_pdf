@@ -133,14 +133,17 @@ def test_source_rule_keeps_centerline_and_endpoints_within_its_ink_frame():
 def test_native_table_rules_join_part_seams_without_closing_merged_cell_gaps():
     from gridlayoutpdf import Line
     appearance=module("appearance")
-    commands=(Line(0,.48,0,19.52,width=.96),Line(0,20.48,0,39.52,width=.96),
-              Line(10,.48,10,9.52,width=.96),Line(10,20.48,10,39.52,width=.96))
+    # Medium (1.0 pt) row-group lines as the library draws them: touching at the seam.
+    commands=(Line(0,.5,0,20,width=1),Line(0,20,0,20.5,width=1),Line(0,20.5,0,39.5,width=1),
+              Line(10,.5,10,9.5,width=1),Line(10,20.5,10,39.5,width=1),
+              Line(20,.5,20,19.9,width=1),Line(20,20,20,39.5,width=1))
     joined=appearance.continuous_table_rules(commands)
     outer=[line for line in joined if line.x1==0]
     inner=[line for line in joined if line.x1==10]
     assert len(outer)==1
-    assert (outer[0].y1,outer[0].y2)==pytest.approx((.48,39.52))
+    assert (outer[0].y1,outer[0].y2)==pytest.approx((.5,39.5))
     assert len(inner)==2
+    assert len([line for line in joined if line.x1==20])==2  # a 0.1 pt gap stays visible
 
 
 def test_source_shear_targets_only_authored_base_atom_and_preserves_advance():
@@ -255,7 +258,7 @@ def test_source_table_uses_real_ink_clearance_without_moving_authored_baseline(b
     cell=appearance.SourceCell((appearance.SourceLiteral("A"),),(style,),
           ({"start_x":2,"baseline":baseline},),12,block_id="ink-cell")
     table=Table((2000,),((Cell(cell,align="left",padding=0),),),
-                row_heights=(1200,),border_width=.5,block_id="ink-table")
+                row_heights=(1200,),borders="thin",block_id="ink-table")
     frame=appearance.PageFrame(1,((table,{"kind":"table","x":70,"y":100,"width":20}),),
                                ("ink-table",))
     context=LayoutContext(fonts,A4_PORTRAIT_REFERENCE,SOURCE_STYLE)

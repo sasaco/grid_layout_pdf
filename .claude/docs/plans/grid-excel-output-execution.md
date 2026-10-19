@@ -8,9 +8,9 @@
 |---|---|---|---|---|
 | 0 | lead | Step 1 基準 | — | ✅ 完了 |
 | 1 | fonts | Step 2（FR-024） | `fonts.py`・`fontfinder.py`・`styles.py`（書体の既定のみ）・同梱書体・全テスト/例/文書の `register` の書き換え・片持ち梁の書体の指定 | ✅ 完了（commit 待ち） |
-| 1 | xlsx-core | Step 7（ADR-0001） | `renderers/xlsx/{__init__,_model,_package,_sheet,_styles,_drawing,_units,_xml}.py`・`tests/unit/test_xlsx_{package,model,units,cells,sheet,drawing}.py`・`tests/integration/test_xlsx_excel_core.py`（計画の `test_xlsx_excel.py` は Step 10 で ScenePage からの検査を担う） | レビュー中 |
+| 1 | xlsx-core | Step 7（ADR-0001） | `renderers/xlsx/{__init__,_model,_package,_sheet,_styles,_drawing,_units,_xml}.py`・`tests/unit/test_xlsx_{package,model,units,cells,sheet,drawing}.py`・`tests/integration/test_xlsx_excel_core.py`・`scripts/xlsx_probe/{measure_print_pitch.py,print_pitch.json}`（計画の `test_xlsx_excel.py` は Step 10 で ScenePage からの検査を担う） | ✅ 完了 |
 | 2 | size | Step 3（FR-023） | `styles.py`・`math.py`・文字サイズのテスト・片持ち梁の文字サイズ | ✅ 完了（p30〜35 と p36 の9セルは Step 9 へ保留） |
-| 2 | borders | Step 4（FR-022・026） | `borders.py`・`tables.py`・`containers.py`・`blocks.py`（`Rule`）・`scene.py`・`renderers/reportlab.py`・表と線のテスト | 未着手 |
+| 2 | borders | Step 4（FR-022・026） | `borders.py`・`tables.py`・`containers.py`・`blocks.py`（`Rule`）・`layout.py`（端の命令）・`document.py`・表と線のテスト・片持ち梁の表の線 | ✅ 完了（commit 待ち） |
 | 3 | tags | Step 5 | `scene.py`・`math.py`・`equations.py`・`tables.py`・`cell_content.py`・`figures.py`・`blocks.py`・`rotation.py`・`document.py`・`diagnostics.py` | 未着手 |
 | 4 | grid-terms | Step 6（FR-025） | `equations.py`・`docs/api.md` の指針 | 未着手 |
 | 5 | xlsx-map | Step 8（FR-021） | `renderers/xlsx/{__init__,_map,_numbers}.py`・`document.py`（`render_xlsx`） | 未着手 |
@@ -130,31 +130,34 @@
 - ✅ レビュー反映 ラウンド2（`xlsxcore-green-r2`・`xlsxcore-green-r2b`、単体 433 passed）。このラウンドの HIGH 2件は修正を先に書いたため、回帰テストが修正前のコードで落ちることを別に確かめた（旧 `_xHHHH_` の逃がしは総当たりで 176 件失敗、同じ `CellRange` の2度渡しは旧コードで通る）。
 - ✅ レビュー反映 ラウンド3（`xlsxcore-green-r3f`、単体 463 passed）。このラウンドの修正も多くはテストと同時に書いた（下のラウンド3の記録を参照）。
 - ✅ レビュー反映 ラウンド4（`xlsxcore-green-r4b`、単体 477 passed）。
-- ✅ Excel 実機（`tests/integration/test_xlsx_excel_core.py`、`xlsxcore-excel-r4`）: 35 passed、約114秒（アクティブなプリンター DocuWorks Printer）。
-- ✅ coverage（`COVERAGE_FILE=.coverage.xlsxcore`、単体テストだけ）: `renderers/xlsx` 全体 99%。
-- ✅ 印刷の倍率の実測の生データ: `scripts/xlsx_probe/measure_print_pitch.py` で測り、`scripts/xlsx_probe/print_pitch.json` に保存（3,240 件。プリンター DocuWorks Printer、2書体×11〜30 px の全整数×20〜100% の全整数）。DocuWorks PDF は 10〜400% の 29 段・4 幅（11・16・21・30 px）のみ測定（生データはラウンド3で上書きして消失、残っているのはレビュアーが確かめた最大値。オーケストレーターの判断でこのまま受け入れ）。
+- ✅ レビュー反映 ラウンド5（`xlsxcore-green-r5b`、単体 491 passed）。
+- ✅ レビュー反映 ラウンド6（`xlsxcore-green-r6b`、単体 501 passed）。
+- ✅ レビュー反映 ラウンド7（`xlsxcore-green-r7c`、単体 506 passed）。
+- ✅ レビュー反映 ラウンド8（単体 508 passed）。
+- ✅ 最終確認: 単体（`xlsxcore-final-unit`）508 passed・`renderers/xlsx` の coverage 98%（閾値 90%）、Excel 実機（`xlsxcore-final-excel`）33 passed・2 skipped、約116秒（アクティブなプリンター DocuWorks Printer。skip は DocuWorks PDF の最悪条件の2件で、理由を表示する）。
+- ✅ 印刷の倍率の実測の生データ: `scripts/xlsx_probe/measure_print_pitch.py` で測り、`scripts/xlsx_probe/print_pitch.json` に保存（3,240 件。プリンター DocuWorks Printer、2書体×11〜30 px の全整数×20〜100% の全整数）。このデータはラウンド4の版のスクリプトで測ったもので、ラウンド5以降のスクリプトの「紙の大きさのページは拡大 1 として扱う」は入っていない（記録の `page_enlargement` は 1.0001、倍率の差は 0.0001 以下で係数の余裕に影響しない）。DocuWorks PDF は 10〜400% の 29 段・4 幅（11・16・21・30 px）のみ測定（生データはラウンド3で上書きして消失、残っているのはレビュアーが確かめた最大値。オーケストレーターの判断でこのまま受け入れ）。
 
 **モデルの API（Step 8 への引継ぎ。`src/gridlayoutpdf/renderers/xlsx/_model.py`）**
 
 - 単位と座標: 行・列は 0 始まり。色は 0〜1 の RGB 3要素。長さは pt で2種類ある。セルと図形の位置・大きさはモデルの列幅・行高で測る pt（Excel の整数 px のセルへは、セルの中の割合のまま写す）。線の太さ・文字の大きさ・余白・内側の余白・角の半径・破線の長さは絶対の pt。図形の座標はシートの左上（A1 の左上）原点で、y は下向き。
 - 全クラスは `frozen=True, slots=True` の dataclass で、生成時に検査して誤りは `ValueError`（自動で直さない。巨大な整数も `OverflowError` でなく `ValueError`）。並びは list か tuple で渡し tuple で保持する。set・dict は出力の順が決まらないので `ValueError`。
-- `Workbook(sheets, default_font=Font("游ゴシック", 11))`: シート名の重複は Excel と同じく大文字小文字・全角半角を区別しない比較（NFKC＋casefold）でエラー。`default_font` は Excel の「標準」スタイルで列幅の単位（最大の数字の幅 MDW）を決めるため、実測した書体の標準・黒だけを受ける（`_units._MAX_DIGIT_WIDTH_PX`）。独自の表示形式はブック全体で 206 種まで。
-- `Sheet(name, column_widths_pt, row_heights_pt, cells=(), merges=(), borders=(), row_breaks=(), page=PageSetup(), header=None, footer=None, drawings=(), show_gridlines=True)`。列 1〜16,384、行 1〜1,048,576。行高は 409 pt まで、列幅は 255 文字まで。半ピクセル（0.375 pt）未満はエラー。印刷範囲は常にシートの全セル（`_xlnm.Print_Area`）。図形は外接箱がシートの中（端は 1e-6 pt の誤差まで可）でなければエラー。`width_pt`・`height_pt` はモデルの列幅・行高の合計（Excel の実寸ではない）。検査は結合の面積・セル・罫線の数に比例する（結合 3 万で1秒程度）。
+- `Workbook(sheets, default_font=Font("游ゴシック", 11))`: シート名の重複は Excel と同じく大文字小文字・全角半角を区別しない比較（NFKC＋casefold、`sheet_name_key(name)`）でエラー。シート名の規則は `validate_sheet_name(name)`（UTF-16 で 31 単位まで、`[]:*?/\` と制御文字は不可、先頭・末尾の `'` は不可、自動で直さない）。Step 8 は FR-021 の「名前・名前_2・名前_3…」を作る時に、この2つで重複と長さを確かめる。`default_font` は Excel の「標準」スタイルで列幅の単位（最大の数字の幅 MDW）を決めるため、実測した書体の標準・黒だけを受ける（`_units._MAX_DIGIT_WIDTH_PX`）。独自の表示形式はブック全体で 206 種まで。
+- `Sheet(name, column_widths_pt, row_heights_pt, cells=(), merges=(), borders=(), row_breaks=(), page=PageSetup(), header=None, footer=None, drawings=(), show_gridlines=True)`。列 1〜16,384、行 1〜1,048,576。行高は 409 pt まで、列幅の 255 文字は既定の書体の数字の幅に依るので `Workbook` で検査し、`Sheet` は 100 万 px 未満（`PIXEL_LIMIT`）だけを検査する。半ピクセル（0.375 pt）未満と負の長さはエラー。印刷範囲は常にシートの全セル（`_xlnm.Print_Area`）。図形は外接箱がシートの中（端は 1e-6 pt の誤差まで可）でなければエラー。`width_pt`・`height_pt` はモデルの列幅・行高の合計（Excel の実寸ではない）。検査は結合の面積・セル・罫線の数に比例する（結合 3 万で1秒程度）。
 - `CellValue(row, col, value, number_format=None, font=None, h_align="left", v_align="center", rotation=0, fill=None)`: `value` は `str`・数（float にする）・`RichText`・`None`（書式だけの空セル）。`font=None` はブックの既定の書体。`rotation` は反時計回りの度で 0・90（下から上へ読む）・270（上から下へ読む）。Excel の textRotation の 90・180 へはライブラリが写す。`h_align`・`v_align` は回しても紙面の向きのまま。`fill` はセルの背景色（指示の `color` をこの名前にした）。結合範囲の左上以外に値があればエラー。文字列の `_xHHHH_` と `\r` は書き出し時に逃がす（`_x005F_`・`_x000D_`）ので元の文字のまま読める。
-- `RichText(runs)`、`Run(text, font=None, vert_align=None|"superscript"|"subscript")`。`font=None` はセルの書体。上付き・下付きの run には記号と同じ大きさを渡す（Excel が自動で約2/3に縮める）。
+- `RichText(runs)`、`Run(text, font=None, vert_align=None|"superscript"|"subscript")`。`text` は空でない（空の文字片は run にしない。セルの値の `""` は可）。`font=None` はセルの書体。上付き・下付きの run には記号と同じ大きさを渡す（Excel が自動で約2/3に縮める）。
 - `Font(name, size, color=(0,0,0), bold=False, italic=False)`。`size` は 1〜409 pt の 0.5 pt 刻み。`name` は 31 文字まで、制御文字・空白だけは不可。
 - シート名・書体名・表示形式に `_xHHHH_` の形があるとエラー（SpreadsheetML ではこれらも文字の符号として読まれうる。Excel の扱いは測っていないので、逃がさず拒否した）。
 - `number_format`: 255 文字まで。引用符・角括弧の閉じ、`\`・`_`・`*` の後の文字、4区画まで、角括弧の中身（色・`Color1`〜・条件・`$`で始まる通貨と言語・経過時間 `h`/`m`/`s`・`DBNum`/`NatNum`）を検査する。その他の文法の誤りは Excel でしか分からない。
 - `CellRange(first_row, first_col, last_row, last_col)`（2セル以上）。結合の重なりはエラー。
 - `EdgeBorder(row, col, side, style, color=(0,0,0))`: 1つのセルの1辺。`style` は `BORDER_STYLES` の13種の名前。同じ物理的な辺（上のセルの bottom と下のセルの top など）を2度与えるとエラー。結合範囲の内側の辺はエラー。結合範囲の辺は `range_edges(cell_range, side, style, color)` で辺に沿う各セルの `EdgeBorder` を作る。
 - `row_breaks`: 増加する行番号の並びで、その行の上で改ページ（1〜最終行、1,026 か所まで。1,026 は Excel の文書の上限で実測していない）。
-- `PageSetup(paper="A4"|"A3", orientation="portrait"|"landscape", margins=Margins(...), scale=100, first_page_number=None, print_gridlines=False)`、`Margins(left, top, right, bottom, header, footer)`（pt。既定は Excel の「標準」）。`scale` は 10〜400、`first_page_number` は 1〜32,767（None は自動）。`paper_size_pt`・`printable_size_pt` を持つ。`paper_for_size(width_pt, height_pt, tolerance_pt=1.0)` がページの大きさから `(paper, orientation)` を返す（A4・A3 以外はエラー。許容差は 0〜10 pt）。
-- `HeaderFooter(left=None, center=None, right=None)`、`HeaderSection(parts, font=None)`、`parts` は文字列・`PageNumber()`（`&P`）・`SheetPageCount()`（`&N`。そのシートのページ数で、帳票全体の総数ではない。FR-021 の `{pages}` は数字の文字列で渡す）。文字列の `&` はここで `&&` にする。`font` の大きさは整数 pt、名前に `"`・`,`・`&` は不可、名前 `-`（Excel の既定の書体の意味）も不可。書式文字列は 255 文字まで。`code()` で Excel の書式文字列を返す。
+- `PageSetup(paper="A4"|"A3", orientation="portrait"|"landscape", margins=Margins(...), scale=100, first_page_number=None, print_gridlines=False)`、`Margins(left, top, right, bottom, header, footer)`（pt。6つとも必須。`PageSetup.margins` の既定は `DEFAULT_MARGINS`＝Excel の「標準」の 50.4・54・50.4・54・21.6・21.6 pt）。`scale` は 10〜400、`first_page_number` は 1〜32,767（None は自動）。`paper_size_pt`・`printable_size_pt` を持つ。`paper_for_size(width_pt, height_pt, tolerance_pt=1.0)` がページの大きさから `(paper, orientation)` を返す（A4・A3 以外はエラー。許容差は 0〜10 pt）。
+- `HeaderFooter(left=None, center=None, right=None)`、`HeaderSection(parts, font=None)`、`parts` は空でない文字列・`PageNumber()`（`&P`）・`SheetPageCount()`（`&N`。そのシートのページ数で、帳票全体の総数ではない。FR-021 の `{pages}` は数字の文字列で渡す）。文字列の `&` はここで `&&` にする。`font` の大きさは整数 pt、名前に `"`・`,`・`&` は不可、名前 `-`（Excel の既定の書体の意味）も不可。書式文字列は 255 文字まで。`code()` で Excel の書式文字列を返す。
 - 図形の線・塗り・文字の欄はキーワードだけで渡す（scene の `Rectangle` の5番目は線の太さだが、ここで位置で渡すと角の半径になるのを防ぐ）。長さ0の線、幅か高さが0の箱、全点が同じ位置の自由形状、2点の閉じた自由形状はエラー。scene の `Point` は `(p.x, p.y)` に直して渡す。
-- 図形: `Line(x1, y1, x2, y2, *, stroke_width_pt=0.5, color, dash=(), start_arrow=None, end_arrow=None)`（`Arrowhead(kind, width, length)`、kind は triangle・stealth・diamond・oval・arrow、大きさは sm・med・lg。start は (x1, y1)）、`Polyline(points, *, closed=False, stroke_width_pt, color, fill=None, dash=(), stroke=True)`（塗りは閉じた形だけ）、`Rect(x, y, width, height, *, corner_radius_pt=0, stroke=True, stroke_width_pt, color, fill=None, text=None, dash=())`、`Ellipse(...)`・`Diamond(...)`（corner_radius なし）、`TextBox(x, y, width, height, text)`（枠・塗りなし）、`Picture(x, y, width, height, data, format)`（`format` は "png" か "jpeg" で必須。Pillow で読めない・形式が違う・途中で切れた data はエラー。MPO 拡張の JPEG は JPEG。scene の `RasterImage` は他の形式もあるので Step 8 で PNG にする）、`Group(children)`（入れ子可）。`dash` は scene と同じく pt の on/off の並びで `()` が実線（奇数個は PDF と同じく2回繰り返す）。線の太さは 1 EMU 以上 1,584 pt 以下、破線の長さは線の太さの 0.00001〜21,474 倍。線も塗りも文字もない四角・楕円・菱形はエラー。
+- 図形（`*` の後はキーワードだけ。既定値は線の太さ 0.5 pt・色は黒 (0,0,0)・塗りなし・実線）: `Line(x1, y1, x2, y2, *, stroke_width_pt=0.5, color=(0,0,0), dash=(), start_arrow=None, end_arrow=None)`（`Arrowhead(kind, width, length)`、kind は triangle・stealth・diamond・oval・arrow、大きさは sm・med・lg。start は (x1, y1)）、`Polyline(points, *, closed=False, stroke_width_pt, color, fill=None, dash=(), stroke=True)`（塗りは閉じた形だけ）、`Rect(x, y, width, height, *, corner_radius_pt=0, stroke=True, stroke_width_pt, color, fill=None, text=None, dash=())`、`Ellipse(...)`・`Diamond(...)`（corner_radius なし）、`TextBox(x, y, width, height, text)`（枠・塗りなし）、`Picture(x, y, width, height, data, format)`（`format` は "png" か "jpeg" で必須。Pillow で読めない・形式が違う・途中で切れた data はエラー。JPEG はマーカーを先頭からたどり、各フレームが EOI まであることを確かめる（EOI の後のデータ、例えばスマートフォンの写真の後置データは、そのまま受けて保つ）。MPO 拡張の JPEG は JPEG で、全フレームを確かめる。scene の `RasterImage` は他の形式もあるので Step 8 で PNG にする）、`Group(children)`（入れ子可）。`dash` は scene と同じく pt の on/off の並びで `()` が実線（奇数個は PDF と同じく2回繰り返す）。線の太さは 1 EMU 以上 1,584 pt 以下、破線の長さは線の太さの 0.00001〜21,474 倍。線も塗りも文字もない四角・楕円・菱形はエラー。
 - `TextFrame(paragraphs, *, font, h_align="left", v_align="top", rotation=0, insets_pt=(0,0,0,0), wrap=False)`: `paragraphs` は `Run` の並びの並び（空の並びは空行、run に改行・タブなどの制御文字は不可）。`rotation` は反時計回りの 0・90・180・270。寄せ方は文字の読む向きで決まる（90度では「上」が紙面の左）。`Font` の 0.5 pt 刻みは図形の文字にも掛かるので、図形の中の添字も記号と同じ大きさ＋`vert_align` で渡す（添字の添字は1段になる）。
 - 書き出し（`_package.py`）: `write_workbook(workbook) -> bytes`、`save_workbook(workbook, path)`（全体を作ってから同じフォルダの一時ファイル経由で `os.replace`。POSIX では umask どおりの権限にする）。
-- 単位（`_units.py`）: `excel_column_width_pt(pt)`・`excel_row_height_pt(pt)`（Excel が実際に使う pt）、`column_width_chars(pt, font)`、`pt_to_emu`、`page_heights_pt(row_heights_pt, row_breaks)`、`print_fit(sheet, default_font, *, maximum=100) -> PrintFit(scale, limited_by, column_factor, row_factor)`（全ページが1枚に収まる最大の整数%と、それを決めたのが `"width"`・`"height"`・`"maximum"` のどれか）、`fit_scale_percent(sheet, default_font, *, maximum=100)`（その `scale` だけ。`dataclasses.replace(sheet, page=replace(sheet.page, scale=...))` で使う）。`default_font` は必須で、そのシートを書くブックの `Workbook.default_font` を渡す。印刷を測った 游ゴシック 11 と ＭＳ 明朝 10.5（標準・黒）だけを受ける。20% でも収まらなければ `ValueError`。`maximum` は 20〜100（`MIN_FIT_SCALE`・`MAX_FIT_SCALE`。測った範囲）。測ったセルの大きさは `MEASURED_CELL_PIXELS`（11〜30 px）。図形の配置は `_drawing.SheetGeometry`（セルの境目から 1e-6 pt 以内の座標は次のセルの 0 として書く）。
+- 単位（`_units.py`）: `excel_column_width_pt(pt)`・`excel_row_height_pt(pt)`（Excel が実際に使う pt）、`column_width_chars(pt, font)`、`pt_to_emu`（有限の数だけ。他は ValueError）、`page_heights_pt(row_heights_pt, row_breaks)`、`print_fit(sheet, default_font, *, maximum=100) -> PrintFit(scale, limited_by, column_factor, row_factor)`（全ページが1枚に収まる最大の整数%、それを決めたのが `"width"`・`"height"`・`"maximum"` のどれか、計算に使った段の係数。係数は実測の最大より 0.6% 以上大きい設計値。255 文字を超える列はエラー）、`fit_scale_percent(sheet, default_font, *, maximum=100)`（その `scale` だけ。`dataclasses.replace(sheet, page=replace(sheet.page, scale=...))` で使う）。`default_font` は必須で、そのシートを書くブックの `Workbook.default_font` を渡す。印刷を測った 游ゴシック 11 と ＭＳ 明朝 10.5（標準・黒）だけを受ける。20% でも収まらなければ `ValueError`。`maximum` は 20〜100（`MIN_FIT_SCALE`・`MAX_FIT_SCALE`。測った範囲）。測ったセルの大きさは `MEASURED_CELL_PIXELS`（11〜30 px）。図形の配置は `_drawing.SheetGeometry`（セルの境目から 1e-6 pt 以内の座標は次のセルの 0 として書く）。
 - `renderers/xlsx/__init__.py` は説明文だけ（公開・再公開は Step 8）。名前が scene の `Line`・`Polyline`、geometry の `Rect`、figures の `TextBox` とぶつかるので、Step 8 では `from . import _model as xl` のようにモジュール名を付けて使うことを勧める。
 
 **Step 8 以降で決めること（このモジュールでは決めない）**
@@ -188,7 +191,7 @@
   - DocuWorks Printer（ラウンド3以降の既定のプリンター）: 2書体×11〜30 px の全整数×20〜100% の全整数（`print_pitch.json`、3,240 件）。列の最大は 90〜100% で 1.0322（12 px・93%）・55〜89% で 1.0370（12 px・63%）・20〜54% で 1.0475（12 px・28%）、行の最大は 0.9931（12 px・98%）・0.9955（12 px・75%）・1.0158（12 px・21%）。PDF のページは紙の大きさのまま、中身が縮む。4 幅だけの測定（ラウンド3）より最大が大きかった（12 px が最悪）。
   - 例: 游ゴシック 11 の 21 px の列・行は 100% で 16.08・15.48 pt（1/600 inch の格子。両プリンターで同じ）。ＭＳ 明朝 10.5 では 15.84・14.52 pt。
   - `print_fit` の係数は両プリンターの最大より 0.6% 以上大きい: 列 1.04（90% 以上）・1.05（55〜89%）・1.08（20〜54%）、行 1.0（90% 以上）・1.01（55〜89%）・1.025（20〜54%）。単体テストが JSON と `DOCUWORKS_PDF_MAXIMA` から、この余裕と、20〜100% の全整数が両書体・11〜30 px の全幅で測られていることを確かめる。
-  - 統合テスト（DocuWorks Printer で実行。測っていないプリンターでは xfail）で 18 通りについて、各ページが1枚に収まり（右下近くの印がそのページにある）、5%（20〜54% の段は 10%）大きくするとページが増えることを確認: 各段の下限ぎりぎり（90・55・20%、21 px）、DocuWorks Printer の4幅の測定で列の倍率が最大だった条件ぎりぎり（11 px で 95・55・25%）、DocuWorks PDF で最大だった条件ぎりぎり（11 px で 60・30%）、行の倍率が最大だった条件ぎりぎり（95・57・20%）、幅で決まる場合、高さで決まる場合、最大の 100% に達する場合、ＭＳ 明朝 10.5、A4 の基準グリッドを 100% にする余白。11 px 未満・30 px 超のセル、他のプリンターのドライバーは未確認。
+  - 統合テスト（DocuWorks Printer で実行。測っていないプリンターでは xfail、`GRIDLAYOUTPDF_REQUIRE_EXCEL=1` なら失敗）で、各ページが1枚に収まり（右下近くの印がそのページにある）、5%（20〜54% の段は 10%）大きくするとページが増えることを確認: 各段の下限ぎりぎり（90・55・20%、21 px）、各段で列・行の倍率が最大だった条件ぎりぎり（`print_pitch.json` から実行時に求める。今は 12 px の列 93・63・28%、行 98・75・21%）、幅で決まる場合、高さで決まる場合、最大の 100% に達する場合、ＭＳ 明朝 10.5、A4 の基準グリッドを 100% にする余白。DocuWorks PDF の最悪条件（11 px で 60・30%）のケースは、アクティブなプリンターが DocuWorks PDF の時だけ意味があるので、それ以外では理由を付けて skip する（今の環境では skip。DocuWorks PDF での実機の確認はしていない）。11 px 未満・30 px 超のセル、他のプリンターのドライバーは未確認。
 - `PageSetup.Pages.Count` と `HPageBreaks` の自動改ページは、同じ Excel で拡大率を変えても更新されず当てにならなかった。ページ数は PDF に書き出して数える。
 - グループの高さが0（水平線だけのグループ）、0.01 pt の四角も Excel は開いた。
 
@@ -243,6 +246,41 @@ silent-failure のレビューは完了。python・type-design のレビュー�
 - 解消（LOW）: `print_fit` が色付きの既定の書体を拒否。`PrintFit` に `row_factor`。キーワードだけの欄のテストに `Ellipse`・`Diamond`、`TextFrame(rotation=90.0)`、`maximum=20` のテスト。統合テストの docstring のプリンター名。`_EDGE_TOLERANCE_PT` の別名を削除。空行の体裁。
 - 持ち越し（LOW）: `Workbook` を受ける `print_fit` の版（Step 8 で必要なら）、単体テストで JSON の倍率を `printed_*_pt` から計算し直すこと、11 px 未満・30 px 超のセル、他のプリンターのドライバー。
 - 新たな見逃しパターン候補: 実測の範囲を一部の幅（4 幅）で代表させると、測っていない幅（12 px）で最大を見逃す。測れる範囲は全部測る。
+
+**レビュー反映 (2026-10-20, ラウンド 5)**
+
+レビュアー2観点（silent-failure、python・type-design・layout）。集約後 CRITICAL 0 / HIGH 0 / MEDIUM 3（重複を除く）/ LOW 約10。
+
+- 解消（MEDIUM）: 負の巨大な列幅・行高（-1.5e308 など）の `OverflowError`（半ピクセル未満の判定を先にし、上限は `PIXEL_LIMIT` 未満）。JPEG の終わりの確認が後置データのある正当な JPEG を拒否した（マーカーを先頭からたどる走査に変え、後置データは受ける。EXIF のサムネイルの EOI や MPO の1枚目の EOI で切れたものは拒否）。統合テストの「最悪条件」がラウンド4の全幅の測定（12 px が最悪）とずれていた（JSON から実行時に求める形にし、データを測り直してもずれない）。DocuWorks PDF の最悪条件のケースは、そのプリンターでなければ理由を付けて skip。
+- 解消（LOW）: `GRIDLAYOUTPDF_REQUIRE_EXCEL=1` で測っていないプリンターなら失敗にし、プリンター名を `record_property` で残す。罫線の位置のテストも測っていないプリンターでは xfail。破線の境界のテストを明示的に（比 0.5 は `d="1"`、上限超えはエラー）。測定スクリプト: `Add-Type` を Excel の起動の前へ、出力先のフォルダを先に確かめる、一時ファイルから置き換える、別のプリンターで測ったデータは上書きしない、紙の大きさのページは拡大 1 として扱う。`MAX_PIXELS` → `PIXEL_LIMIT` とエラー文。`_units` の型注釈（`TYPE_CHECKING`）。統合テストに JPEG の図形の読み戻し。JSON のプリンター名の単体テスト。体裁。
+- 持ち越し（LOW）: `PrintFit` が NamedTuple（位置での展開ができるので、欄を足すと呼び出し側が壊れうる。Step 8 で dataclass にするか判断）。
+- このラウンドも修正とテストを同時に書いた（JPEG の後置データのテストは旧コードで失敗することをレビュアーが再現済み）。
+
+**レビュー反映 (2026-10-20, ラウンド 6)**
+
+レビュアー2観点（silent-failure、python・type-design・layout）。集約後 CRITICAL 0 / HIGH 0 / MEDIUM 2 / LOW 約18。
+
+- 解消（MEDIUM）: JSON から作る最悪条件が、`print_fit` の返せない拡大率（100%、下の段の上端など）になりうる（各段で倍率の大きい順に試し、`print_fit` がその拡大率と幅・高さを返すケースだけを使う。返せる記録がない段・空の段はエラー。合成した記録で確かめる単体テストを追加）。区切りの間に余分なバイトがある正当な JPEG を拒否した（libjpeg と同じく次の 0xFF まで読み飛ばす。エラー文も「切れている、またはマーカーの並びが読めない」に）。
+- 解消（LOW）: MPO のフレームの間に他のバイトがある場合（次の SOI を探す）。`_units` の変換関数を直接呼んだ時の bool・巨大な整数・`PIXEL_LIMIT` ちょうど。`print_fit` が 255 文字を超える列を拒否。`page_heights_pt` の型注釈。docstring の係数の説明。API の記述の既定値・`DEFAULT_MARGINS`・`sheet_name_key`/`validate_sheet_name`。罫線の位置のテストでもプリンター名を残す。統合テストの docstring。JSON から作るケースの ID を ASCII（`yu-gothic`・`ms-mincho`）に。測定スクリプト: 別のプリンターのデータは上書きせず、日時付きの別名に保存して終わる（データを失わない）、プリンター名はポートを除いて比べる、壊れた既存の JSON も扱う、一時ファイルを一意に、ページの拡大は近い候補（1 か 100/拡大率）との差 0.2% 以内を求める。
+- 記録の補足: ラウンド4で足した行の段の境のケース（95・57・20%、21 px と 16 px）は、ラウンド5で JSON から作る行の最悪条件（12 px の 98・75・21%）に置き換えた。`print_pitch.json` はラウンド4の版のスクリプトの出力（上の進捗に記載）。
+- 持ち越し（LOW）: A4 の寸法と JSON のパスと段の分け方の処理が、テストとスクリプトで重複している（読みやすさの問題で、値は同じ）。拡大率 103% など実測の範囲の外を「大きくする側」の確認に使うケースがある（はみ出す向きなので実害は小さい）。
+
+**レビュー反映 (2026-10-20, ラウンド 7)**
+
+レビュアー2観点（silent-failure、python・type-design・layout）。集約後 CRITICAL 0 / HIGH 0 / MEDIUM 1 / LOW 約14。python・type-design・layout の観点は MEDIUM 以上 0。
+
+- 解消（MEDIUM）: 測定スクリプトで、最後の置き換えに失敗する（Windows で既存の JSON が開かれている等）と約1時間の測定データが消えた。測り終えたらまずマイクロ秒までの日時付きの新しい名前で保存し、同じプリンターの時だけ既存のファイルを置き換える。置き換えに失敗した時や別のプリンターのデータの時は終了コード 2 で、日時付きのファイルを残す。読めない・形の違う既存の JSON は別のプリンターのデータと扱う。保存の部分を `_store` に切り出し、置き換えの失敗・形の違う JSON の単体テストを追加（初めの版は秒までの日時で、同じ秒の2回目が1回目を上書きしたのをこのテストで見つけた）。
+- 解消（LOW）: JPEG の走査で、フレームの中の2つ目の SOI・長さ 2 未満の区画は完全なフレームとみなさない（走査の途中で切れた JPEG に完全な JPEG をつないだものを拒否。区画の見出し（DQT・SOF・DHT 等）の途中で切れて別の JPEG が続くものは受けうる。ラウンド8で判明、既定の設定の Pillow もこれを読む）。区画の間の `FF 00` は libjpeg と同じく読み捨てる。JSON から作る最悪条件で 100% の記録は "maximum" を期待するケースにする。プリンター名はポートだけを除く（`rsplit`）。`print_fit` の docstring に出すエラーを全部書いた。`pt_to_emu` と `sheet_name_key` が型の誤りを ValueError にする。`validate_sheet_name` の型注釈。`--force` の help。測っていない書体のケース ID はエラー。MPO のテストで `Picture` の受け付けも確かめる。API の記述に「run の text とヘッダーの文字の部品は空でない」。
+- 持ち越し（LOW）: MPO の各フレームを MP 索引の位置から確かめること（間に完全な JPEG を挟み2枚目を切った、手で作るファイルを受ける）。単体テストが統合テストのファイルを読み込んで生成器を使う形（Excel に依らない補助モジュールへの切り出し）。`print_pitch.json` を含む `scripts/xlsx_probe/` は必ずコミットに入れること（統合テストが読み込み時に使う）。
+
+**レビュー反映 (2026-10-20, ラウンド 8) とループの終了**
+
+レビュアー1観点（silent-failure、python の品質を軽く）。CRITICAL 0 / HIGH 0 / MEDIUM 1 / LOW 6。製品のコード（`renderers/xlsx`）には MEDIUM 以上なし。MEDIUM は測定スクリプトのもの。
+
+- 解消（MEDIUM）: 測定スクリプトで、測り終えた後に一時フォルダの削除が失敗する（PDF が他のプロセスに開かれている）と全データを失った。`TemporaryDirectory(ignore_cleanup_errors=True)` にし、保存（`_store`）を一時フォルダのブロックの中で行う。Excel の後始末の失敗は保存の後に報告する。PowerShell の時間切れを 3 時間に。構造を AST で確かめる単体テストを追加。
+- 解消（LOW）: `pt_to_emu(10**400)` の OverflowError。日時付きの名前を OS が一意にする（同じ秒・同じマイクロ秒でも上書きしない。Python 3.12 の Windows では `now()` の刻みが粗い）。読めない既存の JSON は常に置き換えない、プリンター名が空なら失敗。日時付きのファイルに残した時の終了コードを 3（`KEPT_DATED`、引数の誤りの 2 と区別）にし、メッセージは標準エラーへ。`_store` の単体テストに、別のプリンター・ポートだけ違う同じプリンター・読めない JSON・同じ秒の2回の保存を追加。
+- 記録の訂正（L-1）: 上のラウンド7の「切れた JPEG に完全な JPEG をつないだものを拒否」に条件を足した。
+- ループの終了: ImplementationLoop の上限の 8 ラウンドに達した。ラウンド8の MEDIUM（測定スクリプト）は直して単体テストで確かめたが、その修正の再レビューはしていない（9 ラウンド目は上限を超えるため）。製品のコードの MEDIUM 以上はラウンド7の python・type-design・layout と、ラウンド8の silent-failure で 0。指摘の件数（CRITICAL/HIGH/MEDIUM）は、ラウンド1 0/5/約20、2 0/2/9、3 0/1/約11、4 0/0/8、5 0/0/3、6 0/0/2、7 0/0/1、8 0/0/1 と減った。
 
 **Tips**
 
@@ -330,3 +368,100 @@ silent-failure のレビューは完了。python・type-design のレビュー�
 - 全ラウンド数 2。指摘の推移: ラウンド 1 HIGH 1 / MEDIUM 2 / LOW 12 → ラウンド 2 MEDIUM 0 / LOW 5。
 - 最終確認 `--label size-final`（片持ち梁の PNG 正解テストと `test_xlsx_*`・`test_xlsx_excel_core.py` を除く全テスト 51 ファイル）: **2266 passed、18 xfailed**（xfail はすべて `deferred.DEFERRED` の strict xfail、XPASS 0）。カバレッジ（`COVERAGE_FILE=.coverage.size`）は `styles.py` 99%（未到達は防御の1行）、`math.py` 98%。全体の 72% は作業中の `renderers/xlsx/`（テストを除外したため 0%）を含む値で、最終の全体カバレッジは lead が単独で測る。
 - 片持ち梁の PNG 正解（`test_cantilever_p01_37_golden.py`）は、src の hash の不一致に加えて p30 の `原本再現できず` でも止まる。作り直しは Step 9 で保留を外した後。
+
+#### borders（Step 4）
+
+担当 borders（サブエージェント）。2026-10-20。
+
+**進捗**
+
+- ✅ 基準: `--label borders-baseline`（片持ち梁の PNG 正解と `test_xlsx_*`・`test_xlsx_excel_core.py` を除く全テスト。除外は `PYTEST_ADDOPTS` で渡した）2266 passed、18 xfailed。代表例の PNG 正解はこの時点で合格。
+- ✅ Red: `tests/unit/test_borders.py`・`test_table_borders.py`・`test_rule.py`（新設）、`test_side_rule.py`（書替え）。公開名を `gridlayoutpdf` の属性で引く書き方にして `--label borders-red-1` が 102 failed / 11 passed（本物の失敗。最初は `from gridlayoutpdf import BorderStyle` で収集エラーになったので書き方を直した）。
+- ✅ Green: `--label borders-green-1`。既存テストの書き換え（下記）の後、自己レビューの3件（外枠の既定を表す印がコピー・pickle で別物になる／ヘッダーの縦線の延長／`KeepWithNext` の予約で線を端の命令だけに持つ part を見えないと数える）を `--label borders-red-2`（3 failed）→ `borders-green-2`。
+- ✅ 片持ち梁の原本比較の太さの検査の陰性対照（`test_output_rules_must_have_their_border_styles_thickness`）は、HEAD の `verify_appearance.py` に一時的に戻して `--label borders-red-thickness` で失敗を確かめ、元に戻した。
+- ✅ ImplementationLoop ラウンド 1 の修正: `--label borders-r1-red`（16 failed）→ `borders-r1-green`。全体 `borders-full-4`: 代表例の PNG 正解の1件だけ失敗（下記、想定どおり）。
+
+**公開 API（最終）**
+
+- `BorderStyle`（`StrEnum`、値は Excel の名前 hair・thin・medium・thick・double・dotted・dashed・dashDot・dashDotDot・mediumDashed・mediumDashDot・mediumDashDotDot・slantDashDot。文字列でも渡せる）。`stroke_width`・`offsets`・`dash`・`thickness`・`lines(x1, y1, x2, y2, color)`。
+- `TableBorders(default=THIN, *, outer=<既定と同じ>, horizontal={}, vertical={}, horizontal_edges={}, vertical_edges={})`。優先は辺1つ → 境目1本 → 外枠 → 既定（書いた順によらない）。`None` は線なし。`frame`（外枠が解決する種類）、`resolve(rows, columns)`。対応表は `(番号, 種類)` の組で保持（組の形も受け付け、重複は ValueError）。結合セルの内側を名指すと ValueError、表の外の番号も ValueError。
+- `Table(..., borders=TableBorders() | BorderStyle | str | None, border_color=...)`。`border_width`・`horizontal_rules`・`vertical_rules` は廃止（渡すと TypeError、数値の種類は ValueError「pt widths are no longer accepted」）。既定は全辺が細。セルの metadata に `align`・`valign`・`borders`（`top`・`bottom` は列ごと、`left`・`right` は行ごと）。
+- `Rule(style=THIN, *, columns=None, color=(0, 0, 0), block_id="")`: 1グリッド行（細かいグリッドでは太さが入る行数）を占め、上の境目に沿って行の中に引く。幅は利用可能幅か `columns` 列。metadata `rule`（`style`・`width_pt`）。
+- `SideRule(block, x, *, style=THIN, top=0, bottom=0, color, block_id)`（`width=` は廃止）。x は線の中心。実線は塗りの `Rectangle`（二重は2本）、破線系は `Line`。metadata `side_rule_pt`・`side_rule_style`。
+- `LayoutPart(rows, commands, metadata, *, opening=(), continuing=(), joining=(), closing=())`。
+
+**設計判断**
+
+- PDF での描き方（DESIGN.md Key Decisions に記録）: 極細 0.25・細 0.5・中 1.0・太 1.5 pt。二重は 0.5 pt の2本で、間隔 1.0 pt は**線の中心の間**（隙間 0.5 pt、全体 1.5 pt＝太と同じ。Excel の線・隙間・線が同じ幅の比）。破線は細の dotted (0.5, 1.0)・dashed (3.0, 1.5)・dashDot (6.0, 1.5, 1.5, 1.5)・dashDotDot (6.0, 1.5×5)、中の mediumDashed (6.0, 2.0)・mediumDashDot (6.0, 2.0×3)・mediumDashDotDot (6.0, 2.0×5)・slantDashDot (6.0, 1.0, 2.0, 1.0、斜めの切り口は描かない)。`SideRule` の既定は細（旧 0.72 pt に最も近い）。`Rule` は行の上の境目（直前の内容のすぐ下）に引く。
+- 優先順位はより具体的な指定が勝つ（計画の Red の「後から決めたものが優先」ではなく、オーケストレーターの指示どおり）。境目1本ぶんの指定が結合セルを横切るときは内側だけ黙って抜く。辺1つで結合セルの内側を名指すのは誤りとしてエラー。
+- 継ぎ目と「ページ先頭のときだけ描く命令」（DESIGN.md Key Decisions に記録）: `prefix`・`discard_at_page_top` と同じく計測結果（`LayoutPart`）に印を載せる。4つの命令列は、置かれた断片の中の位置で選ぶ（先頭なら opening、それ以外は continuing、最後なら closing、それ以外は joining）。`MeasuredBlock.commands`（＝`translated`）が選ぶので、`Document._Paginator.place` は変更不要。Document は改ページで切れた断片を必ず flush の後（頁の先頭）に置くので、2つ目以降の part の opening は頁の先頭でだけ描かれる。表の行群の境目は、上の行群が joining（境目を中心に1本）/closing（頁の下端で自分の中に1本）、下の行群が opening（頁の先頭で自分の中に1本）。縦線は上の行群が境目で止め（closing では半ストローク手前）、下の行群は半ストローク下から始めて continuing で境目まで補う。これで同じ頁では実線の種類のインクが `split=False` と同じになる。joining は次の part の中まで、continuing は前の part の中まで描けて、`measure_block` が「分割後に隣に来得る part のうち最も低いもの」で検査する（繰り返す prefix の前後を含む）。
+- 繰り返すヘッダー: 自分の下の境目の線を引き、後の頁でその下に来る本文の行群は上の線を引かない（境目の種類はヘッダーの下の境目のもの）。本文の各行群の先頭のセルは、ヘッダーの下の線の太さの半分の余白も取る（ラウンド 1 の HIGH）。
+- 余白の検査: 行群の上下と外枠は太さ全体（opening/closing で part の中に引くことがあるため保守的に）、内側の境目は半分。二重・破線も `thickness` で数える。
+- 計算と描画の分離: 罫線の種類は計測の段階ですべて `Line`（と SideRule の `Rectangle`）に確定する。`scene.py`・`renderers/reportlab.py` は変更不要（`Line.dash` と butt cap の描画が既にある）。計画の Step 4 のファイル一覧にある2ファイルを変えなかったのはこのため。
+- 継ぎ目の線の位置は、上の行群の中（境目から半分上）ではなく境目の中心にした。分割しない表と同じ見た目・同じ余白（内側は半分）になり、fixture の旧「半分の太さ2本」と同じ中心位置になる。
+- 不採用: `command_bounds` を butt cap どおり（軸に平行な線の端を延ばさない）にすれば、外枠の角の欠けも継ぎ目の補いの線も不要になるが、公開関数と既存の検査（`test_layout` の線の外形の検査など）の契約が変わるため、Step 4 では行わない（下の持ち越し）。
+
+**片持ち梁 fixture（最小の変更）**
+
+- `builder.py`: 線幅 → 種類の写像 `rule_style`（原本 0.12・0.1201 → 極細、0.96 → 中、`pages/*.json` の 0.24 → 極細、0.4・0.5 → 細、0.7・1 → 中。0.7 は原本の太い線の役なので中）。`_rule_borders` が境目ごとの `TableBorders` を作り、境目の数を検査する。継ぎ目の半分の太さ（旧 265-266 行）は廃止。`_table_outer_edges` は新しい種類の太さの半分で外枠へ寄せる（線の中心は原本の位置のまま）。`SourceCell` の余白も新しい太さで計算。区切り線（Figure＋Line）は触っていない（Step 9）。
+- `appearance.py`: `continuous_table_rules` は線幅・色・破線の模様（＝種類）で分け、接するか重なる線だけをつなぐ（ライブラリが継ぎ目を連続して描くので、隙間は本物の隙間として残す）。
+- `verify_appearance.py`: 外枠の線の太さの検査（±0.08 pt で原本と比較）を「種類の太さどおりか」（原本 0.12 → 0.25、0.96 → 1.0、許容差 0.01 pt）に置き換えた。原本どうしを比べる陽性対照だけは原本の太さどうし。位置（中心 ±0.20 pt）など他の検査は変えていない。
+- `README.md` の表の線の説明を更新。保留（p30〜35 の strict xfail、p36 の9セル）は維持され、XPASS なし、新しい失敗なし。
+
+**既存テストの書き換え（意図を保つ）**
+
+- `test_table_rules.py`: 数値の太さを種類へ。pt で太さを変えていた「太い線がセルを食い潰す」「向かい合う線」などは、細かいグリッド（1 pt）の小さなセルで太（1.5 pt）を使う形に。継ぎ目の二重線（19.75・20.25）を前提にした期待値は、中央の1本へ。
+- `test_tables.py`・`test_table_row_heights.py`・`test_table_pdf.py`・`test_cantilever_improvements.py`（p26 の線幅 0.12 → 0.25）・`test_cantilever_appearance_builder.py`: 同様。`test_table_pdf.py` は継ぎ目が1本・縦線が連続することを検査。
+
+**代表例の PNG 正解（想定どおりの失敗、更新はしていない）**
+
+- `tests/visual/test_representative_golden.py` が失敗する。差は分割する表の行群の境目だけ（1頁 3か所、3頁 10か所、4頁 5か所、各帯は表の全幅・高さ 1〜2 pt。2頁・5頁は画素一致）。旧: 上の行群の下端と下の行群の上端に 0.5 pt の線が2本（計 1.0 pt）。新: 境目の中心に 0.5 pt の1本（FR-026）。頁の先頭・下端の線と外枠は画素一致。正解の作り直しは lead（Step 10）。
+
+**Step 5（tags）への引継ぎ**
+
+- 表の線はすべて `tables._Edges` の `_horizontal`/`_vertical` から `BorderStyle.lines()` で作る。1回の呼出しが「1つの境目・同じ種類で続く列（行）の範囲」で、1本（二重は2本）の `Line` になる。タグ（辺の向き・境目の番号・列/行の範囲・種類・opening/continuing/joining/closing のどれか）はここで付けられる。continuing の補いの線は、下の行群の同じ縦の辺に属する。
+- `Rule` の線は `Rule.measure`、`SideRule` は `SideRule._bars`（実線は塗りの `Rectangle`、破線系は `Line`）で作る。
+- セルの記録に `align`・`valign`・`borders`（辺ごとの種類）がある。`Rule` の part に `rule`、`SideRule` の part に `side_rule_pt`・`side_rule_style`。
+- part を作り直す容器を足すときは、`layout.EDGE_COMMANDS` の4つの命令列も移すこと（`Indent` と同じ）。`Leading` は端の命令を持つ part の行数を変えるとエラー。
+
+**レビュー反映 (2026-10-20, ラウンド 1)**
+
+レビュアー4体（python-reviewer＋type-design、silent-failure-hunter、layout＋PDF、計画整合＋テスト妥当性）。集約（重複は高い方へ統合）: CRITICAL 0 / HIGH 1 / MEDIUM 5 / LOW 12。
+
+- ✅ H（3体）: 繰り返すヘッダーの下の線（境目を中心に引く）が、後の頁でその下に来る本文の行群（自分の上の境目は別の種類か線なし）の中身と重なっても検査を通っていた → 本文の各行群の先頭行のセルは、ヘッダーの下の線の太さの半分の余白も取る（`Table.measure` が `under` を渡す）。
+- ✅ M（3体）: 継ぎ目で縦線の種類が変わる・継ぎ目から始まる所、ヘッダーの下に縦線の揃わない行群が来る所で、`split=True` だけ縦線が半ストローク途切れていた → `LayoutPart.continuing`（先頭でないときに描く。前の part の中まで描ける）を加え、上の行群は縦線を境目で止め、下の行群が境目から半ストロークを補う。旧「続く行群がすべて同じ種類なら延ばす」は廃止。ランダムに作った表で `split=True` と `split=False` の実線のインクの差 0 をレビュアーが確認（ラウンド 2）。
+- ✅ M: 文書の「破線の模様も続く」「split=False と同じ罫線」が不正確 → 破線の模様は行群ごとに始まる、実線はインクが同じ、と書き直した（`docs/api.md`、`Table` の docstring）。
+- ✅ M: `TableBorders` の型注釈が保持する値と違う → 受け取りと保持の型の和で注釈、`frame` プロパティを公開、補助（`_border_style`・`_table_borders`・`_check`）を非公開に。
+- ✅ M: `Rule` が細かいグリッド（pitch 0.01 など）で失敗 → `max(1, rows_for(thickness))` 行を占める。
+- ✅ M: 記録の欠け → この節、計画の Step 4 の ✅、DESIGN.md Key Decisions（2件、`update_design.py`）。代表例の PNG 正解の失敗の理由も上に記録。
+- ⏭ M（layout＋PDF）: 外枠の角・T 字の交わりの小さな欠け → HEAD でも異なる太さの組合せで同じ（`command_bounds` の保守的な線の外形が原因）。直すには公開関数の契約変更が要るため Step 4 では行わず、`docs/api.md` に制約として書き、持ち越し（上）に記録。lead・ユーザーの判断事項。
+- ✅ L（同ラウンドで対応）: 組の形の対応表の重複キーをエラーに／`Decimal`・`Fraction` も「pt widths」の案内（`numbers.Number`）／`borders=` のエラー文に TableBorders／`_runs` の終わりを `stop` と命名・型注釈／`Leading` が端の命令を持つ part の行数を変えないように／`SideRule` が `side_rule_style` を記録／fixture の `_rule_borders` が境目の数を検査／`continuous_table_rules` は接する線だけをつなぐ（隙間を隠さない）／`test_table_row_heights.py` の余白のテストを 1.1 pt の行で `clearance` に戻した／Table の docstring の古い一文。
+- 持ち越し（LOW）: 二重線の角が格子状になる（Excel の二重罫線の角とは違う。方針の判断）／`docs/validation.md:132` の古い記述（Step 10）。
+- Red→Green: `borders-r1-red`（16 failed）→ `borders-r1-green`。
+
+**レビュー反映 (2026-10-20, ラウンド 2)**
+
+レビュアー2体（silent-failure＋python、layout＋PDF）。CRITICAL 0 / HIGH 0 / MEDIUM 1 / LOW 4。
+
+- ✅ M: `Leading` の検査が、行数の変わらない part（`minimum=True` で背の高い行群）まで拒否し、短すぎる指定の `LayoutOverflowError` より先に止まっていた → 新しい行数を先に決め、実際に変わる時だけ拒否。
+- ✅ L: 組の形の対応表のハッシュできないキーを ValueError（引数名付き）に／`True` を「pt widths」と案内しない／`under` の適用範囲（行群の先頭行だけ、ヘッダー自身には効かない）のテスト／`_part_visible` を断片の中の位置で判定（先頭の part は opening、他は continuing も数える）。
+- 検証（layout＋PDF）: ランダムな表で `split=True`/`split=False` の実線インクの差 0（pitch 5 で 1,500 表、pitch 0.01 で 300 表、破線を含む 800 表）、改ページした頁ごとの比較 2,399 頁で差 0、QuarterTurn 375 表で差 0、PDF の線幅・破線は設計表どおり。代表例の差はすべて継ぎ目から 2 pt 以内。
+- Red→Green: `borders-r2-red`（4 failed）・`borders-r2b-red` → `borders-r2-green`・`borders-r2b-green`。
+
+**レビュー反映 (2026-10-20, ラウンド 3)**
+
+レビュアー1体（silent-failure＋python、ラウンド 2 の修正の検証）。CRITICAL 0 / HIGH 0 / MEDIUM 0 / LOW 2（どちらもラウンド 2 の修正由来ではない）。
+
+- ✅ L: prefix の part は必ず本文が続くので joining だけで見えると数える（`_part_visible(..., prefix=True)`）。以前は joining と closing の両方を求め、自作の部品で見出しの予約が過大になり得た。
+- ✅ L: `Leading(overhang=…)` が端の命令の part を拒否する経路・短い overhang で先に溢れる順序、prefix の後の part の continuing を見える扱いにする経路のテストを追加。
+
+**完了（ImplementationLoop）**
+
+- 全ラウンド数 3。指摘の推移: ラウンド 1 HIGH 1 / MEDIUM 5（うち1件は持ち越し）/ LOW 12 → ラウンド 2 MEDIUM 1 / LOW 4 → ラウンド 3 MEDIUM 0 / LOW 2（対応済み）。
+- 最終確認 `--label borders-final`（片持ち梁の PNG 正解と `test_xlsx_*`・`test_xlsx_excel_core.py` を除く全テスト）: **2392 passed、1 failed、18 xfailed**。失敗は代表例の PNG 正解1件だけで、理由は上の「代表例の PNG 正解」（FR-026 の継ぎ目）。xfail はすべて `deferred.DEFERRED` の strict xfail で XPASS 0。カバレッジ（`COVERAGE_FILE=.coverage.borders`、`borders-full-4`）: `borders.py`・`blocks.py`・`containers.py`・`document.py` 100%、`tables.py` 99%、`layout.py` 98%（未到達は以前からの防御の行）。
+
+**持ち越し（lead・ユーザーの判断）**
+
+- 外枠の角や T 字の交わり（細い外枠に太い内側の線など）で、線の端を半ストローク手前で止めるため小さな欠けが残る（細 0.25×0.25 pt、太 0.75×0.75 pt）。HEAD でも異なる太さの組合せでは同じ（`command_bounds` が線の端も半ストローク延ばす保守的な外形のため）。直すには `command_bounds` を butt cap どおりにする契約変更が要る。`docs/api.md` に制約として記載。
+- 破線の模様は行群ごとに初めから始まる（`Line` に模様の開始位置がないため）。`docs/api.md` に制約として記載。
+- `DESIGN.md` FR-020 の備考に `SideRule(block, x, *, width, ...)` が残っている（型付きライターは既存の行を書き換えられないため、lead が直す）。`docs/validation.md:132` の「任意分割表のページ境界をまたぐ線の統合は対象外」も古い（Step 10 の文書更新で）。

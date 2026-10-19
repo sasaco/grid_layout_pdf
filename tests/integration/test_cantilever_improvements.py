@@ -190,7 +190,8 @@ def test_selective_p26_rotated_p30_and_nested_script_native_pdf(tmp_path):
     p26_horizontal = [command for command in pages[0].commands
                       if isinstance(command, Line) and command.y1 == command.y2]
     assert len(p26_horizontal) == 3
-    assert sorted(command.width for command in p26_horizontal) == [.12, 1, 1]
+    # The source's 0.12 pt hairline and 1 pt rules as border styles: hair 0.25 pt, medium 1.0 pt.
+    assert sorted(command.width for command in p26_horizontal) == [.25, 1, 1]
     assert len({(command.x1, command.y1, command.x2, command.y2) for command in p26_horizontal}) == 3
     with pymupdf.open(tmp_path / "normal.pdf") as plain, pymupdf.open(tmp_path / "grid.pdf") as grid:
         assert len(plain) == len(grid) == 3

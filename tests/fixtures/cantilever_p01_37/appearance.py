@@ -587,7 +587,12 @@ def placed_equations(group,geometry,context,width):
 
 
 def continuous_table_rules(commands):
-    """Join Table part seam insets, retaining native lines and intentional gaps."""
+    """Join collinear Table lines of one border style, retaining intentional gaps.
+
+    Lines join only when their stroke width, colour and dash pattern (the
+    border style) agree and they touch or overlap: the library draws a row
+    group seam as one continuous line, so a gap here is a real gap.
+    """
     groups={}
     others=[]
     for command in commands:
@@ -597,12 +602,12 @@ def continuous_table_rules(commands):
         vertical=command.x1==command.x2
         position=command.x1 if vertical else command.y1
         start,stop=sorted((command.y1,command.y2) if vertical else (command.x1,command.x2))
-        key=(vertical,position,command.width,command.color)
+        key=(vertical,position,command.width,command.color,command.dash)
         groups.setdefault(key,[]).append((start,stop,command))
-    for (vertical,position,width,color),segments in groups.items():
+    for (vertical,position,width,color,dash),segments in groups.items():
         merged=[]
         for start,stop,command in sorted(segments,key=lambda segment:segment[0]):
-            if merged and start-merged[-1][1]<=width+1e-7:
+            if merged and start-merged[-1][1]<=1e-7:
                 merged[-1]=(merged[-1][0],max(merged[-1][1],stop),merged[-1][2])
             else:
                 merged.append((start,stop,command))

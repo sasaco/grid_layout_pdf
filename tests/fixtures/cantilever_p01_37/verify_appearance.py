@@ -113,6 +113,22 @@ def _rule_centers(page):
     return result
 
 
+# The original's rule widths and the border style thickness that replaces each
+# (FR-022, FR-027): 0.12 pt hairlines draw as hair 0.25 pt, 0.96 pt rules as
+# medium 1.0 pt. The original's own widths are not a tolerance for the output.
+_SOURCE_RULE_STYLE_THICKNESS = ((.12, .25), (.96, 1.0))
+_SOURCE_RULE_MATCH_PT = .08
+_STYLE_THICKNESS_TOLERANCE_PT = .01
+
+
+def _style_thickness(source_width):
+    """Return the border style thickness assigned to a source rule width, or None."""
+    for width, thickness in _SOURCE_RULE_STYLE_THICKNESS:
+        if abs(source_width - width) <= _SOURCE_RULE_MATCH_PT:
+            return thickness
+    return None
+
+
 def _edge_evidence(box, rules):
     refined = [(value, None) for value in box]
     for index, coordinate in enumerate(box):
@@ -320,7 +336,16 @@ def appearance_report(path, *, source_pages, trace, categories=None, deferred=()
                             label = ("left", "top", "right", "bottom")[edge]
                             compare("table", key, a, w, .20, label + " rule center")
                             if aw is not None and ww is not None:
-                                compare("table", key, aw, ww, .08, label + " rule thickness")
+                                # The original itself is the positive control; output
+                                # rules must have their border style's thickness.
+                                style = ww if trusted else _style_thickness(ww)
+                                if style is None:
+                                    errors.append({"category": "table", "id": key,
+                                                   "detail": label + " original rule width has no border style",
+                                                   "actual": aw, "expected": ww})
+                                else:
+                                    compare("table", key, aw, style, _STYLE_THICKNESS_TOLERANCE_PT,
+                                            label + " rule thickness (border style)")
                             elif ww is not None and aw is None:
                                 errors.append({"category": "table", "id": key,
                                                "detail": label + " original rule is absent"})

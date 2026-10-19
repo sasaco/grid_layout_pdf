@@ -76,8 +76,8 @@ def test_table_rejects_invalid_columns(columns):
 @pytest.mark.parametrize("field,value", [
     ("header_rows", -1), ("header_rows", True), ("header_rows", 1.5), ("header_rows", 2),
     ("numeric_columns", [2]), ("numeric_columns", [True]), ("numeric_columns", [-1]),
-    ("numeric_columns", None), ("border_width", 0), ("border_width", True),
-    ("border_width", float("inf")), ("border_color", (0, 0)),
+    ("numeric_columns", None), ("borders", 0), ("borders", True),
+    ("borders", float("inf")), ("borders", "solid"), ("border_color", (0, 0)),
     ("border_color", (1.1, 0, 0)), ("border_color", (0, float("nan"), 0)),
     ("block_id", 3),
 ])
@@ -177,7 +177,7 @@ def test_empty_cells_minimum_one_row_and_content_growth_reserves_whole_rows(cont
 def test_table_borders_are_inset_merged_and_contained(context):
     from gridlayoutpdf.bounds import command_bounds
     module = api()
-    result = measure_block(module.Table((2, 3), [["", ""]], border_width=1, border_color=(0.2, 0.3, 0.4)), context, 100)
+    result = measure_block(module.Table((2, 3), [["", ""]], borders="medium", border_color=(0.2, 0.3, 0.4)), context, 100)
     lines = result.commands
     assert len(lines) == 5
     assert all(isinstance(line, Line) and line.width == 1 and line.color == (0.2, 0.3, 0.4) for line in lines)
@@ -285,7 +285,8 @@ def test_colspan_and_rowspan_do_not_draw_borders_through_merged_cells(context):
         [module.Cell("", colspan=2)],
         [module.Cell("", rowspan=2), ""], [""],
     ], header_rows=1).measure(context, 100)
-    header_lines = result.prefix[0].commands
+    # The header's lower edge and its side lines join the body below it.
+    header_lines = result.prefix[0].placed(first=True, last=False)
     assert len(header_lines) == 4
     assert not any(line.x1 == line.x2 == 32.16 for line in header_lines)
     body = result.parts[0]
@@ -333,8 +334,10 @@ def test_very_thick_border_is_rejected_and_no_canvas_is_constructed(context, mon
         pytest.fail("Table measurement must not construct a Canvas")
 
     monkeypatch.setattr(canvas, "Canvas", no_canvas)
-    with pytest.raises(LayoutOverflowError, match="border_width"):
-        module.Table((2,), [[""]], border_width=16).measure(context, 100)
+    profile = replace(context.profile, grid=replace(context.profile.grid, pitch_x=0.5))
+    narrow = LayoutContext(context.fonts, profile, context.style)
+    with pytest.raises(LayoutOverflowError, match="border thickness"):
+        module.Table((2,), [[module.Cell("", padding=0)]], borders="thick").measure(narrow, 100)
     assert module.Table((2,), [["safe"]]).measure(context, 100).rows == 2
 
 
@@ -342,7 +345,7 @@ def test_border_cannot_exceed_a_narrow_empty_cell_even_when_whole_table_is_wide(
     module = api()
     profile = replace(context.profile, grid=replace(context.profile.grid, pitch_x=0.5))
     small_grid = LayoutContext(context.fonts, profile, context.style)
-    table = module.Table((1, 10), [[module.Cell("", padding=0), module.Cell("", padding=0)]], border_width=1)
+    table = module.Table((1, 10), [[module.Cell("", padding=0), module.Cell("", padding=0)]], borders="medium")
     with pytest.raises(LayoutOverflowError, match="rows\\[0\\].cells\\[0\\].*border"):
         table.measure(small_grid, 10)
 
@@ -402,13 +405,14 @@ def test_clearance_diagnostic_reports_the_axis_that_is_short(context, padding, a
     """A cell short only vertically must not be described with its width."""
     module = api()
     insets = Insets(0.0, 8.0, 0.0, 8.0) if padding == "vertical_only" else 0.0
-    cell = module.Cell("8", padding=insets, valign="top")
-    table = module.Table((4,), [[cell]], border_width=3.0, block_id="T")
+    # 12.5 pt text reaches the top of its row, inside a thick frame line.
+    cell = module.Cell("8", padding=insets, valign="top", style=TextStyle(size=12.5))
+    table = module.Table((4,), [[cell]], borders="thick", block_id="T")
     with pytest.raises(LayoutOverflowError, match=rf"clearance from border strokes \({axis}\)") as caught:
         table.measure(context, 200.0)
     pitch_y = context.profile.grid.pitch_y
     if axis == "vertical":
         assert caught.value.needed < pitch_y
-        assert caught.value.available == pytest.approx(pitch_y - 6.0, abs=1e-12)
+        assert caught.value.available == pytest.approx(pitch_y - 3.0, abs=1e-12)
     else:
-        assert caught.value.available == pytest.approx(4 * context.profile.grid.pitch_x - 6.0, abs=1e-12)
+        assert caught.value.available == pytest.approx(4 * context.profile.grid.pitch_x - 3.0, abs=1e-12)

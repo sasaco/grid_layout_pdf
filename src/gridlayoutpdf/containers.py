@@ -2,12 +2,13 @@
 
 from dataclasses import KW_ONLY, dataclass, replace
 
+from .borders import BorderStyle, _border_style
 from .errors import LayoutOverflowError
 from .layout import (
-    Block, LayoutContext, LayoutPart, MeasuredBlock, _has_visible_commands,
+    EDGE_COMMANDS, Block, LayoutContext, LayoutPart, MeasuredBlock, _has_visible_commands,
     block_trace, measure_child, measurement_inputs, require_block,
 )
-from .scene import Rectangle
+from .scene import Rectangle, _color
 from .validation import TOLERANCE, _finite_number, _identifier, _integer
 
 
@@ -198,9 +199,10 @@ class Indent:
         child = measure_child(self.block, context, available_width - self.left, f"{location}.block")
 
         def shifted(parts: tuple[LayoutPart, ...]) -> tuple[LayoutPart, ...]:
-            return tuple(replace(part, commands=tuple(command.translated(self.left, 0)
-                                                      for command in part.commands),
-                                 metadata={**part.metadata, "indent_pt": self.left})
+            return tuple(replace(part, metadata={**part.metadata, "indent_pt": self.left},
+                                 **{name: tuple(command.translated(self.left, 0)
+                                                for command in getattr(part, name))
+                                    for name in ("commands", *EDGE_COMMANDS)})
                          for part in parts)
 
         return replace(child, width=child.width + self.left, parts=shifted(child.parts),
@@ -211,17 +213,21 @@ class Indent:
 class SideRule:
     """Draw a vertical rule ``x`` pt from the block's left edge beside every part.
 
-    Each part, prefix included, gets a filled bar of ``width`` over its whole
-    height, so the bars of adjacent parts join on a page and the rule breaks
-    with the page. ``top`` shortens the bar of the first body part and
-    ``bottom`` that of the last one. The child's measurement and flow flags are
-    otherwise unchanged; every part records ``side_rule_pt`` metadata.
+    The rule has a border ``style`` (FR-022), thin by default; ``x`` is the
+    centre of its ink. Each part, prefix included, gets the rule over its
+    whole height. Solid styles are filled bars (two for ``double``, whose
+    centres are 1.0 pt apart), so the bars of adjacent parts join on a page
+    and the rule breaks with the page. Dashed styles are dashed lines kept
+    half a stroke inside each part. ``top`` shortens the rule of the first
+    body part and ``bottom`` that of the last one. The child's measurement and
+    flow flags are otherwise unchanged; every part records ``side_rule_pt``
+    and ``side_rule_style`` (the style's Excel name).
     """
 
     block: Block
     x: float
     _: KW_ONLY
-    width: float = 0.72
+    style: BorderStyle | str = BorderStyle.THIN
     top: float = 0.0
     bottom: float = 0.0
     color: tuple[float, float, float] = (0, 0, 0)
@@ -230,19 +236,33 @@ class SideRule:
     def __post_init__(self) -> None:
         _identifier(self.block_id)
         require_block(self.block)
-        for name in ("x", "width", "top", "bottom"):
+        object.__setattr__(self, "style", _border_style(self.style, "style", allow_none=False))
+        for name in ("x", "top", "bottom"):
             value = _finite_number(getattr(self, name), name)
-            if value < 0 or (name == "width" and value == 0):
-                raise ValueError(f"{name} must be {'positive' if name == 'width' else 'nonnegative'}")
+            if value < 0:
+                raise ValueError(f"{name} must be nonnegative")
             object.__setattr__(self, name, value)
-        if self.x < self.width / 2:
-            raise ValueError("x must leave half the rule width at the left edge")
-        Rectangle(0, 0, self.width, 1, fill=self.color, stroke=False)  # validates the color
+        if self.x < self.style.thickness / 2:
+            raise ValueError("x must leave half the rule thickness at the left edge")
+        object.__setattr__(self, "color", _color(self.color, "color"))
+
+    def _bars(self, top: float, bottom: float, height: float) -> tuple:
+        """Return the rule from ``top`` to ``bottom`` in a part ``height`` pt tall."""
+        style, width = self.style, self.style.stroke_width
+        if not style.dash:
+            return tuple(Rectangle(self.x + offset - width / 2, top, width, bottom - top,
+                                   fill=self.color, stroke=False) for offset in style.offsets)
+        # A stroke's envelope reaches half its width past each end.
+        start, stop = max(top, width / 2), min(bottom, height - width / 2)
+        if stop <= start:
+            raise ValueError(f"{self.block_id or 'SideRule'}: top and bottom leave no dashed rule "
+                             f"in a part of {height} pt")
+        return style.lines(self.x, start, self.x, stop, self.color)
 
     def measure(self, context: LayoutContext, available_width: float) -> MeasuredBlock:
         available_width = measurement_inputs(context, available_width)
         location = self.block_id or "SideRule"
-        right = self.x + self.width / 2
+        right = self.x + self.style.thickness / 2
         if right > available_width + TOLERANCE:
             raise LayoutOverflowError(
                 f"{location}: rule at {self.x} exceeds available width {available_width}",
@@ -252,11 +272,13 @@ class SideRule:
         pitch = child.row_pitch
 
         def ruled(part: LayoutPart, top: float, bottom: float) -> LayoutPart:
-            height = part.rows * pitch - top - bottom
-            if height <= 0:
-                raise ValueError(f"{location}: top and bottom leave no rule in a part of {part.rows * pitch} pt")
-            bar = Rectangle(self.x - self.width / 2, top, self.width, height, fill=self.color, stroke=False)
-            return replace(part, commands=(*part.commands, bar), metadata={**part.metadata, "side_rule_pt": self.x})
+            height = part.rows * pitch
+            if height - top - bottom <= 0:
+                raise ValueError(f"{location}: top and bottom leave no rule in a part of {height} pt")
+            bars = self._bars(top, height - bottom, height)
+            return replace(part, commands=(*part.commands, *bars),
+                           metadata={**part.metadata, "side_rule_pt": self.x,
+                                     "side_rule_style": self.style.value})
 
         last = len(child.parts) - 1
         parts = tuple(ruled(part, self.top if index == 0 else 0.0, self.bottom if index == last else 0.0)
@@ -275,7 +297,9 @@ class Leading:
     ``overhang`` (pt) lets a part exceed ``rows`` by at most that height and
     still advance by ``rows``; its drawing is unchanged and spills into the
     next line, and the excess is recorded as ``overhang_pt`` in its metadata.
-    Repeating prefix parts are rejected, because their advance is ambiguous.
+    Repeating prefix parts are rejected, because their advance is ambiguous,
+    and so is changing the rows of a part with fragment-edge commands (a
+    table's row-group boundaries), which are drawn on its own edges.
     """
 
     block: Block
@@ -307,8 +331,7 @@ class Leading:
             excess = (part.rows - self.rows) * child.row_pitch
             total = excess + part.metadata.get("overhang_pt", 0.0)
             if excess > 0 and total <= self.overhang + TOLERANCE:
-                parts.append(replace(part, rows=self.rows,
-                                     metadata={**part.metadata, "overhang_pt": total}))
+                rows, metadata = self.rows, {**part.metadata, "overhang_pt": total}
             elif excess > 0 and not self.minimum:
                 raise LayoutOverflowError(
                     f"{location}: leading of {self.rows} rows is smaller than a measured "
@@ -317,7 +340,11 @@ class Leading:
                     needed=part.rows * child.row_pitch, available=self.rows * child.row_pitch,
                 )
             else:
-                parts.append(replace(part, rows=max(part.rows, self.rows)))
+                rows, metadata = max(part.rows, self.rows), part.metadata
+            if rows != part.rows and any(getattr(part, name) for name in EDGE_COMMANDS):
+                raise ValueError(f"{location}: leading would move the edge lines of a part "
+                                 f"of {part.rows} rows (a split table's boundaries)")
+            parts.append(replace(part, rows=rows, metadata=metadata))
         return replace(child, parts=tuple(parts), block_id=self.block_id or child.block_id)
 
 

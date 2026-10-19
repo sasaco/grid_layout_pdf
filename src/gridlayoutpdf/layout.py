@@ -75,26 +75,53 @@ def require_block(block) -> None:
         raise ValueError("block must implement measure(context, available_width)")
 
 
+# The commands a part draws only at the edges of the fragment it is placed in.
+EDGE_COMMANDS = ("opening", "continuing", "joining", "closing")
+
+
 @dataclass(frozen=True, slots=True)
 class LayoutPart:
-    """An indivisible vertical unit with commands relative to its top-left."""
+    """An indivisible vertical unit with commands relative to its top-left.
+
+    ``commands`` are always drawn. The fragment-edge commands depend on where
+    the part lands when a block (or a fragment of it after a page split) is
+    placed: ``opening`` only when the part comes first and ``continuing``
+    otherwise, when the previous part lies directly above it; ``closing`` only
+    when it comes last and ``joining`` otherwise, when the next part follows
+    directly. ``joining`` may reach into the next part and ``continuing`` up
+    into the previous one, never past it, so a boundary shared by two parts
+    can be drawn once, on the boundary. Document places every fragment cut by
+    a page break at a page top, so a later part's ``opening`` is drawn only
+    there (FR-026).
+    """
 
     rows: int
     commands: tuple[Command, ...] = ()
     metadata: Mapping[str, object] = field(default_factory=dict)
+    _: KW_ONLY
+    opening: tuple[Command, ...] = ()
+    continuing: tuple[Command, ...] = ()
+    joining: tuple[Command, ...] = ()
+    closing: tuple[Command, ...] = ()
 
     def __post_init__(self) -> None:
         _integer(self.rows, "rows", 1, message="rows must be a positive integer")
-        try:
-            commands = tuple(self.commands)
-        except TypeError as exc:
-            raise ValueError("commands must be an iterable of drawing commands") from exc
-        if any(not isinstance(command, COMMAND_TYPES) for command in commands):
-            raise ValueError("commands must contain supported drawing commands")
+        for name in ("commands", *EDGE_COMMANDS):
+            try:
+                commands = tuple(getattr(self, name))
+            except TypeError as exc:
+                raise ValueError(f"{name} must be an iterable of drawing commands") from exc
+            if any(not isinstance(command, COMMAND_TYPES) for command in commands):
+                raise ValueError(f"{name} must contain supported drawing commands")
+            object.__setattr__(self, name, commands)
         if not isinstance(self.metadata, Mapping):
             raise ValueError("metadata must be a mapping")
-        object.__setattr__(self, "commands", commands)
         object.__setattr__(self, "metadata", freeze_metadata(self.metadata))
+
+    def placed(self, *, first: bool, last: bool) -> tuple[Command, ...]:
+        """Return what the part draws at one position in a placed fragment."""
+        return (*self.commands, *(self.opening if first else self.continuing),
+                *(self.closing if last else self.joining))
 
 
 @dataclass(frozen=True, slots=True)
@@ -104,7 +131,10 @@ class MeasuredBlock:
     min_first/min_last count body parts (display lines), not physical grid rows.
     prefix parts are repeated on every fragment and never count toward those
     minimum line counts. discard_at_page_top drops the block when flow would
-    place it before anything else on a page.
+    place it before anything else on a page. ``commands`` draws the parts as
+    one placed fragment: the first part's ``opening`` and every other part's
+    ``continuing``, the last part's ``closing`` and every other part's
+    ``joining``.
     """
 
     width: float
@@ -173,8 +203,10 @@ class MeasuredBlock:
     def commands(self) -> tuple[Command, ...]:
         commands = []
         rows = 0
-        for part in (*self.prefix, *self.parts):
-            commands.extend(command.translated(0, rows * self.row_pitch) for command in part.commands)
+        parts = (*self.prefix, *self.parts)
+        for index, part in enumerate(parts):
+            placed = part.placed(first=index == 0, last=index == len(parts) - 1)
+            commands.extend(command.translated(0, rows * self.row_pitch) for command in placed)
             rows += part.rows
         return tuple(commands)
 
@@ -278,7 +310,9 @@ def measure_block(block: Block, context: LayoutContext, available_width: float) 
     Only tiny absolute floating-point roundoff is tolerated. Parts may overlap
     internally, but every command's ink/stroke envelope must fit its own part.
     A part whose metadata records ``overhang_pt`` (set by ``Leading``) may
-    extend that far below its last row.
+    extend that far below its last row, ``joining`` commands into the part
+    that follows it and ``continuing`` commands into the part before it,
+    never past that part.
     """
     available_width = measurement_inputs(context, available_width)
     require_block(block)
@@ -311,23 +345,61 @@ def measure_block(block: Block, context: LayoutContext, available_width: float) 
             if overhang < 0:
                 raise ValueError(f"{block_id}.{group_name}[{part_index}] overhang_pt must not be negative")
             height += overhang
-            for command_index, command in enumerate(part.commands):
-                location = f"{block_id}.{group_name}[{part_index}].commands[{command_index}]"
-                try:
-                    bounds = command_bounds(command, context.fonts)
-                except FontError as exc:
-                    raise FontError(f"{location}: {exc}") from exc
-                if (bounds.x < -TOLERANCE or bounds.y < -TOLERANCE
-                        or bounds.right > result.width + TOLERANCE
-                        or bounds.bottom > height + TOLERANCE):
-                    horizontal = (bounds.x < -TOLERANCE
-                                  or bounds.right > result.width + TOLERANCE)
-                    raise LayoutOverflowError(
-                        f"{location}: {type(command).__name__} bounds "
-                        f"({bounds.x}, {bounds.y}, {bounds.right}, {bounds.bottom}) "
-                        f"exceed part (0, 0, {result.width}, {height})",
-                        block_id=block_id,
-                        needed=bounds.width if horizontal else bounds.height,
-                        available=result.width if horizontal else height,
-                    )
+            following = _following_rows(result, group_name, part_index) * result.row_pitch
+            preceding = _preceding_rows(result, group_name, part_index) * result.row_pitch
+            for name in ("commands", *EDGE_COMMANDS):
+                top = -preceding if name == "continuing" else 0.0
+                bottom = height + following if name == "joining" else height
+                for command_index, command in enumerate(getattr(part, name)):
+                    location = f"{block_id}.{group_name}[{part_index}].{name}[{command_index}]"
+                    _check_part_bounds(command, context, location, block_id, result.width, top, bottom)
     return result
+
+
+def _following_rows(measured: MeasuredBlock, group_name: str, index: int) -> int:
+    """Rows of the shortest part that can directly follow a part when it joins.
+
+    Any body part can follow the last prefix part once the block is split;
+    nothing follows the last body part, so its ``joining`` is never drawn.
+    """
+    parts = measured.prefix if group_name == "prefix" else measured.parts
+    if index + 1 < len(parts):
+        return parts[index + 1].rows
+    if group_name == "prefix":
+        return min(part.rows for part in measured.parts)
+    return 0
+
+
+def _preceding_rows(measured: MeasuredBlock, group_name: str, index: int) -> int:
+    """Rows of the shortest part that can lie directly above a continuing part.
+
+    The last prefix part can come before any body part once the block is
+    split; nothing comes before the first prefix part, or before the first
+    body part of a block without a prefix.
+    """
+    parts = measured.prefix if group_name == "prefix" else measured.parts
+    candidates = [parts[index - 1].rows] if index else []
+    if group_name == "parts" and measured.prefix:
+        candidates.append(measured.prefix[-1].rows)
+    return min(candidates, default=0)
+
+
+def _check_part_bounds(command: Command, context: LayoutContext, location: str, block_id: str,
+                       width: float, top: float, bottom: float) -> None:
+    """Require a command's ink/stroke envelope to lie in (0, top, width, bottom)."""
+    try:
+        bounds = command_bounds(command, context.fonts)
+    except FontError as exc:
+        raise FontError(f"{location}: {exc}") from exc
+    if (bounds.x < -TOLERANCE or bounds.y < top - TOLERANCE
+            or bounds.right > width + TOLERANCE
+            or bounds.bottom > bottom + TOLERANCE):
+        horizontal = bounds.x < -TOLERANCE or bounds.right > width + TOLERANCE
+        raise LayoutOverflowError(
+            f"{location}: {type(command).__name__} bounds "
+            f"({bounds.x}, {bounds.y}, {bounds.right}, {bounds.bottom}) "
+            f"exceed part (0, {top}, {width}, {bottom})",
+            block_id=block_id,
+            needed=bounds.width if horizontal else bounds.height,
+            available=width if horizontal else bottom - top,
+        )

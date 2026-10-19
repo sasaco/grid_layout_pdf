@@ -1,12 +1,14 @@
-"""Grid-height paragraph, heading and spacing components."""
+"""Grid-height paragraph, heading, spacing and separator components."""
 
 from dataclasses import KW_ONLY, dataclass, replace
 
+from .borders import BorderStyle, _border_style
+from .errors import LayoutOverflowError
 from .layout import LayoutContext, LayoutPart, MeasuredBlock, measurement_inputs
-from .scene import Text
+from .scene import Color, Text, _color
 from .styles import TextStyle
 from .text import wrap_text
-from .validation import _identifier, _integer
+from .validation import TOLERANCE, _identifier, _integer
 
 
 @dataclass(frozen=True, slots=True)
@@ -103,3 +105,43 @@ class Spacer:
 @dataclass(frozen=True, slots=True)
 class PageBreak:
     """An explicit page-flow marker, consumed by pagination."""
+
+
+@dataclass(frozen=True, slots=True)
+class Rule:
+    """A separator across the body, drawn on a grid-row boundary (FR-026).
+
+    The rule takes one grid row (as many as its thickness needs on a fine
+    grid) and lies along the top boundary of those rows, kept inside them.
+    ``style`` is a border style or its Excel name (thin by default). The line
+    spans the available width, or ``columns`` grid columns from the left edge.
+    """
+
+    style: BorderStyle | str = BorderStyle.THIN
+    _: KW_ONLY
+    columns: int | None = None
+    color: Color = (0, 0, 0)
+    block_id: str = ""
+
+    def __post_init__(self) -> None:
+        object.__setattr__(self, "style", _border_style(self.style, "style", allow_none=False))
+        if self.columns is not None:
+            _integer(self.columns, "columns", 1, message="columns must be a positive integer or None")
+        object.__setattr__(self, "color", _color(self.color, "color"))
+        _identifier(self.block_id)
+
+    def measure(self, context: LayoutContext, available_width: float) -> MeasuredBlock:
+        available_width = measurement_inputs(context, available_width)
+        location = self.block_id or "Rule"
+        width = available_width if self.columns is None else self.columns * context.profile.grid.pitch_x
+        if width > available_width + TOLERANCE:
+            raise LayoutOverflowError(
+                f"{location}: rule width {width} exceeds available width {available_width}",
+                block_id=location, needed=width, available=available_width,
+            )
+        style, half = self.style, self.style.stroke_width / 2
+        centre = style.thickness / 2
+        lines = style.lines(half, centre, width - half, centre, self.color)
+        part = LayoutPart(max(1, context.rows_for(style.thickness)), lines,
+                          {"rule": {"style": style.value, "width_pt": width}})
+        return MeasuredBlock(width, context.profile.grid.pitch_y, (part,), block_id=self.block_id)

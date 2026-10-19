@@ -97,6 +97,7 @@ report = Document(
 | `Paragraph(text, style=None, align='left', ...)` | 日本語の基本禁則と英数字の連続語を保って折り返す |
 | `Heading(text, ...)` | 分割せず、次の可視部品の最小fragmentと同じページに置く |
 | `Spacer(rows, *, discard_at_page_top=False)` | 整数グリッド行の空白。0行も可 |
+| `Rule(style=BorderStyle.THIN, *, columns=None, color=(0, 0, 0))` | 本文を横切る区切り線。1グリッド行（細かいグリッドでは線の太さが入る行数）を占め、その上の境目に罫線の種類で引く。幅は利用可能幅、または`columns`グリッド列。partのmetadataに`rule`（`style`・`width_pt`）を記録する |
 | `PageBreak()` | 明示改ページ。先頭・末尾・連続指定で空ページを増やさない |
 | `Stack(*blocks)` | 縦に並べる。通常フローでは子の分割規則を維持する |
 | `Columns(*blocks, col_spans=(...), gap_cols=1)` | 整数グリッド列幅で横に並べる。全体は分割せず、高さは子の最大値 |
@@ -104,8 +105,8 @@ report = Document(
 | `KeepWithNext(block)` | Headingと同様に、次の可視部品の最小fragmentと同じページに置く。子の分割規則は変えない |
 | `PreferKeepTogether(block)` | 空ページに収まれば次ページへ送って分割を避け、1ページを超えるときだけ合法な位置で分割する |
 | `Indent(block, left)` | 子をleft pt狭く計測し、右へleft pt移す。各partに`indent_pt`を記録する |
-| `Leading(block, rows, *, minimum=False, overhang=0.0)` | 本文の各part（表示行）をrows行にそろえる。不足する行は`LayoutOverflowError`、`minimum=True`では短い行だけ伸ばす。`overhang` ptまでの超過は行送りを保ってはみ出させる。繰返しprefixは拒否 |
-| `SideRule(block, x, *, width=0.72, top=0.0, bottom=0.0, color=(0, 0, 0))` | 子の左端からx ptの位置に、各partの高さ全体の縦線を引く。`top`は最初の本文part、`bottom`は最後の本文partの線を縮める。各partに`side_rule_pt`を記録する |
+| `Leading(block, rows, *, minimum=False, overhang=0.0)` | 本文の各part（表示行）をrows行にそろえる。不足する行は`LayoutOverflowError`、`minimum=True`では短い行だけ伸ばす。`overhang` ptまでの超過は行送りを保ってはみ出させる。繰返しprefixと、断片の端で描く命令を持つpart（分割する表の行群）の行数の変更は`ValueError` |
+| `SideRule(block, x, *, style=BorderStyle.THIN, top=0.0, bottom=0.0, color=(0, 0, 0))` | 子の左端からx ptの位置（線の中心）に、各partの高さ全体の縦線を罫線の種類で引く。`top`は最初の本文part、`bottom`は最後の本文partの線を縮める。各partに`side_rule_pt`と`side_rule_style`（種類のExcel名）を記録する |
 
 `Paragraph.align`はleft/right/center/justify。justifyは最終行と明示改行の直前を自然な字間にし、それ以外の行だけ追加字間を試す。既定上限は1間隔0.05em。上限内で幅を埋められなければ合法な折り返し位置と自然な字間を使う。字形を横へ伸縮しない。
 
@@ -115,10 +116,12 @@ report = Document(
 
 `Spacer(rows, discard_at_page_top=True)`は、LaTeXの`\vspace`（`\vspace*`ではない）のように頁頭で消える空白になる。文書の流し込みで、その頁にまだ何も置かれていない状態（文書の先頭、改ページの直後、頁末に収まらず次頁へ送られた場合を含む）で置こうとすると、行を進めずplacementも記録せずに捨てる。頁の途中では通常どおり行を確保する。印は`MeasuredBlock.discard_at_page_top`に載り、`KeepWithNext`・`KeepTogether`・`PreferKeepTogether`・`Indent`・`Leading`を通しても保たれる。`Stack`・`Columns`の中では全体を1つの部品として計測するため印は外側へ伝わらず、`At`の明示配置では捨てない。既定の`False`では従来どおり頁頭にも空白を残す。
 
-`SideRule(block, x, top=…, bottom=…)`は、式のまとまりを左の縦線で括るときに使う。線は子の各part（繰返しprefixを含む）に、幅`width`の塗りの縦棒（`Rectangle(stroke=False)`）として足すので、インクはpartの中に収まり、同じ頁で続くpartの線はつながる。改ページではその頁の最後のpartで切れ、次の頁の先頭のpartから続く。`top`・`bottom`（pt、有限の非負数）は線の始まりと終わりを行の中で縮め、partの高さを使い切る値は`ValueError`。幅・flag（`keep_with_next`・`discard_at_page_top`など）・分割規則は子のまま保ち、xが子の幅より右なら利用可能幅までの範囲で予約幅を広げ、超えれば`LayoutOverflowError`。いくつかの部品をまとめて括るときは、部品ごとに同じxで包み、最初の部品に`top`、最後の部品に`bottom`を渡す。頁頭で捨てられる`Spacer`を包めば、線も一緒に捨てられる。
+`SideRule(block, x, top=…, bottom=…)`は、式のまとまりを左の縦線で括るときに使う。線の太さは`style`の罫線の種類（既定は細、pt の太さは指定できない）。実線の種類は子の各part（繰返しprefixを含む）に塗りの縦棒（`Rectangle(stroke=False)`、二重は中心間1.0 ptの2本）として足すので、インクはpartの中に収まり、同じ頁で続くpartの線はつながる。破線系の種類は破線の`Line`で、各partの中に線幅の半分だけ内側へ収める。改ページではその頁の最後のpartで切れ、次の頁の先頭のpartから続く。`top`・`bottom`（pt、有限の非負数）は線の始まりと終わりを行の中で縮め、partの高さを使い切る値は`ValueError`。幅・flag（`keep_with_next`・`discard_at_page_top`など）・分割規則は子のまま保ち、xが子の幅より右なら利用可能幅までの範囲で予約幅を広げ、超えれば`LayoutOverflowError`。いくつかの部品をまとめて括るときは、部品ごとに同じxで包み、最初の部品に`top`、最後の部品に`bottom`を渡す。頁頭で捨てられる`Spacer`を包めば、線も一緒に捨てられる。
 
 ```python
-from gridlayoutpdf import SideRule
+from gridlayoutpdf import BorderStyle, Rule, SideRule
+
+separator = Rule(BorderStyle.MEDIUM, columns=20)
 ```
 
 段落は既定で、改ページ前後に表示上の行を2行以上残す。`min_first`／`min_last`で変更できる。グリッドの占有行数と表示上の行数は別に数える。ColumnsやKeepTogether内のStackは全体を分割しないため、大き過ぎる場合は明示エラーになる。
@@ -209,15 +212,56 @@ columnsは表の各列幅をグリッド列数で指定する。numeric_columns�
 
 行高は内容とpaddingから整数グリッド行で求める。rowspanの不足高は最終行へ加える。結合セルで接続した行群を途中で切らず、複数ヘッダー行を次ページにも再掲する。巨大な1セルや行群を内部で分割する機能はない。
 
-罫線は各行群が独立して閉じるように描く。border_widthはその線幅で、同一ページに隣接する行群の境界は2本分の太さに見える。セル内の実字形と罫線の間に余裕がない設定はエラーになる。
+### 罫線の種類
 
-必要な境界だけに罫線を引く場合は、`horizontal_rules`と`vertical_rules`へ線幅のtupleを渡す。水平は行数+1個、垂直は列数+1個で、先頭は上端／左端、末尾は下端／右端。有限の非負値を指定し、0は非描画、Noneは既存のborder_widthによる全面罫線。たとえば4行8列表なら`horizontal_rules=(1, .12, 0, 0, 1)`で上端・ヘッダー境界・下端だけを描ける。色は共通のborder_colorを使う。
+罫線の太さはExcelの罫線の種類`BorderStyle`から選ぶ（pt の太さを直接指定する書き方はない）。値はExcelの名前で、文字列（`"thin"`など）でも渡せる。数値を渡すと`ValueError`。PDFでは次の線で描く。
+
+| 種類 | 線幅 pt | 破線（描く長さ, 空ける長さ, … pt） |
+|---|---|---|
+| `hair`（極細） | 0.25 | 実線 |
+| `thin`（細） | 0.5 | 実線 |
+| `medium`（中） | 1.0 | 実線 |
+| `thick`（太） | 1.5 | 実線 |
+| `double`（二重） | 0.5 を2本 | 実線。線の中心の間隔1.0 pt（隙間0.5 pt、全体1.5 pt） |
+| `dotted` | 0.5 | 0.5, 1.0 |
+| `dashed` | 0.5 | 3.0, 1.5 |
+| `dashDot` | 0.5 | 6.0, 1.5, 1.5, 1.5 |
+| `dashDotDot` | 0.5 | 6.0, 1.5, 1.5, 1.5, 1.5, 1.5 |
+| `mediumDashed` | 1.0 | 6.0, 2.0 |
+| `mediumDashDot` | 1.0 | 6.0, 2.0, 2.0, 2.0 |
+| `mediumDashDotDot` | 1.0 | 6.0, 2.0, 2.0, 2.0, 2.0, 2.0 |
+| `slantDashDot` | 1.0 | 6.0, 1.0, 2.0, 1.0（斜めの切り口は描かない） |
+
+`BorderStyle.thickness`は線の外側から外側までの太さ（二重は1.5 pt）、`stroke_width`・`dash`・`offsets`は1本ごとの線幅・破線・辺の中心線からのずれ、`lines(x1, y1, x2, y2, color)`は水平か垂直の辺の中心線に沿う線（二重は2本の`Line`）を返す。表と区切り線の線は`Table`・`Rule`・`SideRule`だけが描き、利用者が`Line`で描く必要はない。
+
+`Table(..., borders=...)`は辺ごとに罫線の種類か線なし（`None`）を持つ。`borders`は`TableBorders`、全辺に使う1つの`BorderStyle`、または線なしの`None`。既定は全辺が細。
+
+```python
+from gridlayoutpdf import BorderStyle, Table, TableBorders
+
+borders = TableBorders(
+    BorderStyle.THIN,                     # 表全体の既定
+    outer=BorderStyle.MEDIUM,             # 外枠（省略すると既定と同じ）
+    horizontal={1: BorderStyle.DOUBLE},   # 行の境目1本ぶん（0が上端、行数が下端）
+    vertical={2: None},                   # 列の境目1本ぶん（0が左端、列数が右端）
+    horizontal_edges={(3, 1): None},      # 辺1つ：(行の境目, 列)
+    vertical_edges={(0, 1): BorderStyle.HAIR},  # 辺1つ：(行, 列の境目)
+)
+table = Table((8, 8, 8), [["荷重", "G1", "G2"], ["終点", "12.50", "-3.00"], ["起点", "0.00", "4.50"]],
+              header_rows=1, borders=borders)
+```
+
+1つの辺には、書いた順序によらず、より具体的な指定が優先する：辺1つ（`horizontal_edges`・`vertical_edges`）→ 境目1本ぶん（`horizontal`・`vertical`）→ 外枠（`outer`）→ 既定。`frame`は外枠が解決する種類（`outer`を指定しなければ既定）、`resolve(行数, 列数)`は辺ごとの種類（結合セルの内側を消す前）を返す。`horizontal_edges`で一部の列だけの横線を引ける（例：`{(2, c): BorderStyle.THIN for c in range(1, 3)}`）。結合セルの内側の辺は指定があっても引かず、`horizontal_edges`・`vertical_edges`で結合セルの内側の辺を名指すと`ValueError`。表の外の番号も`ValueError`。4つの対応表は不変の`(番号, 種類)`の組として写し取り、その組の形でも受け付ける（同じ番号の重複は`ValueError`）。色は共通の`border_color`を使う。
+
+外枠の線は表の内側に収め、それ以外の線は境目を中心に引く。同じ種類で続く辺は、行群の中では1本の線にまとめる。分割できる表（既定の`split=True`）の行群の境目も1本の線で、同じ頁の中では実線の種類のインクが分割しない表と同じになる（縦線は上の行群が境目で止め、下の行群が境目から始める）。破線の種類では、破線の模様が行群ごとに初めから始まる。改ページで行群の間が切れたときは、上の行群がその頁の下端の線を自分の中に引いて頁を閉じ、次の頁の先頭に来た行群だけが自分の上の線を自分の中に引く。繰り返すヘッダーは自分の下の線（ヘッダーの下の境目の種類）を引き、その下に続く本文の行群は上の線を重ねて引かない。
+
+セルの中身は、出会う可能性のある線から離れていなければならない。行群の上下と表の外枠では線の太さ全体、それ以外の境目では太さの半分だけ離す（二重線・破線も`thickness`で数える）。ヘッダーを繰り返す表では、後の頁でヘッダーの真下に来る本文の各行群の上端も、ヘッダーの下の線の太さの半分だけ離す。足りなければ`LayoutOverflowError`。線のない辺でもセル枠の外へのはみ出しは拒否する。外枠の角やT字の交わりでは、線の端を線幅の半分だけ内側で止めるため小さな欠けが残る。各セルのmetadataには`align`・`valign`と、四辺の辺ごとの種類（`borders`：`top`・`bottom`は列ごと、`left`・`right`は行ごと、線なしは`None`）を記録する。
 
 `row_heights=(...)`は各元行の高さを局所グリッドの正の整数行数で固定する。元の表の行数と同じ個数を指定し、`None`では従来どおり自動計測する。例えば局所`pitch_y=.01`なら`row_heights=(1428, 1428)`は各14.28ptとなる。セルの計測高と上下paddingが指定高を超える場合、`LayoutOverflowError`に必要量・使用可能量・セルIDを含めて停止する。行の拡大や文字の縮小は行わない。rowspanは結合した行の合計高を使い、改ページ時の繰返しヘッダーも指定高を保持する。
 
-結合セルを横切る線は指定があっても描かない。分割・ヘッダー再掲後も元の行列番号を保ち、0指定の断片端へ外枠を補わない。線幅は1ストロークの幅なので、隣接する独立行群の境界には従来と同じ二重線の性質が残る。字形と罫線の余裕は各辺の実線幅で検証し、線がない辺でもセル枠外へのはみ出しは拒否する。
+分割・ヘッダー再掲後も元の行列番号を保ち、線なしの境目の断片端へ外枠を補わない。
 
-`Table(..., split=False)`はヘッダーを含む全行を一つの不可分な表として計測する。同じ境界の罫線を統合し、共有横境界を1本に、連続する縦線を一続きにする。明示行高・結合セル・選択罫線を維持し、ページに入らない表はエラーになる。既定の`split=True`は従来の分割・ヘッダー再掲・行群ごとの罫線を維持する。
+`Table(..., split=False)`はヘッダーを含む全行を一つの不可分な表として計測する。明示行高・結合セル・選択罫線を維持し、ページに入らない表はエラーになる。既定の`split=True`は分割・ヘッダー再掲を行い、同じ頁の中では`split=False`と同じ罫線になる。
 
 ## 密なセルと四辺の余白
 
@@ -342,7 +386,7 @@ Imageは静止PNG/JPEGを対象に、指定枠へ縦横比を保って内接さ�
 
 `render(..., debug_grid=True)`でグリッドを表示できる。`render(..., invariant=True)`（`render_pdf`も同じ）は作成日時と文書IDを書き込まず、同じページから同じbytesのPDFを作る。既定値`False`ではReportLabの日時付きメタデータを保つ。`layout_trace(pages, fonts=None)`は用紙・配置・ローカルアンカー・描画境界をJSON保存可能なdictへ変換する。画像bytesは含めない。ローカルの基線やアンカーは、配置元のx/yと合わせて解釈する。
 
-独自部品は`measure(context, available_width) -> MeasuredBlock`を実装する。計測中にPDF Canvasを触らず、左上原点の相対描画命令をLayoutPartへ入れる。Textのyだけは基線。外側の高さは整数行にし、分割可能な境界ごとにpartを分ける。`measure_block`で型・幅・ピッチ・描画境界を共通検証できる。詳しい責務は[アーキテクチャ](architecture.md)を参照。
+独自部品は`measure(context, available_width) -> MeasuredBlock`を実装する。計測中にPDF Canvasを触らず、左上原点の相対描画命令をLayoutPartへ入れる。`LayoutPart(rows, commands, metadata, *, opening=(), continuing=(), joining=(), closing=())`の4つの命令列は、置かれた断片の中の位置で描くかが決まる：`opening`はそのpartが断片の先頭のとき（改ページで切れた断片は頁の先頭に置かれるので、2つ目以降のpartでは頁の先頭のときだけ）、`continuing`はそれ以外（前のpartがすぐ上にあるとき）、`closing`は断片の最後のとき、`joining`は同じ部品の次のpartがすぐ下に続くとき。`joining`は次のpartの中まで、`continuing`は前のpartの中まで描いてよい（越えれば`LayoutOverflowError`。繰り返すprefixの前後は、分割後に並び得るpartのうち最も低いもので測る）。表は境目を1本の線にするためにこれを使う。部品を包んでpartを作り直す容器は、4つの命令列も一緒に移す（`Indent`と同じ）。Textのyだけは基線。外側の高さは整数行にし、分割可能な境界ごとにpartを分ける。`measure_block`で型・幅・ピッチ・描画境界を共通検証できる。詳しい責務は[アーキテクチャ](architecture.md)を参照。
 
 `Text(x, y, text, style, quarter_turns=0, shear_x=0.0)`は基線原点の周りで文字を90度ずつ反時計回りに回転する。`quarter_turns`は0〜3の整数で、1は紙面上で下から上へ進む文字、2は180度、3は時計回り90度。boolは受け付けない。平行移動しても向きは変わらない。`command_bounds`は変換した実字形の境界を返す。診断JSONは回転文字に`quarter_turns`と`direction`を追加し、既定の水平文字の形式は維持する。
 

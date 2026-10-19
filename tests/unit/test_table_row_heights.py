@@ -7,7 +7,7 @@ import pytest
 
 from gridlayoutpdf import (
     A4_PORTRAIT_REFERENCE, Cell, FontRegistry, GridSpec, LayoutContext, LayoutOverflowError, LayoutPart,
-    Line, MeasuredBlock, PageProfile, QuarterTurn, ReportStyle, Table, Text, TextStyle,
+    Line, MeasuredBlock, PageProfile, QuarterTurn, ReportStyle, Table, TableBorders, Text, TextStyle,
     measure_block,
 )
 
@@ -144,8 +144,9 @@ def test_insufficient_rowspan_reports_summed_capacity(context: LayoutContext) ->
 
 def test_repeat_header_and_split_preserve_source_row_heights_and_sparse_rules(context: LayoutContext) -> None:
     rows = tuple((Cell(FixedContent(5), padding=.5),) for _ in range(4))
+    borders = TableBorders(None, horizontal={0: "medium", 2: "thin", 4: "medium"})
     table = sized_table((2000,), rows, row_heights=(700, 800, 900, 1000), header_rows=1,
-                        horizontal_rules=(1, 0, .5, 0, 1), vertical_rules=(0, 0), block_id="repeat")
+                        borders=borders, block_id="repeat")
     result = measure_block(table, context, 100)
     head, tail = result.split(1600)
     assert head.height == 15 and tail.height == 26
@@ -163,7 +164,8 @@ def test_repeat_header_and_split_preserve_source_row_heights_and_sparse_rules(co
 
 def test_explicit_heights_do_not_bypass_border_clearance(context: LayoutContext) -> None:
     table = sized_table((2000,), ((Cell(FixedContent(1), padding=0),),),
-                        row_heights=(100,), block_id="border")
+                        row_heights=(110,), block_id="border")
+    # 1.1 pt leaves room between the thin frame lines, but not for the content.
     with pytest.raises(LayoutOverflowError, match="clearance"):
         measure_block(table, context, 100)
 
