@@ -47,7 +47,7 @@ def test_source_scripts_use_authored_size_and_baseline_instead_of_larger_default
     node = appearance.SourceScript(appearance.SourceLiteral("S"), subscript=appearance.SourceLiteral("10"))
     box = node.measure(fonts, TextStyle("MS Mincho", size=10))
     text = [c for c in box.commands if isinstance(c, Text)]
-    assert [c.style.size for c in text] == [10, 6.7]
+    assert [c.style.size for c in text] == [10, 6.5]
     assert text[1].y == pytest.approx(1.92)
     assert text[1].x == pytest.approx(5.04)
 
@@ -168,8 +168,9 @@ def test_source_spaces_preserve_script_structure_and_native_word_positions():
     subscript=next(c for c in commands if c.text=="R")
     plus=next(c for c in commands if "+" in c.text)
     assert letter.x+appearance.SourceLiteral(" ").measure(fonts,letter.style).width==pytest.approx(20.16)
-    assert subscript.style.size==6.7 and subscript.y==1.92
-    assert plus.x+appearance.SourceLiteral(" ").measure(fonts,plus.style).width==pytest.approx(33.6168)
+    assert subscript.style.size==6.5 and subscript.y==1.92
+    # FR-023: the 6.5 pt subscript "R" advances 0.1008 pt less than at the former 6.7 pt.
+    assert plus.x+appearance.SourceLiteral(" ").measure(fonts,plus.style).width==pytest.approx(33.516)
 
 
 def test_vertical_open_parenthesis_uses_ink_position_above_the_next_kanji():
@@ -183,7 +184,7 @@ def test_vertical_open_parenthesis_uses_ink_position_above_the_next_kanji():
     measured=cell.measure(appearance.local_context(LayoutContext(fonts,A4_PORTRAIT_REFERENCE,SOURCE_STYLE)),29.1)
     command=next(c for c in measured.commands if isinstance(c,Text))
     ink=appearance.text_ink_bounds(command,fonts)
-    assert command.quarter_turns==3 and command.style.size==9.9
+    assert command.quarter_turns==3 and command.style.size==10.0
     assert ink.x+ink.width/2==pytest.approx(14.04)
     assert ink.y+ink.height/2==pytest.approx(54.46480859375)
     assert ink.bottom<58.59
@@ -210,7 +211,7 @@ def test_semantic_script_run_retains_large_authored_gap_without_flattening():
     commands=appearance.anchored_commands(node,line,fonts,TextStyle("MS Mincho"))
     exponent=next(command for command in commands if command.text=="2")
     assert exponent.x==pytest.approx(241.8)
-    assert exponent.style.size==6.7 and exponent.y==pytest.approx(347.6)
+    assert exponent.style.size==6.5 and exponent.y==pytest.approx(347.6)
 
 
 def test_semantic_script_offsets_preserve_distinct_source_vertical_positions():
@@ -249,7 +250,7 @@ def test_source_table_uses_real_ink_clearance_without_moving_authored_baseline(b
     from gridlayoutpdf import Cell, LayoutOverflowError, Table
     appearance=module("appearance")
     fonts=module("builder").fixture_fonts()
-    style=TextStyle("MS Mincho", size=9.9)
+    style=TextStyle("MS Mincho", size=10)
     original_metrics=fonts.measure("A",style)
     cell=appearance.SourceCell((appearance.SourceLiteral("A"),),(style,),
           ({"start_x":2,"baseline":baseline},),12,block_id="ink-cell")
@@ -290,13 +291,15 @@ def test_cell_cannot_silently_drop_lines_without_matching_styles():
         cell.measure(context,100)
 
 
-@pytest.mark.parametrize("baseline, fits", [(9.0, True), (8.9, False)])
+# At 10 pt (FR-023) the ink of 組合せ rises 209/256 em = 8.1640625 pt above its baseline,
+# so the baselines sit just inside (0.045 pt shift) and outside (0.125 pt) the 0.05 pt limit.
+@pytest.mark.parametrize("baseline, fits", [(9.08, True), (9.0, False)])
 def test_only_documented_header_ink_contact_allows_less_than_point_zero_five_shift(baseline, fits):
     from gridlayoutpdf import LayoutOverflowError, command_bounds
     appearance=module("appearance")
     fonts=module("builder").fixture_fonts()
     ink_fonts=appearance.SourceTableInkFonts(fonts)
-    cell=appearance.SourceCell((appearance.SourceLiteral("組合せ"),),(TextStyle("MS Mincho", size=9.9),),
+    cell=appearance.SourceCell((appearance.SourceLiteral("組合せ"),),(TextStyle("MS Mincho", size=10),),
           ({"start_x":2,"baseline":baseline},),11.34,
           block_id="p30-combinations-md-r0-cell1",clearance=(.061,.961,.061,.061))
     context=appearance.local_context(LayoutContext(ink_fonts,A4_PORTRAIT_REFERENCE,SOURCE_STYLE))
@@ -306,5 +309,15 @@ def test_only_documented_header_ink_contact_allows_less_than_point_zero_five_shi
         return
     measured=cell.measure(context,40)
     text=next(c for c in measured.commands if isinstance(c,Text))
-    assert text.y==pytest.approx(9.043421875)
+    assert text.y==pytest.approx(.961+8.1640625)
     assert command_bounds(text,ink_fonts).y==pytest.approx(.961)
+
+
+@pytest.mark.parametrize("base", [9, 12])
+def test_source_script_rejects_bases_whose_rounded_script_leaves_the_verified_range(base):
+    # FR-023: 10 pt -> 6.5 pt is verified (scripts >= 6.45 pt and < 8 pt in verify.py).
+    appearance = module("appearance")
+    fonts = module("builder").fixture_fonts()
+    node = appearance.SourceScript(appearance.SourceLiteral("S"), subscript=appearance.SourceLiteral("1"))
+    with pytest.raises(ValueError, match="SourceScript"):
+        node.measure(fonts, TextStyle("MS Mincho", size=base))

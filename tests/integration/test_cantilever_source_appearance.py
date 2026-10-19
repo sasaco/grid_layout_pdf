@@ -24,21 +24,86 @@ def module(name):
     return sys.modules[key]
 
 
-@pytest.fixture(scope="module")
-def reproduction(tmp_path_factory):
+REPRODUCTION_PAGES = (1, 3, 21, 30)
+# p30 is deferred to FR-027 Step 9 (2026-10-20 user decision c). p36, the
+# available rotated table, keeps the rotated-table appearance checks running.
+AVAILABLE_REPRODUCTION_PAGES = (*module("deferred").available(REPRODUCTION_PAGES), 36)
+
+
+def _reproduce(path, source_pages):
     builder = module("builder")
     fonts = builder.fixture_fonts()
-    pages = builder.layout_report(fonts, source_pages=(1, 3, 21, 30))
-    path = tmp_path_factory.mktemp("source-appearance") / "normal.pdf"
+    pages = builder.layout_report(fonts, source_pages=source_pages)
     render_pdf(pages, path, fonts)
     return path, layout_trace(pages, fonts)
+
+
+@pytest.fixture(scope="module")
+def reproduction(tmp_path_factory):
+    return _reproduce(tmp_path_factory.mktemp("source-appearance") / "normal.pdf", AVAILABLE_REPRODUCTION_PAGES)
+
+
+DEFERRED_DIFFERENCES = module("deferred").DEFERRED_DIFFERENCES
 
 
 @pytest.mark.parametrize("category", ["font", "indent", "equals", "table", "spacing", "baseline"])
 def test_reproduction_matches_original_appearance(reproduction, category):
     path, trace = reproduction
     report = module("verify_appearance").appearance_report(
-        path, source_pages=(1, 3, 21, 30), trace=trace, categories=(category,))
+        path, source_pages=AVAILABLE_REPRODUCTION_PAGES, trace=trace, categories=(category,),
+        deferred=DEFERRED_DIFFERENCES)
+    assert not report["errors"], json.dumps(report["errors"][:8], ensure_ascii=False)
+    # Only the listed p36 differences are deferred, and each is counted separately.
+    assert report["deferred_count"] == (9 if category == "spacing" else 0)
+    assert sorted(item["id"] for item in report["deferred"]) == (
+        sorted(entry["id"] for entry in DEFERRED_DIFFERENCES) if category == "spacing" else [])
+
+
+def test_deferred_differences_list_the_nine_p36_operator_positions():
+    deferred = module("deferred")
+    assert [entry["id"] for entry in DEFERRED_DIFFERENCES] == [
+        f"p36-combinations-summary.r{row}.c8" for row in range(10, 19)]
+    assert all(entry["page"] == 36 and entry["category"] == "spacing"
+               and entry["detail"] == "operator inline origin" and entry["max_delta_pt"] == .61
+               and entry["reason"] == deferred.DIFFERENCE_REASON for entry in DEFERRED_DIFFERENCES)
+    assert "0.600 pt" in deferred.DIFFERENCE_REASON and "Step 9" in deferred.DIFFERENCE_REASON
+
+
+def test_deferred_differences_never_hide_other_or_resolved_differences(reproduction):
+    path, trace = reproduction
+    verifier = module("verify_appearance")
+
+    def report(deferred):
+        return verifier.appearance_report(path, source_pages=AVAILABLE_REPRODUCTION_PAGES, trace=trace,
+                                          categories=("spacing",), deferred=deferred)
+
+    # Without the list the nine differences are ordinary failures.
+    plain = report(())
+    assert sorted(error["id"] for error in plain["errors"]) == sorted(entry["id"] for entry in DEFERRED_DIFFERENCES)
+    assert plain["deferred_count"] == 0
+    # A listed difference that no longer occurs fails, like a strict xfail.
+    resolved = {**DEFERRED_DIFFERENCES[0], "id": "p36-combinations-summary.r9.c8"}
+    stale = report((*DEFERRED_DIFFERENCES, resolved))
+    assert [(error["category"], error["id"]) for error in stale["errors"]] == [
+        ("deferred", "p36-combinations-summary.r9.c8")]
+    # A difference larger than its listed bound stays a failure, and its entry is unmatched.
+    bounded = report(tuple({**entry, "max_delta_pt": .5} for entry in DEFERRED_DIFFERENCES))
+    assert bounded["deferred_count"] == 0
+    assert sorted(error["category"] for error in bounded["errors"]) == ["deferred"] * 9 + ["spacing"] * 9
+    # Entries for pages outside the comparison, or other categories, are ignored.
+    elsewhere = report(({**DEFERRED_DIFFERENCES[0], "page": 37, "id": "p37-x"},))
+    assert len(elsewhere["errors"]) == 9
+    other = verifier.appearance_report(path, source_pages=AVAILABLE_REPRODUCTION_PAGES, trace=trace,
+                                       categories=("font",), deferred=DEFERRED_DIFFERENCES)
+    assert not other["errors"] and other["deferred_count"] == 0
+    with pytest.raises(ValueError, match="deferred"):
+        report(({"id": "p36-combinations-summary.r10.c8"},))
+
+
+@module("deferred").DEFERRED
+def test_reproduction_with_deferred_pages_matches_original_appearance(tmp_path):
+    path, trace = _reproduce(tmp_path / "with-deferred.pdf", REPRODUCTION_PAGES)
+    report = module("verify_appearance").appearance_report(path, source_pages=REPRODUCTION_PAGES, trace=trace)
     assert not report["errors"], json.dumps(report["errors"][:8], ensure_ascii=False)
 
 
@@ -239,3 +304,28 @@ def test_shifted_operand_is_rejected_even_with_correct_operators(tmp_path):
     relevant = [error for error in report["errors"] if error["id"] == "p03-equation-001"]
     assert relevant and all(error["detail"] == "inline character origin" for error in relevant)
     assert min(error["delta"] for error in relevant) > 2.9
+
+
+@pytest.mark.parametrize("size", [9.5, 10.5])
+def test_native_body_size_off_by_one_step_is_rejected(size, tmp_path):
+    builder = module("builder")
+    fonts = builder.fixture_fonts()
+    pages = builder.layout_report(fonts, source_pages=(1,))
+    commands = list(pages[0].commands)
+    index = next(i for i, command in enumerate(commands) if isinstance(command, Text) and command.style.size == 10)
+    commands[index] = replace(commands[index], style=replace(commands[index].style, size=size))
+    path = tmp_path / "bad-size.pdf"
+    render_pdf([ScenePage(pages[0].profile, tuple(commands), pages[0].metadata)], path, fonts)
+    report = module("verify_appearance").appearance_report(
+        path, source_pages=(1,), trace=layout_trace(pages, fonts), categories=("font",))
+    assert any(error["detail"] == "body size (0.5 pt step)" for error in report["errors"]), report
+
+
+def test_deferred_entries_must_name_a_known_category_and_hold_one_difference_each():
+    verifier = module("verify_appearance")
+    entry = {**DEFERRED_DIFFERENCES[0]}
+    with pytest.raises(ValueError, match="deferred"):
+        verifier._checked_deferrals(({**entry, "category": "spacng"},))
+    error = {"category": entry["category"], "id": entry["id"], "detail": entry["detail"], "delta": .6}
+    remaining, held = verifier._apply_deferrals([error, dict(error)], (entry,), (36,), {"spacing"})
+    assert len(held) == 1 and remaining == [error]

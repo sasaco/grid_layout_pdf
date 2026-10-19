@@ -251,9 +251,9 @@ def _source_table(data,geometry):
             for anchor in anchors:
                 anchor["local_quarter_turns"]=(anchor.get("quarter_turns",geometry.get("turns",0))-geometry.get("turns",0))%4
             profile=profiles.get(descriptor["id"],{})
-            style=TextStyle(profile.get("font",BODY_FONT),profile.get("size",9.9 if geometry.get("turns") else 10))
+            style=TextStyle(profile.get("font",BODY_FONT),profile.get("size",10))
             raw_lines=cell.get("lines",())
-            styles=tuple(replace_style_size(style,size) for size in profile.get("line_sizes",cell.get("line_sizes",[style.size]*len(raw_lines))))
+            styles=tuple(replace(style,size=size) for size in profile.get("line_sizes",cell.get("line_sizes",[style.size]*len(raw_lines))))
             nodes=tuple(appearance.shear_atoms(math_node(line),profile.get("shear_atoms",())) for line in raw_lines)
             content=appearance.SourceCell(nodes,styles,
                                           tuple(anchors),sum(geometry["row_heights"][row_index:row_index+rowspan]),
@@ -282,12 +282,6 @@ def _source_table(data,geometry):
                       sum(round(v/appearance.PITCH) for v in geometry["row_heights"]))
         return QuarterTurn(table,turns=geometry["turns"],local_grid=grid,block_id=data["rotation_id"])
     return table
-
-
-def replace_style_size(style,size):
-    # The source stores nominal font sizes; effective extracted sizes include its matrix.
-    nominal={8.056:8.0,9.058:9.0}.get(size,size)
-    return TextStyle(style.font,nominal,style.tracking)
 
 
 def _table_outer_edges(source):

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from dataclasses import KW_ONLY, dataclass, replace
+from dataclasses import KW_ONLY, dataclass
 import math as _math
 from typing import Protocol, cast, runtime_checkable
 
@@ -11,7 +11,7 @@ from .errors import LayoutError
 from .fonts import FontRegistry, TextMetrics
 from .geometry import Point, Rect
 from .scene import Circle, Command, Line, Polyline, Rectangle, Text
-from .styles import TextStyle, _finite_number
+from .styles import TextStyle, _finite_number, _script_style
 
 
 def _validate_context(fonts: FontRegistry, style: TextStyle) -> None:
@@ -276,7 +276,7 @@ class Script:
         commands = list(base.translated(0, base_y))
         if self.superscript is None and self.subscript is None:
             return MathBox(base.width, ascent, descent, tuple(commands), axis)
-        script_style = replace(style, size=style.size * self.scale)
+        script_style = _script_style(style, self.scale)
         upper_node = cast(MathNode | None, self.superscript)
         lower_node = cast(MathNode | None, self.subscript)
         upper = upper_node.measure(fonts, script_style) if upper_node is not None else None

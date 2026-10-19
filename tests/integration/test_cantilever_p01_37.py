@@ -23,6 +23,17 @@ FIXTURE = ROOT / "tests/fixtures/cantilever_p01_37"
 PROOF = (16, 17, 26, 30, 36)
 
 
+def _fixture_module(name):
+    spec = importlib.util.spec_from_file_location(f"cantilever_p01_37_test_{name}", FIXTURE / f"{name}.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+# p30-p35 are deferred to FR-027 Step 9 (2026-10-20 user decision c).
+deferred = _fixture_module("deferred")
+
+
 @pytest.mark.parametrize("flags,optimize", [("-O", None), ("-OO", None), (None, "1")])
 def test_oracle_refuses_optimized_python(flags, optimize, tmp_path):
     env = os.environ.copy()
@@ -107,21 +118,46 @@ def builder():
     return module
 
 
+def oracle_items(pages):
+    return sum(len(block.get("cells", [block])) for number in pages for block in oracle(number)["blocks"])
+
+
 @pytest.fixture(scope="module")
-def complete_report(builder):
+def reports(builder):
+    """Lay out each page selection once; a layout failure is re-raised each time."""
     fonts = builder.fixture_fonts()
-    pages = builder.layout_report(fonts)
-    return fonts, pages, layout_trace(pages, fonts), builder.load_manifest()
+    cache = {}
+
+    def report(pages):
+        pages = tuple(pages)
+        if pages not in cache:
+            try:
+                laid = builder.layout_report(fonts, source_pages=pages)
+                cache[pages] = (fonts, laid, layout_trace(laid, fonts), builder.load_manifest())
+            except Exception as exc:
+                cache[pages] = exc
+        if isinstance(cache[pages], Exception):
+            raise cache[pages]
+        return cache[pages]
+    return report
 
 
+@pytest.fixture(scope="module")
+def available_report(reports):
+    """p1-p37 without the deferred p30-p35; page indexes below p30 are unchanged."""
+    return reports(deferred.AVAILABLE_PAGES)
+
+
+@pytest.mark.parametrize("selection", deferred.selections(deferred.ALL_PAGES))
 @pytest.mark.parametrize("grid", [False, True])
-def test_all_37_pages_from_public_api(complete_report, verifier, tmp_path, grid):
-    fonts, pages, trace, manifest = complete_report
+def test_all_37_pages_from_public_api(reports, verifier, tmp_path, grid, selection):
+    fonts, pages, trace, manifest = reports(selection)
     path = tmp_path / "complete.pdf"
     render_pdf(pages, path, fonts, debug_grid=grid)
-    result = verifier.verify_pdf(path, source_pages=range(1,38), trace=trace, grid=grid, manifest=manifest)
-    assert result["complete_37_pages"] is True
-    assert result["verified_items"] == 3345
+    result = verifier.verify_pdf(path, source_pages=selection, trace=trace, grid=grid, manifest=manifest)
+    assert result["complete_37_pages"] is (selection == deferred.ALL_PAGES)
+    assert oracle_items(deferred.ALL_PAGES) == 3345
+    assert result["verified_items"] == oracle_items(selection)
 
 
 def test_coordinated_expected_and_native_text_change_fails_original_gate(builder, verifier, tmp_path, monkeypatch):
@@ -157,10 +193,12 @@ def test_coordinated_expected_and_native_text_change_fails_original_gate(builder
         verifier.verify_pdf(path, source_pages=(1,), trace=trace, manifest=builder.load_manifest())
 
 
-def test_scene_images_have_independent_allowlist_validation(complete_report, verifier):
-    _, pages, _, manifest = complete_report
+@pytest.mark.parametrize("selection", deferred.selections(deferred.ALL_PAGES))
+def test_scene_images_have_independent_allowlist_validation(reports, verifier, selection):
+    _, pages, _, manifest = reports(selection)
     assert hasattr(verifier, "verify_scene_images"), "scene image bytes/provenance validation is absent"
-    assert verifier.verify_scene_images(pages, range(1,38), manifest) == 16
+    # All 16 figures are outside the deferred p30-p35.
+    assert verifier.verify_scene_images(pages, selection, manifest) == 16
 
 
 def test_native_reordered_headings_are_rejected(builder,verifier,tmp_path):
@@ -200,8 +238,8 @@ def test_native_reordered_headings_are_rejected(builder,verifier,tmp_path):
 
 
 @pytest.mark.parametrize("corruption", ["result-anchor", "unit-anchor"])
-def test_all_train_equation_shared_anchors(complete_report,verifier,tmp_path,corruption):
-    fonts,pages,trace,manifest = complete_report
+def test_all_train_equation_shared_anchors(available_report,verifier,tmp_path,corruption):
+    fonts,pages,trace,manifest = available_report
     page = pages[2]
     commands = list(page.commands)
     regions,_ = verifier._trace_regions(trace["pages"][2])
@@ -285,8 +323,8 @@ def test_anchor_geometry_rejects_untrusted_original_bytes(verifier, monkeypatch,
             verifier._dense_anchors(chars, rules, regions, "p16")
 
 
-def test_introductory_merged_table_rules(complete_report,verifier,tmp_path):
-    fonts,pages,trace,manifest = complete_report
+def test_introductory_merged_table_rules(available_report,verifier,tmp_path):
+    fonts,pages,trace,manifest = available_report
     page = pages[0]
     commands = list(page.commands)
     regions,_ = verifier._trace_regions(trace["pages"][0])
@@ -300,14 +338,16 @@ def test_introductory_merged_table_rules(complete_report,verifier,tmp_path):
         verifier.verify_pdf(path,source_pages=(1,),trace={"pages":[trace["pages"][0]]},manifest=manifest)
 
 
+@pytest.mark.parametrize("selection", deferred.selections((30, 36)))
 @pytest.mark.parametrize("grid", [False, True])
-def test_complete_rotated_proof_pages_from_public_api(builder, verifier, tmp_path, grid):
+def test_complete_rotated_proof_pages_from_public_api(builder, verifier, tmp_path, grid, selection):
     fonts = builder.fixture_fonts()
-    pages = builder.layout_report(fonts, source_pages=(30, 36))
+    pages = builder.layout_report(fonts, source_pages=selection)
     path = tmp_path / "rotated-proof.pdf"
     render_pdf(pages, path, fonts, debug_grid=grid)
-    result = verifier.verify_pdf(path, source_pages=(30, 36), trace=layout_trace(pages, fonts), grid=grid)
-    assert result["verified_items"] == 574
+    result = verifier.verify_pdf(path, source_pages=selection, trace=layout_trace(pages, fonts), grid=grid)
+    assert oracle_items((30, 36)) == 574
+    assert result["verified_items"] == oracle_items(selection)
     assert result["complete_37_pages"] is False
 
 
@@ -334,10 +374,21 @@ def test_dense_native_pages_preserve_the_union_of_overlapping_original_bars(buil
     assert result["complete_37_pages"] is False
 
 
-@pytest.mark.parametrize("corruption", ["small-body", "lost-rule", "flat-script", "raised-script", "split-merged-cell"])
-def test_native_pdf_visual_corruptions_are_detected(builder, verifier, tmp_path, corruption):
+ROTATED_MERGED_HEADER = {30: "p30-combinations-md.r0.c1", 36: "p36-combinations-summary.r0.c1"}
+
+
+_ROTATED_CORRUPTIONS = ("small-body", "lost-rule", "flat-script", "raised-script", "split-merged-cell")
+
+
+# p36 keeps the rotated-table checks alive; its table has no script runs, so the
+# two script corruptions exist only on the deferred p30.
+@pytest.mark.parametrize("corruption,page", [
+    *((corruption, 36) for corruption in _ROTATED_CORRUPTIONS if "script" not in corruption),
+    *(pytest.param(corruption, 30, marks=deferred.DEFERRED) for corruption in _ROTATED_CORRUPTIONS),
+])
+def test_native_pdf_visual_corruptions_are_detected(builder, verifier, tmp_path, corruption, page):
     fonts = builder.fixture_fonts()
-    pages = builder.layout_report(fonts, source_pages=(30,))
+    pages = builder.layout_report(fonts, source_pages=(page,))
     commands = list(pages[0].commands)
     if corruption == "small-body":
         index = next(i for i, c in enumerate(commands) if isinstance(c, Text) and c.text == "5577.15")
@@ -349,7 +400,7 @@ def test_native_pdf_visual_corruptions_are_detected(builder, verifier, tmp_path,
         commands[index] = replace(commands[index], x=base.x - (2 if corruption == "raised-script" else 0))
     elif corruption == "split-merged-cell":
         regions, _ = verifier._trace_regions(layout_trace(pages, fonts)["pages"][0])
-        x0, y0, x1, y1 = regions["p30-combinations-md.r0.c1"]
+        x0, y0, x1, y1 = regions[ROTATED_MERGED_HEADER[page]]
         commands.append(Line(x0, (y0+y1)/2, x1, (y0+y1)/2, .4))
     else:
         # Drop a real table outer edge, keeping all text, metadata and pages.
@@ -359,8 +410,8 @@ def test_native_pdf_visual_corruptions_are_detected(builder, verifier, tmp_path,
     broken = (ScenePage(pages[0].profile, tuple(commands), pages[0].metadata),)
     path = tmp_path / "broken-layout.pdf"
     render_pdf(broken, path, fonts)
-    with pytest.raises(AssertionError, match="p30.*(size|script|rule|shrunk)"):
-        verifier.verify_pdf(path, source_pages=(30,), trace=layout_trace(pages, fonts))
+    with pytest.raises(AssertionError, match=f"p{page}.*(size|script|rule|shrunk)"):
+        verifier.verify_pdf(path, source_pages=(page,), trace=layout_trace(pages, fonts))
 
 
 @pytest.mark.parametrize("corruption", ["missing-header", "extra-row", "extra-column"])
@@ -454,8 +505,8 @@ def test_source_formula_and_case_totals_are_preserved():
 
 
 @pytest.mark.parametrize("mutation", ["value", "sign", "missing", "duplicate", "swapped-cells"])
-def test_native_cell_content_corruptions(complete_report, verifier, tmp_path, mutation):
-    fonts,pages,trace,manifest = complete_report
+def test_native_cell_content_corruptions(available_report, verifier, tmp_path, mutation):
+    fonts,pages,trace,manifest = available_report
     page = pages[25]
     commands = list(page.commands)
     index = next(i for i,c in enumerate(commands) if isinstance(c,Text) and c.text == "-19.42")
@@ -476,8 +527,8 @@ def test_native_cell_content_corruptions(complete_report, verifier, tmp_path, mu
 
 
 @pytest.mark.parametrize("mutation", ["missing", "duplicate", "enlarged", "relocated", "wrong-page", "unknown-pixels", "full-page"])
-def test_native_image_corruptions_are_rejected_in_scene_and_pdf(complete_report, verifier, tmp_path, mutation):
-    fonts,pages,trace,manifest = complete_report
+def test_native_image_corruptions_are_rejected_in_scene_and_pdf(available_report, verifier, tmp_path, mutation):
+    fonts,pages,trace,manifest = available_report
     page = pages[0]
     commands = list(page.commands)
     index = next(i for i,c in enumerate(commands) if isinstance(c,RasterImage))
@@ -503,8 +554,8 @@ def test_native_image_corruptions_are_rejected_in_scene_and_pdf(complete_report,
         verifier.verify_pdf(path,source_pages=(1,),trace={"pages":[trace["pages"][0]]},manifest=manifest)
 
 
-def test_scene_rejects_reencoded_image_with_identical_pixels(complete_report,verifier):
-    _,pages,_,manifest = complete_report
+def test_scene_rejects_reencoded_image_with_identical_pixels(available_report,verifier):
+    _,pages,_,manifest = available_report
     page = pages[0]
     commands = list(page.commands)
     index = next(i for i,c in enumerate(commands) if isinstance(c,RasterImage))
@@ -519,8 +570,8 @@ def test_scene_rejects_reencoded_image_with_identical_pixels(complete_report,ver
 
 
 @pytest.mark.parametrize("position", ["baseline", "opposite-side", "detached"])
-def test_native_superscript_baseline_contract(complete_report,verifier,tmp_path,position):
-    fonts,pages,trace,manifest = complete_report
+def test_native_superscript_baseline_contract(available_report,verifier,tmp_path,position):
+    fonts,pages,trace,manifest = available_report
     page = pages[8]
     commands = list(page.commands)
     regions,_ = verifier._trace_regions(trace["pages"][8])
@@ -537,28 +588,30 @@ def test_native_superscript_baseline_contract(complete_report,verifier,tmp_path,
         verifier.verify_pdf(path,source_pages=(9,),trace={"pages":[trace["pages"][8]]},manifest=manifest)
 
 
+@pytest.mark.parametrize("number", [36, pytest.param(30, marks=deferred.DEFERRED)])
 @pytest.mark.parametrize("grid", [False,True])
-def test_native_page_number_is_prohibited(complete_report,verifier,tmp_path,grid):
-    fonts,pages,trace,manifest = complete_report
+def test_native_page_number_is_prohibited(reports,verifier,tmp_path,grid,number):
+    fonts,pages,trace,manifest = reports((number,))
     path = tmp_path / "native-number.pdf"
-    render_pdf([pages[29]],path,fonts,debug_grid=grid)
+    render_pdf([pages[0]],path,fonts,debug_grid=grid)
     with pymupdf.open(path) as pdf:
-        pdf[0].insert_text((512,53),"13 - 30",fontsize=11.5)
+        pdf[0].insert_text((512,53),f"13 - {number}",fontsize=11.5)
         pdf.saveIncr()
     with pytest.raises(AssertionError,match="page number"):
-        verifier.verify_pdf(path,source_pages=(30,),trace={"pages":[trace["pages"][29]]},manifest=manifest,grid=grid)
+        verifier.verify_pdf(path,source_pages=(number,),trace={"pages":[trace["pages"][0]]},manifest=manifest,grid=grid)
 
 
+@pytest.mark.parametrize("selection", deferred.selections(deferred.ALL_PAGES))
 @pytest.mark.parametrize("mutation", ["38th-page", "swapped-pages"])
-def test_native_fixed_37_page_contract(complete_report,verifier,tmp_path,mutation):
-    fonts,pages,trace,manifest = complete_report
+def test_native_fixed_37_page_contract(reports,verifier,tmp_path,mutation,selection):
+    fonts,pages,trace,manifest = reports(selection)
     broken = list(pages)
     if mutation == "38th-page": broken.append(ScenePage(pages[-1].profile))
     else: broken[0],broken[1] = broken[1],broken[0]
     path = tmp_path / "native-order.pdf"
     render_pdf(broken,path,fonts)
     with pytest.raises(AssertionError,match="page count|p01"):
-        verifier.verify_pdf(path,source_pages=range(1,38),trace=trace,manifest=manifest)
+        verifier.verify_pdf(path,source_pages=selection,trace=trace,manifest=manifest)
 
 
 def test_source_controls_exercise_all_five_complete_oracles(verifier, tmp_path):

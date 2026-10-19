@@ -176,7 +176,14 @@ class SourceScript:
         base = self.base.measure(fonts,style)
         commands = list(base.commands)
         width,ascent,descent=base.width,base.ascent,base.descent
-        script_size = 6.6 if abs(style.size-9.9)<.01 else round(style.size*.67,1)
+        # The source's own 0.67 script ratio, at the nearest 0.5 pt step (FR-023):
+        # 10 pt -> 6.5 pt (the original's 6.6/6.7 pt).
+        script_size = math.floor(style.size*.67*2+.5)/2
+        if not 6.45 <= script_size < 8:
+            # verify.py reads scripts as >= 6.45 pt and < 8 pt; accept only scripts in that range
+            # (the fixture's scripts all have a 10 pt base, giving 6.5 pt).
+            raise ValueError(f"SourceScript: a {style.size} pt base gives a {script_size} pt script "
+                             "outside the verified 6.5-7.5 pt range")
         script_style=replace(style,size=script_size)
         for node,y,offset in ((self.superscript,self.superscript_y,self.superscript_x),
                               (self.subscript,self.subscript_y,self.subscript_x)):
@@ -234,7 +241,8 @@ class SourceCell:
                     actual=(min(b.x for b in bounds),min(b.y for b in bounds),max(b.right for b in bounds),max(b.bottom for b in bounds))
                     if vertical:
                         xmin,ymin,xmax,ymax=vertical["glyph_bounds"]
-                        scale=vertical["size"]/vertical["units_per_em"]
+                        # Source glyph bounds are at the measured source size, not the drawn size.
+                        scale=vertical["source_size"]/vertical["units_per_em"]
                         source_box=(source_box[0]+xmin*scale,source_box[1]-ymax*scale*vertical["matrix_y"],
                                     source_box[0]+xmax*scale,source_box[1]-ymin*scale*vertical["matrix_y"])
                     dx=(source_box[0]+source_box[2]-actual[0]-actual[2])/2

@@ -222,6 +222,25 @@ def test_script_uses_explicit_size_ratio_and_separates_superscript_subscript():
     assert Script("x").measure(FONTS, STYLE) == Literal("x").measure(FONTS, STYLE)
 
 
+def test_script_sizes_are_exempt_from_the_half_point_rule():
+    """FR-023: 12 pt x 0.65 = 7.8 pt and nested scripts are built internally."""
+    style = TextStyle(size=12)
+    box = Script("x", superscript=Script("y", superscript="z"), subscript="i").measure(FONTS, style)
+    sizes = {c.text: c.style.size for c in box.commands if isinstance(c, Text)}
+    assert sizes["x"] == 12
+    assert sizes["y"] == pytest.approx(7.8)
+    assert sizes["i"] == pytest.approx(7.8)
+    assert sizes["z"] == pytest.approx(12 * .65 * .65)
+    assert all(c.style.font == style.font for c in box.commands if isinstance(c, Text))
+    with pytest.raises(ValueError, match=r"multiple of 0\.5 pt"):
+        TextStyle(size=sizes["y"])
+
+
+def test_explicit_script_scale_may_produce_a_size_off_the_half_point_steps():
+    box = Script("x", superscript="2", scale=.66).measure(FONTS, TextStyle(size=9.5))
+    assert box.commands[1].style.size == pytest.approx(9.5 * .66)
+
+
 def test_fraction_in_exponent_keeps_its_script_context_size():
     node = Script(Fraction("a", "b"), superscript=Fraction("1", "2"))
     box = node.measure(FONTS, STYLE)
@@ -491,3 +510,30 @@ def test_math_nodes_report_invalid_style_as_value_error(node, invalid):
 def test_math_nodes_report_missing_font_measurer_even_when_empty(node):
     with pytest.raises(ValueError, match="fonts"):
         node.measure(None, STYLE)
+
+
+class _RestyledLiteral:
+    """A custom MathNode that changes only font and tracking (FR-023 review H1)."""
+
+    def __init__(self, text, **changes):
+        self.text, self.changes = text, changes
+
+    def measure(self, fonts, style):
+        from dataclasses import replace as restyle
+        return Literal(self.text).measure(fonts, restyle(style, **self.changes))
+
+
+@pytest.mark.parametrize("changes", [{"font": "IPAexゴシック"}, {"tracking": .2}])
+def test_custom_nodes_may_restyle_scripts_without_changing_their_size(changes):
+    box = Script("M", _RestyledLiteral("max", **changes), Script("x", _RestyledLiteral("n", **changes)),
+                 ).measure(FONTS, TextStyle(size=12))
+    sizes = sorted(c.style.size for c in box.commands if isinstance(c, Text))
+    assert sizes == pytest.approx([12 * .65 * .65, 12 * .65, 12 * .65, 12])
+    for command in box.commands:
+        if isinstance(command, Text) and command.text in ("max", "n"):
+            assert all(getattr(command.style, key) == value for key, value in changes.items())
+
+
+def test_custom_nodes_cannot_choose_an_off_step_size_inside_a_script():
+    with pytest.raises(ValueError, match=r"multiple of 0\.5 pt"):
+        Script("M", _RestyledLiteral("max", size=7.7)).measure(FONTS, TextStyle(size=12))

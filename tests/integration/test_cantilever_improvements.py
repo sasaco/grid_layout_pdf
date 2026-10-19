@@ -117,11 +117,12 @@ def test_all_16_source_figures_preserve_physical_snapshot_and_provenance():
         assert measured.parts[0].metadata["source_page"] == asset["source_page"]
 
 
+# p30 is deferred to FR-027 Step 9 (2026-10-20 user decision c); p1, p26, p36 still run.
+@pytest.mark.parametrize("selected", _module("deferred").selections((1, 26, 30, 36)))
 @pytest.mark.parametrize("grid", [False, True])
-def test_migrated_fixed_pages_preserve_original_content_and_appearance(tmp_path, grid):
+def test_migrated_fixed_pages_preserve_original_content_and_appearance(tmp_path, grid, selected):
     builder = _module("builder")
     fonts = builder.fixture_fonts()
-    selected = (1, 26, 30, 36)
     pages = builder.layout_report(fonts, source_pages=selected)
     assert len(pages) == len(selected)
     # The accepted PageFrame reserves all 48 available rows; actual content
@@ -134,7 +135,11 @@ def test_migrated_fixed_pages_preserve_original_content_and_appearance(tmp_path,
     content = _module("verify").verify_pdf(output, source_pages=selected, trace=trace,
                                           manifest=builder.load_manifest(), grid=grid)
     assert content["source_order"]["source_pages"] == list(selected)
-    assert _module("verify_appearance").verify_appearance(output, source_pages=selected, trace=trace)["error_count"] == 0
+    # Only the listed p36 operator positions are deferred to Step 9 (FR-027).
+    appearance = _module("verify_appearance").verify_appearance(
+        output, source_pages=selected, trace=trace, deferred=_module("deferred").DEFERRED_DIFFERENCES)
+    assert appearance["error_count"] == 0
+    assert appearance["deferred_count"] == 9
 
 
 def _nested_script_table():

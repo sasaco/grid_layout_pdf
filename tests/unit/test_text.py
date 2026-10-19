@@ -259,9 +259,12 @@ def test_text_line_is_immutable_and_validated(fonts):
 
 
 def test_wrap_tolerates_only_floating_point_roundoff_at_width_boundary(fonts):
-    assert [line.text for line in wrap_text("日本語", fonts, TextStyle(size=.1), .3)] == ["日本語"]
-    assert [line.text for line in wrap_text("日本語", fonts, TextStyle(size=.1), .299)] == ["日本", "語"]
-    assert [line.text for line in wrap_text("日本語", fonts, TextStyle(size=1.1), 3.3)] == ["日本語"]
+    # 0.5 pt steps (FR-023) whose measured width exceeds the exact width by roundoff.
+    assert fonts.measure("日本語", TextStyle(size=4.5)).width > 13.5
+    assert fonts.measure("日本語", TextStyle(size=9)).width > 27
+    assert [line.text for line in wrap_text("日本語", fonts, TextStyle(size=4.5), 13.5)] == ["日本語"]
+    assert [line.text for line in wrap_text("日本語", fonts, TextStyle(size=4.5), 13.499)] == ["日本", "語"]
+    assert [line.text for line in wrap_text("日本語", fonts, TextStyle(size=9), 27)] == ["日本語"]
 
 
 def test_cjk_numerals_are_breakable_but_fullwidth_latin_numbers_are_words(fonts):
@@ -277,3 +280,11 @@ def test_a_decimal_point_or_digit_group_separator_between_digits_is_not_a_break(
     # A separator not between two digits still allows the break after it.
     assert [line.text for line in wrap_text("日本語2.日本", fonts, TextStyle(), 45)] == ["日本語2.", "日本"]
     assert [line.text for line in wrap_text("日本語、200", fonts, TextStyle(), 45)] == ["日本語、", "200"]
+
+
+def test_fit_tracking_accepts_a_script_style_and_keeps_its_size(fonts):
+    from gridlayoutpdf.styles import _script_style
+    script = _script_style(TextStyle(size=12), .65)
+    target = fonts.measure("ab", script).width + .1
+    fitted = fit_tracking("ab", fonts, script, target)
+    assert fitted.size == script.size and fitted.tracking > script.tracking

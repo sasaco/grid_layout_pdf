@@ -8,6 +8,7 @@ the two PDFs. A self-generated golden is not source appearance evidence.
 from hashlib import sha256
 import importlib.util
 import json
+import math
 from pathlib import Path
 import re
 import struct
@@ -72,6 +73,11 @@ def _characters(page, *, trusted_source=False):
             for char in span["chars"] if not char["c"].isspace() and char["c"] != "※"]
 
 
+def _half_point_size(size):
+    """Read a size at the library's 0.5 pt step (FR-023): 9.9/9.8 -> 10, 9.058 -> 9, 8.056 -> 8."""
+    return math.floor(size * 2 + .5) / 2
+
+
 def _family(name):
     return re.sub(r"[^a-z0-9]", "", re.sub(r"^[A-Z]{6}\+", "", name).lower())
 
@@ -128,8 +134,62 @@ def _edge_evidence(box, rules):
     return refined
 
 
-def appearance_report(path, *, source_pages, trace, categories=None):
-    """Return all mismatches so a failed full-page repair is diagnosable."""
+_DEFERRED_KEYS = {"page", "id", "category", "detail", "max_delta_pt", "reason"}
+_CATEGORIES = {"font", "indent", "equals", "table", "spacing", "baseline"}
+
+
+def _checked_deferrals(deferred):
+    entries = tuple(deferred)
+    for entry in entries:
+        if not isinstance(entry, dict) or set(entry) != _DEFERRED_KEYS:
+            raise ValueError(f"deferred difference must have exactly {sorted(_DEFERRED_KEYS)}: {entry!r}")
+        if (type(entry["page"]) is not int or not 1 <= entry["page"] <= 37
+                or not all(isinstance(entry[key], str) and entry[key] for key in ("id", "category", "detail", "reason"))
+                or isinstance(entry["max_delta_pt"], bool) or not isinstance(entry["max_delta_pt"], (int, float))
+                or not 0 < entry["max_delta_pt"] < math.inf
+                or not entry["id"].startswith(f"p{entry['page']:02}-")
+                or entry["category"] not in _CATEGORIES):
+            raise ValueError(f"invalid deferred difference: {entry!r}")
+    keys = [(entry["id"], entry["category"], entry["detail"]) for entry in entries]
+    if len(set(keys)) != len(keys):
+        raise ValueError("deferred differences must be unique")
+    return entries
+
+
+def _apply_deferrals(errors, deferred, selected, enabled):
+    """Move only listed, bounded differences out of ``errors``; a listed one that is absent fails.
+
+    Each listed entry holds at most one difference; a second matching difference stays an error.
+    """
+    active = [entry for entry in deferred if entry["page"] in selected and entry["category"] in enabled]
+    remaining, held, matched = [], [], set()
+    for error in errors:
+        entry = next((entry for entry in active if id(entry) not in matched
+                      and (error.get("id"), error.get("category"), error.get("detail"))
+                      == (entry["id"], entry["category"], entry["detail"])
+                      and "delta" in error and error["delta"] <= entry["max_delta_pt"]), None)
+        if entry is None:
+            remaining.append(error)
+        else:
+            held.append({**error, "reason": entry["reason"]})
+            matched.add(id(entry))
+    for entry in active:
+        if id(entry) not in matched:
+            remaining.append({"category": "deferred", "id": entry["id"], "detail":
+                              f"deferred {entry['category']} difference '{entry['detail']}' no longer occurs; "
+                              "remove it from deferred.py"})
+    return remaining, held
+
+
+def appearance_report(path, *, source_pages, trace, categories=None, deferred=()):
+    """Return all mismatches so a failed full-page repair is diagnosable.
+
+    ``deferred`` lists individual known differences (see ``deferred.py``). A
+    listed difference is reported under ``deferred`` instead of ``errors`` only
+    when its id, category and detail match and its delta is within its bound;
+    a listed difference that does not occur is an error.
+    """
+    deferred = _checked_deferrals(deferred)
     selected = tuple(source_pages)
     if not selected or selected != tuple(sorted(set(selected))) or any(type(n) is not int or not 1 <= n <= 37 for n in selected):
         raise ValueError("source_pages must be unique increasing pages in 1..37")
@@ -158,8 +218,9 @@ def appearance_report(path, *, source_pages, trace, categories=None):
         for index, number in enumerate(selected):
             reference_page = source[number - 1]
             actual_page = output[number - 1] if Path(path).resolve() == source_path.resolve() else output[index]
+            trusted = Path(path).resolve() == source_path.resolve()
             wanted_chars = _characters(reference_page, trusted_source=True)
-            actual_chars = _characters(actual_page, trusted_source=Path(path).resolve() == source_path.resolve())
+            actual_chars = _characters(actual_page, trusted_source=trusted)
             expected = json.loads((FIXTURE / f"expected/p{number:02}.json").read_text(encoding="utf-8"))
             regions = (_content._trace_regions(trace["pages"][index])[0] if "pages" in trace
                        else trace["oracle_regions"][index])
@@ -217,7 +278,12 @@ def appearance_report(path, *, source_pages, trace, categories=None):
                                 return char["bbox"][3] - char["bbox"][1]
                             compare("font", key, inline_extent(a), inline_extent(w), .20, "glyph inline extent")
                             if a["size"] >= 8 and w["size"] >= 8:
-                                compare("font", key, a["size"], w["size"], .16, "body size")
+                                # FR-023/FR-027: the original's size is read at its 0.5 pt
+                                # step. Output sizes are compared unrounded; the original
+                                # compared with itself (positive control) is read the same way.
+                                actual_size = _half_point_size(a["size"]) if trusted else a["size"]
+                                compare("font", key, actual_size, _half_point_size(w["size"]), .02,
+                                        "body size (0.5 pt step)")
                     if actual and not table and "indent" in enabled:
                         actual_lines = _content._ordered_lines(actual, direction)
                         source_lines = _content._ordered_lines(wanted, direction)
@@ -258,12 +324,14 @@ def appearance_report(path, *, source_pages, trace, categories=None):
                             elif ww is not None and aw is None:
                                 errors.append({"category": "table", "id": key,
                                                "detail": label + " original rule is absent"})
+    errors, held = _apply_deferrals(errors, deferred, selected, enabled)
     return {"source_pages": list(selected), "checks": counts, "max_delta_pt": maxima,
-            "error_count": len(errors), "errors": errors, "source_sha256": manifest["source"]["sha256"]}
+            "error_count": len(errors), "errors": errors, "deferred_count": len(held), "deferred": held,
+            "source_sha256": manifest["source"]["sha256"]}
 
 
-def verify_appearance(path, *, source_pages, trace):
-    report = appearance_report(path, source_pages=source_pages, trace=trace)
+def verify_appearance(path, *, source_pages, trace, deferred=()):
+    report = appearance_report(path, source_pages=source_pages, trace=trace, deferred=deferred)
     if report["errors"]:
         sample = json.dumps(report["errors"][:8], ensure_ascii=False)
         raise ValueError(f"原本の外観不一致: {report['error_count']} differences; {sample}")

@@ -14,7 +14,7 @@
     }
   },
   "body_size": 10,
-  "rotated_body_size": 9.9,
+  "rotated_body_size": 10.0,
   "spacing_ratio": 0.008,
   "script_size_ratio": 0.67,
   "subscript_offset": 1.92,
@@ -5798,95 +5798,95 @@
     },
     "p30-combinations-md.r0.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r0.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r0.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r0.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r0.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r0.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r1.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r1.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r1.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r1.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r1.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r1.c6": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r1.c7": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r1.c8": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r1.c9": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r2.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r2.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r2.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r2.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r2.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r2.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r2.c6": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r2.c7": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r2.c8": {
       "font": "MS Mincho",
@@ -5898,7 +5898,7 @@
     },
     "p30-combinations-md.r2.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r2.c11": {
       "font": "MS Mincho",
@@ -5906,43 +5906,43 @@
     },
     "p30-combinations-md.r2.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r2.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r3.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r3.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r3.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r3.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r3.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r3.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r3.c6": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r3.c7": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r3.c8": {
       "font": "MS Mincho",
@@ -5954,51 +5954,51 @@
     },
     "p30-combinations-md.r3.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r3.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r3.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r3.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r4.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r4.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r4.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r4.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r4.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r4.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r4.c6": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r4.c7": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r4.c8": {
       "font": "MS Mincho",
@@ -6010,51 +6010,51 @@
     },
     "p30-combinations-md.r4.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r4.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r4.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r4.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r5.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r5.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r5.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r5.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r5.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r5.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r5.c6": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r5.c7": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r5.c8": {
       "font": "MS Mincho",
@@ -6066,51 +6066,51 @@
     },
     "p30-combinations-md.r5.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r5.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r5.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r5.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r6.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r6.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r6.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r6.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r6.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r6.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r6.c6": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r6.c7": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r6.c8": {
       "font": "MS Mincho",
@@ -6122,51 +6122,51 @@
     },
     "p30-combinations-md.r6.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r6.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r6.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r6.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r7.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r7.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r7.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r7.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r7.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r7.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r7.c6": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r7.c7": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r7.c8": {
       "font": "MS Mincho",
@@ -6178,35 +6178,35 @@
     },
     "p30-combinations-md.r7.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r7.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r7.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r7.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r8.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r8.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r8.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r8.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r8.c4": {
       "font": "MS Mincho",
@@ -6222,7 +6222,7 @@
     },
     "p30-combinations-md.r8.c7": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r8.c8": {
       "font": "MS Mincho",
@@ -6234,15 +6234,15 @@
     },
     "p30-combinations-md.r8.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r8.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r8.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r8.c13": {
       "font": "MS Mincho",
@@ -6250,19 +6250,19 @@
     },
     "p30-combinations-md.r9.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r9.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r9.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r9.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r9.c4": {
       "font": "MS Mincho",
@@ -6290,15 +6290,15 @@
     },
     "p30-combinations-md.r9.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r9.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r9.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r9.c13": {
       "font": "MS Mincho",
@@ -6306,27 +6306,27 @@
     },
     "p30-combinations-md.r10.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r10.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r10.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r10.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r10.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r10.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r10.c6": {
       "font": "MS Mincho",
@@ -6338,10 +6338,10 @@
     },
     "p30-combinations-md.r10.c8": {
       "font": "MS Mincho",
-      "size": 9.9,
+      "size": 10.0,
       "line_sizes": [
-        9.8,
-        9.9
+        10.0,
+        10.0
       ]
     },
     "p30-combinations-md.r10.c9": {
@@ -6350,43 +6350,43 @@
     },
     "p30-combinations-md.r10.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r10.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r10.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r10.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r11.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r11.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r11.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r11.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r11.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r11.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r11.c6": {
       "font": "MS Mincho",
@@ -6398,10 +6398,10 @@
     },
     "p30-combinations-md.r11.c8": {
       "font": "MS Mincho",
-      "size": 9.9,
+      "size": 10.0,
       "line_sizes": [
-        9.8,
-        9.9
+        10.0,
+        10.0
       ]
     },
     "p30-combinations-md.r11.c9": {
@@ -6410,43 +6410,43 @@
     },
     "p30-combinations-md.r11.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r11.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r11.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r11.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r12.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r12.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r12.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r12.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r12.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r12.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r12.c6": {
       "font": "MS Mincho",
@@ -6458,10 +6458,10 @@
     },
     "p30-combinations-md.r12.c8": {
       "font": "MS Mincho",
-      "size": 9.9,
+      "size": 10.0,
       "line_sizes": [
-        9.8,
-        9.9
+        10.0,
+        10.0
       ]
     },
     "p30-combinations-md.r12.c9": {
@@ -6470,39 +6470,39 @@
     },
     "p30-combinations-md.r12.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r12.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r12.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r12.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r13.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r13.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r13.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r13.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r13.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r13.c5": {
       "font": "MS Mincho",
@@ -6518,10 +6518,10 @@
     },
     "p30-combinations-md.r13.c8": {
       "font": "MS Mincho",
-      "size": 9.9,
+      "size": 10.0,
       "line_sizes": [
-        9.8,
-        9.9
+        10.0,
+        10.0
       ]
     },
     "p30-combinations-md.r13.c9": {
@@ -6530,39 +6530,39 @@
     },
     "p30-combinations-md.r13.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r13.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r13.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r13.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r14.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r14.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r14.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r14.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r14.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r14.c5": {
       "font": "MS Mincho",
@@ -6578,10 +6578,10 @@
     },
     "p30-combinations-md.r14.c8": {
       "font": "MS Mincho",
-      "size": 9.9,
+      "size": 10.0,
       "line_sizes": [
-        9.8,
-        9.9
+        10.0,
+        10.0
       ]
     },
     "p30-combinations-md.r14.c9": {
@@ -6590,39 +6590,39 @@
     },
     "p30-combinations-md.r14.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r14.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r14.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r14.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r15.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r15.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r15.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r15.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r15.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r15.c5": {
       "font": "MS Mincho",
@@ -6638,10 +6638,10 @@
     },
     "p30-combinations-md.r15.c8": {
       "font": "MS Mincho",
-      "size": 9.9,
+      "size": 10.0,
       "line_sizes": [
-        9.8,
-        9.9
+        10.0,
+        10.0
       ]
     },
     "p30-combinations-md.r15.c9": {
@@ -6650,31 +6650,31 @@
     },
     "p30-combinations-md.r15.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r15.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r15.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r15.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r16.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r16.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r16.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r16.c3": {
       "font": "MS Mincho",
@@ -6682,11 +6682,11 @@
     },
     "p30-combinations-md.r16.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r16.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r16.c6": {
       "font": "MS Mincho",
@@ -6698,10 +6698,10 @@
     },
     "p30-combinations-md.r16.c8": {
       "font": "MS Mincho",
-      "size": 9.9,
+      "size": 10.0,
       "line_sizes": [
-        9.8,
-        9.9
+        10.0,
+        10.0
       ]
     },
     "p30-combinations-md.r16.c9": {
@@ -6710,31 +6710,31 @@
     },
     "p30-combinations-md.r16.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r16.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r16.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r16.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r17.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r17.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r17.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r17.c3": {
       "font": "MS Mincho",
@@ -6742,11 +6742,11 @@
     },
     "p30-combinations-md.r17.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r17.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r17.c6": {
       "font": "MS Mincho",
@@ -6758,10 +6758,10 @@
     },
     "p30-combinations-md.r17.c8": {
       "font": "MS Mincho",
-      "size": 9.9,
+      "size": 10.0,
       "line_sizes": [
-        9.8,
-        9.9
+        10.0,
+        10.0
       ]
     },
     "p30-combinations-md.r17.c9": {
@@ -6770,31 +6770,31 @@
     },
     "p30-combinations-md.r17.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r17.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r17.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r17.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r18.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r18.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r18.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r18.c3": {
       "font": "MS Mincho",
@@ -6802,11 +6802,11 @@
     },
     "p30-combinations-md.r18.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r18.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r18.c6": {
       "font": "MS Mincho",
@@ -6818,10 +6818,10 @@
     },
     "p30-combinations-md.r18.c8": {
       "font": "MS Mincho",
-      "size": 9.9,
+      "size": 10.0,
       "line_sizes": [
-        9.8,
-        9.9
+        10.0,
+        10.0
       ]
     },
     "p30-combinations-md.r18.c9": {
@@ -6830,35 +6830,35 @@
     },
     "p30-combinations-md.r18.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r18.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r18.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r18.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r19.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r19.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r19.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r19.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r19.c4": {
       "font": "MS Mincho",
@@ -6878,7 +6878,7 @@
     },
     "p30-combinations-md.r19.c8": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r19.c9": {
       "font": "MS Mincho",
@@ -6886,15 +6886,15 @@
     },
     "p30-combinations-md.r19.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r19.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r19.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p30-combinations-md.r19.c13": {
       "font": "MS Mincho",
@@ -6902,95 +6902,95 @@
     },
     "p31-combinations-md.r0.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r0.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r0.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r0.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r0.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r0.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r1.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r1.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r1.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r1.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r1.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r1.c6": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r1.c7": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r1.c8": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r1.c9": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r2.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r2.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r2.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r2.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r2.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r2.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r2.c6": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r2.c7": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r2.c8": {
       "font": "MS Mincho",
@@ -7002,51 +7002,51 @@
     },
     "p31-combinations-md.r2.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r2.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r2.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r2.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r3.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r3.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r3.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r3.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r3.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r3.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r3.c6": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r3.c7": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r3.c8": {
       "font": "MS Mincho",
@@ -7058,51 +7058,51 @@
     },
     "p31-combinations-md.r3.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r3.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r3.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r3.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r4.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r4.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r4.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r4.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r4.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r4.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r4.c6": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r4.c7": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r4.c8": {
       "font": "MS Mincho",
@@ -7114,35 +7114,35 @@
     },
     "p31-combinations-md.r4.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r4.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r4.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r4.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r5.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r5.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r5.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r5.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r5.c4": {
       "font": "MS Mincho",
@@ -7170,15 +7170,15 @@
     },
     "p31-combinations-md.r5.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r5.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r5.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r5.c13": {
       "font": "MS Mincho",
@@ -7186,23 +7186,23 @@
     },
     "p31-combinations-md.r6.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r6.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r6.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r6.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r6.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r6.c5": {
       "font": "MS Mincho",
@@ -7222,43 +7222,43 @@
     },
     "p31-combinations-md.r6.c9": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r6.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r6.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r6.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r6.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r7.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r7.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r7.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r7.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r7.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r7.c5": {
       "font": "MS Mincho",
@@ -7278,47 +7278,47 @@
     },
     "p31-combinations-md.r7.c9": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r7.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r7.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r7.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r7.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r8.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r8.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r8.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r8.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r8.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r8.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r8.c6": {
       "font": "MS Mincho",
@@ -7338,43 +7338,43 @@
     },
     "p31-combinations-md.r8.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r8.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r8.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r8.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r9.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r9.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r9.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r9.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r9.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r9.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r9.c6": {
       "font": "MS Mincho",
@@ -7394,43 +7394,43 @@
     },
     "p31-combinations-md.r9.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r9.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r9.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r9.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r10.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r10.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r10.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r10.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r10.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r10.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r10.c6": {
       "font": "MS Mincho",
@@ -7450,35 +7450,35 @@
     },
     "p31-combinations-md.r10.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r10.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r10.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r10.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r11.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r11.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r11.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r11.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r11.c4": {
       "font": "MS Mincho",
@@ -7506,23 +7506,23 @@
     },
     "p31-combinations-md.r11.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r11.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r11.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r11.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r12.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r12.c1": {
       "font": "MS Mincho",
@@ -7538,11 +7538,11 @@
     },
     "p31-combinations-md.r12.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r12.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r12.c6": {
       "font": "MS Mincho",
@@ -7562,7 +7562,7 @@
     },
     "p31-combinations-md.r12.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r12.c11": {
       "font": "MS Mincho",
@@ -7570,15 +7570,15 @@
     },
     "p31-combinations-md.r12.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r12.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r13.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r13.c1": {
       "font": "MS Mincho",
@@ -7594,11 +7594,11 @@
     },
     "p31-combinations-md.r13.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r13.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r13.c6": {
       "font": "MS Mincho",
@@ -7618,23 +7618,23 @@
     },
     "p31-combinations-md.r13.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r13.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r13.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r13.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r14.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r14.c1": {
       "font": "MS Mincho",
@@ -7650,11 +7650,11 @@
     },
     "p31-combinations-md.r14.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r14.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r14.c6": {
       "font": "MS Mincho",
@@ -7674,55 +7674,55 @@
     },
     "p31-combinations-md.r14.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r14.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r14.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p31-combinations-md.r14.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r0.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r0.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r0.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r0.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r0.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r0.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r1.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r1.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r1.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r1.c4": {
       "font": "MS Mincho",
@@ -7730,55 +7730,55 @@
     },
     "p32-combinations-vd.r1.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r1.c6": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r1.c7": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r1.c8": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r1.c9": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r2.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r2.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r2.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r2.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r2.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r2.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r2.c6": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r2.c7": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r2.c8": {
       "font": "MS Mincho",
@@ -7790,7 +7790,7 @@
     },
     "p32-combinations-vd.r2.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r2.c11": {
       "font": "MS Mincho",
@@ -7798,43 +7798,43 @@
     },
     "p32-combinations-vd.r2.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r2.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r3.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r3.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r3.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r3.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r3.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r3.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r3.c6": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r3.c7": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r3.c8": {
       "font": "MS Mincho",
@@ -7846,51 +7846,51 @@
     },
     "p32-combinations-vd.r3.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r3.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r3.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r3.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r4.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r4.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r4.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r4.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r4.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r4.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r4.c6": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r4.c7": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r4.c8": {
       "font": "MS Mincho",
@@ -7902,51 +7902,51 @@
     },
     "p32-combinations-vd.r4.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r4.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r4.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r4.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r5.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r5.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r5.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r5.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r5.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r5.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r5.c6": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r5.c7": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r5.c8": {
       "font": "MS Mincho",
@@ -7958,51 +7958,51 @@
     },
     "p32-combinations-vd.r5.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r5.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r5.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r5.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r6.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r6.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r6.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r6.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r6.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r6.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r6.c6": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r6.c7": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r6.c8": {
       "font": "MS Mincho",
@@ -8014,51 +8014,51 @@
     },
     "p32-combinations-vd.r6.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r6.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r6.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r6.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r7.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r7.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r7.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r7.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r7.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r7.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r7.c6": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r7.c7": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r7.c8": {
       "font": "MS Mincho",
@@ -8070,35 +8070,35 @@
     },
     "p32-combinations-vd.r7.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r7.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r7.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r7.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r8.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r8.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r8.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r8.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r8.c4": {
       "font": "MS Mincho",
@@ -8114,7 +8114,7 @@
     },
     "p32-combinations-vd.r8.c7": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r8.c8": {
       "font": "MS Mincho",
@@ -8126,15 +8126,15 @@
     },
     "p32-combinations-vd.r8.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r8.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r8.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r8.c13": {
       "font": "MS Mincho",
@@ -8142,19 +8142,19 @@
     },
     "p32-combinations-vd.r9.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r9.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r9.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r9.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r9.c4": {
       "font": "MS Mincho",
@@ -8182,15 +8182,15 @@
     },
     "p32-combinations-vd.r9.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r9.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r9.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r9.c13": {
       "font": "MS Mincho",
@@ -8198,27 +8198,27 @@
     },
     "p32-combinations-vd.r10.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r10.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r10.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r10.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r10.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r10.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r10.c6": {
       "font": "MS Mincho",
@@ -8230,10 +8230,10 @@
     },
     "p32-combinations-vd.r10.c8": {
       "font": "MS Mincho",
-      "size": 9.9,
+      "size": 10.0,
       "line_sizes": [
-        9.8,
-        9.9
+        10.0,
+        10.0
       ]
     },
     "p32-combinations-vd.r10.c9": {
@@ -8242,43 +8242,43 @@
     },
     "p32-combinations-vd.r10.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r10.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r10.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r10.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r11.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r11.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r11.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r11.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r11.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r11.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r11.c6": {
       "font": "MS Mincho",
@@ -8290,10 +8290,10 @@
     },
     "p32-combinations-vd.r11.c8": {
       "font": "MS Mincho",
-      "size": 9.9,
+      "size": 10.0,
       "line_sizes": [
-        9.8,
-        9.9
+        10.0,
+        10.0
       ]
     },
     "p32-combinations-vd.r11.c9": {
@@ -8302,43 +8302,43 @@
     },
     "p32-combinations-vd.r11.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r11.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r11.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r11.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r12.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r12.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r12.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r12.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r12.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r12.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r12.c6": {
       "font": "MS Mincho",
@@ -8350,10 +8350,10 @@
     },
     "p32-combinations-vd.r12.c8": {
       "font": "MS Mincho",
-      "size": 9.9,
+      "size": 10.0,
       "line_sizes": [
-        9.8,
-        9.9
+        10.0,
+        10.0
       ]
     },
     "p32-combinations-vd.r12.c9": {
@@ -8362,39 +8362,39 @@
     },
     "p32-combinations-vd.r12.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r12.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r12.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r12.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r13.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r13.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r13.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r13.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r13.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r13.c5": {
       "font": "MS Mincho",
@@ -8410,10 +8410,10 @@
     },
     "p32-combinations-vd.r13.c8": {
       "font": "MS Mincho",
-      "size": 9.9,
+      "size": 10.0,
       "line_sizes": [
-        9.8,
-        9.9
+        10.0,
+        10.0
       ]
     },
     "p32-combinations-vd.r13.c9": {
@@ -8422,39 +8422,39 @@
     },
     "p32-combinations-vd.r13.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r13.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r13.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r13.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r14.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r14.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r14.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r14.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r14.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r14.c5": {
       "font": "MS Mincho",
@@ -8470,10 +8470,10 @@
     },
     "p32-combinations-vd.r14.c8": {
       "font": "MS Mincho",
-      "size": 9.9,
+      "size": 10.0,
       "line_sizes": [
-        9.8,
-        9.9
+        10.0,
+        10.0
       ]
     },
     "p32-combinations-vd.r14.c9": {
@@ -8482,39 +8482,39 @@
     },
     "p32-combinations-vd.r14.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r14.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r14.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r14.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r15.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r15.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r15.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r15.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r15.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r15.c5": {
       "font": "MS Mincho",
@@ -8530,10 +8530,10 @@
     },
     "p32-combinations-vd.r15.c8": {
       "font": "MS Mincho",
-      "size": 9.9,
+      "size": 10.0,
       "line_sizes": [
-        9.8,
-        9.9
+        10.0,
+        10.0
       ]
     },
     "p32-combinations-vd.r15.c9": {
@@ -8542,31 +8542,31 @@
     },
     "p32-combinations-vd.r15.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r15.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r15.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r15.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r16.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r16.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r16.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r16.c3": {
       "font": "MS Mincho",
@@ -8574,11 +8574,11 @@
     },
     "p32-combinations-vd.r16.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r16.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r16.c6": {
       "font": "MS Mincho",
@@ -8590,10 +8590,10 @@
     },
     "p32-combinations-vd.r16.c8": {
       "font": "MS Mincho",
-      "size": 9.9,
+      "size": 10.0,
       "line_sizes": [
-        9.8,
-        9.9
+        10.0,
+        10.0
       ]
     },
     "p32-combinations-vd.r16.c9": {
@@ -8602,31 +8602,31 @@
     },
     "p32-combinations-vd.r16.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r16.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r16.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r16.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r17.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r17.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r17.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r17.c3": {
       "font": "MS Mincho",
@@ -8634,11 +8634,11 @@
     },
     "p32-combinations-vd.r17.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r17.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r17.c6": {
       "font": "MS Mincho",
@@ -8650,10 +8650,10 @@
     },
     "p32-combinations-vd.r17.c8": {
       "font": "MS Mincho",
-      "size": 9.9,
+      "size": 10.0,
       "line_sizes": [
-        9.8,
-        9.9
+        10.0,
+        10.0
       ]
     },
     "p32-combinations-vd.r17.c9": {
@@ -8662,31 +8662,31 @@
     },
     "p32-combinations-vd.r17.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r17.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r17.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r17.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r18.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r18.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r18.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r18.c3": {
       "font": "MS Mincho",
@@ -8694,11 +8694,11 @@
     },
     "p32-combinations-vd.r18.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r18.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r18.c6": {
       "font": "MS Mincho",
@@ -8710,10 +8710,10 @@
     },
     "p32-combinations-vd.r18.c8": {
       "font": "MS Mincho",
-      "size": 9.9,
+      "size": 10.0,
       "line_sizes": [
-        9.8,
-        9.9
+        10.0,
+        10.0
       ]
     },
     "p32-combinations-vd.r18.c9": {
@@ -8722,35 +8722,35 @@
     },
     "p32-combinations-vd.r18.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r18.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r18.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r18.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r19.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r19.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r19.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r19.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r19.c4": {
       "font": "MS Mincho",
@@ -8770,7 +8770,7 @@
     },
     "p32-combinations-vd.r19.c8": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r19.c9": {
       "font": "MS Mincho",
@@ -8778,15 +8778,15 @@
     },
     "p32-combinations-vd.r19.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r19.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r19.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p32-combinations-vd.r19.c13": {
       "font": "MS Mincho",
@@ -8794,39 +8794,39 @@
     },
     "p33-combinations-vd.r0.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r0.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r0.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r0.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r0.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r0.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r1.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r1.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r1.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r1.c4": {
       "font": "MS Mincho",
@@ -8834,55 +8834,55 @@
     },
     "p33-combinations-vd.r1.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r1.c6": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r1.c7": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r1.c8": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r1.c9": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r2.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r2.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r2.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r2.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r2.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r2.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r2.c6": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r2.c7": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r2.c8": {
       "font": "MS Mincho",
@@ -8894,51 +8894,51 @@
     },
     "p33-combinations-vd.r2.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r2.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r2.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r2.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r3.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r3.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r3.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r3.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r3.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r3.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r3.c6": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r3.c7": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r3.c8": {
       "font": "MS Mincho",
@@ -8950,51 +8950,51 @@
     },
     "p33-combinations-vd.r3.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r3.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r3.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r3.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r4.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r4.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r4.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r4.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r4.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r4.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r4.c6": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r4.c7": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r4.c8": {
       "font": "MS Mincho",
@@ -9006,35 +9006,35 @@
     },
     "p33-combinations-vd.r4.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r4.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r4.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r4.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r5.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r5.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r5.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r5.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r5.c4": {
       "font": "MS Mincho",
@@ -9062,15 +9062,15 @@
     },
     "p33-combinations-vd.r5.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r5.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r5.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r5.c13": {
       "font": "MS Mincho",
@@ -9078,23 +9078,23 @@
     },
     "p33-combinations-vd.r6.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r6.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r6.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r6.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r6.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r6.c5": {
       "font": "MS Mincho",
@@ -9114,43 +9114,43 @@
     },
     "p33-combinations-vd.r6.c9": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r6.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r6.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r6.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r6.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r7.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r7.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r7.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r7.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r7.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r7.c5": {
       "font": "MS Mincho",
@@ -9170,47 +9170,47 @@
     },
     "p33-combinations-vd.r7.c9": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r7.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r7.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r7.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r7.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r8.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r8.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r8.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r8.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r8.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r8.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r8.c6": {
       "font": "MS Mincho",
@@ -9230,43 +9230,43 @@
     },
     "p33-combinations-vd.r8.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r8.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r8.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r8.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r9.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r9.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r9.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r9.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r9.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r9.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r9.c6": {
       "font": "MS Mincho",
@@ -9286,43 +9286,43 @@
     },
     "p33-combinations-vd.r9.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r9.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r9.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r9.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r10.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r10.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r10.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r10.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r10.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r10.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r10.c6": {
       "font": "MS Mincho",
@@ -9342,35 +9342,35 @@
     },
     "p33-combinations-vd.r10.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r10.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r10.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r10.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r11.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r11.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r11.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r11.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r11.c4": {
       "font": "MS Mincho",
@@ -9398,23 +9398,23 @@
     },
     "p33-combinations-vd.r11.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r11.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r11.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r11.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r12.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r12.c1": {
       "font": "MS Mincho",
@@ -9430,11 +9430,11 @@
     },
     "p33-combinations-vd.r12.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r12.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r12.c6": {
       "font": "MS Mincho",
@@ -9454,7 +9454,7 @@
     },
     "p33-combinations-vd.r12.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r12.c11": {
       "font": "MS Mincho",
@@ -9462,15 +9462,15 @@
     },
     "p33-combinations-vd.r12.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r12.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r13.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r13.c1": {
       "font": "MS Mincho",
@@ -9486,11 +9486,11 @@
     },
     "p33-combinations-vd.r13.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r13.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r13.c6": {
       "font": "MS Mincho",
@@ -9510,23 +9510,23 @@
     },
     "p33-combinations-vd.r13.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r13.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r13.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r13.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r14.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r14.c1": {
       "font": "MS Mincho",
@@ -9542,11 +9542,11 @@
     },
     "p33-combinations-vd.r14.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r14.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r14.c6": {
       "font": "MS Mincho",
@@ -9566,111 +9566,111 @@
     },
     "p33-combinations-vd.r14.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r14.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r14.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p33-combinations-vd.r14.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r0.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r0.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r0.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r0.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r0.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r0.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r1.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r1.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r1.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r1.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r1.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r1.c6": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r1.c7": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r1.c8": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r1.c9": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r2.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r2.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r2.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r2.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r2.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r2.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r2.c6": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r2.c7": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r2.c8": {
       "font": "MS Mincho",
@@ -9682,7 +9682,7 @@
     },
     "p34-combinations-mt.r2.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r2.c11": {
       "font": "MS Mincho",
@@ -9690,43 +9690,43 @@
     },
     "p34-combinations-mt.r2.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r2.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r3.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r3.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r3.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r3.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r3.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r3.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r3.c6": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r3.c7": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r3.c8": {
       "font": "MS Mincho",
@@ -9738,51 +9738,51 @@
     },
     "p34-combinations-mt.r3.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r3.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r3.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r3.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r4.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r4.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r4.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r4.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r4.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r4.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r4.c6": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r4.c7": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r4.c8": {
       "font": "MS Mincho",
@@ -9794,51 +9794,51 @@
     },
     "p34-combinations-mt.r4.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r4.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r4.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r4.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r5.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r5.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r5.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r5.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r5.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r5.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r5.c6": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r5.c7": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r5.c8": {
       "font": "MS Mincho",
@@ -9850,51 +9850,51 @@
     },
     "p34-combinations-mt.r5.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r5.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r5.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r5.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r6.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r6.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r6.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r6.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r6.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r6.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r6.c6": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r6.c7": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r6.c8": {
       "font": "MS Mincho",
@@ -9906,51 +9906,51 @@
     },
     "p34-combinations-mt.r6.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r6.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r6.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r6.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r7.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r7.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r7.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r7.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r7.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r7.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r7.c6": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r7.c7": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r7.c8": {
       "font": "MS Mincho",
@@ -9962,35 +9962,35 @@
     },
     "p34-combinations-mt.r7.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r7.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r7.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r7.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r8.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r8.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r8.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r8.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r8.c4": {
       "font": "MS Mincho",
@@ -10006,7 +10006,7 @@
     },
     "p34-combinations-mt.r8.c7": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r8.c8": {
       "font": "MS Mincho",
@@ -10018,15 +10018,15 @@
     },
     "p34-combinations-mt.r8.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r8.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r8.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r8.c13": {
       "font": "MS Mincho",
@@ -10034,19 +10034,19 @@
     },
     "p34-combinations-mt.r9.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r9.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r9.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r9.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r9.c4": {
       "font": "MS Mincho",
@@ -10074,15 +10074,15 @@
     },
     "p34-combinations-mt.r9.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r9.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r9.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r9.c13": {
       "font": "MS Mincho",
@@ -10090,27 +10090,27 @@
     },
     "p34-combinations-mt.r10.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r10.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r10.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r10.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r10.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r10.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r10.c6": {
       "font": "MS Mincho",
@@ -10122,10 +10122,10 @@
     },
     "p34-combinations-mt.r10.c8": {
       "font": "MS Mincho",
-      "size": 9.9,
+      "size": 10.0,
       "line_sizes": [
-        9.8,
-        9.9
+        10.0,
+        10.0
       ]
     },
     "p34-combinations-mt.r10.c9": {
@@ -10134,43 +10134,43 @@
     },
     "p34-combinations-mt.r10.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r10.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r10.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r10.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r11.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r11.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r11.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r11.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r11.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r11.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r11.c6": {
       "font": "MS Mincho",
@@ -10182,10 +10182,10 @@
     },
     "p34-combinations-mt.r11.c8": {
       "font": "MS Mincho",
-      "size": 9.9,
+      "size": 10.0,
       "line_sizes": [
-        9.8,
-        9.9
+        10.0,
+        10.0
       ]
     },
     "p34-combinations-mt.r11.c9": {
@@ -10194,43 +10194,43 @@
     },
     "p34-combinations-mt.r11.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r11.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r11.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r11.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r12.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r12.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r12.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r12.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r12.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r12.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r12.c6": {
       "font": "MS Mincho",
@@ -10242,10 +10242,10 @@
     },
     "p34-combinations-mt.r12.c8": {
       "font": "MS Mincho",
-      "size": 9.9,
+      "size": 10.0,
       "line_sizes": [
-        9.8,
-        9.9
+        10.0,
+        10.0
       ]
     },
     "p34-combinations-mt.r12.c9": {
@@ -10254,39 +10254,39 @@
     },
     "p34-combinations-mt.r12.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r12.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r12.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r12.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r13.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r13.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r13.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r13.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r13.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r13.c5": {
       "font": "MS Mincho",
@@ -10302,10 +10302,10 @@
     },
     "p34-combinations-mt.r13.c8": {
       "font": "MS Mincho",
-      "size": 9.9,
+      "size": 10.0,
       "line_sizes": [
-        9.8,
-        9.9
+        10.0,
+        10.0
       ]
     },
     "p34-combinations-mt.r13.c9": {
@@ -10314,39 +10314,39 @@
     },
     "p34-combinations-mt.r13.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r13.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r13.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r13.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r14.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r14.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r14.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r14.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r14.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r14.c5": {
       "font": "MS Mincho",
@@ -10362,10 +10362,10 @@
     },
     "p34-combinations-mt.r14.c8": {
       "font": "MS Mincho",
-      "size": 9.9,
+      "size": 10.0,
       "line_sizes": [
-        9.8,
-        9.9
+        10.0,
+        10.0
       ]
     },
     "p34-combinations-mt.r14.c9": {
@@ -10374,39 +10374,39 @@
     },
     "p34-combinations-mt.r14.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r14.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r14.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r14.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r15.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r15.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r15.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r15.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r15.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r15.c5": {
       "font": "MS Mincho",
@@ -10422,10 +10422,10 @@
     },
     "p34-combinations-mt.r15.c8": {
       "font": "MS Mincho",
-      "size": 9.9,
+      "size": 10.0,
       "line_sizes": [
-        9.8,
-        9.9
+        10.0,
+        10.0
       ]
     },
     "p34-combinations-mt.r15.c9": {
@@ -10434,31 +10434,31 @@
     },
     "p34-combinations-mt.r15.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r15.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r15.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r15.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r16.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r16.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r16.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r16.c3": {
       "font": "MS Mincho",
@@ -10466,11 +10466,11 @@
     },
     "p34-combinations-mt.r16.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r16.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r16.c6": {
       "font": "MS Mincho",
@@ -10482,10 +10482,10 @@
     },
     "p34-combinations-mt.r16.c8": {
       "font": "MS Mincho",
-      "size": 9.9,
+      "size": 10.0,
       "line_sizes": [
-        9.8,
-        9.9
+        10.0,
+        10.0
       ]
     },
     "p34-combinations-mt.r16.c9": {
@@ -10494,31 +10494,31 @@
     },
     "p34-combinations-mt.r16.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r16.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r16.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r16.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r17.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r17.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r17.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r17.c3": {
       "font": "MS Mincho",
@@ -10526,11 +10526,11 @@
     },
     "p34-combinations-mt.r17.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r17.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r17.c6": {
       "font": "MS Mincho",
@@ -10542,10 +10542,10 @@
     },
     "p34-combinations-mt.r17.c8": {
       "font": "MS Mincho",
-      "size": 9.9,
+      "size": 10.0,
       "line_sizes": [
-        9.8,
-        9.9
+        10.0,
+        10.0
       ]
     },
     "p34-combinations-mt.r17.c9": {
@@ -10554,31 +10554,31 @@
     },
     "p34-combinations-mt.r17.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r17.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r17.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r17.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r18.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r18.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r18.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r18.c3": {
       "font": "MS Mincho",
@@ -10586,11 +10586,11 @@
     },
     "p34-combinations-mt.r18.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r18.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r18.c6": {
       "font": "MS Mincho",
@@ -10602,10 +10602,10 @@
     },
     "p34-combinations-mt.r18.c8": {
       "font": "MS Mincho",
-      "size": 9.9,
+      "size": 10.0,
       "line_sizes": [
-        9.8,
-        9.9
+        10.0,
+        10.0
       ]
     },
     "p34-combinations-mt.r18.c9": {
@@ -10614,35 +10614,35 @@
     },
     "p34-combinations-mt.r18.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r18.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r18.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r18.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r19.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r19.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r19.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r19.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r19.c4": {
       "font": "MS Mincho",
@@ -10662,7 +10662,7 @@
     },
     "p34-combinations-mt.r19.c8": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r19.c9": {
       "font": "MS Mincho",
@@ -10670,15 +10670,15 @@
     },
     "p34-combinations-mt.r19.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r19.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r19.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p34-combinations-mt.r19.c13": {
       "font": "MS Mincho",
@@ -10686,39 +10686,39 @@
     },
     "p35-combinations-mt.r0.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r0.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r0.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r0.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r0.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r0.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r1.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r1.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r1.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r1.c4": {
       "font": "MS Mincho",
@@ -10726,55 +10726,55 @@
     },
     "p35-combinations-mt.r1.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r1.c6": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r1.c7": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r1.c8": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r1.c9": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r2.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r2.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r2.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r2.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r2.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r2.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r2.c6": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r2.c7": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r2.c8": {
       "font": "MS Mincho",
@@ -10786,51 +10786,51 @@
     },
     "p35-combinations-mt.r2.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r2.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r2.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r2.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r3.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r3.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r3.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r3.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r3.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r3.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r3.c6": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r3.c7": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r3.c8": {
       "font": "MS Mincho",
@@ -10842,51 +10842,51 @@
     },
     "p35-combinations-mt.r3.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r3.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r3.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r3.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r4.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r4.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r4.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r4.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r4.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r4.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r4.c6": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r4.c7": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r4.c8": {
       "font": "MS Mincho",
@@ -10898,35 +10898,35 @@
     },
     "p35-combinations-mt.r4.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r4.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r4.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r4.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r5.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r5.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r5.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r5.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r5.c4": {
       "font": "MS Mincho",
@@ -10954,15 +10954,15 @@
     },
     "p35-combinations-mt.r5.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r5.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r5.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r5.c13": {
       "font": "MS Mincho",
@@ -10970,23 +10970,23 @@
     },
     "p35-combinations-mt.r6.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r6.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r6.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r6.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r6.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r6.c5": {
       "font": "MS Mincho",
@@ -11006,43 +11006,43 @@
     },
     "p35-combinations-mt.r6.c9": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r6.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r6.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r6.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r6.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r7.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r7.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r7.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r7.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r7.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r7.c5": {
       "font": "MS Mincho",
@@ -11062,47 +11062,47 @@
     },
     "p35-combinations-mt.r7.c9": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r7.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r7.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r7.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r7.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r8.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r8.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r8.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r8.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r8.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r8.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r8.c6": {
       "font": "MS Mincho",
@@ -11122,43 +11122,43 @@
     },
     "p35-combinations-mt.r8.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r8.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r8.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r8.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r9.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r9.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r9.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r9.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r9.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r9.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r9.c6": {
       "font": "MS Mincho",
@@ -11178,43 +11178,43 @@
     },
     "p35-combinations-mt.r9.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r9.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r9.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r9.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r10.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r10.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r10.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r10.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r10.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r10.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r10.c6": {
       "font": "MS Mincho",
@@ -11234,35 +11234,35 @@
     },
     "p35-combinations-mt.r10.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r10.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r10.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r10.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r11.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r11.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r11.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r11.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r11.c4": {
       "font": "MS Mincho",
@@ -11290,23 +11290,23 @@
     },
     "p35-combinations-mt.r11.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r11.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r11.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r11.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r12.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r12.c1": {
       "font": "MS Mincho",
@@ -11322,11 +11322,11 @@
     },
     "p35-combinations-mt.r12.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r12.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r12.c6": {
       "font": "MS Mincho",
@@ -11346,7 +11346,7 @@
     },
     "p35-combinations-mt.r12.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r12.c11": {
       "font": "MS Mincho",
@@ -11354,15 +11354,15 @@
     },
     "p35-combinations-mt.r12.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r12.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r13.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r13.c1": {
       "font": "MS Mincho",
@@ -11378,11 +11378,11 @@
     },
     "p35-combinations-mt.r13.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r13.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r13.c6": {
       "font": "MS Mincho",
@@ -11402,23 +11402,23 @@
     },
     "p35-combinations-mt.r13.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r13.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r13.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r13.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r14.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r14.c1": {
       "font": "MS Mincho",
@@ -11434,11 +11434,11 @@
     },
     "p35-combinations-mt.r14.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r14.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r14.c6": {
       "font": "MS Mincho",
@@ -11458,123 +11458,123 @@
     },
     "p35-combinations-mt.r14.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r14.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r14.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p35-combinations-mt.r14.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r0.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r0.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r0.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r0.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r0.c14": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r0.c15": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r1.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r1.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r1.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r1.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r1.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r1.c6": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r1.c7": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r1.c8": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r1.c9": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r1.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r1.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r1.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r2.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r2.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r2.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r2.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r2.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r2.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r2.c6": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r2.c7": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r2.c8": {
       "font": "MS Mincho",
@@ -11586,15 +11586,15 @@
     },
     "p36-combinations-summary.r2.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r2.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r2.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r2.c13": {
       "font": "MS Mincho",
@@ -11602,43 +11602,43 @@
     },
     "p36-combinations-summary.r2.c14": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r2.c15": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r3.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r3.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r3.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r3.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r3.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r3.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r3.c6": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r3.c7": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r3.c8": {
       "font": "MS Mincho",
@@ -11650,59 +11650,59 @@
     },
     "p36-combinations-summary.r3.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r3.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r3.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r3.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r3.c14": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r3.c15": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r4.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r4.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r4.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r4.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r4.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r4.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r4.c6": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r4.c7": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r4.c8": {
       "font": "MS Mincho",
@@ -11714,59 +11714,59 @@
     },
     "p36-combinations-summary.r4.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r4.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r4.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r4.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r4.c14": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r4.c15": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r5.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r5.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r5.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r5.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r5.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r5.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r5.c6": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r5.c7": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r5.c8": {
       "font": "MS Mincho",
@@ -11778,59 +11778,59 @@
     },
     "p36-combinations-summary.r5.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r5.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r5.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r5.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r5.c14": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r5.c15": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r6.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r6.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r6.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r6.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r6.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r6.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r6.c6": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r6.c7": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r6.c8": {
       "font": "MS Mincho",
@@ -11842,59 +11842,59 @@
     },
     "p36-combinations-summary.r6.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r6.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r6.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r6.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r6.c14": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r6.c15": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r7.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r7.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r7.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r7.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r7.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r7.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r7.c6": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r7.c7": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r7.c8": {
       "font": "MS Mincho",
@@ -11906,43 +11906,43 @@
     },
     "p36-combinations-summary.r7.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r7.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r7.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r7.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r7.c14": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r7.c15": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r8.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r8.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r8.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r8.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r8.c4": {
       "font": "MS Mincho",
@@ -11958,7 +11958,7 @@
     },
     "p36-combinations-summary.r8.c7": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r8.c8": {
       "font": "MS Mincho",
@@ -11970,23 +11970,23 @@
     },
     "p36-combinations-summary.r8.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r8.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r8.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r8.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r8.c14": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r8.c15": {
       "font": "MS Mincho",
@@ -11994,19 +11994,19 @@
     },
     "p36-combinations-summary.r9.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r9.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r9.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r9.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r9.c4": {
       "font": "MS Mincho",
@@ -12034,23 +12034,23 @@
     },
     "p36-combinations-summary.r9.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r9.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r9.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r9.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r9.c14": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r9.c15": {
       "font": "MS Mincho",
@@ -12058,27 +12058,27 @@
     },
     "p36-combinations-summary.r10.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r10.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r10.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r10.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r10.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r10.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r10.c6": {
       "font": "MS Mincho",
@@ -12090,7 +12090,7 @@
     },
     "p36-combinations-summary.r10.c8": {
       "font": "MS Mincho",
-      "size": 9.8
+      "size": 10.0
     },
     "p36-combinations-summary.r10.c9": {
       "font": "MS Mincho",
@@ -12098,51 +12098,51 @@
     },
     "p36-combinations-summary.r10.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r10.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r10.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r10.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r10.c14": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r10.c15": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r11.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r11.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r11.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r11.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r11.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r11.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r11.c6": {
       "font": "MS Mincho",
@@ -12154,7 +12154,7 @@
     },
     "p36-combinations-summary.r11.c8": {
       "font": "MS Mincho",
-      "size": 9.8
+      "size": 10.0
     },
     "p36-combinations-summary.r11.c9": {
       "font": "MS Mincho",
@@ -12162,51 +12162,51 @@
     },
     "p36-combinations-summary.r11.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r11.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r11.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r11.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r11.c14": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r11.c15": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r12.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r12.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r12.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r12.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r12.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r12.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r12.c6": {
       "font": "MS Mincho",
@@ -12218,7 +12218,7 @@
     },
     "p36-combinations-summary.r12.c8": {
       "font": "MS Mincho",
-      "size": 9.8
+      "size": 10.0
     },
     "p36-combinations-summary.r12.c9": {
       "font": "MS Mincho",
@@ -12226,47 +12226,47 @@
     },
     "p36-combinations-summary.r12.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r12.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r12.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r12.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r12.c14": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r12.c15": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r13.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r13.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r13.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r13.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r13.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r13.c5": {
       "font": "MS Mincho",
@@ -12282,7 +12282,7 @@
     },
     "p36-combinations-summary.r13.c8": {
       "font": "MS Mincho",
-      "size": 9.8
+      "size": 10.0
     },
     "p36-combinations-summary.r13.c9": {
       "font": "MS Mincho",
@@ -12290,47 +12290,47 @@
     },
     "p36-combinations-summary.r13.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r13.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r13.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r13.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r13.c14": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r13.c15": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r14.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r14.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r14.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r14.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r14.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r14.c5": {
       "font": "MS Mincho",
@@ -12346,7 +12346,7 @@
     },
     "p36-combinations-summary.r14.c8": {
       "font": "MS Mincho",
-      "size": 9.8
+      "size": 10.0
     },
     "p36-combinations-summary.r14.c9": {
       "font": "MS Mincho",
@@ -12354,47 +12354,47 @@
     },
     "p36-combinations-summary.r14.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r14.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r14.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r14.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r14.c14": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r14.c15": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r15.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r15.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r15.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r15.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r15.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r15.c5": {
       "font": "MS Mincho",
@@ -12410,7 +12410,7 @@
     },
     "p36-combinations-summary.r15.c8": {
       "font": "MS Mincho",
-      "size": 9.8
+      "size": 10.0
     },
     "p36-combinations-summary.r15.c9": {
       "font": "MS Mincho",
@@ -12418,51 +12418,51 @@
     },
     "p36-combinations-summary.r15.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r15.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r15.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r15.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r15.c14": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r15.c15": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r16.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r16.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r16.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r16.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r16.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r16.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r16.c6": {
       "font": "MS Mincho",
@@ -12474,7 +12474,7 @@
     },
     "p36-combinations-summary.r16.c8": {
       "font": "MS Mincho",
-      "size": 9.8
+      "size": 10.0
     },
     "p36-combinations-summary.r16.c9": {
       "font": "MS Mincho",
@@ -12482,51 +12482,51 @@
     },
     "p36-combinations-summary.r16.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r16.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r16.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r16.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r16.c14": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r16.c15": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r17.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r17.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r17.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r17.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r17.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r17.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r17.c6": {
       "font": "MS Mincho",
@@ -12538,7 +12538,7 @@
     },
     "p36-combinations-summary.r17.c8": {
       "font": "MS Mincho",
-      "size": 9.8
+      "size": 10.0
     },
     "p36-combinations-summary.r17.c9": {
       "font": "MS Mincho",
@@ -12546,51 +12546,51 @@
     },
     "p36-combinations-summary.r17.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r17.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r17.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r17.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r17.c14": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r17.c15": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r18.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r18.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r18.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r18.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r18.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r18.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r18.c6": {
       "font": "MS Mincho",
@@ -12602,7 +12602,7 @@
     },
     "p36-combinations-summary.r18.c8": {
       "font": "MS Mincho",
-      "size": 9.8
+      "size": 10.0
     },
     "p36-combinations-summary.r18.c9": {
       "font": "MS Mincho",
@@ -12610,43 +12610,43 @@
     },
     "p36-combinations-summary.r18.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r18.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r18.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r18.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r18.c14": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r18.c15": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r19.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r19.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r19.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r19.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r19.c4": {
       "font": "MS Mincho",
@@ -12666,7 +12666,7 @@
     },
     "p36-combinations-summary.r19.c8": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r19.c9": {
       "font": "MS Mincho",
@@ -12674,23 +12674,23 @@
     },
     "p36-combinations-summary.r19.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r19.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r19.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r19.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r19.c14": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p36-combinations-summary.r19.c15": {
       "font": "MS Mincho",
@@ -12698,107 +12698,107 @@
     },
     "p37-combinations-summary.r0.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r0.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r0.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r0.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r0.c14": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r0.c15": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r1.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r1.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r1.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r1.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r1.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r1.c6": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r1.c7": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r1.c8": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r1.c9": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r1.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r1.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r1.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r2.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r2.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r2.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r2.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r2.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r2.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r2.c6": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r2.c7": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r2.c8": {
       "font": "MS Mincho",
@@ -12810,59 +12810,59 @@
     },
     "p37-combinations-summary.r2.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r2.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r2.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r2.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r2.c14": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r2.c15": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r3.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r3.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r3.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r3.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r3.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r3.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r3.c6": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r3.c7": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r3.c8": {
       "font": "MS Mincho",
@@ -12874,59 +12874,59 @@
     },
     "p37-combinations-summary.r3.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r3.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r3.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r3.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r3.c14": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r3.c15": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r4.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r4.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r4.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r4.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r4.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r4.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r4.c6": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r4.c7": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r4.c8": {
       "font": "MS Mincho",
@@ -12938,43 +12938,43 @@
     },
     "p37-combinations-summary.r4.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r4.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r4.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r4.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r4.c14": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r4.c15": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r5.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r5.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r5.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r5.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r5.c4": {
       "font": "MS Mincho",
@@ -13002,23 +13002,23 @@
     },
     "p37-combinations-summary.r5.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r5.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r5.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r5.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r5.c14": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r5.c15": {
       "font": "MS Mincho",
@@ -13026,23 +13026,23 @@
     },
     "p37-combinations-summary.r6.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r6.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r6.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r6.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r6.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r6.c5": {
       "font": "MS Mincho",
@@ -13062,51 +13062,51 @@
     },
     "p37-combinations-summary.r6.c9": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r6.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r6.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r6.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r6.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r6.c14": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r6.c15": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r7.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r7.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r7.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r7.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r7.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r7.c5": {
       "font": "MS Mincho",
@@ -13126,55 +13126,55 @@
     },
     "p37-combinations-summary.r7.c9": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r7.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r7.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r7.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r7.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r7.c14": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r7.c15": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r8.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r8.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r8.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r8.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r8.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r8.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r8.c6": {
       "font": "MS Mincho",
@@ -13194,51 +13194,51 @@
     },
     "p37-combinations-summary.r8.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r8.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r8.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r8.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r8.c14": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r8.c15": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r9.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r9.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r9.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r9.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r9.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r9.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r9.c6": {
       "font": "MS Mincho",
@@ -13258,51 +13258,51 @@
     },
     "p37-combinations-summary.r9.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r9.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r9.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r9.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r9.c14": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r9.c15": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r10.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r10.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r10.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r10.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r10.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r10.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r10.c6": {
       "font": "MS Mincho",
@@ -13322,43 +13322,43 @@
     },
     "p37-combinations-summary.r10.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r10.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r10.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r10.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r10.c14": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r10.c15": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r11.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r11.c1": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r11.c2": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r11.c3": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r11.c4": {
       "font": "MS Mincho",
@@ -13386,31 +13386,31 @@
     },
     "p37-combinations-summary.r11.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r11.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r11.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r11.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r11.c14": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r11.c15": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r12.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r12.c1": {
       "font": "MS Mincho",
@@ -13426,11 +13426,11 @@
     },
     "p37-combinations-summary.r12.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r12.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r12.c6": {
       "font": "MS Mincho",
@@ -13450,15 +13450,15 @@
     },
     "p37-combinations-summary.r12.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r12.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r12.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r12.c13": {
       "font": "MS Mincho",
@@ -13466,15 +13466,15 @@
     },
     "p37-combinations-summary.r12.c14": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r12.c15": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r13.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r13.c1": {
       "font": "MS Mincho",
@@ -13490,11 +13490,11 @@
     },
     "p37-combinations-summary.r13.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r13.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r13.c6": {
       "font": "MS Mincho",
@@ -13514,31 +13514,31 @@
     },
     "p37-combinations-summary.r13.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r13.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r13.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r13.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r13.c14": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r13.c15": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r14.c0": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r14.c1": {
       "font": "MS Mincho",
@@ -13554,11 +13554,11 @@
     },
     "p37-combinations-summary.r14.c4": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r14.c5": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r14.c6": {
       "font": "MS Mincho",
@@ -13578,32 +13578,33 @@
     },
     "p37-combinations-summary.r14.c10": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r14.c11": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r14.c12": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r14.c13": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r14.c14": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     },
     "p37-combinations-summary.r14.c15": {
       "font": "MS Mincho",
-      "size": 9.9
+      "size": 10.0
     }
   },
   "vertical_glyphs": {
     "（": {
-      "size": 9.9,
+      "size": 10.0,
+      "source_size": 9.9,
       "glyph_bounds": [
         12,
         -21,
@@ -13614,7 +13615,8 @@
       "matrix_y": 1.012
     },
     "）": {
-      "size": 9.9,
+      "size": 10.0,
+      "source_size": 9.9,
       "glyph_bounds": [
         12,
         145,

@@ -95,13 +95,13 @@ def test_compact_cell_keeps_source_line_sizes_and_horizontal_clearance(fonts):
     from gridlayoutpdf import GridSpec, LayoutContext, PageProfile, ReportStyle, Text, measure_block
     context = LayoutContext(fonts, PageProfile("local", 100, 100, GridSpec(0, 0, .12, .12, 800, 800)), module("builder").SOURCE_STYLE)
     builder = module("builder")
-    plain = builder.CompactCell(("ABC", "short"), line_sizes=(10, 8.056))
+    plain = builder.CompactCell(("ABC", "short"), line_sizes=(10, 8))
     padded = replace(plain, inline_padding=.6)
     first, second = (measure_block(cell, context, 50) for cell in (plain, padded))
     assert second.width - first.width == pytest.approx(1.2)
     assert second.height == first.height
     text = [command for command in second.commands if isinstance(command, Text)]
-    assert [command.style.size for command in text] == [10, 8.056]
+    assert [command.style.size for command in text] == [10, 8]
     assert [new.x - old.x for new, old in zip(second.commands, first.commands)] == pytest.approx([.6, .6])
 
 
@@ -140,11 +140,14 @@ def test_guard_catches_declared_block_omission_before_rendering(fonts):
         builder.guard_fixed_pages(pages, (16,), {16: {"p16-present", "p16-omitted"}})
 
 
-def test_all_five_complete_proofs_fit_one_original_page_each(fonts):
+# p30 is deferred to FR-027 Step 9 (2026-10-20 user decision c); the other proofs still run.
+@pytest.mark.parametrize("selection", module("deferred").selections((16, 17, 26, 30, 36)))
+def test_all_five_complete_proofs_fit_one_original_page_each(fonts, selection):
     builder = module("builder")
-    pages = builder.layout_report(fonts, source_pages=builder.PROOF_PAGES)
-    assert len(pages) == 5
-    assert [page.metadata["placements"][0]["block_id"] for page in pages] == ["p16", "p17", "p26", "p30", "p36"]
+    assert builder.PROOF_PAGES == (16, 17, 26, 30, 36)
+    pages = builder.layout_report(fonts, source_pages=selection)
+    assert len(pages) == len(selection)
+    assert [page.metadata["placements"][0]["block_id"] for page in pages] == [f"p{n:02}" for n in selection]
     assert all(page.profile.width == 595 and page.profile.height == 842 for page in pages)
     assert all(page.metadata["placements"][0]["rows"] <= page.profile.grid.rows for page in pages)
     assert all(page.profile == builder.SOURCE_PROFILE for page in pages)
@@ -356,3 +359,13 @@ def test_activation_independently_reverifies_both_pdfs(tmp_path, monkeypatch, fo
         writer.activate_bundle(tmp_path, bundle, _review(bundle))
     assert seen == ["normal.pdf", "grid.pdf"]
     assert not (tmp_path / "current.json").exists()
+
+
+@pytest.mark.parametrize("number", module("deferred").DEFERRED_PAGES)
+def test_deferred_pages_still_stop_for_the_recorded_header_clearance(fonts, number):
+    """The strict xfails defer exactly this failure; a changed reason or a fixed page fails here."""
+    table = {30: "md", 31: "md", 32: "vd", 33: "vd", 34: "mt", 35: "mt"}[number]
+    with pytest.raises(LayoutOverflowError, match=(
+            rf"原本再現できず: .*p{number}-combinations-{table}-r0-cell1: "
+            rf"source glyph ink clearance exceeds 0\.05 pt$")):
+        module("builder").layout_report(fonts, source_pages=(number,))
