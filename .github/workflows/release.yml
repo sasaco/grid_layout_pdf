@@ -4,6 +4,8 @@
 # so an uploaded wheel is never replaced. The wheel is built with SOURCE_DATE_EPOCH, so the same commit gives the
 # same bytes: when the Release already has the wheel, the job rebuilds it and only checks that the bytes are the same.
 # Run it by hand (workflow_dispatch) with an existing tag to check that a published wheel can be reproduced.
+# It builds on Windows, as the first Releases were built by hand: zipfile records the OS that wrote each entry
+# (create_system), so a Linux build differs from them in that byte alone.
 # The tests are not run here (they need the Windows fonts and Excel); run them before pushing the tag.
 name: Release
 
@@ -21,12 +23,18 @@ permissions:
 
 jobs:
   wheel:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: bash
     env:
       TAG: ${{ inputs.tag || github.ref_name }}
       SOURCE_DATE_EPOCH: "315532800"
       GH_TOKEN: ${{ github.token }}
     steps:
+      # The wheel keeps the committed line endings (LF), as `git -c core.autocrlf=false clone` gives them
+      - run: git config --global core.autocrlf false
+
       - uses: actions/checkout@v4
         with:
           ref: refs/tags/${{ env.TAG }}
@@ -57,7 +65,7 @@ jobs:
           commit=$(git rev-parse HEAD)
           echo "$name $sha (commit $commit)"
           if ! gh release view "$TAG" > /dev/null 2>&1; then
-            gh release create "$TAG" "$wheel" --verify-tag --title "$TAG" --notes "commit ${commit:0:7} の wheel です。GitHub Actions（ubuntu-latest）で SOURCE_DATE_EPOCH=315532800 の \`uv build --wheel\` で作りました（SHA-256 $sha）。載せた wheel は差し替えません。"
+            gh release create "$TAG" "$wheel" --verify-tag --title "$TAG" --notes "commit ${commit:0:7} の wheel です。GitHub Actions（windows-latest）で SOURCE_DATE_EPOCH=315532800 の \`uv build --wheel\` で作りました（SHA-256 $sha）。載せた wheel は差し替えません。"
           elif gh release view "$TAG" --json assets --jq '.assets[].name' | grep -qxF "$name"; then
             gh release download "$TAG" --pattern "$name" --dir published
             published=$(sha256sum "published/$name" | cut -d' ' -f1)
