@@ -2,10 +2,11 @@
 
 from dataclasses import KW_ONLY, dataclass, replace
 
-from .borders import BorderStyle, _border_style
+from .borders import BorderStyle, _border_lines, _border_style
 from .errors import LayoutOverflowError
 from .layout import LayoutContext, LayoutPart, MeasuredBlock, measurement_inputs
 from .scene import Color, Text, _color
+from .semantics import Kind, Role, Scope, Tag
 from .styles import TextStyle
 from .text import wrap_text
 from .validation import TOLERANCE, _identifier, _integer
@@ -51,10 +52,14 @@ class Paragraph:
                           align=self.align, max_tracking_em=context.style.max_tracking_em,
                           block_id=self.block_id)
         parts = []
+        # The alignment is baked into each line's x; the tag keeps it (and the line number).
+        heading = isinstance(self, Heading)
         for index, line in enumerate(lines):
             baseline = context.baseline_for(line.metrics.ascent)
             rows = context.rows_for(baseline + line.metrics.descent)
-            commands = (Text(line.x, baseline, line.text, line.style),) if line.text else ()
+            tag = Tag(Role.TEXT, (Scope(Kind.PARAGRAPH, index=index,
+                                        data={"align": self.align, "heading": heading}),))
+            commands = (Text(line.x, baseline, line.text, line.style, tag=tag),) if line.text else ()
             parts.append(LayoutPart(rows, commands, {
                 "text": line.text, "line_index": index, "paragraph_end": line.paragraph_end,
             }))
@@ -141,7 +146,7 @@ class Rule:
             )
         style, half = self.style, self.style.stroke_width / 2
         centre = style.thickness / 2
-        lines = style.lines(half, centre, width - half, centre, self.color)
+        lines = _border_lines(style, half, centre, width - half, centre, self.color, Role.RULE)
         part = LayoutPart(max(1, context.rows_for(style.thickness)), lines,
                           {"rule": {"style": style.value, "width_pt": width}})
         return MeasuredBlock(width, context.profile.grid.pitch_y, (part,), block_id=self.block_id)

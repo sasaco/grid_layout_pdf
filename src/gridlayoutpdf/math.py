@@ -11,6 +11,7 @@ from .errors import LayoutError
 from .fonts import FontRegistry, TextMetrics
 from .geometry import Point, Rect
 from .scene import Circle, Command, Line, Polyline, Rectangle, Text
+from .semantics import Kind, Role, Scope, Tag, tagged, within
 from .styles import TextStyle, _finite_number, _script_style
 
 
@@ -66,6 +67,21 @@ class MathNode(Protocol):
     def measure(self, fonts: FontRegistry, style: TextStyle) -> MathBox: ...
 
 
+def _within(box: MathBox, kind: Kind, part: str | None = None, index: int | None = None) -> MathBox:
+    """Return the box with every command inside one more structure (outermost)."""
+    return MathBox(box.width, box.ascent, box.descent,
+                   within(box.commands, Scope(kind, part, index)), box.axis)
+
+
+# The tag of a glyph run, by atom: Literal, Symbol, Operator, or an equation's relation.
+_ATOM_TAGS = {atom: Tag(Role.MATH, (), {"atom": atom}) for atom in ("literal", "symbol", "operator", "relation")}
+
+
+def _part_tag(role: Role, kind: Kind, part: str, **data) -> Tag:
+    """The tag of a stroke a structure draws itself (a bar, a sign, a bracket)."""
+    return Tag(role, (Scope(kind, part),), data)
+
+
 def literal_box(text: str, metrics: TextMetrics, style: TextStyle) -> MathBox:
     """Build a text atom's box from metrics already measured for that text."""
     bounds = metrics.bounds
@@ -103,7 +119,9 @@ class Literal:
     def measure(self, fonts: FontRegistry, style: TextStyle) -> MathBox:
         _validate_context(fonts, style)
         text = fonts.normalize_text(self.text)
-        return literal_box(text, fonts.measure(text, style), style)
+        box = literal_box(text, fonts.measure(text, style), style)
+        atom = "operator" if isinstance(self, Operator) else "symbol" if isinstance(self, Symbol) else "literal"
+        return MathBox(box.width, box.ascent, box.descent, tagged(box.commands, _ATOM_TAGS[atom]), box.axis)
 
 
 @dataclass(frozen=True, slots=True)
@@ -168,7 +186,8 @@ class Row:
     def measure(self, fonts: FontRegistry, style: TextStyle) -> MathBox:
         _validate_context(fonts, style)
         gap = style.size * 0.15 if self.gap is None else self.gap
-        return compose_row([item.measure(fonts, style) for item in self.items],
+        return compose_row([_within(item.measure(fonts, style), Kind.ROW, index=index)
+                            for index, item in enumerate(self.items)],
                            gap, style.size * 0.25)
 
 
@@ -185,8 +204,8 @@ class Fraction:
 
     def measure(self, fonts: FontRegistry, style: TextStyle) -> MathBox:
         _validate_context(fonts, style)
-        numerator = cast(MathNode, self.numerator).measure(fonts, style)
-        denominator = cast(MathNode, self.denominator).measure(fonts, style)
+        numerator = _within(cast(MathNode, self.numerator).measure(fonts, style), Kind.FRACTION, "numerator")
+        denominator = _within(cast(MathNode, self.denominator).measure(fonts, style), Kind.FRACTION, "denominator")
         axis = style.size * 0.25
         padding = gap = style.size * 0.15
         stroke = style.size * 0.05
@@ -196,7 +215,8 @@ class Fraction:
         commands = (
             *numerator.translated((width - numerator.width) / 2, numerator_y),
             *denominator.translated((width - denominator.width) / 2, denominator_y),
-            Line(stroke / 2, -axis, width - stroke / 2, -axis, width=stroke),
+            Line(stroke / 2, -axis, width - stroke / 2, -axis, width=stroke,
+                 tag=_part_tag(Role.FRACTION_BAR, Kind.FRACTION, "bar")),
         )
         return MathBox(
             width,
@@ -268,7 +288,7 @@ class Script:
 
     def measure(self, fonts: FontRegistry, style: TextStyle) -> MathBox:
         _validate_context(fonts, style)
-        base = cast(MathNode, self.base).measure(fonts, style)
+        base = _within(cast(MathNode, self.base).measure(fonts, style), Kind.SCRIPT, "base")
         axis = style.size * 0.25
         base_y = base.axis - axis
         ascent = max(0, base.ascent - base_y)
@@ -279,8 +299,10 @@ class Script:
         script_style = _script_style(style, self.scale)
         upper_node = cast(MathNode | None, self.superscript)
         lower_node = cast(MathNode | None, self.subscript)
-        upper = upper_node.measure(fonts, script_style) if upper_node is not None else None
-        lower = lower_node.measure(fonts, script_style) if lower_node is not None else None
+        upper = (_within(upper_node.measure(fonts, script_style), Kind.SCRIPT, "superscript")
+                 if upper_node is not None else None)
+        lower = (_within(lower_node.measure(fonts, script_style), Kind.SCRIPT, "subscript")
+                 if lower_node is not None else None)
         upper_y = -max(style.size * 0.6, ascent - style.size * 0.2,
                        upper.descent + style.size * 0.15) if upper is not None else 0.0
         lower_y = max(style.size * 0.3, descent + style.size * 0.1,
@@ -359,7 +381,7 @@ class Root:
 
     def measure(self, fonts: FontRegistry, style: TextStyle) -> MathBox:
         _validate_context(fonts, style)
-        body = cast(MathNode, self.body).measure(fonts, style)
+        body = _within(cast(MathNode, self.body).measure(fonts, style), Kind.ROOT, "radicand")
         axis = style.size * 0.25
         body_y = body.axis - axis
         stroke = style.size * 0.05
@@ -379,7 +401,8 @@ class Root:
             width,
             max(0, body.ascent - body_y, -min(p.y for p in points) + stroke / 2),
             max(0, body.descent + body_y, max(p.y for p in points) + stroke / 2),
-            (Polyline(points, width=stroke), *body.translated(body_x, body_y)),
+            (Polyline(points, width=stroke, tag=_part_tag(Role.RADICAL, Kind.ROOT, "sign")),
+             *body.translated(body_x, body_y)),
             axis,
         )
 
@@ -401,7 +424,7 @@ class Delimited:
 
     def measure(self, fonts: FontRegistry, style: TextStyle) -> MathBox:
         _validate_context(fonts, style)
-        body = cast(MathNode, self.body).measure(fonts, style)
+        body = _within(cast(MathNode, self.body).measure(fonts, style), Kind.DELIMITED, "body")
         axis = style.size * 0.25
         body_y = body.axis - axis
         body_ascent = max(0, body.ascent - body_y)
@@ -416,13 +439,14 @@ class Delimited:
         width = body_x + body.width + (slot + gap if self.right else 0.0)
         commands = list(body.translated(body_x, body_y))
         if self.left:
-            commands.append(_delimiter(self.left, 0, slot, axis, radius, stroke))
+            commands.append(_delimiter(self.left, 0, slot, axis, radius, stroke, "left"))
         if self.right:
-            commands.append(_delimiter(self.right, body_x + body.width + gap, slot, axis, radius, stroke))
+            commands.append(_delimiter(self.right, body_x + body.width + gap, slot, axis, radius, stroke, "right"))
         return MathBox(width, axis + radius, max(0, radius - axis), tuple(commands), axis)
 
 
-def _delimiter(symbol: str, x: float, slot: float, axis: float, radius: float, stroke: float) -> Polyline:
+def _delimiter(symbol: str, x: float, slot: float, axis: float, radius: float, stroke: float,
+               side: str) -> Polyline:
     """Sample round brackets; all paths remain half a stroke inside their box."""
     half = stroke / 2
     left, right = x + half, x + slot - half
@@ -440,7 +464,8 @@ def _delimiter(symbol: str, x: float, slot: float, axis: float, radius: float, s
         points = [Point(left, top), Point(right, top), Point(right, bottom), Point(left, bottom)]
     else:
         points = [Point(x + slot / 2, top), Point(x + slot / 2, bottom)]
-    return Polyline(tuple(points), width=stroke)
+    return Polyline(tuple(points), width=stroke,
+                    tag=_part_tag(Role.DELIMITER, Kind.DELIMITED, side, symbol=symbol))
 
 
 def as_math(value: MathNode | str) -> MathNode:

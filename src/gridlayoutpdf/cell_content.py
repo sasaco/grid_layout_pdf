@@ -8,6 +8,7 @@ from .geometry import Rect
 from .layout import LayoutContext, LayoutPart, MeasuredBlock, measurement_inputs
 from .math import MathBox, MathNode, as_math
 from .scene import Command, Text
+from .semantics import Kind, Scope, within
 from .styles import Insets, TextStyle, _finite_number, _resolve_insets
 from .text import wrap_text
 from .validation import TOLERANCE, _identifier
@@ -163,7 +164,8 @@ class CellLines:
             x = padding.left + (width - horizontal - box.width) * {"left": 0, "center": .5, "right": 1}[self.align]
             y = baseline + offset + index * self.line_advance
             baselines.append(y)
-            translated = box.translated(x, y)
+            translated = within(box.translated(x, y),
+                                Scope(Kind.CELL_LINES, index=index, data={"align": self.align}))
             ink = []
             for command in translated:
                 bounds = command_bounds(command, context.fonts)

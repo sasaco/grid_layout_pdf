@@ -11,6 +11,7 @@ from .bounds import command_bounds
 from .errors import FontError, LayoutOverflowError
 from .layout import LayoutContext, LayoutPart, MeasuredBlock, measurement_inputs
 from .scene import Circle, Color, Line, Polyline, RasterImage, Rectangle, Text
+from .semantics import Kind, Role, Scope, Tag, tagged
 from .styles import TextStyle, _finite_number
 from .validation import TOLERANCE, _identifier, _integer
 
@@ -60,6 +61,7 @@ class Arrow:
             raise ValueError("arrow axis must be nonzero and at least head_length long")
 
     def _commands(self) -> tuple[Line, Polyline]:
+        """The shaft, then the head (``Figure`` tags them as parts shaft and head)."""
         length = hypot(self.x2 - self.x1, self.y2 - self.y1)
         ux, uy = (self.x2 - self.x1) / length, (self.y2 - self.y1) / length
         bx, by = self.x2 - ux * self.head_length, self.y2 - uy * self.head_length
@@ -122,6 +124,7 @@ class Figure:
     def measure(self, context: LayoutContext, available_width: float) -> MeasuredBlock:
         source = self.block_id or "Figure"
         width, height = _frame_size(context, self.col_span, self.rows, available_width, source)
+        figure = Scope(Kind.FIGURE, data={"block_id": self.block_id})
         commands = []
         for index, item in enumerate(self.items):
             try:
@@ -132,7 +135,7 @@ class Figure:
                 raise FontError(f"{source}.items[{index}]: {exc}") from exc
             for command in expanded:
                 self._check_bounds(command, context, width, height, source, index)
-            commands.extend(expanded)
+            commands.extend(_figure_item(expanded, item, figure, index))
         return MeasuredBlock(width,
                              context.profile.grid.pitch_y,
                              (LayoutPart(self.rows, tuple(commands)),),
@@ -259,11 +262,39 @@ class Image:
             image_width, image_height = self.width_pt, self.height_pt
         x = {"left": 0, "center": (width - image_width) / 2, "right": width - image_width}[self.align]
         y = {"top": 0, "middle": (height - image_height) / 2, "bottom": height - image_height}[self.valign]
-        command = RasterImage(x, y,
-                              image_width, image_height, data)
+        command = RasterImage(x, y, image_width, image_height, data,
+                              tag=Tag(Role.IMAGE, (), {"block_id": self.block_id}))
         return MeasuredBlock(width, context.profile.grid.pitch_y,
                              (LayoutPart(rows, (command,)),), keep_together=True,
                              block_id=self.block_id)
+
+
+# The kind of a drawing command written by the user (a "raw" figure item).
+_RAW_KINDS = ((Line, "line"), (Polyline, "polyline"), (Rectangle, "rect"), (Circle, "circle"), (Text, "text"))
+
+
+def _figure_item(commands: tuple, item, figure: Scope, index: int) -> tuple:
+    """Tag the commands of one figure item as figure artwork, never as anything else.
+
+    Every command of a figure is ``Role.FIGURE``, its text included, whatever
+    tag a user-written command carried: only Table, Rule and SideRule lines
+    become cell borders in a grid Excel sheet.
+    """
+    if isinstance(item, Arrow):
+        data, leaves = {"kind": "arrow"}, [{"part": "shaft"}, {"part": "head"}]
+    elif isinstance(item, Connector):
+        data, leaves = {"kind": "connector"}, [{"part": "path"}, {"part": "head"}]
+    elif isinstance(item, (TextBox, TextDiamond)):
+        data = {"kind": "textbox", "rounded": item.rounded} if isinstance(item, TextBox) else {"kind": "diamond"}
+        leaves = [{"part": "outline"}, *({"part": "text", "line": line} for line in range(len(commands) - 1))]
+    elif isinstance(item, Label):
+        data, leaves = {"kind": "label", "align": item.align}, [{"part": "text"}]
+    else:
+        kind = next(name for command_type, name in _RAW_KINDS if isinstance(item, command_type))
+        data, leaves = {"kind": kind, "raw": True}, [{}]
+    path = (figure, Scope(Kind.FIGURE_ITEM, index=index, data=data))
+    return tuple(tagged((command,), Tag(Role.FIGURE, path, leaf))[0]
+                 for command, leaf in zip(commands, leaves, strict=True))
 
 
 def _lines(lines) -> tuple[str, ...]:

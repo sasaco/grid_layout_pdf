@@ -9,8 +9,9 @@ from .errors import FontError, LayoutOverflowError
 from .fonts import FontRegistry
 from .layout import LayoutContext, LayoutPart, MeasuredBlock, measurement_inputs
 from .math import (
-    BreakHint, MathBox, MathNode, Operator, Row, TermStop, as_math, compose_row, literal_box,
+    _ATOM_TAGS, BreakHint, MathBox, MathNode, Operator, Row, TermStop, as_math, compose_row, literal_box,
 )
+from .semantics import Kind, Scope, tagged, within
 from .styles import TextStyle, _finite_number
 from .validation import _identifier, _integer
 
@@ -147,8 +148,8 @@ class EquationGroup:
             first = points["first_equal"]
             _require_width(label_reserve + item.lhs.width + first_left + self.gap, first, item.path + ".lhs")
             _require_width(item.first.right, available_width - first, item.path + ".relation")
-            leading = [(item.lhs, first - first_left - self.gap - item.lhs.width),
-                       (item.first.box, first - item.first.left)]
+            leading = [(_part(item.lhs, "lhs"), first - first_left - self.gap - item.lhs.width),
+                       (_part(item.first.box, "relation"), first - item.first.left)]
             trailing = []
             rhs_end = available_width
             if item.result is not None:
@@ -157,13 +158,13 @@ class EquationGroup:
                 _require_width(item.result.width + second_right + self.gap,
                                result_right - second, item.path + ".result")
                 rhs_end = _floor_column(second - second_left - self.gap, pitch) * pitch
-                trailing.extend(((item.second.box, second - item.second.left),
-                                 (item.result, result_right - item.result.width)))
+                trailing.extend(((_part(item.second.box, "result_relation"), second - item.second.left),
+                                 (_part(item.result, "result"), result_right - item.result.width)))
             if item.unit is not None:
                 unit_start = points["unit_start"]
                 _require_width(self.gap, unit_start - points["result_right"], item.path + ".unit")
                 _require_width(item.unit.width, available_width - unit_start, item.path + ".unit")
-                trailing.append((item.unit, unit_start))
+                trailing.append((_part(item.unit, "unit"), unit_start))
             if segments[index] is None:
                 wrapped = item
                 if fallback[index]:
@@ -171,6 +172,7 @@ class EquationGroup:
                         item.equation, rhs=_term_fallback_row(item.equation.rhs)))
                 rhs_lines, separate_result = _wrap_rhs(wrapped, context, rhs_end - rhs_start,
                                                        available_width - rhs_start)
+                rhs_lines = tuple(_part(line, "rhs") for line in rhs_lines)
             else:
                 rhs_lines, separate_result = _term_rhs(item, segments[index], columns, rhs_start,
                                                        rhs_end - rhs_start)
@@ -178,6 +180,10 @@ class EquationGroup:
                 rhs_lines = (MathBox(0, 0, 0, (), item.style.size * .25),)
             label = Paragraph(item.equation.label, style=item.style, block_id=item.path + ".label",
                               min_first=1, min_last=1).measure(context, label_width) if item.equation.label else None
+            if label is not None:
+                label = replace(label, parts=tuple(
+                    replace(part, commands=within(part.commands, Scope(Kind.EQUATION_PART, "label")))
+                    for part in label.parts))
             common_metadata = {"equation_index": index, "anchors_pt": points,
                                "rhs_start_pt": rhs_start, "label_width_pt": label_width}
             if segments[index] is not None:
@@ -256,7 +262,7 @@ def _term_segments(item: _EquationMeasure,
                 stops.append(atom)
                 groups.append([])
             continue
-        groups[-1].append(_measure(atom, context.fonts, item.style, f"{path}[{index}]"))
+        groups[-1].append(_item(_measure(atom, context.fonts, item.style, f"{path}[{index}]"), index))
     gap = item.style.size * 0.15 if rhs.gap is None else rhs.gap
     return tuple((stop, compose_row(boxes, gap, item.style.size * .25))
                  for stop, boxes in zip(stops, groups))
@@ -317,10 +323,13 @@ def _term_layout(items: tuple[_EquationMeasure, ...],
 
 
 def _term_fallback_row(rhs: Row) -> Row:
-    """Replace each non-leading TermStop with an allowed break, keeping hints and gap."""
+    """Replace each TermStop with an allowed break, keeping hints, gap and item numbers.
+
+    A leading break is never a break candidate, so the leading stop only keeps
+    the source index of every later item (the Row scope of their tags).
+    """
     return Row(*(BreakHint("allowed") if isinstance(atom, TermStop) else atom
-                 for index, atom in enumerate(rhs.items)
-                 if index or not isinstance(atom, TermStop)), gap=rhs.gap)
+                 for atom in rhs.items), gap=rhs.gap)
 
 
 def _term_rhs(item: _EquationMeasure, row: tuple[tuple[TermStop, MathBox], ...],
@@ -330,7 +339,8 @@ def _term_rhs(item: _EquationMeasure, row: tuple[tuple[TermStop, MathBox], ...],
     axis = item.style.size * .25
     commands = []
     ascent = descent = 0.0
-    for (_, box), (left, width, align) in zip(row, columns):
+    for column, ((_, box), (left, width, align)) in enumerate(zip(row, columns)):
+        box = _part(box, "term", column, align=align)
         slack = width - box.width
         x = left - rhs_start + (slack if align == "right" else slack / 2 if align == "center" else 0)
         dy = box.axis - axis
@@ -374,7 +384,10 @@ def _relation(text: str, context: LayoutContext, style: TextStyle, path: str) ->
         metrics = context.fonts.measure(normalized, style)
     except FontError as exc:
         raise FontError(f"{path}: {exc}") from exc
-    return _Relation(literal_box(normalized, metrics, style),
+    box = literal_box(normalized, metrics, style)
+    box = MathBox(box.width, box.ascent, box.descent,
+                  tagged(box.commands, _ATOM_TAGS["relation"]), box.axis)
+    return _Relation(box,
                      metrics.width / 2 - metrics.bounds.x,
                      metrics.bounds.right - metrics.width / 2)
 
@@ -503,8 +516,11 @@ def _equation_part(context: LayoutContext, style: TextStyle,
         label_height = label.height + shift
     commands = tuple(command for box, x in positioned
                      for command in box.translated(x, baseline + box.axis - axis))
+    scopes = (Scope(Kind.EQUATION, index=metadata["equation_index"]),
+              Scope(Kind.EQUATION_LINE, index=metadata["line_index"],
+                    data={"continuation": metadata["continuation"], "result_line": metadata["result_line"]}))
     return LayoutPart(max(1, context.rows_for(max(label_height, baseline + max(0, descent)))),
-                      (*label_commands, *commands),
+                      within((*label_commands, *commands), *scopes),
                       {**metadata, "baseline_pt": baseline})
 
 
@@ -530,7 +546,8 @@ class MathBlock:
         if box.commands or box.width or box.height:
             baseline = context.baseline_for(box.ascent)
             parts = (LayoutPart(context.rows_for(baseline + box.descent),
-                                box.translated(0, baseline), {"baseline_pt": baseline}),)
+                                within(box.translated(0, baseline), Scope(Kind.MATH_BLOCK)),
+                                {"baseline_pt": baseline}),)
         return MeasuredBlock(box.width or available_width, context.profile.grid.pitch_y,
                              parts, keep_together=True, block_id=self.block_id)
 
@@ -580,7 +597,7 @@ def wrap_math(
     Row().measure(fonts, style)  # Validate the context even for an empty row.
     atoms, source_indices, candidates, forced_ends = _parse_wrap_row(node)
     boxes = tuple(
-        _measure(item, fonts, style, f"{path}[{source_index}]")
+        _item(_measure(item, fonts, style, f"{path}[{source_index}]"), source_index)
         for item, source_index in zip(atoms, source_indices)
     )
     for index, box in enumerate(boxes):
@@ -647,6 +664,20 @@ def _parse_wrap_row(node: Row) -> tuple[list[MathNode], list[int], dict[int, int
         atoms.append(item)
         source_indices.append(source_index)
     return atoms, source_indices, candidates, forced_ends
+
+
+def _scoped(box: MathBox, scope: Scope) -> MathBox:
+    return MathBox(box.width, box.ascent, box.descent, within(box.commands, scope), box.axis)
+
+
+def _item(box: MathBox, index: int) -> MathBox:
+    """An item of a top-level Row measured on its own, numbered as Row.measure numbers it."""
+    return _scoped(box, Scope(Kind.ROW, index=index))
+
+
+def _part(box: MathBox, part: str, index: int | None = None, **data) -> MathBox:
+    """One part of an equation display line: its lhs, a relation, a term, the result..."""
+    return _scoped(box, Scope(Kind.EQUATION_PART, part, index, data))
 
 
 def _measure(node: MathNode, fonts: FontRegistry, style: TextStyle, path: str) -> MathBox:

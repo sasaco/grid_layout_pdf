@@ -201,14 +201,22 @@ class MeasuredBlock:
 
     @property
     def commands(self) -> tuple[Command, ...]:
-        commands = []
+        return tuple(command for part in self.placed_parts() for command in part)
+
+    def placed_parts(self) -> tuple[tuple[Command, ...], ...]:
+        """Return what each part (prefix first) draws in one placed fragment.
+
+        The commands are relative to the block's top-left; ``commands`` is
+        their concatenation, so the lengths give each part's command range.
+        """
+        result = []
         rows = 0
         parts = (*self.prefix, *self.parts)
         for index, part in enumerate(parts):
             placed = part.placed(first=index == 0, last=index == len(parts) - 1)
-            commands.extend(command.translated(0, rows * self.row_pitch) for command in placed)
+            result.append(tuple(command.translated(0, rows * self.row_pitch) for command in placed))
             rows += part.rows
-        return tuple(commands)
+        return tuple(result)
 
     def translated(self, dx: float, dy: float) -> tuple[Command, ...]:
         dx, dy = _finite_number(dx, "dx"), _finite_number(dy, "dy")

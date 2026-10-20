@@ -1,4 +1,8 @@
-"""Immutable drawing commands, expressed in top-origin point coordinates."""
+"""Immutable drawing commands, expressed in top-origin point coordinates.
+
+Every command takes an optional keyword ``tag`` (``semantics.Tag``) saying what
+it means; tags take no part in equality, hashing or drawing.
+"""
 
 from collections.abc import Mapping
 from dataclasses import KW_ONLY, dataclass, field, replace
@@ -6,6 +10,7 @@ from dataclasses import KW_ONLY, dataclass, field, replace
 from .geometry import Point
 from .metadata import freeze_metadata
 from .profiles import PageProfile
+from .semantics import Tag
 from .styles import TextStyle, _finite_number
 
 
@@ -58,6 +63,12 @@ def _paint(command) -> None:
         raise ValueError("a shape must have a stroke or fill")
 
 
+def _tag(command) -> None:
+    """A tag says what a command means; it never affects drawing or equality."""
+    if command.tag is not None and not isinstance(command.tag, Tag):
+        raise ValueError("tag must be a semantics.Tag or None")
+
+
 def _offset(dx: float, dy: float) -> tuple[float, float]:
     return _finite_number(dx, "dx"), _finite_number(dy, "dy")
 
@@ -91,6 +102,8 @@ class Text:
     style: TextStyle
     quarter_turns: int = 0
     shear_x: float = 0.0
+    _: KW_ONLY
+    tag: Tag | None = field(default=None, compare=False)
 
     def __post_init__(self) -> None:
         _coordinates(self, "x", "y", "shear_x")
@@ -99,6 +112,7 @@ class Text:
         if not isinstance(self.style, TextStyle):
             raise ValueError("style must be a TextStyle")
         _text_rotation(self.quarter_turns)
+        _tag(self)
 
     def translated(self, dx: float, dy: float) -> "Text":
         dx, dy = _offset(dx, dy)
@@ -117,11 +131,13 @@ class Line:
     color: Color = (0, 0, 0)
     _: KW_ONLY
     dash: tuple[float, ...] = ()
+    tag: Tag | None = field(default=None, compare=False)
 
     def __post_init__(self) -> None:
         _coordinates(self, "x1", "y1", "x2", "y2")
         _stroke(self, "width")
         _dash(self)
+        _tag(self)
 
     def translated(self, dx: float, dy: float) -> "Line":
         dx, dy = _offset(dx, dy)
@@ -139,6 +155,7 @@ class Polyline:
     closed: bool = False
     _: KW_ONLY
     dash: tuple[float, ...] = ()
+    tag: Tag | None = field(default=None, compare=False)
 
     def __post_init__(self) -> None:
         try:
@@ -155,6 +172,7 @@ class Polyline:
         object.__setattr__(self, "points", points)
         _stroke(self, "width")
         _dash(self)
+        _tag(self)
 
     def translated(self, dx: float, dy: float) -> "Polyline":
         dx, dy = _offset(dx, dy)
@@ -179,6 +197,7 @@ class Rectangle:
     fill: Color | None = None
     stroke: bool = True
     corner_radius: float = 0.0
+    tag: Tag | None = field(default=None, compare=False)
 
     def __post_init__(self) -> None:
         _coordinates(self, "x", "y", "width", "height")
@@ -192,6 +211,7 @@ class Rectangle:
         if radius < 0 or radius > min(self.width, self.height) / 2:
             raise ValueError("corner_radius must be between 0 and half the shorter side")
         object.__setattr__(self, "corner_radius", radius)
+        _tag(self)
 
     def translated(self, dx: float, dy: float) -> "Rectangle":
         dx, dy = _offset(dx, dy)
@@ -210,6 +230,7 @@ class Circle:
     color: Color = (0, 0, 0)
     fill: Color | None = None
     stroke: bool = True
+    tag: Tag | None = field(default=None, compare=False)
 
     def __post_init__(self) -> None:
         _coordinates(self, "x", "y", "radius")
@@ -219,6 +240,7 @@ class Circle:
                        self.y - self.radius, self.y + self.radius):
             _finite_number(extent, "radius extent")
         _paint(self)
+        _tag(self)
 
     def translated(self, dx: float, dy: float) -> "Circle":
         dx, dy = _offset(dx, dy)
@@ -236,6 +258,8 @@ class RasterImage:
     width: float
     height: float
     data: bytes
+    _: KW_ONLY
+    tag: Tag | None = field(default=None, compare=False)
 
     def __post_init__(self) -> None:
         _coordinates(self, "x", "y", "width", "height")
@@ -246,6 +270,7 @@ class RasterImage:
         if not isinstance(self.data, (bytes, bytearray, memoryview)) or not self.data:
             raise ValueError("data must contain nonempty image bytes")
         object.__setattr__(self, "data", bytes(self.data))
+        _tag(self)
 
     def translated(self, dx: float, dy: float) -> "RasterImage":
         dx, dy = _offset(dx, dy)

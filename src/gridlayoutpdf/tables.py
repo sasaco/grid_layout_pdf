@@ -4,7 +4,7 @@ from dataclasses import KW_ONLY, dataclass, field
 from itertools import accumulate
 
 from .blocks import Paragraph
-from .borders import BorderStyle, TableBorders, _table_borders
+from .borders import BorderStyle, TableBorders, _border_lines, _table_borders
 from .bounds import command_bounds
 from .errors import LayoutOverflowError
 from .layout import (
@@ -12,6 +12,7 @@ from .layout import (
     measurement_inputs,
 )
 from .scene import Line
+from .semantics import Kind, Role, Scope, within
 from .styles import Insets, TextStyle, _finite_number, _resolve_insets
 from .validation import TOLERANCE, _identifier, _integer
 
@@ -423,6 +424,7 @@ class Table:
         """
         width, height = geometry.x(len(self.columns)), geometry.y(stop, start)
         commands, records = [], []
+        table = Scope(Kind.TABLE, data={"block_id": self.block_id})
         for row in range(start, stop):
             for cell in geometry.by_row[row]:
                 box = self._cell_box(cell, geometry, start, under)
@@ -430,9 +432,9 @@ class Table:
                 content_x, content_y = self._content_origin(cell, box)
                 translated = cell.content.translated(content_x, content_y)
                 self._check_clearance(context, cell, box, translated, width, height)
-                commands.extend(translated)
+                commands.extend(within(translated, table, self._cell_scope(cell)))
                 records.append(self._cell_record(cell, box, content_x, content_y))
-        edges = _Edges(self, geometry, start, stop, width, height)
+        edges = _Edges(self, geometry, start, stop, width, height, table)
         commands.extend(edges.always)
         return LayoutPart(geometry.row_starts[stop] - geometry.row_starts[start], tuple(commands), {
             "columns_pt": tuple(columns * geometry.pitch_x for columns in self.columns),
@@ -442,6 +444,15 @@ class Table:
             "row_allocations": list(geometry.allocations[start:stop]),
         }, opening=tuple(edges.opening), continuing=tuple(edges.continuing),
            joining=tuple(edges.joining), closing=tuple(edges.closing))
+
+    @staticmethod
+    def _cell_scope(cell: _MeasuredCell) -> Scope:
+        """The cell a content command lies in, with its span and alignment."""
+        placed = cell.placed
+        return Scope(Kind.TABLE_CELL, data={
+            "cell_id": cell.path, "row": placed.row, "col": placed.col,
+            "rowspan": placed.cell.rowspan, "colspan": placed.cell.colspan,
+            "align": cell.align, "valign": placed.cell.valign})
 
     def _cell_edges(self, placed: _PlacedCell) -> dict[str, list[BorderStyle | None]]:
         """Return the style of every grid edge around one placed cell."""
@@ -558,8 +569,9 @@ class _Edges:
     """The border lines of one row group, sorted by when they are drawn.
 
     Every edge run is one call to ``BorderStyle.lines`` (one line, or two for
-    ``double``) for one style along one boundary, so a line can always be
-    traced back to its boundary, its columns or rows and its style.
+    ``double``) for one style along one boundary, and each line is tagged
+    with its boundary, its columns or rows (absolute, stop exclusive), its
+    style, its stroke number and the list it is drawn from (``drawn``).
     ``always`` holds the frame and inner lines. A group below another one
     draws its top only in ``opening`` (at a page top). A group above another
     one draws its bottom centred on the boundary in ``joining``, or inside
@@ -571,7 +583,7 @@ class _Edges:
     """
 
     def __init__(self, table: Table, geometry: _Geometry, start: int, stop: int,
-                 width: float, height: float) -> None:
+                 width: float, height: float, scope: Scope) -> None:
         self.always: list[Line] = []
         self.opening: list[Line] = []
         self.continuing: list[Line] = []
@@ -579,20 +591,21 @@ class _Edges:
         self.closing: list[Line] = []
         self.color = table.border_color
         self.width, self.height = width, height
+        self.path = (scope,)
         seam_above, seam_below = start > 0, stop < len(table.rows)
         for boundary in range(start, stop + 1):
             for style, first, stop_column in _runs(table._horizontal[boundary]):
                 x0, x1 = geometry.x(first), geometry.x(stop_column)
+                edge = (style, x0, x1, boundary, first, stop_column)
                 if boundary == start:
-                    self._horizontal(self.opening if seam_above else self.always, style, x0, x1,
-                                     style.thickness / 2)
+                    self._horizontal("opening" if seam_above else "always", *edge, style.thickness / 2)
                 elif boundary == stop and seam_below:
-                    self._horizontal(self.joining, style, x0, x1, height)
-                    self._horizontal(self.closing, style, x0, x1, height - style.thickness / 2)
+                    self._horizontal("joining", *edge, height)
+                    self._horizontal("closing", *edge, height - style.thickness / 2)
                 elif boundary == stop:
-                    self._horizontal(self.always, style, x0, x1, height - style.thickness / 2)
+                    self._horizontal("always", *edge, height - style.thickness / 2)
                 else:
-                    self._horizontal(self.always, style, x0, x1, geometry.y(boundary, start))
+                    self._horizontal("always", *edge, geometry.y(boundary, start))
         columns = len(table.columns)
         for boundary in range(columns + 1):
             for style, first, stop_row in _runs(tuple(table._vertical[row][boundary] for row in range(start, stop))):
@@ -601,22 +614,29 @@ class _Edges:
                 half = style.stroke_width / 2
                 y0 = max(half, geometry.y(start + first, start))
                 y1 = geometry.y(start + stop_row, start)
+                edge = (style, x, boundary, start + first, start + stop_row)
                 if first == 0 and seam_above:
-                    self._vertical(self.continuing, style, x, 0.0, y0)
+                    self._vertical("continuing", *edge, 0.0, y0)
                 if start + stop_row < stop:
-                    self._vertical(self.always, style, x, y0, min(height - half, y1))
+                    self._vertical("always", *edge, y0, min(height - half, y1))
                 elif not seam_below:
-                    self._vertical(self.always, style, x, y0, height - half)
+                    self._vertical("always", *edge, y0, height - half)
                 else:
-                    self._vertical(self.joining, style, x, y0, height)
-                    self._vertical(self.closing, style, x, y0, height - half)
+                    self._vertical("joining", *edge, y0, height)
+                    self._vertical("closing", *edge, y0, height - half)
 
-    def _horizontal(self, target: list, style: BorderStyle, x0: float, x1: float, y: float) -> None:
+    def _horizontal(self, drawn: str, style: BorderStyle, x0: float, x1: float,
+                    boundary: int, first: int, stop: int, y: float) -> None:
         half = style.stroke_width / 2
-        target.extend(style.lines(max(half, x0), y, min(self.width - half, x1), y, self.color))
+        getattr(self, drawn).extend(_border_lines(
+            style, max(half, x0), y, min(self.width - half, x1), y, self.color, Role.TABLE_BORDER, self.path,
+            orientation="horizontal", boundary=boundary, first=first, stop=stop, drawn=drawn))
 
-    def _vertical(self, target: list, style: BorderStyle, x: float, y0: float, y1: float) -> None:
-        target.extend(style.lines(x, y0, x, y1, self.color))
+    def _vertical(self, drawn: str, style: BorderStyle, x: float,
+                  boundary: int, first: int, stop: int, y0: float, y1: float) -> None:
+        getattr(self, drawn).extend(_border_lines(
+            style, x, y0, x, y1, self.color, Role.TABLE_BORDER, self.path,
+            orientation="vertical", boundary=boundary, first=first, stop=stop, drawn=drawn))
 
 
 def _runs(styles: tuple[BorderStyle | None, ...]):

@@ -11,9 +11,9 @@
 | 1 | xlsx-core | Step 7（ADR-0001） | `renderers/xlsx/{__init__,_model,_package,_sheet,_styles,_drawing,_units,_xml}.py`・`tests/unit/test_xlsx_{package,model,units,cells,sheet,drawing}.py`・`tests/integration/test_xlsx_excel_core.py`・`scripts/xlsx_probe/{measure_print_pitch.py,print_pitch.json}`（計画の `test_xlsx_excel.py` は Step 10 で ScenePage からの検査を担う） | ✅ 完了 |
 | 2 | size | Step 3（FR-023） | `styles.py`・`math.py`・文字サイズのテスト・片持ち梁の文字サイズ | ✅ 完了（p30〜35 と p36 の9セルは Step 9 へ保留） |
 | 2 | borders | Step 4（FR-022・026） | `borders.py`・`tables.py`・`containers.py`・`blocks.py`（`Rule`）・`layout.py`（端の命令）・`document.py`・表と線のテスト・片持ち梁の表の線 | ✅ 完了（commit 待ち） |
-| 3 | tags | Step 5 | `scene.py`・`math.py`・`equations.py`・`tables.py`・`cell_content.py`・`figures.py`・`blocks.py`・`rotation.py`・`document.py`・`diagnostics.py` | 未着手 |
+| 3 | tags | Step 5 | `scene.py`・`math.py`・`equations.py`・`tables.py`・`cell_content.py`・`figures.py`・`blocks.py`・`rotation.py`・`document.py`・`diagnostics.py`・`semantics.py`（新設） | ✅ 完了（commit 待ち） |
 | 4 | grid-terms | Step 6（FR-025） | `equations.py`・`docs/api.md` の指針 | 未着手 |
-| 5 | xlsx-map | Step 8（FR-021） | `renderers/xlsx/{__init__,_map,_numbers}.py`・`document.py`（`render_xlsx`） | 未着手 |
+| 5 | xlsx-map | Step 8（FR-021） | `renderers/xlsx/{__init__,_map,_numbers}.py`・`document.py`（`render_xlsx`） | 進行中（`_numbers.py` 完了） |
 | 5 | cantilever | Step 9（FR-027） | `tests/fixtures/cantilever_p01_37/**`・片持ち梁のテスト | 未着手 |
 | 6 | lead | Step 10 受入と文書 | 文書・PNG 正解・最終検証 | 未着手 |
 
@@ -465,3 +465,13 @@ silent-failure のレビューは完了。python・type-design のレビュー�
 - 外枠の角や T 字の交わり（細い外枠に太い内側の線など）で、線の端を半ストローク手前で止めるため小さな欠けが残る（細 0.25×0.25 pt、太 0.75×0.75 pt）。HEAD でも異なる太さの組合せでは同じ（`command_bounds` が線の端も半ストローク延ばす保守的な外形のため）。直すには `command_bounds` を butt cap どおりにする契約変更が要る。`docs/api.md` に制約として記載。
 - 破線の模様は行群ごとに初めから始まる（`Line` に模様の開始位置がないため）。`docs/api.md` に制約として記載。
 - `DESIGN.md` FR-020 の備考に `SideRule(block, x, *, width, ...)` が残っている（型付きライターは既存の行を書き換えられないため、lead が直す）。`docs/validation.md:132` の「任意分割表のページ境界をまたぐ線の統合は対象外」も古い（Step 10 の文書更新で）。
+
+#### tags（Step 5）と数値の見分け（Step 8 の先行分）
+
+2026-10-20。前のセッションの担当が中断した状態から lead が引き継いだ。
+
+- ✅ `semantics.py`（`Role`・`Kind`・`Scope`・`Tag`・`FrozenData`・`within`・`tagged`）と全描画命令の `tag`（`compare=False`、キーワード専用）。分数・添字・根号・括弧・式の各部分・表のセルと辺・`CellLines`・段落・図・`Rule`・`SideRule`・ヘッダー/フッター・`QuarterTurn` に付与。`Document` はページの metadata の配置ごとに `block_type` と命令の範囲（`commands`・`prefix_commands`・`part_commands`）、装飾に雛形・`align`・範囲を記録。`layout_trace` はタグのある命令にだけ `tag`。
+- ✅ `tests/unit/test_scene_tags.py`・`test_component_tags.py`（PDF が変わらないことの検査を含む）合格。
+- ✅ `renderers/xlsx/_numbers.py`（`classify_number`・`excel_display`・`NumericCell`）。中断時に Red だった `test_exact_context_does_not_take_the_default_context`（`decimal.DefaultContext` を import 前に変えると `_EXACT` に漏れる）を、`Context` の全設定を名前で渡して Green（`resume-numbers-green` 244 passed、Excel の統合テストを含む）。
+- ✅ `docs/architecture.md` に「意味のタグ」の節（役割・構造の種類・データの一覧）を追加。
+

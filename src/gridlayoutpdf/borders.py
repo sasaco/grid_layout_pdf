@@ -34,6 +34,7 @@ from enum import StrEnum
 from numbers import Number
 
 from .scene import Color, Line
+from .semantics import Role, Scope, Tag, tagged
 
 
 class BorderStyle(StrEnum):
@@ -89,6 +90,17 @@ class BorderStyle(StrEnum):
             Line(x1 + offset, y1, x2 + offset, y2, self.stroke_width, color, dash=self.dash)
             for offset in self.offsets
         )
+
+
+def _border_lines(style: BorderStyle, x1: float, y1: float, x2: float, y2: float, color: Color,
+                  role: Role, path: tuple[Scope, ...] = (), **data) -> tuple[Line, ...]:
+    """``style.lines()`` with each stroke tagged by ``role``, its style and its number.
+
+    ``stroke`` counts the strokes of one edge from 0: for ``double``, 0 is the
+    upper (horizontal) or left (vertical) line.
+    """
+    return tuple(tagged((line,), Tag(role, path, {**data, "style": style.value, "stroke": index}))[0]
+                 for index, line in enumerate(style.lines(x1, y1, x2, y2, color)))
 
 
 _SINGLE = (0.0,)

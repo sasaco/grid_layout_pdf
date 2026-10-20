@@ -59,6 +59,9 @@ def _command(command, fonts: FontRegistry, index: int, location: str) -> dict:
     elif isinstance(command, RasterImage):
         trace.update(x=command.x, y=command.y, width=command.width, height=command.height,
                      sha256=sha256(command.data).hexdigest(), byte_count=len(command.data))
+    # Like optional paint, a semantic tag is listed only when the command has one.
+    if command.tag is not None:
+        trace["tag"] = command.tag.to_json()
     return trace
 
 
@@ -69,6 +72,7 @@ def layout_trace(pages: Iterable[ScenePage], fonts: FontRegistry | None = None) 
     positions and bounds are absolute top-origin points; metadata is copied
     verbatim, including any block-local anchors, baselines and origins.
     Images are represented by their byte count and SHA-256, never raw bytes.
+    A command's semantic tag is listed as ``tag`` only when it has one.
     No component measurement, pagination or PDF rendering is performed.
     Omitting ``fonts`` uses the shared default registry; pass the registry
     the pages were laid out with when it is not the default one.

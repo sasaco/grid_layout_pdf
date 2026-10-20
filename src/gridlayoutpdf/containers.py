@@ -2,13 +2,14 @@
 
 from dataclasses import KW_ONLY, dataclass, replace
 
-from .borders import BorderStyle, _border_style
+from .borders import BorderStyle, _border_lines, _border_style
 from .errors import LayoutOverflowError
 from .layout import (
     EDGE_COMMANDS, Block, LayoutContext, LayoutPart, MeasuredBlock, _has_visible_commands,
     block_trace, measure_child, measurement_inputs, require_block,
 )
 from .scene import Rectangle, _color
+from .semantics import Kind, Role, Scope, Tag, within
 from .validation import TOLERANCE, _finite_number, _identifier, _integer
 
 
@@ -38,7 +39,9 @@ class Stack:
             measured = measure_child(child, context, available_width, location)
             child_commands = measured.commands
             children.append(block_trace(measured, 0, rows * pitch))
-            commands.extend(command.translated(0, rows * pitch) for command in child_commands)
+            # Numbering the children keeps two figures (or tables...) of one stack apart.
+            commands.extend(within((command.translated(0, rows * pitch) for command in child_commands),
+                                   Scope(Kind.STACK, index=index)))
             rows += measured.rows
             width = max(width, measured.width)
             if _has_visible_commands(child_commands):
@@ -93,7 +96,8 @@ class Columns:
             measured = measure_child(child, context, span * pitch_x, location)
             child_commands = measured.commands
             children.append(block_trace(measured, col * pitch_x, 0))
-            commands.extend(command.translated(col * pitch_x, 0) for command in child_commands)
+            commands.extend(within((command.translated(col * pitch_x, 0) for command in child_commands),
+                                   Scope(Kind.COLUMNS, index=index)))
             rows = max(rows, measured.rows)
             if _has_visible_commands(child_commands):
                 keep_next = keep_next or measured.keep_with_next
@@ -251,13 +255,15 @@ class SideRule:
         style, width = self.style, self.style.stroke_width
         if not style.dash:
             return tuple(Rectangle(self.x + offset - width / 2, top, width, bottom - top,
-                                   fill=self.color, stroke=False) for offset in style.offsets)
+                                   fill=self.color, stroke=False,
+                                   tag=Tag(Role.SIDE_RULE, (), {"style": style.value, "stroke": index}))
+                         for index, offset in enumerate(style.offsets))
         # A stroke's envelope reaches half its width past each end.
         start, stop = max(top, width / 2), min(bottom, height - width / 2)
         if stop <= start:
             raise ValueError(f"{self.block_id or 'SideRule'}: top and bottom leave no dashed rule "
                              f"in a part of {height} pt")
-        return style.lines(self.x, start, self.x, stop, self.color)
+        return _border_lines(style, self.x, start, self.x, stop, self.color, Role.SIDE_RULE)
 
     def measure(self, context: LayoutContext, available_width: float) -> MeasuredBlock:
         available_width = measurement_inputs(context, available_width)

@@ -14,6 +14,7 @@ from .layout import (
 from .profiles import A4_PORTRAIT_REFERENCE, PageProfile
 from .renderers.reportlab import render_pdf
 from .scene import ScenePage
+from .semantics import Kind, Scope, within
 from .styles import ReportStyle, TextStyle
 from .validation import _integer, whole_units_in
 
@@ -105,6 +106,7 @@ class _Event:
     source_path: str
     measured: MeasuredBlock | None = None
     at: At | None = None
+    block_type: str = ""
 
 
 def _events(blocks, document: Document, profile: PageProfile, prefix: str):
@@ -124,7 +126,8 @@ def _events(blocks, document: Document, profile: PageProfile, prefix: str):
         elif isinstance(block, At):
             yield _at_event(block, context, profile, path)
         else:
-            yield _Event("block", profile, path, measure_child(block, context, profile.body_rect.width, path))
+            yield _Event("block", profile, path, measure_child(block, context, profile.body_rect.width, path),
+                         block_type=type(block).__name__)
 
 
 def _at_event(block: At, context: LayoutContext, profile: PageProfile, path: str) -> _Event:
@@ -143,7 +146,7 @@ def _at_event(block: At, context: LayoutContext, profile: PageProfile, path: str
         measured = replace(measured, block_id=block.block_id)
     if measured.rows > profile.body_end_row - block.row:
         _row_overflow(measured.block_id or source, measured.rows, profile.body_end_row - block.row)
-    return _Event("at", profile, path, measured, block)
+    return _Event("at", profile, path, measured, block, type(block.block).__name__)
 
 
 class _Paginator:
@@ -260,11 +263,21 @@ class _Paginator:
 
     def place(self, event: _Event, measured: MeasuredBlock, *, col: int = 0) -> None:
         grid = self.profile.grid
-        self.commands.extend(measured.translated(grid.x(col), grid.y(self.cursor)))
+        dx, dy = grid.x(col), grid.y(self.cursor)
+        start = len(self.commands)
+        ranges = []
+        for part in measured.placed_parts():
+            ranges.append((len(self.commands), len(self.commands) + len(part)))
+            self.commands.extend(command.translated(dx, dy) for command in part)
+        prefix = len(measured.prefix)
         placement = {"block_id": measured.block_id or event.source_path,
-                     "source_path": event.source_path, "row": self.cursor, "col": col,
+                     "source_path": event.source_path, "block_type": event.block_type,
+                     "row": self.cursor, "col": col,
                      "rows": measured.rows, "width": measured.width,
-                     **part_descriptors(measured)}
+                     **part_descriptors(measured),
+                     # [start, stop) of the page commands this placement and each part drew.
+                     "commands": (start, len(self.commands)),
+                     "prefix_commands": tuple(ranges[:prefix]), "part_commands": tuple(ranges[prefix:])}
         self.placements.append(placement)
         self.cursor += measured.rows
 
@@ -341,10 +354,13 @@ def _decorate_page(page: ScenePage, number: int, total: int, document: Document)
         measured = measure_child(block, context, body.width, source)
         if measured.rows > decoration.rows:
             _row_overflow(source, measured.rows, decoration.rows)
-        commands.extend(measured.translated(body.x, top))
+        start = len(commands)
+        commands.extend(within(measured.translated(body.x, top), Scope(
+            Kind.DECORATION, side, data={"template": decoration.text, "align": decoration.align})))
         decorations[side] = {"text": text, "x_pt": body.x, "y_pt": top,
                              "width": body.width, "height": decoration.rows * pitch,
-                             "rows": decoration.rows}
+                             "rows": decoration.rows, "template": decoration.text,
+                             "align": decoration.align, "commands": (start, len(commands))}
     metadata = dict(page.metadata)
     if decorations:
         metadata["decorations"] = decorations

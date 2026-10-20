@@ -11,6 +11,7 @@ from .layout import (
 )
 from .profiles import PageProfile
 from .scene import Circle, Line, Polyline, Rectangle, Text
+from .semantics import Kind, Scope, within
 from .validation import TOLERANCE, _identifier, _integer
 
 
@@ -111,6 +112,12 @@ class QuarterTurn:
                     block_id=location, needed=bounds.width if horizontal else bounds.height,
                     available=width if horizontal else height,
                 )
+        local_grid = {"origin_x": grid.origin_x, "origin_y": grid.origin_y,
+                      "pitch_x": grid.pitch_x, "pitch_y": grid.pitch_y,
+                      "columns": grid.columns, "rows": grid.rows}
+        # Every rotated command names its turn and the grid it was laid out on.
+        rotated = within(rotated, Scope(Kind.QUARTER_TURN, data={
+            "turns": self.turns, "local_grid": local_grid, "block_id": self.block_id}))
         child_trace = block_trace(child, 0, 0)
         for group in ("prefix", "parts"):
             for part in child_trace[group]:
@@ -118,9 +125,7 @@ class QuarterTurn:
         matrix = (0, -1, 1, 0, 0, child.width) if self.turns == 1 else (0, 1, -1, 0, child.height, 0)
         metadata = {
             "turns": self.turns, "local_to_part": matrix,
-            "local_grid": {"origin_x": grid.origin_x, "origin_y": grid.origin_y,
-                           "pitch_x": grid.pitch_x, "pitch_y": grid.pitch_y,
-                           "columns": grid.columns, "rows": grid.rows},
+            "local_grid": local_grid,
             "child": child_trace,
         }
         return MeasuredBlock(width, context.profile.grid.pitch_y,
