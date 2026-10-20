@@ -1,0 +1,66 @@
+# Publish the wheel of a version tag (v0.2.1 etc.) as a GitHub Release.
+#
+# WebPier and other projects install GridLayoutPdf from the Release wheel's url, and their uv.lock pins its SHA-256,
+# so an uploaded wheel is never replaced. The wheel is built with SOURCE_DATE_EPOCH, so the same commit gives the
+# same bytes: when the Release already has the wheel, the job rebuilds it and only checks that the bytes are the same.
+# Run it by hand (workflow_dispatch) with an existing tag to check that a published wheel can be reproduced.
+# The tests are not run here (they need the Windows fonts and Excel); run them before pushing the tag.
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag to build (e.g. v0.2.1)"
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  wheel:
+    runs-on: ubuntu-latest
+    env:
+      TAG: ${{ inputs.tag || github.ref_name }}
+      SOURCE_DATE_EPOCH: "315532800"
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: refs/tags/${{ env.TAG }}
+
+      - uses: astral-sh/setup-uv@v6
+
+      - name: The tag is the project's version
+        run: |
+          version=$(uv run --no-project python -c "import tomllib; print(tomllib.load(open('pyproject.toml', 'rb'))['project']['version'])")
+          if [ "v$version" != "$TAG" ]; then
+            echo "::error::The tag $TAG is not the version $version in pyproject.toml"
+            exit 1
+          fi
+
+      - name: Build the wheel
+        run: uv build --wheel -o dist
+
+      - name: Publish the wheel, or check the published one
+        run: |
+          wheel=$(ls dist/*.whl)
+          name=$(basename "$wheel")
+          sha=$(sha256sum "$wheel" | cut -d' ' -f1)
+          commit=$(git rev-parse HEAD)
+          echo "$name $sha (commit $commit)"
+          if ! gh release view "$TAG" > /dev/null 2>&1; then
+            gh release create "$TAG" "$wheel" --verify-tag --title "$TAG" --notes "commit ${commit:0:7} の wheel です。GitHub Actions（ubuntu-latest）で SOURCE_DATE_EPOCH=315532800 の \`uv build --wheel\` で作りました（SHA-256 $sha）。載せた wheel は差し替えません。"
+          elif gh release view "$TAG" --json assets --jq '.assets[].name' | grep -qxF "$name"; then
+            gh release download "$TAG" --pattern "$name" --dir published
+            published=$(sha256sum "published/$name" | cut -d' ' -f1)
+            if [ "$published" != "$sha" ]; then
+              echo "::error::The published $name ($published) is not the rebuilt one ($sha)"
+              exit 1
+            fi
+            echo "The published $name is the rebuilt one"
+          else
+            gh release upload "$TAG" "$wheel"
+          fi
