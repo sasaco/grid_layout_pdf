@@ -2,6 +2,7 @@
 
 グリッドに沿った PDF 計算書を組み立てる Python ライブラリです。
 文章・構造化した数式・結合セル表・図を組み合わせ、文字サイズを保って等号列と行位置を揃えます。自動改ページ、ページ番号、A4／A3の混在に対応します。
+同じページを、グリッドの1マスを1セルにした方眼Excel（`.xlsx`）としても書き出せます。
 
 ## ローカルインストール
 
@@ -57,6 +58,7 @@ report = Document(
     footer=PageDecoration("{page} / {pages}", align="center"),
 )
 report.render("report.pdf")
+report.render_xlsx("report.xlsx", "計算書")  # 方眼Excel
 ```
 
 数式の計算や値の丸めは利用アプリで行い、表示用文字列を渡します。部品の詳しい組み方は [APIガイド](docs/api.md)、責務の分離は [アーキテクチャ](docs/architecture.md)、検証条件は [検証方法](docs/validation.md) を参照してください。
@@ -68,6 +70,8 @@ report.render("report.pdf")
 ```powershell
 uv run --locked python examples/representative_report.py --output build/reports/representative/standard
 ```
+
+方眼Excelでは文字片ごとにセルを作ります。式の項を列ごとのセルに分けるには `EquationGroup(term_columns="grid")` を使います（[APIガイドの方眼Excel](docs/api.md#方眼excel)）。代表帳票では `--term-columns grid --xlsx --strict` で、文字片のずらしも図形への切替えもない `.xlsx` を作れます。
 
 グリッドや書体計測も単独で利用できます。
 

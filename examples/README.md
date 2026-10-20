@@ -24,7 +24,13 @@ uv run --locked --extra dev python examples/representative_report.py --output bu
 uv run --locked --extra dev python examples/representative_report.py --output build/reports/representative/long/report.pdf --variant long --preview
 ```
 
-`--output` が `.pdf` ならそのファイル名、その他ならそのディレクトリに `representative-report.pdf` を作ります。同じ配置結果から `*-grid.pdf` と JSON の配置記録も保存します。`--preview` を指定した場合だけ、開発用 PyMuPDF で全ページの PNG を `previews/` へ保存します。
+`--output` が `.pdf` ならそのファイル名、その他ならそのディレクトリに `representative-report.pdf` を作ります。同じ配置結果から `*-grid.pdf` と JSON の配置記録も保存します。
+
+`--term-columns grid` は代入した値の項をグリッドの列ごとに置きます（`build_report(..., term_columns='grid')`）。`--xlsx` は同じページを方眼Excel（`representative-report.xlsx`、シート名「代表例」）でも書き、`--strict` はその時に文字片のずらしや図形への切替えが1件でもあればエラーにして何も書きません。`--term-columns grid --xlsx --strict` は既定の書体で合格します。既定の `packed` は項を詰めて並べ、指数に分数を使うため `--strict` では止まります。
+
+```powershell
+uv run --locked --extra dev python examples/representative_report.py --output build/reports/representative/grid --term-columns grid --xlsx --strict
+````--preview` を指定した場合だけ、開発用 PyMuPDF で全ページの PNG を `previews/` へ保存します。
 
 通常の PDF・JSON 出力には PyMuPDF は不要です。インストールした `gridlayoutpdf` がある環境へ、このスクリプトと `assets/` を一緒にコピーして実行できます。
 

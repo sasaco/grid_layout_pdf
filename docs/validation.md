@@ -129,7 +129,7 @@ rootは再生成した最終候補の通常37枚/grid37枚を個別表示し、�
 
 ### 片持ち梁の改善計画と共通API
 
-2026-10-17の承認済み改善計画で、`Insets`、`CellLines`、表の行高診断、`Image`の物理寸法、`Script`の明示サイズ・基線offset、`Table(split=False)`を追加しました。既定の分割・丸め・画像fit・添字配置は保持します。`split=False`はheaderを含む全行を1partへまとめ、共有罫線を統合します。任意分割表のページ境界をまたぐ線の統合は対象外です。
+2026-10-17の承認済み改善計画で、`Insets`、`CellLines`、表の行高診断、`Image`の物理寸法、`Script`の明示サイズ・基線offset、`Table(split=False)`を追加しました。既定の分割・丸め・画像fit・添字配置は保持します。`split=False`はheaderを含む全行を1partへまとめ、共有罫線を統合します。任意分割表のページ境界をまたぐ線は、2026-10-20の辺ごとの罫線（FR-026）で継ぎ目を1本として描くようになりました。
 
 レビュー指摘修正後の最終全件検証は **1939 passed（192.16秒）**、行カバレッジは **98.825109%（2979行中2944行）**。ログは`.claude/logs/cantilever-improvements-revised-final.log`、実数は`cantilever-improvements-revised-final-coverage.json`です。原本対expectedの文字順序と添字の役割を直接検査するゲートを、生成前・有効化前へ追加しました。同じ文字集合の桁交換、符号移動、回転セル、添字role/index/textの改変を負例で検査します。さらに基準commitの全37頁・3345項目のIDと原本bboxだけを独立pinし、本文とbboxの連動交換・ID交換・微小bbox変更も拒否します。本文・方向・添字は固定hashへ含めず、原本から直接検査します。
 
