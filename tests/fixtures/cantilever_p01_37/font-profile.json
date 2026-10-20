@@ -13,12 +13,6 @@
       "sha256": "4bde3e6392b96910fb59094c6c1a4dbfae18fee78d0bf13dc30616837c4f95db"
     }
   },
-  "body_size": 10,
-  "rotated_body_size": 10.0,
-  "spacing_ratio": 0.008,
-  "script_size_ratio": 0.67,
-  "subscript_offset": 1.92,
-  "superscript_offset": -2.4,
   "items": {
     "p01-title": {
       "font": "MS Gothic",

@@ -71,9 +71,13 @@ _SOURCE_REGION_SHA256 = {
     36: "15c5e8b1a656baa787e8f2f9fec9113afae2d3f9cf9acafb69f5d8f9b70fc3af",
     37: "927afb397fe4178875424c9398fbc14d08589a756d39dd1e449af82205ff5a1b",
 }
-# The original 9.94/9.96 pt text and explicitly authored 10 pt text differ by
-# <=0.040 pt at these numeric advance endpoints; PDF extraction adds <0.001 pt.
-_ANCHOR_TOLERANCE_PT = .1
+# Two original anchors this close are one alignment the output keeps (as builder.ALIGNED_SOURCE_PT:
+# the original right-aligns results up to 5.04 pt apart in one column, p3 345.32-350.36 pt).
+_ALIGNED_PT = 6.0
+# PDF stroke widths of the border styles (FR-022): hair, thin, medium, thick.
+_BORDER_STROKES = (.25, .5, 1.0, 1.5)
+# A bracket bar spans at least two text lines (p20's shortest is 77 pt); a table rule is not filled.
+_BAR_MIN_HEIGHT_PT = 20
 
 
 def _compact(text):
@@ -173,9 +177,15 @@ def _trace_regions(page):
         matrix = _compose(parent, _translation(node.get("x_pt", 0), node.get("y_pt", 0)))
         pitch = node.get("row_pitch", default_pitch)
         block_id = node.get("block_id", "")
-        add(block_id, _box(matrix, 0, 0, node["width"], node["rows"] * pitch))
-        for part in [*node.get("prefix", []), *node.get("parts", [])]:
-            placed = _compose(matrix, _translation(0, part["row"] * pitch))
+        parts = [*node.get("prefix", []), *node.get("parts", [])]
+        # Indent shifts its child right and records the shift as each part's indent_pt;
+        # the child's own metadata (cells, children) stays relative to the child.
+        indents = {part["metadata"].get("indent_pt", 0) for part in parts}
+        assert len(indents) <= 1, f"{block_id}: parts with different indents"
+        indent = next(iter(indents), 0)
+        add(block_id, _box(matrix, indent, 0, node["width"] - indent, node["rows"] * pitch))
+        for part in parts:
+            placed = _compose(matrix, _translation(indent, part["row"] * pitch))
             metadata = part["metadata"]
             for child in metadata.get("children", []):
                 walk(child, placed, pitch)
@@ -212,7 +222,38 @@ def _figure_allowlist(manifest):
     return allowed
 
 
-def _images(page, source_page, manifest):
+def _on_grid(value, origin, pitch, tolerance=.01):
+    """Whether a page coordinate lies on a grid line (PDF extraction rounds to float32)."""
+    steps = (value - origin) / pitch
+    return abs(steps - round(steps)) * pitch <= tolerance
+
+
+def _figure_corners(page):
+    """{figure id: (x, y)} the top-left corner of each SourceFigure part placed in a native trace page."""
+    corners = {}
+    grid = page["profile"]["grid"]
+
+    def walk(node, parent, default_pitch):
+        matrix = _compose(parent, _translation(node.get("x_pt", 0), node.get("y_pt", 0)))
+        pitch = node.get("row_pitch", default_pitch)
+        parts = [*node.get("prefix", []), *node.get("parts", [])]
+        indent = next(iter({part["metadata"].get("indent_pt", 0) for part in parts}), 0)
+        for part in parts:
+            placed = _compose(matrix, _translation(indent, part["row"] * pitch))
+            metadata = part["metadata"]
+            if "figure_id" in metadata:
+                assert metadata["figure_id"] not in corners, f"duplicate figure {metadata['figure_id']}"
+                corners[metadata["figure_id"]] = tuple(_box(placed, 0, 0, 0, 0)[:2])
+            for child in metadata.get("children", []):
+                walk(child, placed, pitch)
+
+    for placement in page["metadata"]["placements"]:
+        walk(placement, _translation(grid["origin_x"] + placement["col"] * grid["pitch_x"],
+                                     grid["origin_y"] + placement["row"] * grid["pitch_y"]), grid["pitch_y"])
+    return corners
+
+
+def _images(page, source_page, manifest, grid, corners=None):
     allowed = [a for a in _figure_allowlist(manifest) if a["source_page"] == source_page]
     infos = page.get_image_info(xrefs=True)
     assert len(infos) == sum(a.get("occurrence_count", 1) for a in allowed), f"p{source_page:02}: image occurrence count"
@@ -228,18 +269,30 @@ def _images(page, source_page, manifest):
         match = next((a for a in remaining if a["decoded_pixel_sha256"] == pixel_hash
                       and a["pixel_width"] == pixmap.width and a["pixel_height"] == pixmap.height), None)
         assert match is not None, f"p{source_page:02}: image pixels are not allowlisted"
-        _image_geometry(info["bbox"], match, source_page)
-        assert all(abs(a-b) <= .1 for a, b in zip(info["bbox"], match["target_bbox"])), f"p{source_page:02}: image region"
+        _image_geometry(info["bbox"], match, source_page, grid)
+        if corners is not None:
+            # The drawn image is where its own figure block was placed.
+            corner = corners.get(match["id"])
+            assert corner is not None and all(abs(a - b) <= .01 for a, b in zip(info["bbox"][:2], corner)), \
+                f"p{source_page:02}: image is not at its figure block"
         remaining.remove(match)
 
 
-def _image_geometry(box, asset, source_page):
+def _image_geometry(box, asset, source_page, grid):
+    """The original crop at its physical size, its top-left corner on the page grid (FR-027).
+
+    The figure's position follows the grid rules, not the original's
+    coordinates (manifest target_bbox records where the original had it).
+    An oracle_regions control has no page grid (``grid`` None).
+    """
     x0,y0,x1,y1 = box
     source = asset["source_bbox"]
     assert 0 <= x0 < x1 <= 595 and 0 <= y0 < y1 <= 842, f"p{source_page:02}: image page bounds"
     assert abs(x1-x0-(source[2]-source[0])) < .1 and abs(y1-y0-(source[3]-source[1])) < .1, f"p{source_page:02}: image source physical dimensions"
     assert source[2]-source[0] < 500 and source[3]-source[1] < 500, f"p{source_page:02}: full-page image prohibited"
-    assert all(abs(a-b) <= .1 for a,b in zip(box,asset["target_bbox"])), f"p{source_page:02}: image region"
+    assert grid is None or (_on_grid(x0, grid["origin_x"], grid["pitch_x"])
+                            and _on_grid(y0, grid["origin_y"], grid["pitch_y"])), \
+        f"p{source_page:02}: image region is off the page grid"
 
 
 def verify_scene_images(pages, source_pages, manifest):
@@ -263,7 +316,9 @@ def verify_scene_images(pages, source_pages, manifest):
                 assert sha256(rgb.tobytes()).hexdigest() == match["decoded_pixel_sha256"], f"p{source_page:02}: scene image pixels"
             assert match["source_sha256"] == "e56bf3ddbe3314ed95517099bedb0e68005df1567b0b3e8f52a2a4066d03393e", "image source identity"
             assert match["source_review"]["result"] == "pass", "image source review missing"
-            _image_geometry((command.x,command.y,command.x+command.width,command.y+command.height),match,source_page)
+            grid = {"origin_x": page.profile.grid.origin_x, "origin_y": page.profile.grid.origin_y,
+                    "pitch_x": page.profile.grid.pitch_x, "pitch_y": page.profile.grid.pitch_y}
+            _image_geometry((command.x,command.y,command.x+command.width,command.y+command.height),match,source_page,grid)
             remaining.remove(match)
             total += 1
     return total
@@ -346,7 +401,39 @@ def _selective_rules(rules, block, regions):
                 assert any(abs(ay-y) <= .6 for y in horizontal), f"{key}: unexpected horizontal rule"
 
 
-def _dense_anchors(chars, rules, regions, prefix):
+def _side_bars(page):
+    """Black filled vertical bars (SideRule draws solid styles as filled rectangles): (x, top, bottom, width)."""
+    bars = []
+    for drawing in page.get_drawings():
+        fill = drawing.get("fill")
+        if fill is None or max(fill) > .05 or drawing.get("color") is not None:
+            continue
+        for item in drawing["items"]:
+            if item[0] == "re":
+                box = item[1]
+                if 0 < box.width <= 2 and box.height > _BAR_MIN_HEIGHT_PT:
+                    bars.append(((box.x0 + box.x1) / 2, box.y0, box.y1, box.width))
+    return _union_bars(bars)
+
+
+def _union_bars(bars):
+    """Join the per-part pieces of one bar (same x and width, touching ends)."""
+    merged = []
+    for x, top, bottom, width in sorted(bars, key=lambda bar: (round(bar[0], 3), bar[1])):
+        if merged and abs(merged[-1][0] - x) < .01 and abs(merged[-1][3] - width) < .01 and top <= merged[-1][2] + .01:
+            merged[-1] = (x, merged[-1][1], max(merged[-1][2], bottom), width)
+        else:
+            merged.append((x, top, bottom, width))
+    return sorted(merged, key=lambda bar: (bar[1], bar[0]))
+
+
+def _dense_anchors(chars, regions, record, grid):
+    """The p16-p19 derivations: shared equation anchors on the page grid.
+
+    Within each Rm group the three equals share one centre; the T1 and T2
+    results and units share their columns, which are column lines (FR-027).
+    """
+    prefix = f"p{record['source_page']:02}"
     for side in ("movable", "fixed"):
         key = f"{prefix}-{side}-rm"
         equals = [c for c in _inside(chars, regions[key]) if c["c"] == "＝"]
@@ -364,12 +451,31 @@ def _dense_anchors(chars, rules, regions, prefix):
         units.append(ordered[-2]["origin"][0])
     assert max(results)-min(results) < .05, f"{prefix}: result anchors"
     assert max(units)-min(units) < .05, f"{prefix}: unit anchors"
-    _, source_rules = _source_reference(int(prefix[1:]))
-    wanted_bars, actual_bars = _group_bars(source_rules), _group_bars(rules)
-    assert len(actual_bars) == len(wanted_bars) == 2, f"{prefix}: group bar count"
-    for index, (actual, wanted) in enumerate(zip(actual_bars, wanted_bars)):
-        for coordinate, observed, expected in zip(("center", "start", "end"), actual, wanted):
-            assert abs(observed-expected) <= _ANCHOR_TOLERANCE_PT, f"{prefix}: group bar {index} {coordinate} differs from source"
+    assert _on_grid(results[0], grid["origin_x"], grid["pitch_x"]), f"{prefix}: result anchor is off the grid"
+    assert _on_grid(units[0], grid["origin_x"], grid["pitch_x"]), f"{prefix}: unit anchor is off the grid"
+
+
+def _group_bars(chars, bars, regions, record, grid):
+    """The p16-p20 bracket bars: one SideRule bar per derivation, on the page grid (FR-026, FR-027).
+
+    Each derivation (the items between T1 and T2, and the items after T2) is
+    bracketed by one bar of a border style's width, on a page grid column
+    line, left of every glyph of those items and spanning their regions.
+    """
+    prefix = f"p{record['source_page']:02}"
+    identifiers = [block["id"] for block in record["blocks"]]
+    t1, t2 = identifiers.index(f"{prefix}-t1"), identifiers.index(f"{prefix}-t2")
+    groups = (identifiers[t1 + 1:t2], identifiers[t2 + 1:])
+    assert len(bars) == 2, f"{prefix}: group bar count {len(bars)}"
+    for index, (bar, group) in enumerate(zip(bars, groups)):
+        x, top, bottom, width = bar
+        boxes = [regions[key] for key in group]
+        assert any(abs(width - stroke) < .01 for stroke in _BORDER_STROKES), f"{prefix}: group bar {index} width"
+        assert _on_grid(x, grid["origin_x"], grid["pitch_x"]), f"{prefix}: group bar {index} is off the grid"
+        glyphs = [c for box in boxes for c in _inside(chars, box) if not c["c"].isspace()]
+        assert glyphs and x + width / 2 < min(c["bbox"][0] for c in glyphs), f"{prefix}: group bar {index} is not left of its group"
+        assert top <= min(box[1] for box in boxes) + .01 and bottom >= max(box[3] for box in boxes) - .01, \
+            f"{prefix}: group bar {index} does not span its group"
 
 
 def _source_bytes() -> bytes:
@@ -379,11 +485,6 @@ def _source_bytes() -> bytes:
     data = sources[0].read_bytes()
     assert sha256(data).hexdigest() == _SOURCE_SHA256, "source PDF hash mismatch"
     return data
-
-
-def _source_reference(number):
-    with pymupdf.open(stream=_source_bytes(), filetype="pdf") as source:
-        return _chars(source[number-1]), _black_rules(source[number-1])
 
 
 def _source_pages(source_pages: Iterable[int]) -> tuple[int, ...]:
@@ -504,24 +605,6 @@ def verify_source_order(source_pages: Iterable[int], *, records: Iterable[dict] 
             "complete_37_pages": pages == tuple(range(1, 38))}
 
 
-def _group_bars(rules):
-    """Union duplicated/overlapping native centerline strokes, without moving them.
-
-    Original p18 repeats one stroke; p19 has overlapping strokes in each group.
-    Their visible union is the reference, not the number of PDF paint commands.
-    """
-    intervals = sorted((x0, min(y0, y1), max(y0, y1)) for x0, y0, x1, y1 in rules
-                       if abs(x0-x1) < .01 and abs(y1-y0) > 100)
-    merged = []
-    for x, low, high in intervals:
-        if merged and abs(x-merged[-1][0]) < .01 and low <= merged[-1][2] + .01:
-            px, start, stop = merged[-1]
-            merged[-1] = (px, start, max(stop, high))
-        else:
-            merged.append((x, low, high))
-    return sorted(merged, key=lambda bar: (bar[1], bar[0]))
-
-
 def _source_block_order(record, regions):
     ordered = []
     for block in record["blocks"]:
@@ -534,15 +617,31 @@ def _source_block_order(record, regions):
     assert all(a <= b+.1 for a,b in zip(actual,actual[1:])), f"p{record['source_page']:02}: source block order"
 
 
-def _train_anchors(chars,record,regions):
-    source_chars, _ = _source_reference(record["source_page"])
+def _train_anchors(chars, record, regions, grid, source_chars=None):
+    """p3-p8 train equations: result end, unit start and equals centre on page grid column lines.
+
+    Where the original drew two equations' anchor at the same place (within
+    _ALIGNED_PT, 6 pt), the output shares that anchor's column too (FR-027 replaces the
+    original's positions with the grid, not the original's alignment).
+    ``source_chars`` are the original page's glyphs.
+    """
+    found = []
     for item in record["blocks"]:
         if item["kind"] != "equation":
             continue
-        actual = _train_item_anchors(_inside(chars,regions[item["id"]]), item["id"])
-        wanted = _train_item_anchors(_inside(source_chars,item["source_bbox"]), item["id"])
-        for label, observed, expected in zip(("result", "unit", "equal"), actual, wanted):
-            assert abs(observed-expected) <= _ANCHOR_TOLERANCE_PT, f"{item['id']}: {label} anchor differs from source"
+        anchors = _train_item_anchors(_inside(chars, regions[item["id"]]), item["id"])
+        for label, value in zip(("result", "unit", "equal"), anchors):
+            assert _on_grid(value, grid["origin_x"], grid["pitch_x"]), f"{item['id']}: {label} anchor is off the grid"
+        original = (_train_item_anchors(_inside(source_chars, item["source_bbox"]), item["id"])
+                    if source_chars is not None else None)
+        found.append((item["id"], anchors, original))
+    for index, label in enumerate(("result", "unit", "equal")):
+        # Every pair, not only neighbours: an unaligned equation between two aligned ones hides nothing.
+        for position, (key_a, out_a, src_a) in enumerate(found):
+            for key_b, out_b, src_b in found[position + 1:]:
+                if src_a is not None and abs(src_a[index] - src_b[index]) <= _ALIGNED_PT:
+                    assert abs(out_a[index] - out_b[index]) < .05, \
+                        f"{key_b}: {label} anchor is not shared with {key_a} as in the original"
 
 
 def _train_item_anchors(chars, identifier):
@@ -587,7 +686,8 @@ def verify_pdf(path, *, source_pages, trace=None, grid=False, manifest=None):
             chars = _chars(page)
             corner = _reading(_inside(chars, (500, 30, 570, 62)), (1, 0))
             assert not re.search(r"13\s*[-−－–]\s*\d+", corner), f"{prefix}: page number is present"
-            _images(page, source, manifest)
+            _images(page, source, manifest, trace_page["profile"]["grid"] if native_trace else None,
+                    _figure_corners(trace_page) if native_trace else None)
             regions, spans = _trace_regions(trace_page) if native_trace else (trace_page, {})
             rules = _black_rules(page)
             if native_trace:
@@ -642,9 +742,13 @@ def verify_pdf(path, *, source_pages, trace=None, grid=False, manifest=None):
             wanted_inventory = Counter(record["source_character_inventory"])
             assert actual_inventory == wanted_inventory, f"{prefix}: page character inventory mismatch"
             if native_trace and source in (16, 17, 18, 19):
-                _dense_anchors(chars, rules, regions, prefix)
+                _dense_anchors(chars, regions, record, trace_page["profile"]["grid"])
+            if native_trace and source in (16, 17, 18, 19, 20):
+                _group_bars(chars, _side_bars(page), regions, record, trace_page["profile"]["grid"])
             if native_trace and 3 <= source <= 8:
-                _train_anchors(chars,record,regions)
+                with pymupdf.open(stream=_source_bytes(), filetype="pdf") as original:
+                    source_chars = _chars(original[source - 1])
+                _train_anchors(chars, record, regions, trace_page["profile"]["grid"], source_chars)
     return {"source_pages": list(pages), "verified_items": verified_items,
             "complete_37_pages": pages == tuple(range(1, 38)), "variant": "grid" if grid else "normal",
             "source_order": source_order}

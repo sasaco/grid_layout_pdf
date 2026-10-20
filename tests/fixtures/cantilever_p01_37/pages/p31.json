@@ -5,22 +5,6 @@
     {
       "id": "p31-combinations-md",
       "type": "table",
-      "columns": [
-        247,
-        363,
-        363,
-        363,
-        363,
-        363,
-        363,
-        363,
-        550,
-        363,
-        363,
-        484,
-        484,
-        729
-      ],
       "rows": [
         [
           {
@@ -197,8 +181,7 @@
             "line_sizes": [
               10,
               8.0
-            ],
-            "line_advance": 10.8
+            ]
           },
           {
             "lines": [
@@ -525,8 +508,7 @@
             "line_sizes": [
               10,
               10
-            ],
-            "line_advance": 10.8
+            ]
           },
           {
             "lines": [
@@ -975,8 +957,7 @@
           {
             "lines": [
               "安全性(疲労)"
-            ],
-            "size": 9.0
+            ]
           },
           {
             "lines": [
@@ -1111,18 +1092,7 @@
         ]
       ],
       "header_rows": 2,
-      "size": 10,
-      "line_advance": 12.8,
-      "padding": 0.45,
-      "border_width": 0.24,
-      "turns": 1,
-      "rotation_id": "p31-rotated-table",
-      "local_grid": {
-        "pitch_x": 0.12,
-        "pitch_y": 0.12,
-        "columns": 6050,
-        "rows": 4000
-      }
+      "rotation_id": "p31-rotated-table"
     }
   ]
 }

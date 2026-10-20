@@ -53,30 +53,7 @@
     {
       "id": "p23-weight-table",
       "type": "table",
-      "columns": [
-        2,
-        15,
-        5,
-        4,
-        4
-      ],
-      "padding": 0,
       "header_rows": 1,
-      "horizontal_rules": [
-        0,
-        0,
-        0,
-        0,
-        0
-      ],
-      "vertical_rules": [
-        0,
-        0,
-        0,
-        0,
-        0,
-        0
-      ],
       "rows": [
         [
           {

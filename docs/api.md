@@ -193,7 +193,7 @@ group = EquationGroup(Equation("kv", kv("0.5"), result="174930", unit="kN/m"),
 
 方眼Excel（FR-021）は文字片ごとにセルを作り、同じセルに文字片が重なると右へずらして記録する。次の書き方は、式の各部分が別々のセルになるようにするためのもので、方眼Excelへの対応付け（Step 8）の規則とあわせて使う。
 
-- 等号・結果の等号・結果の右端・単位の開始は`EquationAnchors`の整数の列。等号はその列の境目に送りの中心を置くので紙面では境目をまたぐが、方眼Excelでは等号を境目の右の列のセル、左辺を境目の左の列までのセルにする。ラベルは`label_columns`（省略時は計測した幅）の中に収める。折り返したラベルは、方眼Excelでは各行をそれぞれの行のセルに置く（式の行の縦結合には入れない）。
+- 等号・結果の等号・結果の右端・単位の開始は`EquationAnchors`の整数の列。等号はその列の境目に送りの中心を置くので紙面では境目をまたぐが、方眼Excelでは等号を、左辺と重ならない範囲で中心が紙面の位置に最も近い列のセル（1字の等号なら境目の右の列）にし、左辺を境目の左の列までのセルにする。ラベルは`label_columns`（省略時は計測した幅）の中に収める。折り返したラベルは、方眼Excelでは各行をそれぞれの行のセルに置く（式の行の縦結合には入れない）。
 - 右辺で数値・演算子を並べる式は、最上位の`Row`の各項の間に`TermStop`を置き、`EquationGroup(term_columns='grid')`にする。各項が自分の列の範囲を持つ。数値は`TermStop('right')`、演算子は`TermStop('center')`で区切ると、行をまたいで桁と記号が揃う。
 - `TermStop`は最上位の右辺の`Row`にだけ置ける。分数の分子・分母、根号・括弧の中の`Row`は1つの項の中身で、方眼Excelでは分子・中身ごとに1つのセルになる。
 - 上付き・下付き（`Script`）の中に分数を入れない。セルのリッチテキストでは表せないため、方眼Excelは記録し、`strict=True`ではエラーになる。指数の分数は根号（`Root`）などの同じ意味の書き方にする。
@@ -412,13 +412,13 @@ print([sheet.name for sheet in result.sheets], result.numbers_as_text)
 - ページのグリッドの1マスを1セルにする。用紙・向き・グリッド、またはヘッダー・フッターの位置・雛形が変わる所で次のシート（`名前`、`名前_2`…）にし、ページの境目に改ページを入れる。シート名がExcelの規則（31文字、`[]:*?/\`不可、重複不可）に反する時、用紙がA4・A3以外の時、Excelの上限（16,384列・1,048,576行）を超える時は`XlsxError`。
 - 行高・列幅は、Excelの印刷で累積の位置がPDFのグリッドに合うよう、セルごとに整数pxで選ぶ。100%で印刷できない時は`print_scale`として記録する。
 - 文字片ごとに1セル（またがる範囲は結合）。文字片の列は字形のインクが触れる列。重なれば右（回転表では読む方向）へずらして`shifts`に記録し、グリッドの右端を越える時は常に`XlsxError`。添字・指数は記号と同じセルのリッチテキスト。
-- 数値の書き方に丸ごと一致する文字片（`−2.000`、`1,234.5`など）は、Excelの画面で`###`にならずに範囲へ入る時だけ数値型＋PDFと同じ表示の表示形式にする。先頭0の番号・`−0.000`・図の中の文字は文字列。入らない数値は文字列のまま`numbers_as_text`に記録する。
+- 数値の書き方に丸ごと一致する文字片（`−2.000`、`1,234.5`など）は、Excelの画面で`###`にならずに範囲へ入る時だけ数値型＋PDFと同じ表示の表示形式にする。先頭0の番号・`−0.000`・図の中の文字は文字列。入らない数値は文字列のまま`numbers_as_text`に記録する。文字列のセルも、Excelで要る幅まで空いたセルへ広げ、足りなければ`texts_clipped`に記録する（Excelの印刷で末尾の字が切れうる）。字が1つだけの表のセルはセルの範囲全体を結合して寄せ方を写す。
 - 分数は分子・分母を上下のセル、分数線は行の境目の図形。同じ式の左辺・等号・結果・単位は別々のセルで、式の行の範囲を縦結合して上下中央にする。
 - セルの罫線になるのは`Table`・`Rule`・`SideRule`が描いた線だけ。利用者の`Line`（図の中を含む）・分数線・根号・図は、セルの境目に載っていても図形。図はグループ化した図形・テキストボックス・画像になる。
 - `QuarterTurn`は`local_grid`がページのグリッドの縦横入替の時にセル（文字の向き90度）で、それ以外は図形にして`fallbacks`に記録する。
 - `PageDecoration`はExcelのヘッダー・フッター（`align`の欄）。`{page}`は`&P`と各シートの先頭ページ番号、`{pages}`は渡した帳票の総数。
-- `XlsxResult`は`path`、`sheets`（`XlsxSheet`：名前・帳票・ページ範囲・行列数・印刷の拡大率）、`shifts`（`XlsxShift`：理由は`overlap`・`fraction`・`fraction_in_script`）、`fallbacks`（`XlsxFallback`：種類は`quarter_turn`・`border_off_grid`・`border_in_merge`・`border_conflict`・`rotated_text`・`fraction_in_script`・`term_off_grid`・`cell_padding_mismatch`・`print_scale`）、`numbers_as_text`、`untagged`（意味のタグのない描画命令の型と数）、`dropped`（大きさのない図形）を持つ。
-- `strict=True`では`shifts`か`fallbacks`が1件でもあれば`XlsxStrictError`（`XlsxError`の一種）にし、何も書かない。`numbers_as_text`と`untagged`は対象外。
+- `XlsxResult`は`path`、`sheets`（`XlsxSheet`：名前・帳票・ページ範囲・行列数・印刷の拡大率）、`shifts`（`XlsxShift`：理由は`overlap`・`fraction`・`fraction_in_script`）、`fallbacks`（`XlsxFallback`：種類は`quarter_turn`・`border_off_grid`・`border_in_merge`・`border_conflict`・`rotated_text`・`fraction_in_script`・`term_off_grid`・`cell_padding_mismatch`・`print_scale`）、`numbers_as_text`、`texts_clipped`、`untagged`（意味のタグのない描画命令の型と数）、`dropped`（大きさのない図形）を持つ。
+- `strict=True`では`shifts`か`fallbacks`が1件でもあれば`XlsxStrictError`（`XlsxError`の一種）にし、何も書かない。`numbers_as_text`・`texts_clipped`・`untagged`は対象外。
 - `cell_padding_pt`はExcelのセルの片側の内側の余白（文字の大きさ→pt）。省略時は`term_columns='grid'`と同じ`excel_cell_padding_pt`。
 - 書体はPDFと同じ書体名を書く。開くパソコンにその書体がないとExcelは別の書体で表示する（同梱のIPAex書体はPDF用で、Excelでは使えるようにならない）。両端揃えの字間（`tracking`）と`Text.shear_x`はセルでは表せないため捨てる。
 - ちょうど列に収まる数値は、印刷では表示されるが、画面（100%）では5列以上の範囲で`###`になることがある（Excel 16.0、ＭＳ 明朝 10 pt で実測）。

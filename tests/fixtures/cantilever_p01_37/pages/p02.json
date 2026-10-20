@@ -25,12 +25,6 @@
     {
       "id": "p02-c-reactions",
       "type": "equations",
-      "anchors": {
-        "first_equal": 3,
-        "second_equal": 22,
-        "result_right": 27,
-        "unit_start": 28
-      },
       "equations": [
         {
           "lhs": {
@@ -198,12 +192,6 @@
     {
       "id": "p02-bc-reactions",
       "type": "equations",
-      "anchors": {
-        "first_equal": 3,
-        "second_equal": 22,
-        "result_right": 27,
-        "unit_start": 28
-      },
       "equations": [
         {
           "lhs": {

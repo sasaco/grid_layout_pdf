@@ -17,37 +17,7 @@
     {
       "id": "p27-lateral-b-table",
       "type": "table",
-      "columns": [
-        5,
-        3,
-        3,
-        3,
-        5,
-        3,
-        3,
-        5
-      ],
       "header_rows": 1,
-      "padding": 0,
-      "border_width": 0.5,
-      "horizontal_rules": [
-        1,
-        0.12,
-        0,
-        0,
-        1
-      ],
-      "vertical_rules": [
-        0,
-        0,
-        0.12,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0
-      ],
       "rows": [
         [
           {
@@ -259,37 +229,7 @@
     {
       "id": "p27-lateral-c-table",
       "type": "table",
-      "columns": [
-        5,
-        3,
-        3,
-        3,
-        5,
-        3,
-        3,
-        5
-      ],
       "header_rows": 1,
-      "padding": 0,
-      "border_width": 0.5,
-      "horizontal_rules": [
-        1,
-        0.12,
-        0,
-        0,
-        1
-      ],
-      "vertical_rules": [
-        0,
-        0,
-        0.12,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0
-      ],
       "rows": [
         [
           {
@@ -501,37 +441,7 @@
     {
       "id": "p27-lateral-bc-table",
       "type": "table",
-      "columns": [
-        5,
-        3,
-        3,
-        3,
-        5,
-        3,
-        3,
-        5
-      ],
       "header_rows": 1,
-      "padding": 0,
-      "border_width": 0.5,
-      "horizontal_rules": [
-        1,
-        0.12,
-        0,
-        0,
-        1
-      ],
-      "vertical_rules": [
-        0,
-        0,
-        0.12,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0
-      ],
       "rows": [
         [
           {
@@ -749,37 +659,7 @@
     {
       "id": "p27-wind-with-table",
       "type": "table",
-      "columns": [
-        5,
-        3,
-        3,
-        3,
-        5,
-        3,
-        3,
-        5
-      ],
       "header_rows": 1,
-      "padding": 0,
-      "border_width": 0.5,
-      "horizontal_rules": [
-        1,
-        0.12,
-        0,
-        0,
-        1
-      ],
-      "vertical_rules": [
-        0,
-        0,
-        0.12,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0
-      ],
       "rows": [
         [
           {
@@ -991,37 +871,7 @@
     {
       "id": "p27-wind-without-table",
       "type": "table",
-      "columns": [
-        5,
-        3,
-        3,
-        3,
-        5,
-        3,
-        3,
-        5
-      ],
       "header_rows": 1,
-      "padding": 0,
-      "border_width": 0.5,
-      "horizontal_rules": [
-        1,
-        0.12,
-        0,
-        0,
-        1
-      ],
-      "vertical_rules": [
-        0,
-        0,
-        0.12,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0
-      ],
       "rows": [
         [
           {

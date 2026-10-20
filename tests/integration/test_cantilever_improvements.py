@@ -1,6 +1,5 @@
 """Public API proofs and preserved original appearance after fixture migration."""
 
-from dataclasses import replace
 from hashlib import sha256
 from io import BytesIO
 import importlib.util
@@ -14,7 +13,7 @@ from PIL import Image as PILImage
 
 from gridlayoutpdf import (
     Cell, CellLines, Document, GridSpec, Insets, LayoutContext, Line, PageBreak,
-    PageProfile, QuarterTurn, RasterImage, ReportStyle, Script, Table, Text,
+    PageProfile, PageSection, QuarterTurn, RasterImage, Script, Table,
     TextStyle, layout_trace, measure_block, render_pdf,
 )
 from gridlayoutpdf.bounds import command_bounds
@@ -34,66 +33,54 @@ def _module(name):
     return sys.modules[key]
 
 
-def _authored_tables(number):
-    record = json.loads((FIXTURE / f"pages/p{number:02}.json").read_text(encoding="utf-8"))
-    return [block for block in record["blocks"] if block["type"] == "table"]
-
-
-def _local_context(fonts):
-    return LayoutContext(fonts, PageProfile("public-cells", 800, 800,
-                         GridSpec(0, 0, .12, .12, 6600, 6600)), _module("builder").SOURCE_STYLE)
-
-
-def _public_table(data, *, local):
-    """Keep source values/styles; explicitly reserve stroke clearance inside."""
+def _tables(number):
+    """The builder's page inputs and the authored tables of one original page."""
     builder = _module("builder")
-    original = builder.build_block(data)
-    rotated = isinstance(original, QuarterTurn)
-    table = original.block if rotated else original
-    rows = []
-    for row in table.rows:
-        converted = []
-        for cell in row:
-            content = cell.content
-            styles = (tuple(replace(content.style, size=size) for size in content.line_sizes)
-                      if content.line_sizes else None)
-            lines = CellLines(tuple(builder.math_node(line) for line in content.lines),
-                              style=content.style, line_styles=styles,
-                              line_advance=content.line_advance, min_height=content.min_height,
-                              inner_padding=Insets(top=1.01, bottom=1.01, left=content.inline_padding,
-                                                   right=content.inline_padding),
-                              align="center", block_id=content.block_id)
-            converted.append(replace(cell, content=lines, padding=0))
-        rows.append(tuple(converted))
-    columns = table.columns if rotated or not local else tuple(value * 134 for value in table.columns)
-    return replace(table, columns=columns, rows=tuple(rows), split=False)
+    data = json.loads((FIXTURE / f"pages/p{number:02}.json").read_text(encoding="utf-8"))
+    layout = {page["source_page"]: page for page in builder.source_layout()["pages"]}[number]
+    leaves = tuple(builder._leaves({"type": "stack", "children": data["blocks"]}))
+    page = builder._Page(number, builder.fixture_fonts(), {block["id"]: block for block in layout["blocks"]}, leaves)
+    return page, [block for block in leaves if block["type"] == "table"]
+
+
+def _context(fonts, number, turned):
+    """The context a source table is measured in: the page grid, or the swapped page grid inside QuarterTurn."""
+    builder = _module("builder")
+    profile = builder.page_profile(number)
+    if not turned:
+        return LayoutContext(fonts, profile, builder.SOURCE_STYLE)
+    grid = profile.grid
+    local = GridSpec(0, 0, grid.pitch_y, grid.pitch_x, grid.rows, grid.columns)
+    return LayoutContext(fonts, PageProfile("local", local.columns * local.pitch_x, local.rows * local.pitch_y, local),
+                         builder.SOURCE_STYLE)
 
 
 @pytest.mark.parametrize("number,count", [(1, 70), (26, 186), (30, 267), (36, 306)])
-def test_all_authored_table_cells_use_single_rounding_and_explicit_clearance(number, count):
+def test_all_authored_table_cells_use_single_rounding_and_one_grid_row_per_line(number, count):
     builder = _module("builder")
     fonts = builder.fixture_fonts()
-    context = _local_context(fonts)
+    page, tables = _tables(number)
     seen = []
-    for data in _authored_tables(number):
-        # Existing manuscript parameters remain usable through the thin adapter.
-        original = measure_block(builder.build_block(data),
-                                 LayoutContext(fonts, builder.SOURCE_PROFILE, builder.SOURCE_STYLE), 498.48)
-        assert original.commands
-        measured = measure_block(_public_table(data, local=True), context, 780)
-        assert len(measured.parts) == 1 and not measured.break_after
-        for cell in measured.parts[0].metadata["cells"]:
-            seen.append(cell["cell_id"])
-            assert all(value == 0 for value in cell["padding_pt"].values())
-            content = cell["content"]
-            assert content["row_pitch"] == .12
-            metadata = content["parts"][0]["metadata"]
-            assert metadata["height_rounding"] == "single"
-            assert metadata["inner_padding_pt"]["top"] == 1.01
-            assert metadata["inner_padding_pt"]["bottom"] == 1.01
-            baselines = metadata["baselines_pt"]
-            assert all(b - a == pytest.approx(metadata["line_advance"])
-                       for a, b in zip(baselines, baselines[1:]))
+    for data in tables:
+        built = builder._table(data, page)
+        turned = isinstance(built, QuarterTurn)
+        table = built.block if turned else built
+        context = _context(fonts, number, turned)
+        pitch = context.profile.grid.pitch_y
+        measured = measure_block(table, context, sum(table.columns) * context.profile.grid.pitch_x)
+        assert measured.rows == sum(table.row_heights)
+        # Header rows are the repeated prefix; every other row group is a part.
+        for part in (*measured.prefix, *measured.parts):
+            for cell in part.metadata["cells"]:
+                seen.append(cell["cell_id"])
+                assert all(value == 0 for value in cell["padding_pt"].values())
+                content = cell["content"]
+                assert content["row_pitch"] == pitch
+                metadata = content["parts"][0]["metadata"]
+                assert metadata["height_rounding"] == "single"
+                assert metadata["line_advance"] == pitch
+                baselines = metadata["baselines_pt"]
+                assert all(b - a == pytest.approx(pitch) for a, b in zip(baselines, baselines[1:]))
     assert len(seen) == len(set(seen)) == count
 
 
@@ -117,29 +104,25 @@ def test_all_16_source_figures_preserve_physical_snapshot_and_provenance():
         assert measured.parts[0].metadata["source_page"] == asset["source_page"]
 
 
-# p30 is deferred to FR-027 Step 9 (2026-10-20 user decision c); p1, p26, p36 still run.
-@pytest.mark.parametrize("selected", _module("deferred").selections((1, 26, 30, 36)))
 @pytest.mark.parametrize("grid", [False, True])
-def test_migrated_fixed_pages_preserve_original_content_and_appearance(tmp_path, grid, selected):
+def test_migrated_fixed_pages_preserve_original_content_and_follow_the_grid_rules(tmp_path, grid):
+    selected = (1, 26, 30, 36)
     builder = _module("builder")
     fonts = builder.fixture_fonts()
     pages = builder.layout_report(fonts, source_pages=selected)
     assert len(pages) == len(selected)
-    # The accepted PageFrame reserves all 48 available rows; actual content
-    # remains inside the 47-row envelope. Do not conflate those two quantities.
+    # Every page keeps its ink inside its own fixed page grid.
     assert all(max(command_bounds(command, fonts).bottom for command in page.commands)
-               <= page.profile.grid.origin_y + 47 * page.profile.grid.pitch_y for page in pages)
+               <= page.profile.grid.origin_y + page.profile.grid.rows * page.profile.grid.pitch_y for page in pages)
     trace = layout_trace(pages, fonts)
     output = tmp_path / "fixed-pages.pdf"
     render_pdf(pages, output, fonts, debug_grid=grid)
     content = _module("verify").verify_pdf(output, source_pages=selected, trace=trace,
                                           manifest=builder.load_manifest(), grid=grid)
     assert content["source_order"]["source_pages"] == list(selected)
-    # Only the listed p36 operator positions are deferred to Step 9 (FR-027).
-    appearance = _module("verify_appearance").verify_appearance(
-        output, source_pages=selected, trace=trace, deferred=_module("deferred").DEFERRED_DIFFERENCES)
+    appearance = _module("verify_appearance").verify_appearance(output, source_pages=selected, trace=trace)
     assert appearance["error_count"] == 0
-    assert appearance["deferred_count"] == 9
+    assert set(appearance["checks"]) == set(_module("verify_appearance").CATEGORIES)
 
 
 def _nested_script_table():
@@ -155,19 +138,16 @@ def _nested_script_table():
 
 
 def write_api_proof(output):
-    """Write a three-page opt-in proof; this is not the accepted source report."""
+    """Write a three-page proof of the fixture's public parts; this is not the accepted source report."""
     output = Path(output)
     output.mkdir(parents=True, exist_ok=True)
     builder = _module("builder")
     fonts = builder.fixture_fonts()
-    p26 = _public_table(_authored_tables(26)[0], local=False)
-    p30_data = _authored_tables(30)[0]
-    # This opt-in proof explicitly allocates the added inner stroke clearance.
-    # Its 504 pt local capacity is independent of the unchanged source frame.
-    p30_grid = {**p30_data["local_grid"], "rows": 4200}
-    p30 = QuarterTurn(_public_table(p30_data, local=True), turns=1,
-                      local_grid=GridSpec(0, 0, **p30_grid), block_id="public-p30-turn")
-    pages = Document(p26, PageBreak(), p30, PageBreak(), _nested_script_table(),
+    page26, tables26 = _tables(26)
+    page30, tables30 = _tables(30)
+    p26 = builder._table(tables26[0], page26)
+    p30 = builder._table(tables30[0], page30)
+    pages = Document(p26, PageBreak(), PageSection(builder.ROTATED_PROFILE, p30), PageBreak(), _nested_script_table(),
                      fonts=fonts, profile=builder.SOURCE_PROFILE).layout()
     assert len(pages) == 3
     trace = layout_trace(pages, fonts)

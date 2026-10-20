@@ -15,7 +15,8 @@ import pymupdf
 import pytest
 from PIL import Image
 
-from gridlayoutpdf import Line, RasterImage, ScenePage, Text, layout_trace, render_pdf
+from gridlayoutpdf import Line, RasterImage, Rectangle, ScenePage, Text, layout_trace, render_pdf
+from gridlayoutpdf.semantics import Role
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -30,8 +31,7 @@ def _fixture_module(name):
     return module
 
 
-# p30-p35 are deferred to FR-027 Step 9 (2026-10-20 user decision c).
-deferred = _fixture_module("deferred")
+ALL_PAGES = tuple(range(1, 38))
 
 
 @pytest.mark.parametrize("flags,optimize", [("-O", None), ("-OO", None), (None, "1")])
@@ -144,20 +144,19 @@ def reports(builder):
 
 @pytest.fixture(scope="module")
 def available_report(reports):
-    """p1-p37 without the deferred p30-p35; page indexes below p30 are unchanged."""
-    return reports(deferred.AVAILABLE_PAGES)
+    """All 37 original pages, laid out once for the mutation tests."""
+    return reports(ALL_PAGES)
 
 
-@pytest.mark.parametrize("selection", deferred.selections(deferred.ALL_PAGES))
 @pytest.mark.parametrize("grid", [False, True])
-def test_all_37_pages_from_public_api(reports, verifier, tmp_path, grid, selection):
-    fonts, pages, trace, manifest = reports(selection)
+def test_all_37_pages_from_public_api(reports, verifier, tmp_path, grid):
+    fonts, pages, trace, manifest = reports(ALL_PAGES)
     path = tmp_path / "complete.pdf"
     render_pdf(pages, path, fonts, debug_grid=grid)
-    result = verifier.verify_pdf(path, source_pages=selection, trace=trace, grid=grid, manifest=manifest)
-    assert result["complete_37_pages"] is (selection == deferred.ALL_PAGES)
-    assert oracle_items(deferred.ALL_PAGES) == 3345
-    assert result["verified_items"] == oracle_items(selection)
+    result = verifier.verify_pdf(path, source_pages=ALL_PAGES, trace=trace, grid=grid, manifest=manifest)
+    assert result["complete_37_pages"] is True
+    assert oracle_items(ALL_PAGES) == 3345
+    assert result["verified_items"] == oracle_items(ALL_PAGES)
 
 
 def test_coordinated_expected_and_native_text_change_fails_original_gate(builder, verifier, tmp_path, monkeypatch):
@@ -193,12 +192,10 @@ def test_coordinated_expected_and_native_text_change_fails_original_gate(builder
         verifier.verify_pdf(path, source_pages=(1,), trace=trace, manifest=builder.load_manifest())
 
 
-@pytest.mark.parametrize("selection", deferred.selections(deferred.ALL_PAGES))
-def test_scene_images_have_independent_allowlist_validation(reports, verifier, selection):
-    _, pages, _, manifest = reports(selection)
+def test_scene_images_have_independent_allowlist_validation(reports, verifier):
+    _, pages, _, manifest = reports(ALL_PAGES)
     assert hasattr(verifier, "verify_scene_images"), "scene image bytes/provenance validation is absent"
-    # All 16 figures are outside the deferred p30-p35.
-    assert verifier.verify_scene_images(pages, selection, manifest) == 16
+    assert verifier.verify_scene_images(pages, ALL_PAGES, manifest) == 16
 
 
 def test_native_reordered_headings_are_rejected(builder,verifier,tmp_path):
@@ -253,34 +250,122 @@ def test_all_train_equation_shared_anchors(available_report,verifier,tmp_path,co
         verifier.verify_pdf(path,source_pages=(3,),trace={"pages":[trace["pages"][2]]},manifest=manifest)
 
 
-def _source_anchor_control(verifier, number):
-    record = oracle(number)
-    source = next((ROOT / "tests/output").glob("13_*.pdf"))
-    assert sha256(source.read_bytes()).hexdigest() == record["source_sha256"]
-    with pymupdf.open(source) as pdf:
-        chars = verifier._chars(pdf[number - 1])
-        rules = verifier._black_rules(pdf[number - 1])
-    regions = {item["id"]: item["source_bbox"] for block in record["blocks"]
-               for item in (block["cells"] if block["kind"] == "table" else [block])}
-    return chars, rules, record, regions
+def _output_anchor_control(reports, verifier, number, tmp_path):
+    """Glyphs, bars, regions and grid of one rendered output page (FR-027 grid inspectors)."""
+    fonts, pages, trace, _ = reports(ALL_PAGES)
+    path = tmp_path / f"anchor-control-p{number:02}.pdf"
+    render_pdf([pages[number - 1]], path, fonts)
+    with pymupdf.open(path) as pdf:
+        chars = verifier._chars(pdf[0])
+        bars = verifier._side_bars(pdf[0])
+    trace_page = trace["pages"][number - 1]
+    regions, _ = verifier._trace_regions(trace_page)
+    return chars, bars, oracle(number), regions, trace_page["profile"]["grid"]
 
 
 @pytest.mark.parametrize("number", range(3, 9))
-def test_train_anchor_inspector_accepts_actual_original_positions(verifier, number):
-    chars, _, record, regions = _source_anchor_control(verifier, number)
-    verifier._train_anchors(chars, record, regions)
+def test_train_anchor_inspector_accepts_the_grid_anchors_and_rejects_the_originals(reports, verifier, tmp_path, number):
+    chars, _, record, regions, grid = _output_anchor_control(reports, verifier, number, tmp_path)
+    verifier._train_anchors(chars, record, regions, grid)
+    # The original's own positions are not on the page grid: the inspector tells them apart.
+    source = next((ROOT / "tests/output").glob("13_*.pdf"))
+    with pymupdf.open(source) as pdf:
+        original = verifier._chars(pdf[number - 1])
+    boxes = {item["id"]: item["source_bbox"] for item in record["blocks"]}
+    with pytest.raises(AssertionError, match="anchor is off the grid"):
+        verifier._train_anchors(original, record, boxes, grid)
+
+
+@pytest.mark.parametrize("kind", ["result", "unit"])
+def test_train_anchor_inspector_rejects_an_alignment_of_the_original_lost_by_whole_columns(
+        reports, verifier, tmp_path, kind):
+    """The p3 per-girder equations share each anchor in the original; one moved a whole
+    column (still on the grid) no longer shares it."""
+    chars, _, record, regions, grid = _output_anchor_control(reports, verifier, 3, tmp_path)
+    source = next((ROOT / "tests/output").glob("13_*.pdf"))
+    with pymupdf.open(source) as pdf:
+        original = verifier._chars(pdf[2])
+    verifier._train_anchors(chars, record, regions, grid, original)
+    formula = next(block for block in record["blocks"] if block["kind"] == "equation")
+    ordered = [char for line, _ in verifier._ordered_lines(verifier._inside(chars, regions[formula["id"]]), (1, 0))
+               for char in line if not char["c"].isspace()]
+    text = "".join(char["c"] for char in ordered)
+    result = verifier.re.search(r"(\d+\.\d+)kN$", text)
+    moved = ordered[result.start(1):result.end(1)] if kind == "result" else ordered[-2:]
+    for char in moved:
+        x0, y0, x1, y1 = char["bbox"]
+        char["bbox"] = (x0 + grid["pitch_x"], y0, x1 + grid["pitch_x"], y1)
+        char["origin"] = (char["origin"][0] + grid["pitch_x"], char["origin"][1])
+    with pytest.raises(AssertionError, match=f"{kind} anchor is not shared with"):
+        verifier._train_anchors(chars, record, regions, grid, original)
 
 
 @pytest.mark.parametrize("number", range(16, 20))
-def test_dense_anchor_inspector_accepts_actual_original_bars(verifier, number):
-    chars, rules, _, regions = _source_anchor_control(verifier, number)
-    verifier._dense_anchors(chars, rules, regions, f"p{number:02}")
+def test_dense_anchor_inspector_accepts_the_output_side_rules(reports, verifier, tmp_path, number):
+    chars, bars, record, regions, grid = _output_anchor_control(reports, verifier, number, tmp_path)
+    assert len(bars) == 2
+    verifier._dense_anchors(chars, regions, record, grid)
+    verifier._group_bars(chars, bars, regions, record, grid)
+
+
+def test_source_pdf_hash_is_checked_before_reading_the_original(verifier, monkeypatch):
+    monkeypatch.setattr(verifier, "_SOURCE_SHA256", "0" * 64)
+    with pytest.raises(AssertionError, match="source PDF hash mismatch"):
+        verifier.verify_source_order((4,))
+
+
+def test_appearance_and_grid_rules_hold_on_all_37_pages(reports, tmp_path):
+    fonts, pages, trace, _ = reports(ALL_PAGES)
+    path = tmp_path / "all-pages.pdf"
+    render_pdf(pages, path, fonts)
+    appearance = _fixture_module("verify_appearance")
+    report = appearance.verify_appearance(path, source_pages=ALL_PAGES, trace=trace)
+    assert report["error_count"] == 0
+    assert all(report["checks"][category] > 0 for category in appearance.CATEGORIES)
+    # Each rule checks what the pages hold, so none can pass by checking nothing.
+    rules = report["rule_checks"]
+    assert rules["position.side_rule"] == 10
+    assert rules["placement.text"] == sum(1 for page in trace["pages"] for command in page["commands"]
+                                          if command["type"] == "Text" and command["text"].strip())
+    terms = {(page["page_number"], json.dumps(command["tag"]["path"][:index + 1]))
+             for page in trace["pages"] for command in page["commands"] if command.get("tag")
+             for index, step in enumerate(command["tag"]["path"])
+             if step["kind"] == "equation_part" and step.get("part") == "term"}
+    assert rules["equals.term"] == len(terms) > 800
+    assert rules["equals.label"] > 100 and rules["position.paragraph"] > 150
+    lines = {}
+    for page in trace["pages"]:
+        for command in page["commands"]:
+            path = (command.get("tag") or {}).get("path", [])
+            kinds = [step["kind"] for step in path]
+            if "equation_line" in kinds:
+                index = kinds.index("equation_line")
+                lines.setdefault((page["page_number"], json.dumps(path[:index + 1])), set()).add(path[index + 1].get("part"))
+    # Every line with a left-hand side and a relation has its left-hand side's end checked against the gap.
+    assert rules["equals.lhs_gap"] == sum({"lhs", "relation"} <= parts for parts in lines.values()) > 250
+    cells = {}
+    for page in trace["pages"]:
+        for command in page["commands"]:
+            path = (command.get("tag") or {}).get("path", [])
+            cell = [step for step in path if step["kind"] == "table_cell"]
+            line = [step for step in path if step["kind"] == "cell_lines"]
+            if cell and line:
+                cells.setdefault((page["page_number"], json.dumps(cell[-1]["data"])), set()).add(line[-1]["index"])
+    # Every tagged cell is checked for its placement: a one-line cell centred in it, a multi-line
+    # cell rebuilt row by row (rows and offset); 8 lines without a baseline (p21, p22).
+    assert rules["table.cell_centre"] == len(cells) > 3000
+    assert rules["table.cell_room"] == sum(len(lines) > 1 for lines in cells.values()) == 682
+    assert rules["table.cell_turned"] == 8
+    assert rules["table.cell_rows"] == sum(len(lines) for lines in cells.values() if len(lines) > 1)
+    assert rules["table.cell_spacing"] > 500
+    assert rules["placement.rule"] == sum(1 for page in trace["pages"] for command in page["commands"]
+                                          if command["type"] in ("Line", "Rectangle"))
 
 
 @pytest.mark.parametrize("kind", ["result", "unit", "equal"])
 @pytest.mark.parametrize("all_equations", [False, True])
-def test_train_anchor_inspector_rejects_shift_even_if_all_equations_still_align(verifier, kind, all_equations):
-    chars, _, record, regions = _source_anchor_control(verifier, 4)
+def test_train_anchor_inspector_rejects_shift_even_if_all_equations_still_align(reports, verifier, tmp_path, kind, all_equations):
+    chars, _, record, regions, grid = _output_anchor_control(reports, verifier, 4, tmp_path)
     formulas = [block for block in record["blocks"] if block["kind"] == "equation"]
     for formula in formulas if all_equations else formulas[:1]:
         ordered = [char for line, _ in verifier._ordered_lines(verifier._inside(chars, regions[formula["id"]]), (1, 0))
@@ -292,35 +377,38 @@ def test_train_anchor_inspector_rejects_shift_even_if_all_equations_still_align(
         x0, y0, x1, y1 = selected["bbox"]
         selected["bbox"] = (x0 + .25, y0, x1 + .25, y1)
         selected["origin"] = (selected["origin"][0] + .25, selected["origin"][1])
-    with pytest.raises(AssertionError, match=f"{kind} anchor"):
-        verifier._train_anchors(chars, record, regions)
+    with pytest.raises(AssertionError, match=f"{kind} anchor is off the grid"):
+        verifier._train_anchors(chars, record, regions, grid)
 
 
-@pytest.mark.parametrize("corruption", ["shortened", "shifted", "missing"])
-def test_dense_bar_inspector_rejects_actual_source_geometry_changes(verifier, corruption):
-    chars, rules, _, regions = _source_anchor_control(verifier, 16)
-    index = next(index for index, rule in enumerate(rules)
-                 if abs(rule[0] - rule[2]) < .01 and abs(rule[1] - rule[3]) > 100)
-    x0, y0, x1, y1 = rules[index]
+@pytest.mark.parametrize("number", [16, 20])
+@pytest.mark.parametrize("corruption", ["shortened", "shifted", "missing", "widened", "over-the-glyphs"])
+def test_dense_bar_inspector_rejects_side_rule_changes(reports, verifier, tmp_path, corruption, number):
+    chars, bars, record, regions, grid = _output_anchor_control(reports, verifier, number, tmp_path)
+    x, top, bottom, width = bars[0]
     if corruption == "shortened":
-        rules[index] = (x0, min(y0, y1), x1, max(y0, y1) - 20)
+        bars[0] = (x, top + 20, bottom, width)
     elif corruption == "shifted":
-        rules[index] = (x0 + .25, y0, x1 + .25, y1)
+        bars[0] = (x + .25, top, bottom, width)
+    elif corruption == "widened":
+        bars[0] = (x, top, bottom, .72)
+    elif corruption == "over-the-glyphs":
+        # Still on a column line, but two columns right: over the glyphs it brackets. (A bar one
+        # column right is still left of them; test_cantilever_grid_rules pins each bar's column.)
+        bars[0] = (x + 2 * grid["pitch_x"], top, bottom, width)
     else:
-        rules.pop(index)
-    with pytest.raises(AssertionError, match="bar"):
-        verifier._dense_anchors(chars, rules, regions, "p16")
+        bars.pop(0)
+    message = {"shortened": "does not span", "shifted": "off the grid", "missing": "group bar count",
+               "widened": "width", "over-the-glyphs": "not left of"}[corruption]
+    with pytest.raises(AssertionError, match=f"group bar.*{message}|{message}"):
+        verifier._group_bars(chars, bars, regions, record, grid)
 
 
-@pytest.mark.parametrize("number", [4, 16])
-def test_anchor_geometry_rejects_untrusted_original_bytes(verifier, monkeypatch, number):
-    chars, rules, record, regions = _source_anchor_control(verifier, number)
-    monkeypatch.setattr(verifier, "_SOURCE_SHA256", "0" * 64)
-    with pytest.raises(AssertionError, match="source PDF hash"):
-        if number == 4:
-            verifier._train_anchors(chars, record, regions)
-        else:
-            verifier._dense_anchors(chars, rules, regions, "p16")
+@pytest.mark.parametrize("number", range(16, 21))
+def test_group_bar_inspector_accepts_the_output_side_rules_on_p16_to_p20(reports, verifier, tmp_path, number):
+    chars, bars, record, regions, grid = _output_anchor_control(reports, verifier, number, tmp_path)
+    assert len(bars) == 2
+    verifier._group_bars(chars, bars, regions, record, grid)
 
 
 def test_introductory_merged_table_rules(available_report,verifier,tmp_path):
@@ -338,7 +426,7 @@ def test_introductory_merged_table_rules(available_report,verifier,tmp_path):
         verifier.verify_pdf(path,source_pages=(1,),trace={"pages":[trace["pages"][0]]},manifest=manifest)
 
 
-@pytest.mark.parametrize("selection", deferred.selections((30, 36)))
+@pytest.mark.parametrize("selection", [(30, 36)])
 @pytest.mark.parametrize("grid", [False, True])
 def test_complete_rotated_proof_pages_from_public_api(builder, verifier, tmp_path, grid, selection):
     fonts = builder.fixture_fonts()
@@ -380,11 +468,10 @@ ROTATED_MERGED_HEADER = {30: "p30-combinations-md.r0.c1", 36: "p36-combinations-
 _ROTATED_CORRUPTIONS = ("small-body", "lost-rule", "flat-script", "raised-script", "split-merged-cell")
 
 
-# p36 keeps the rotated-table checks alive; its table has no script runs, so the
-# two script corruptions exist only on the deferred p30.
+# p36's table has no script runs, so the two script corruptions run on p30 only.
 @pytest.mark.parametrize("corruption,page", [
     *((corruption, 36) for corruption in _ROTATED_CORRUPTIONS if "script" not in corruption),
-    *(pytest.param(corruption, 30, marks=deferred.DEFERRED) for corruption in _ROTATED_CORRUPTIONS),
+    *((corruption, 30) for corruption in _ROTATED_CORRUPTIONS),
 ])
 def test_native_pdf_visual_corruptions_are_detected(builder, verifier, tmp_path, corruption, page):
     fonts = builder.fixture_fonts()
@@ -454,8 +541,11 @@ def test_dense_equation_alignment_and_group_bars_are_verified(builder, verifier,
         index = next(i for i, c in enumerate(commands) if isinstance(c, Text) and "596.80" in c.text)
         commands[index] = replace(commands[index], x=commands[index].x-2)
     else:
-        index = max((i for i, c in enumerate(commands) if isinstance(c, Line)), key=lambda i: commands[i].y2)
-        commands[index] = replace(commands[index], y2=commands[index].y2-20)
+        # Shorten the lowest SideRule bar piece (solid styles are filled rectangles).
+        index = max((i for i, c in enumerate(commands) if isinstance(c, Rectangle)
+                     and c.tag is not None and c.tag.role == Role.SIDE_RULE),
+                    key=lambda i: commands[i].y + commands[i].height)
+        commands[index] = replace(commands[index], height=commands[index].height-20)
     path = tmp_path / "bad-equation-layout.pdf"
     render_pdf((ScenePage(pages[0].profile, tuple(commands), pages[0].metadata),), path, fonts)
     with pytest.raises(AssertionError, match="p16.*(anchor|bar)"):
@@ -526,7 +616,8 @@ def test_native_cell_content_corruptions(available_report, verifier, tmp_path, m
         verifier.verify_pdf(path,source_pages=(26,),trace={"pages":[trace["pages"][25]]},manifest=manifest)
 
 
-@pytest.mark.parametrize("mutation", ["missing", "duplicate", "enlarged", "relocated", "wrong-page", "unknown-pixels", "full-page"])
+@pytest.mark.parametrize("mutation", ["missing", "duplicate", "enlarged", "relocated", "wrong-page", "unknown-pixels", "full-page",
+                                      "one-column", "one-row"])
 def test_native_image_corruptions_are_rejected_in_scene_and_pdf(available_report, verifier, tmp_path, mutation):
     fonts,pages,trace,manifest = available_report
     page = pages[0]
@@ -537,6 +628,9 @@ def test_native_image_corruptions_are_rejected_in_scene_and_pdf(available_report
     elif mutation == "duplicate": commands.append(image)
     elif mutation == "enlarged": commands[index] = replace(image,width=image.width+10)
     elif mutation == "relocated": commands[index] = replace(image,x=image.x+5)
+    # Still on the page grid, but no longer where its own figure block was placed.
+    elif mutation == "one-column": commands[index] = replace(image,x=image.x+page.profile.grid.pitch_x)
+    elif mutation == "one-row": commands[index] = replace(image,y=image.y+page.profile.grid.pitch_y)
     elif mutation == "wrong-page":
         foreign = next(c for c in pages[1].commands if isinstance(c,RasterImage))
         commands[index] = replace(image,data=foreign.data)
@@ -546,8 +640,10 @@ def test_native_image_corruptions_are_rejected_in_scene_and_pdf(available_report
         Image.new("RGB",(10,10),(0,0,0)).save(output,format="PNG")
         commands[index] = replace(image,data=output.getvalue())
     broken = [ScenePage(page.profile,tuple(commands),page.metadata)]
-    with pytest.raises(AssertionError,match="image"):
-        verifier.verify_scene_images(broken,(1,),manifest)
+    if mutation not in ("one-column", "one-row"):
+        # The scene gate has no layout trace; the PDF gate ties each figure to its block.
+        with pytest.raises(AssertionError,match="image"):
+            verifier.verify_scene_images(broken,(1,),manifest)
     path = tmp_path / "native-image.pdf"
     render_pdf(broken,path,fonts)
     with pytest.raises(AssertionError,match="image"):
@@ -588,7 +684,7 @@ def test_native_superscript_baseline_contract(available_report,verifier,tmp_path
         verifier.verify_pdf(path,source_pages=(9,),trace={"pages":[trace["pages"][8]]},manifest=manifest)
 
 
-@pytest.mark.parametrize("number", [36, pytest.param(30, marks=deferred.DEFERRED)])
+@pytest.mark.parametrize("number", [36, 30])
 @pytest.mark.parametrize("grid", [False,True])
 def test_native_page_number_is_prohibited(reports,verifier,tmp_path,grid,number):
     fonts,pages,trace,manifest = reports((number,))
@@ -601,9 +697,9 @@ def test_native_page_number_is_prohibited(reports,verifier,tmp_path,grid,number)
         verifier.verify_pdf(path,source_pages=(number,),trace={"pages":[trace["pages"][0]]},manifest=manifest,grid=grid)
 
 
-@pytest.mark.parametrize("selection", deferred.selections(deferred.ALL_PAGES))
 @pytest.mark.parametrize("mutation", ["38th-page", "swapped-pages"])
-def test_native_fixed_37_page_contract(reports,verifier,tmp_path,mutation,selection):
+def test_native_fixed_37_page_contract(reports,verifier,tmp_path,mutation):
+    selection = ALL_PAGES
     fonts,pages,trace,manifest = reports(selection)
     broken = list(pages)
     if mutation == "38th-page": broken.append(ScenePage(pages[-1].profile))

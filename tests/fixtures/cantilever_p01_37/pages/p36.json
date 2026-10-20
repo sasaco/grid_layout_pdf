@@ -5,24 +5,6 @@
     {
       "id": "p36-combinations-summary",
       "type": "table",
-      "columns": [
-        247,
-        242,
-        242,
-        363,
-        242,
-        242,
-        242,
-        242,
-        550,
-        242,
-        484,
-        484,
-        484,
-        484,
-        484,
-        729
-      ],
       "rows": [
         [
           {
@@ -199,8 +181,7 @@
           {
             "lines": [
               "安全性(破壊)"
-            ],
-            "size": 9.0
+            ]
           },
           {
             "lines": [
@@ -1609,19 +1590,7 @@
         ]
       ],
       "header_rows": 2,
-      "size": 10,
-      "line_advance": 10.8,
-      "padding": 0.45,
-      "cell_min_height": 20.64,
-      "border_width": 0.24,
-      "turns": 1,
-      "rotation_id": "p36-rotated-table",
-      "local_grid": {
-        "pitch_x": 0.12,
-        "pitch_y": 0.12,
-        "columns": 6050,
-        "rows": 4000
-      }
+      "rotation_id": "p36-rotated-table"
     }
   ]
 }

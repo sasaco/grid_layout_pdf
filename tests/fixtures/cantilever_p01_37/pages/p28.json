@@ -11,39 +11,7 @@
     {
       "id": "p28-eq-table",
       "type": "table",
-      "columns": [
-        5,
-        3,
-        3,
-        3,
-        5,
-        3,
-        3,
-        5
-      ],
       "header_rows": 1,
-      "padding": 0,
-      "border_width": 0.5,
-      "horizontal_rules": [
-        1,
-        0.12,
-        0,
-        0,
-        0,
-        0,
-        1
-      ],
-      "vertical_rules": [
-        0,
-        0,
-        0.12,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0
-      ],
       "rows": [
         [
           {
@@ -387,39 +355,7 @@
     {
       "id": "p28-horizontal9-table",
       "type": "table",
-      "columns": [
-        4,
-        4,
-        3,
-        3,
-        5,
-        3,
-        3,
-        5
-      ],
       "header_rows": 1,
-      "padding": 0,
-      "border_width": 0.5,
-      "horizontal_rules": [
-        1,
-        0.12,
-        0,
-        0,
-        0,
-        0,
-        1
-      ],
-      "vertical_rules": [
-        0,
-        0,
-        0.12,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0
-      ],
       "rows": [
         [
           {
@@ -775,39 +711,7 @@
     {
       "id": "p28-horizontal10-table",
       "type": "table",
-      "columns": [
-        4,
-        4,
-        3,
-        3,
-        5,
-        3,
-        3,
-        5
-      ],
       "header_rows": 1,
-      "padding": 0,
-      "border_width": 0.5,
-      "horizontal_rules": [
-        1,
-        0.12,
-        0,
-        0,
-        0,
-        0,
-        1
-      ],
-      "vertical_rules": [
-        0,
-        0,
-        0.12,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0
-      ],
       "rows": [
         [
           {
@@ -1163,39 +1067,7 @@
     {
       "id": "p28-horizontal11-table",
       "type": "table",
-      "columns": [
-        4,
-        4,
-        3,
-        3,
-        5,
-        3,
-        3,
-        5
-      ],
       "header_rows": 1,
-      "padding": 0,
-      "border_width": 0.5,
-      "horizontal_rules": [
-        1,
-        0.12,
-        0,
-        0,
-        0,
-        0,
-        1
-      ],
-      "vertical_rules": [
-        0,
-        0,
-        0.12,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0
-      ],
       "rows": [
         [
           {

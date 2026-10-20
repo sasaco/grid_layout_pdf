@@ -25,37 +25,7 @@
     {
       "id": "p26-safety-b",
       "type": "table",
-      "columns": [
-        5,
-        3,
-        3,
-        3,
-        5,
-        3,
-        3,
-        5
-      ],
       "header_rows": 1,
-      "padding": 0,
-      "border_width": 0.5,
-      "horizontal_rules": [
-        1,
-        0.12,
-        0,
-        0,
-        1
-      ],
-      "vertical_rules": [
-        0,
-        0,
-        0.12,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0
-      ],
       "rows": [
         [
           {
@@ -256,37 +226,7 @@
     {
       "id": "p26-safety-c",
       "type": "table",
-      "columns": [
-        5,
-        3,
-        3,
-        3,
-        5,
-        3,
-        3,
-        5
-      ],
       "header_rows": 1,
-      "padding": 0,
-      "border_width": 0.5,
-      "horizontal_rules": [
-        1,
-        0.12,
-        0,
-        0,
-        1
-      ],
-      "vertical_rules": [
-        0,
-        0,
-        0.12,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0
-      ],
       "rows": [
         [
           {
@@ -487,37 +427,7 @@
     {
       "id": "p26-safety-bc",
       "type": "table",
-      "columns": [
-        5,
-        3,
-        3,
-        3,
-        5,
-        3,
-        3,
-        5
-      ],
       "header_rows": 1,
-      "padding": 0,
-      "border_width": 0.5,
-      "horizontal_rules": [
-        1,
-        0.12,
-        0,
-        0,
-        1
-      ],
-      "vertical_rules": [
-        0,
-        0,
-        0.12,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0
-      ],
       "rows": [
         [
           {
@@ -723,37 +633,7 @@
     {
       "id": "p26-service-b",
       "type": "table",
-      "columns": [
-        5,
-        3,
-        3,
-        3,
-        5,
-        3,
-        3,
-        5
-      ],
       "header_rows": 1,
-      "padding": 0,
-      "border_width": 0.5,
-      "horizontal_rules": [
-        1,
-        0.12,
-        0,
-        0,
-        1
-      ],
-      "vertical_rules": [
-        0,
-        0,
-        0.12,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0
-      ],
       "rows": [
         [
           {
@@ -954,37 +834,7 @@
     {
       "id": "p26-service-c",
       "type": "table",
-      "columns": [
-        5,
-        3,
-        3,
-        3,
-        5,
-        3,
-        3,
-        5
-      ],
       "header_rows": 1,
-      "padding": 0,
-      "border_width": 0.5,
-      "horizontal_rules": [
-        1,
-        0.12,
-        0,
-        0,
-        1
-      ],
-      "vertical_rules": [
-        0,
-        0,
-        0.12,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0
-      ],
       "rows": [
         [
           {
@@ -1185,37 +1035,7 @@
     {
       "id": "p26-service-bc",
       "type": "table",
-      "columns": [
-        5,
-        3,
-        3,
-        3,
-        5,
-        3,
-        3,
-        5
-      ],
       "header_rows": 1,
-      "padding": 0,
-      "border_width": 0.5,
-      "horizontal_rules": [
-        1,
-        0.12,
-        0,
-        0,
-        1
-      ],
-      "vertical_rules": [
-        0,
-        0,
-        0.12,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0
-      ],
       "rows": [
         [
           {

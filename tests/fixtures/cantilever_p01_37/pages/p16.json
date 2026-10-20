@@ -70,12 +70,6 @@
     {
       "id": "p16-t1",
       "type": "equations",
-      "anchors": {
-        "first_equal": 4,
-        "second_equal": 22,
-        "result_right": 27,
-        "unit_start": 28
-      },
       "equations": [
         {
           "lhs": {
@@ -117,8 +111,7 @@
       "children": [
         {
           "id": "p16-movable-rule",
-          "type": "rule",
-          "rows": 15
+          "type": "rule"
         },
         {
           "id": "p16-movable-derivation",
@@ -133,12 +126,6 @@
             {
               "id": "p16-movable-rm",
               "type": "equations",
-              "anchors": {
-                "first_equal": 3,
-                "second_equal": 22,
-                "result_right": 27,
-                "unit_start": 28
-              },
               "equations": [
                 {
                   "lhs": "Rm",
@@ -252,12 +239,6 @@
                 {
                   "id": "p16-movable-hbd-equation",
                   "type": "equations",
-                  "anchors": {
-                    "first_equal": 3,
-                    "second_equal": 22,
-                    "result_right": 27,
-                    "unit_start": 28
-                  },
                   "equations": [
                     {
                       "lhs": {
@@ -303,12 +284,6 @@
                 {
                   "id": "p16-movable-hsd-equation",
                   "type": "equations",
-                  "anchors": {
-                    "first_equal": 3,
-                    "second_equal": 22,
-                    "result_right": 27,
-                    "unit_start": 28
-                  },
                   "equations": [
                     {
                       "lhs": {
@@ -348,12 +323,6 @@
     {
       "id": "p16-t2",
       "type": "equations",
-      "anchors": {
-        "first_equal": 4,
-        "second_equal": 22,
-        "result_right": 27,
-        "unit_start": 28
-      },
       "equations": [
         {
           "lhs": {
@@ -395,8 +364,7 @@
       "children": [
         {
           "id": "p16-fixed-rule",
-          "type": "rule",
-          "rows": 19
+          "type": "rule"
         },
         {
           "id": "p16-fixed-derivation",
@@ -411,12 +379,6 @@
             {
               "id": "p16-fixed-rm",
               "type": "equations",
-              "anchors": {
-                "first_equal": 3,
-                "second_equal": 22,
-                "result_right": 27,
-                "unit_start": 28
-              },
               "equations": [
                 {
                   "lhs": "Rm",
@@ -530,12 +492,6 @@
                 {
                   "id": "p16-fixed-hbd-equation",
                   "type": "equations",
-                  "anchors": {
-                    "first_equal": 3,
-                    "second_equal": 22,
-                    "result_right": 27,
-                    "unit_start": 28
-                  },
                   "equations": [
                     {
                       "lhs": {
@@ -575,12 +531,6 @@
                 {
                   "id": "p16-stopper-equations",
                   "type": "equations",
-                  "anchors": {
-                    "first_equal": 8,
-                    "second_equal": 22,
-                    "result_right": 27,
-                    "unit_start": 28
-                  },
                   "equations": [
                     {
                       "lhs": "T - 1/2μ・Rm",
@@ -635,12 +585,6 @@
             {
               "id": "p16-hsd",
               "type": "equations",
-              "anchors": {
-                "first_equal": 3,
-                "second_equal": 22,
-                "result_right": 27,
-                "unit_start": 28
-              },
               "equations": [
                 {
                   "lhs": {

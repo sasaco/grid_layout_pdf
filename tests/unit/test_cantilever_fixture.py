@@ -1,6 +1,5 @@
 """The reproduction fixture fails closed before any accepted output changes."""
 
-from dataclasses import replace
 import importlib.util
 from hashlib import sha256
 import json
@@ -55,7 +54,7 @@ def test_duplicate_or_invalid_page_selection_is_rejected(fonts):
 def test_fixed_page_wrapper_reports_original_page_on_overflow(fonts):
     builder = module("builder")
     with pytest.raises(LayoutOverflowError, match="原本再現できず.*p16") as error:
-        builder.layout_blocks(fonts, [(16, [Spacer(48)])])
+        builder.layout_blocks(fonts, [(16, [Spacer(builder.SOURCE_PROFILE.grid.rows + 1)])])
     assert error.value.needed > error.value.available
 
 
@@ -67,63 +66,98 @@ def test_fixed_page_guard_rejects_same_count_page_swaps(fonts):
         builder.guard_fixed_pages(tuple(reversed(pages)), (16, 17))
 
 
-def test_compact_cell_preserves_font_size_and_rejects_overwide_content(fonts):
-    from gridlayoutpdf import A4_PORTRAIT_REFERENCE, GridSpec, LayoutContext, PageProfile, ReportStyle, Text, TextStyle, measure_block
+def _table_page(fonts, number, table_id):
+    """The builder's page inputs and the authored table block of one original page."""
     builder = module("builder")
-    local = PageProfile("test-local", 700, 480, GridSpec(0, 0, .12, .12, 5800, 4000))
-    context = LayoutContext(fonts, local, module("builder").SOURCE_STYLE)
-    cell = builder.CompactCell(("1.35", "3679.84"), style=TextStyle("MS Mincho", size=10), line_advance=10.8)
-    measured = measure_block(cell, context, 48)
-    texts = [command for command in measured.commands if isinstance(command, Text)]
-    assert [command.text for command in texts] == ["1.35", "3679.84"]
-    assert {command.style.size for command in texts} == {10}
-    assert texts[1].y - texts[0].y == pytest.approx(10.8)
-    with pytest.raises(LayoutOverflowError):
-        measure_block(cell, context, 10)
+    data = json.loads((FIXTURE / f"pages/p{number:02}.json").read_text(encoding="utf-8"))
+    layout = {page["source_page"]: page for page in builder.source_layout()["pages"]}[number]
+    leaves = tuple(builder._leaves({"type": "stack", "children": data["blocks"]}))
+    page = builder._Page(number, fonts, {block["id"]: block for block in layout["blocks"]}, leaves)
+    return page, next(block for block in leaves if block["id"] == table_id)
 
 
-def test_compact_empty_cells_reserve_width_without_printing_fake_zero(fonts):
-    from gridlayoutpdf import A4_PORTRAIT_REFERENCE, LayoutContext, ReportStyle, measure_block
-    context = LayoutContext(fonts, A4_PORTRAIT_REFERENCE, module("builder").SOURCE_STYLE)
-    for lines in ((), ("",)):
-        result = measure_block(module("builder").CompactCell(lines), context, 30)
-        assert result.width > 0
-        assert not any(getattr(command, "text", "") for command in result.commands)
+def _cells(table):
+    return [cell for row in table.rows for cell in row]
 
 
-def test_compact_cell_keeps_source_line_sizes_and_horizontal_clearance(fonts):
-    from gridlayoutpdf import GridSpec, LayoutContext, PageProfile, ReportStyle, Text, measure_block
-    context = LayoutContext(fonts, PageProfile("local", 100, 100, GridSpec(0, 0, .12, .12, 800, 800)), module("builder").SOURCE_STYLE)
+def test_table_cell_lines_advance_one_grid_row_and_clear_their_rules(fonts):
+    """FR-027: each cell line takes one grid row; the text keeps every rule it can meet clear."""
     builder = module("builder")
-    plain = builder.CompactCell(("ABC", "short"), line_sizes=(10, 8))
-    padded = replace(plain, inline_padding=.6)
-    first, second = (measure_block(cell, context, 50) for cell in (plain, padded))
-    assert second.width - first.width == pytest.approx(1.2)
-    assert second.height == first.height
-    text = [command for command in second.commands if isinstance(command, Text)]
-    assert [command.style.size for command in text] == [10, 8]
-    assert [new.x - old.x for new, old in zip(second.commands, first.commands)] == pytest.approx([.6, .6])
+    page, data = _table_page(fonts, 1, "p01-dead-loads")
+    table = builder._table(data, page)
+    geometry = page.geometry["p01-dead-loads"]
+    horizontal = [builder.rule_thickness(width) for width in geometry["horizontal_rules"]]
+    vertical = [builder.rule_thickness(width) for width in geometry["vertical_rules"]]
+    cell = _cells(table)[0]
+    first = cell.content
+    assert first.line_advance == builder.SOURCE_PROFILE.grid.pitch_y
+    # A one-line cell stays centred in its whole cell, padded by its rules.
+    assert len(first.lines) == 1 and cell.valign == "middle" and first.first_baseline is None
+    assert first.inner_padding.top == horizontal[0] and first.inner_padding.bottom == horizontal[1]
+    assert first.inner_padding.left == pytest.approx(builder._CELL_PADDING + vertical[0])
+    # A multi-line cell sets each line in its own grid row (FR-027): top-aligned at a first baseline
+    # that keeps the glyphs inside the row and clear of the cell's rules; no top or bottom padding.
+    multi = next(cell for cell in _cells(table) if len(cell.content.lines) > 1)
+    content = multi.content
+    assert multi.valign == "top" and content.inner_padding.top == content.inner_padding.bottom == 0
+    box = builder.Row(content.lines[0], gap=0).measure(fonts, content.style)
+    pitch = builder.SOURCE_PROFILE.grid.pitch_y
+    offset = content.first_baseline % pitch
+    assert box.ascent <= offset and offset + box.descent <= pitch
+    assert all(isinstance(span, int) and span >= 1 for span in (*table.columns, *table.row_heights))
 
 
-def test_compact_adapter_exposes_public_single_rounding_and_edge_padding(fonts):
-    from gridlayoutpdf import A4_PORTRAIT_REFERENCE, LayoutContext, ReportStyle, measure_block
-    context = LayoutContext(fonts, A4_PORTRAIT_REFERENCE, module("builder").SOURCE_STYLE)
-    cell = module("builder").CompactCell(("1.35", "3679.84"), line_sizes=(10, 8),
-                                         line_advance=12.8, inline_padding=.6, min_height=40)
-    measured = measure_block(cell, context, 60)
-    metadata = measured.parts[0].metadata
-    assert metadata.get("height_rounding") == "single"
-    assert metadata["minimum_height_pt"] == 40
-    assert dict(metadata["inner_padding_pt"]) == {"top": 0, "right": .6, "bottom": 0, "left": .6}
-    assert metadata["baselines_pt"][1] - metadata["baselines_pt"][0] == pytest.approx(12.8)
+def test_table_columns_follow_the_original_boundaries_and_widen_only_for_content():
+    builder = module("builder")
+    # Cumulative boundaries: 3 x 24 pt on a 16 pt grid is 4.5 columns, not 3 x 2 = 6.
+    assert builder._grid_spans((24, 24, 24), (0, 0, 0), 16) == (2, 1, 2)
+    # A span its content needs is widened; later boundaries move with it.
+    assert builder._grid_spans((16, 16, 16), (0, 40, 0), 16) == (1, 3, 1)
+    assert builder._grid_spans((1, 1), (0, 0), 16) == (1, 1)
 
 
-def test_compact_adapter_rejects_touching_explicit_lines_instead_of_moving_them(fonts):
-    from gridlayoutpdf import A4_PORTRAIT_REFERENCE, LayoutContext, ReportStyle, measure_block
-    context = LayoutContext(fonts, A4_PORTRAIT_REFERENCE, module("builder").SOURCE_STYLE)
-    cell = module("builder").CompactCell(("888", "888"), line_advance=1, block_id="touching")
-    with pytest.raises(LayoutOverflowError, match="touching.*line 2.*line 1"):
-        measure_block(cell, context, 40)
+def test_rows_the_original_made_equal_stay_equal_under_a_merged_heading(fonts):
+    """p21: 「安全性（破壊）」 (7 lines) spans four 26.52 pt rows; they are 2 grid rows each, not 2/2/2/4."""
+    builder = module("builder")
+    page, data = _table_page(fonts, 21, "p21-origin-table")
+    table = builder._table(data, page)
+    assert page.geometry["p21-origin-table"]["row_heights"][1:5] == [26.52] * 4
+    assert table.row_heights == (2, 2, 2, 2, 2, 3)
+    # A merged cell that its rows cannot hold still widens its last row.
+    assert builder._grid_spans((10,), (0,), 16) == (1,)
+
+
+def test_empty_table_cells_reserve_their_frame_without_printing_text(fonts):
+    from gridlayoutpdf import LayoutContext, Text, measure_block
+    builder = module("builder")
+    page, data = _table_page(fonts, 1, "p01-dead-loads")
+    empty = [cell for cell in _cells(builder._table(data, page))
+             if all(getattr(line, "text", None) == "" for line in cell.content.lines)]
+    assert empty, "p01 has empty cells"
+    context = LayoutContext(fonts, builder.SOURCE_PROFILE, builder.SOURCE_STYLE)
+    for cell in empty:
+        measured = measure_block(cell.content, context, 40)
+        assert measured.width > 0
+        assert not any(isinstance(command, Text) and command.text.strip() for command in measured.commands)
+
+
+def test_rotated_table_cells_use_the_swapped_page_grid(fonts):
+    builder = module("builder")
+    page, data = _table_page(fonts, 30, "p30-combinations-md")
+    turned = builder._table(data, page)
+    grid = builder.ROTATED_PROFILE.grid
+    assert turned.local_grid.pitch_x == grid.pitch_y and turned.local_grid.pitch_y == grid.pitch_x
+    assert (turned.local_grid.columns, turned.local_grid.rows) == (grid.rows, grid.columns)
+    assert all(cell.content.line_advance == grid.pitch_x for cell in _cells(turned.block))
+
+
+def test_header_line_breaks_follow_the_original_when_the_manuscript_joins_them():
+    builder = module("builder")
+    geometry = {"lines": [{"text": "せん断"}, {"text": "力"}, {"text": "Vd(kN)"}]}
+    assert builder._cell_source_lines(("せん断力", "Vd(kN)"), geometry, "c") == ("せん断", "力", "Vd(kN)")
+    assert builder._cell_source_lines(("A", "B"), {"lines": [{"text": "A"}, {"text": "B"}]}, "c") == ("A", "B")
+    with pytest.raises(ValueError, match="differs"):
+        builder._cell_source_lines(("せん断カ", "Vd(kN)"), geometry, "c")
 
 
 def test_guard_catches_wrong_page_descendant_despite_correct_wrapper(fonts):
@@ -140,17 +174,16 @@ def test_guard_catches_declared_block_omission_before_rendering(fonts):
         builder.guard_fixed_pages(pages, (16,), {16: {"p16-present", "p16-omitted"}})
 
 
-# p30 is deferred to FR-027 Step 9 (2026-10-20 user decision c); the other proofs still run.
-@pytest.mark.parametrize("selection", module("deferred").selections((16, 17, 26, 30, 36)))
-def test_all_five_complete_proofs_fit_one_original_page_each(fonts, selection):
+def test_all_five_complete_proofs_fit_one_original_page_each(fonts):
     builder = module("builder")
-    assert builder.PROOF_PAGES == (16, 17, 26, 30, 36)
+    selection = builder.PROOF_PAGES
+    assert selection == (16, 17, 26, 30, 36)
     pages = builder.layout_report(fonts, source_pages=selection)
     assert len(pages) == len(selection)
     assert [page.metadata["placements"][0]["block_id"] for page in pages] == [f"p{n:02}" for n in selection]
     assert all(page.profile.width == 595 and page.profile.height == 842 for page in pages)
     assert all(page.metadata["placements"][0]["rows"] <= page.profile.grid.rows for page in pages)
-    assert all(page.profile == builder.SOURCE_PROFILE for page in pages)
+    assert [page.profile for page in pages] == [builder.SOURCE_PROFILE] * 3 + [builder.ROTATED_PROFILE] * 2
 
 
 def test_actual_proof_overflow_is_an_error_without_pagination(fonts, tmp_path):
@@ -162,19 +195,23 @@ def test_actual_proof_overflow_is_an_error_without_pagination(fonts, tmp_path):
 
 
 def test_snow_subscript_and_next_cell_line_have_separate_ink(fonts):
-    from gridlayoutpdf import GridSpec, LayoutContext, PageProfile, Rect, ReportStyle, measure_block
-    context = LayoutContext(fonts, PageProfile("local", 100, 100, GridSpec(0, 0, .12, .12, 800, 800)), module("builder").SOURCE_STYLE)
-    cell = module("builder").CompactCell((
-        {"type": "row", "items": ["1.0", {"type": "script", "base": "S", "sub": "30"}]},
-        "703.13"), line_advance=12.8)
+    """The rotated tables' 1.0S30 / 703.13 cell: a library Script line and the next line at 10.8 pt."""
+    from gridlayoutpdf import CellLines, GridSpec, LayoutContext, PageProfile, Rect, Text, TextStyle, measure_block
+    builder = module("builder")
+    grid = builder.ROTATED_PROFILE.grid
+    local = GridSpec(0, 0, grid.pitch_y, grid.pitch_x, grid.rows, grid.columns)
+    context = LayoutContext(fonts, PageProfile("local", local.columns * local.pitch_x, local.rows * local.pitch_y, local),
+                            builder.SOURCE_STYLE)
+    cell = CellLines((builder.math_node({"type": "row", "items": ["1.0", {"type": "script", "base": "S", "sub": "30"}]}),
+                      builder.math_node("703.13")), style=TextStyle("MS Mincho", 10), line_advance=local.pitch_y)
     result = measure_block(cell, context, 50)
-    # command_bounds intentionally includes typographic reserve; the question
-    # here is whether the actual visible outlines intersect between baselines.
+    assert result.rows == 2
+    texts = [command for command in result.commands if isinstance(command, Text)]
     def ink(command):
         bounds = fonts.measure(command.text, command.style).ink_bounds
         return Rect(bounds.x + command.x, bounds.y + command.y, bounds.width, bounds.height)
-    upper = [ink(command) for command in result.commands[:-1]]
-    lower = ink(result.commands[-1])
+    upper = [ink(command) for command in texts[:-1]]
+    lower = ink(texts[-1])
     assert max(rect.bottom for rect in upper) < lower.y
 
 
@@ -361,11 +398,25 @@ def test_activation_independently_reverifies_both_pdfs(tmp_path, monkeypatch, fo
     assert not (tmp_path / "current.json").exists()
 
 
-@pytest.mark.parametrize("number", module("deferred").DEFERRED_PAGES)
-def test_deferred_pages_still_stop_for_the_recorded_header_clearance(fonts, number):
-    """The strict xfails defer exactly this failure; a changed reason or a fixed page fails here."""
-    table = {30: "md", 31: "md", 32: "vd", 33: "vd", 34: "mt", 35: "mt"}[number]
-    with pytest.raises(LayoutOverflowError, match=(
-            rf"原本再現できず: .*p{number}-combinations-{table}-r0-cell1: "
-            rf"source glyph ink clearance exceeds 0\.05 pt$")):
-        module("builder").layout_report(fonts, source_pages=(number,))
+def test_row_placement_centres_lines_by_whole_rows_and_clears_the_rules():
+    """builder._row_placement: rows nearest the middle (ties upward), one row off where a rule
+    leaves no room, the offset in the middle of the room, an error where nothing fits."""
+    from types import SimpleNamespace
+    from gridlayoutpdf import LayoutOverflowError
+    builder = module("builder")
+    box = SimpleNamespace(ascent=8.594, descent=1.406)  # a 10 pt MS Mincho line
+    # One line in two rows: the upper row (a tie), its glyphs in the middle of the room.
+    start, offset = builder._row_placement(1, 2, 10.8, [box], top=.25, bottom=.25, where="t")
+    assert start == 0 and offset == pytest.approx((8.594 + .26 + 10.8 - 1.406) / 2)
+    # One line in three rows: the middle row, clear of no rule.
+    assert builder._row_placement(1, 3, 10.8, [box], top=1.0, bottom=1.0, where="t") == (1, pytest.approx((8.594 + 10.8 - 1.406) / 2))
+    # A medium frame rule above leaves no room in the first row: the line moves down one row.
+    assert builder._row_placement(1, 2, 10.8, [box], top=1.0, bottom=.25, where="t")[0] == 1
+    # Two lines in three rows (the case builder._table uses it for): the upper pair (a tie).
+    assert builder._row_placement(2, 3, 10.8, [box, box], top=.25, bottom=.25, where="t")[0] == 0
+    # Two lines in three rows under a medium frame rule: one row down.
+    assert builder._row_placement(2, 3, 10.8, [box, box], top=1.0, bottom=.25, where="t")[0] == 1
+    with pytest.raises(LayoutOverflowError, match="do not fit"):
+        builder._row_placement(1, 1, 10.8, [box], top=1.0, bottom=1.0, where="t")
+    with pytest.raises(LayoutOverflowError, match="do not fit"):
+        builder._row_placement(3, 2, 10.8, [box] * 3, top=0.0, bottom=0.0, where="t")

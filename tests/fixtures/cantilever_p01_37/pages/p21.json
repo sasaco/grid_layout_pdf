@@ -22,31 +22,7 @@
     {
       "id": "p21-origin-table",
       "type": "table",
-      "columns": [
-        2,
-        16,
-        6,
-        6
-      ],
       "header_rows": 1,
-      "padding": 2,
-      "cell_min_height": 25,
-      "horizontal_rules": [
-        1,
-        0.12,
-        0.12,
-        0.12,
-        0.12,
-        0.12,
-        1
-      ],
-      "vertical_rules": [
-        1,
-        0.12,
-        0.12,
-        0.12,
-        1
-      ],
       "rows": [
         [
           {
@@ -262,31 +238,7 @@
     {
       "id": "p21-end-table",
       "type": "table",
-      "columns": [
-        2,
-        16,
-        6,
-        6
-      ],
       "header_rows": 1,
-      "padding": 2,
-      "cell_min_height": 25,
-      "horizontal_rules": [
-        1,
-        0.12,
-        0.12,
-        0.12,
-        0.12,
-        0.12,
-        1
-      ],
-      "vertical_rules": [
-        1,
-        0.12,
-        0.12,
-        0.12,
-        1
-      ],
       "rows": [
         [
           {

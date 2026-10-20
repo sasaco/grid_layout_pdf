@@ -31,12 +31,6 @@
       "type": "equations",
       "size": 10,
       "gap": 1.2,
-      "anchors": {
-        "first_equal": 6,
-        "second_equal": 22,
-        "result_right": 27,
-        "unit_start": 28
-      },
       "equations": [
         {
           "lhs": {
@@ -121,12 +115,6 @@
       "type": "equations",
       "size": 10,
       "gap": 1.2,
-      "anchors": {
-        "first_equal": 3,
-        "second_equal": 23,
-        "result_right": 28,
-        "unit_start": 29
-      },
       "equations": [
         {
           "lhs": "Ｇ１桁",
@@ -218,12 +206,6 @@
       "type": "equations",
       "size": 10,
       "gap": 1.2,
-      "anchors": {
-        "first_equal": 6,
-        "second_equal": 22,
-        "result_right": 27,
-        "unit_start": 28
-      },
       "equations": [
         {
           "lhs": {
@@ -308,12 +290,6 @@
       "type": "equations",
       "size": 10,
       "gap": 1.2,
-      "anchors": {
-        "first_equal": 3,
-        "second_equal": 23,
-        "result_right": 28,
-        "unit_start": 29
-      },
       "equations": [
         {
           "lhs": "Ｇ１桁",

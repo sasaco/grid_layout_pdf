@@ -35,12 +35,6 @@
           "id": "p07-equation-001",
           "type": "equations",
           "label_columns": 3,
-          "anchors": {
-            "first_equal": 4,
-            "second_equal": 14,
-            "result_right": 19,
-            "unit_start": 20
-          },
           "gap": 3,
           "equations": [
             {
@@ -69,12 +63,6 @@
           "id": "p07-equation-002",
           "type": "equations",
           "label_columns": 3,
-          "anchors": {
-            "first_equal": 4,
-            "second_equal": 14,
-            "result_right": 19,
-            "unit_start": 20
-          },
           "gap": 3,
           "equations": [
             {
@@ -103,12 +91,6 @@
           "id": "p07-equation-003",
           "type": "equations",
           "label_columns": 3,
-          "anchors": {
-            "first_equal": 4,
-            "second_equal": 14,
-            "result_right": 19,
-            "unit_start": 20
-          },
           "gap": 3,
           "equations": [
             {
@@ -137,12 +119,6 @@
           "id": "p07-equation-004",
           "type": "equations",
           "label_columns": 3,
-          "anchors": {
-            "first_equal": 4,
-            "second_equal": 14,
-            "result_right": 19,
-            "unit_start": 20
-          },
           "gap": 3,
           "equations": [
             {
@@ -182,12 +158,6 @@
           "id": "p07-equation-005",
           "type": "equations",
           "label_columns": 3,
-          "anchors": {
-            "first_equal": 4,
-            "second_equal": 14,
-            "result_right": 19,
-            "unit_start": 20
-          },
           "gap": 3,
           "equations": [
             {
@@ -216,12 +186,6 @@
           "id": "p07-equation-006",
           "type": "equations",
           "label_columns": 3,
-          "anchors": {
-            "first_equal": 4,
-            "second_equal": 14,
-            "result_right": 19,
-            "unit_start": 20
-          },
           "gap": 3,
           "equations": [
             {
@@ -266,12 +230,6 @@
           "id": "p07-equation-007",
           "type": "equations",
           "label_columns": 3,
-          "anchors": {
-            "first_equal": 4,
-            "second_equal": 14,
-            "result_right": 19,
-            "unit_start": 20
-          },
           "gap": 3,
           "equations": [
             {
@@ -300,12 +258,6 @@
           "id": "p07-equation-008",
           "type": "equations",
           "label_columns": 3,
-          "anchors": {
-            "first_equal": 4,
-            "second_equal": 14,
-            "result_right": 19,
-            "unit_start": 20
-          },
           "gap": 3,
           "equations": [
             {
@@ -334,12 +286,6 @@
           "id": "p07-equation-009",
           "type": "equations",
           "label_columns": 3,
-          "anchors": {
-            "first_equal": 4,
-            "second_equal": 14,
-            "result_right": 19,
-            "unit_start": 20
-          },
           "gap": 3,
           "equations": [
             {
@@ -368,12 +314,6 @@
           "id": "p07-equation-010",
           "type": "equations",
           "label_columns": 3,
-          "anchors": {
-            "first_equal": 4,
-            "second_equal": 14,
-            "result_right": 19,
-            "unit_start": 20
-          },
           "gap": 3,
           "equations": [
             {
@@ -413,12 +353,6 @@
           "id": "p07-equation-011",
           "type": "equations",
           "label_columns": 3,
-          "anchors": {
-            "first_equal": 4,
-            "second_equal": 14,
-            "result_right": 19,
-            "unit_start": 20
-          },
           "gap": 3,
           "equations": [
             {
@@ -447,12 +381,6 @@
           "id": "p07-equation-012",
           "type": "equations",
           "label_columns": 3,
-          "anchors": {
-            "first_equal": 4,
-            "second_equal": 14,
-            "result_right": 19,
-            "unit_start": 20
-          },
           "gap": 3,
           "equations": [
             {
@@ -507,12 +435,6 @@
           "id": "p07-equation-013",
           "type": "equations",
           "label_columns": 3,
-          "anchors": {
-            "first_equal": 4,
-            "second_equal": 14,
-            "result_right": 19,
-            "unit_start": 20
-          },
           "gap": 3,
           "equations": [
             {
@@ -541,12 +463,6 @@
           "id": "p07-equation-014",
           "type": "equations",
           "label_columns": 3,
-          "anchors": {
-            "first_equal": 4,
-            "second_equal": 14,
-            "result_right": 19,
-            "unit_start": 20
-          },
           "gap": 3,
           "equations": [
             {
@@ -575,12 +491,6 @@
           "id": "p07-equation-015",
           "type": "equations",
           "label_columns": 3,
-          "anchors": {
-            "first_equal": 4,
-            "second_equal": 14,
-            "result_right": 19,
-            "unit_start": 20
-          },
           "gap": 3,
           "equations": [
             {
@@ -609,12 +519,6 @@
           "id": "p07-equation-016",
           "type": "equations",
           "label_columns": 3,
-          "anchors": {
-            "first_equal": 4,
-            "second_equal": 14,
-            "result_right": 19,
-            "unit_start": 20
-          },
           "gap": 3,
           "equations": [
             {
@@ -654,12 +558,6 @@
           "id": "p07-equation-017",
           "type": "equations",
           "label_columns": 3,
-          "anchors": {
-            "first_equal": 4,
-            "second_equal": 14,
-            "result_right": 19,
-            "unit_start": 20
-          },
           "gap": 3,
           "equations": [
             {
@@ -688,12 +586,6 @@
           "id": "p07-equation-018",
           "type": "equations",
           "label_columns": 3,
-          "anchors": {
-            "first_equal": 4,
-            "second_equal": 14,
-            "result_right": 19,
-            "unit_start": 20
-          },
           "gap": 3,
           "equations": [
             {
@@ -738,12 +630,6 @@
           "id": "p07-equation-019",
           "type": "equations",
           "label_columns": 3,
-          "anchors": {
-            "first_equal": 4,
-            "second_equal": 14,
-            "result_right": 19,
-            "unit_start": 20
-          },
           "gap": 3,
           "equations": [
             {
@@ -772,12 +658,6 @@
           "id": "p07-equation-020",
           "type": "equations",
           "label_columns": 3,
-          "anchors": {
-            "first_equal": 4,
-            "second_equal": 14,
-            "result_right": 19,
-            "unit_start": 20
-          },
           "gap": 3,
           "equations": [
             {
@@ -806,12 +686,6 @@
           "id": "p07-equation-021",
           "type": "equations",
           "label_columns": 3,
-          "anchors": {
-            "first_equal": 4,
-            "second_equal": 14,
-            "result_right": 19,
-            "unit_start": 20
-          },
           "gap": 3,
           "equations": [
             {
@@ -840,12 +714,6 @@
           "id": "p07-equation-022",
           "type": "equations",
           "label_columns": 3,
-          "anchors": {
-            "first_equal": 4,
-            "second_equal": 14,
-            "result_right": 19,
-            "unit_start": 20
-          },
           "gap": 3,
           "equations": [
             {
@@ -885,12 +753,6 @@
           "id": "p07-equation-023",
           "type": "equations",
           "label_columns": 3,
-          "anchors": {
-            "first_equal": 4,
-            "second_equal": 14,
-            "result_right": 19,
-            "unit_start": 20
-          },
           "gap": 3,
           "equations": [
             {
@@ -919,12 +781,6 @@
           "id": "p07-equation-024",
           "type": "equations",
           "label_columns": 3,
-          "anchors": {
-            "first_equal": 4,
-            "second_equal": 14,
-            "result_right": 19,
-            "unit_start": 20
-          },
           "gap": 3,
           "equations": [
             {

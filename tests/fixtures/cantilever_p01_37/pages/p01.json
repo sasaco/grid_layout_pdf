@@ -35,16 +35,6 @@
     {
       "id": "p01-dead-loads",
       "type": "table",
-      "columns": [
-        4,
-        5,
-        5,
-        3,
-        3,
-        3,
-        3,
-        4
-      ],
       "rows": [
         [
           {
@@ -102,8 +92,7 @@
                 "gap": 1.5
               }
             ],
-            "colspan": 2,
-            "padding": 0.1
+            "colspan": 2
           },
           {
             "lines": [
@@ -153,8 +142,7 @@
                 "gap": 1.5
               }
             ],
-            "colspan": 2,
-            "padding": 0.1
+            "colspan": 2
           },
           {
             "lines": [
@@ -328,8 +316,7 @@
                 "gap": 1.5
               }
             ],
-            "colspan": 2,
-            "padding": 0.1
+            "colspan": 2
           },
           {
             "lines": [
@@ -379,8 +366,7 @@
                 "gap": 1.5
               }
             ],
-            "colspan": 2,
-            "padding": 0.1
+            "colspan": 2
           },
           {
             "lines": [
@@ -532,34 +518,7 @@
           }
         ]
       ],
-      "header_rows": 1,
-      "padding": 0,
-      "horizontal_rules": [
-        1,
-        0.7,
-        0.12,
-        0.12,
-        0.12,
-        0.12,
-        1,
-        0.12,
-        0.12,
-        0.12,
-        0.12,
-        1
-      ],
-      "vertical_rules": [
-        0,
-        0.12,
-        0.12,
-        1,
-        0.12,
-        0.12,
-        0.12,
-        0.12,
-        0
-      ],
-      "inline_padding": 0.6
+      "header_rows": 1
     },
     {
       "id": "p01-before-train",
@@ -594,12 +553,6 @@
     {
       "id": "p01-reactions",
       "type": "equations",
-      "anchors": {
-        "first_equal": 3,
-        "second_equal": 22,
-        "result_right": 27,
-        "unit_start": 28
-      },
       "equations": [
         {
           "lhs": {

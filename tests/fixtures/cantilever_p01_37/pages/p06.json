@@ -25,12 +25,6 @@
           "id": "p06-equation-001",
           "type": "equations",
           "label_columns": 3,
-          "anchors": {
-            "first_equal": 4,
-            "second_equal": 14,
-            "result_right": 19,
-            "unit_start": 20
-          },
           "gap": 3,
           "equations": [
             {
@@ -59,12 +53,6 @@
           "id": "p06-equation-002",
           "type": "equations",
           "label_columns": 3,
-          "anchors": {
-            "first_equal": 4,
-            "second_equal": 14,
-            "result_right": 19,
-            "unit_start": 20
-          },
           "gap": 3,
           "equations": [
             {
@@ -93,12 +81,6 @@
           "id": "p06-equation-003",
           "type": "equations",
           "label_columns": 3,
-          "anchors": {
-            "first_equal": 4,
-            "second_equal": 14,
-            "result_right": 19,
-            "unit_start": 20
-          },
           "gap": 3,
           "equations": [
             {
@@ -127,12 +109,6 @@
           "id": "p06-equation-004",
           "type": "equations",
           "label_columns": 3,
-          "anchors": {
-            "first_equal": 4,
-            "second_equal": 14,
-            "result_right": 19,
-            "unit_start": 20
-          },
           "gap": 3,
           "equations": [
             {
@@ -172,12 +148,6 @@
           "id": "p06-equation-005",
           "type": "equations",
           "label_columns": 3,
-          "anchors": {
-            "first_equal": 4,
-            "second_equal": 14,
-            "result_right": 19,
-            "unit_start": 20
-          },
           "gap": 3,
           "equations": [
             {
@@ -206,12 +176,6 @@
           "id": "p06-equation-006",
           "type": "equations",
           "label_columns": 3,
-          "anchors": {
-            "first_equal": 4,
-            "second_equal": 14,
-            "result_right": 19,
-            "unit_start": 20
-          },
           "gap": 3,
           "equations": [
             {
@@ -256,12 +220,6 @@
           "id": "p06-equation-007",
           "type": "equations",
           "label_columns": 3,
-          "anchors": {
-            "first_equal": 4,
-            "second_equal": 14,
-            "result_right": 19,
-            "unit_start": 20
-          },
           "gap": 3,
           "equations": [
             {
@@ -290,12 +248,6 @@
           "id": "p06-equation-008",
           "type": "equations",
           "label_columns": 3,
-          "anchors": {
-            "first_equal": 4,
-            "second_equal": 14,
-            "result_right": 19,
-            "unit_start": 20
-          },
           "gap": 3,
           "equations": [
             {
@@ -324,12 +276,6 @@
           "id": "p06-equation-009",
           "type": "equations",
           "label_columns": 3,
-          "anchors": {
-            "first_equal": 4,
-            "second_equal": 14,
-            "result_right": 19,
-            "unit_start": 20
-          },
           "gap": 3,
           "equations": [
             {
@@ -358,12 +304,6 @@
           "id": "p06-equation-010",
           "type": "equations",
           "label_columns": 3,
-          "anchors": {
-            "first_equal": 4,
-            "second_equal": 14,
-            "result_right": 19,
-            "unit_start": 20
-          },
           "gap": 3,
           "equations": [
             {
@@ -403,12 +343,6 @@
           "id": "p06-equation-011",
           "type": "equations",
           "label_columns": 3,
-          "anchors": {
-            "first_equal": 4,
-            "second_equal": 14,
-            "result_right": 19,
-            "unit_start": 20
-          },
           "gap": 3,
           "equations": [
             {
@@ -437,12 +371,6 @@
           "id": "p06-equation-012",
           "type": "equations",
           "label_columns": 3,
-          "anchors": {
-            "first_equal": 4,
-            "second_equal": 14,
-            "result_right": 19,
-            "unit_start": 20
-          },
           "gap": 3,
           "equations": [
             {

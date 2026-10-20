@@ -134,12 +134,12 @@ Step 2〜6 と並行して進められる（シートのモデルだけを入力
 
 #### Step 9: 片持ち梁 p1〜37 を新しい決まりで作り直す（FR-027）
 
-- [ ] Red: 片持ち梁の方眼Excel を `strict=True` で出すと、ずらし・図形への切替えでエラーになること（作り直す前の状態）。新しい決まりどおりかの検査（位置・行の高さがグリッドのマスの整数倍、罫線が `BorderStyle`、文字サイズが 0.5 pt 刻み、回転表の `local_grid` が縦横入替のページのグリッド）。
-- [ ] `builder.py`・`appearance.py`・`pages/*.json`・`font-profile.json` を作り直す。回転表は縦横を入れ替えたページのグリッドで組む（0.01 pt の `local_grid` を廃止）。表の行の高さ・列の幅・字下げ・等号の位置はグリッドのマスの整数倍。式は `term_columns="grid"`。表の線は辺ごとの `BorderStyle`（0.12→極細、0.96→中）、区切り線は `Rule`。独自の添字（`SourceScript`）はライブラリの `Script` に寄せる。
-- [ ] `verify.py`・`verify_appearance.py` を直す。内容・順番・頁・書体の原本との検査は残し、位置・行の高さ・線の太さ・大きさの検査は新しい決まりどおりかの検査に置き換える。
-- [ ] 全37ページが固定ページに収まること（FR-014）を確かめる。あふれたら停止して報告する。
-- [ ] 片持ち梁の方眼Excel が `strict=True` で出せることを確かめる。
-- [ ] p30〜35 の保留（`tests/fixtures/cantilever_p01_37/deferred.py` の `xfail(strict=True)`）を外し、全37ページが生成できることを確かめる（Step 3 で保留。2026-10-20 ユーザー判断 c）。あわせて `deferred.py` の `DEFERRED_DIFFERENCES`（p36 の `p36-combinations-summary.r10.c8`〜`r18.c8` の9セルの `+` の位置、spacing の operator inline origin。10.0 pt で 0.600 pt ずれる）を外し、位置の検査を新しい決まりどおりかの検査に置き換える（2026-10-20 オーケストレーター判断、FR-027）。
+- [x] ✅ Red: 片持ち梁の方眼Excel を `strict=True` で出すと、ずらし・図形への切替えでエラーになること（作り直す前の状態）。新しい決まりどおりかの検査（位置・行の高さがグリッドのマスの整数倍、罫線が `BorderStyle`、文字サイズが 0.5 pt 刻み、回転表の `local_grid` が縦横入替のページのグリッド）。 → 作り直す前の fixture では方眼Excel が書き出しの時点で `XlsxError`（ずらした文字片がグリッドの右端を越える）。決まりどおりかの検査は `tests/integration/test_cantilever_grid_rules.py`（Red 8 件）。
+- [x] ✅ `builder.py`・`appearance.py`・`pages/*.json`・`font-profile.json` を作り直す。回転表は縦横を入れ替えたページのグリッドで組む（0.01 pt の `local_grid` を廃止）。表の行の高さ・列の幅・字下げ・等号の位置はグリッドのマスの整数倍。式は `term_columns="grid"`。表の線は辺ごとの `BorderStyle`（0.12→極細、0.96→中）、区切り線は `Rule`。独自の添字（`SourceScript`）はライブラリの `Script` に寄せる。 → p30〜37 は 10.8×14.52 pt のページのグリッド（2026-10-20 ユーザー判断 (a)）。区切り線（実物は p16〜20 の縦の括り線10本）は縦線の部品 `SideRule` にした（`Rule` は横線の部品。lead 確認事項）。
+- [x] ✅ `verify.py`・`verify_appearance.py` を直す。内容・順番・頁・書体の原本との検査は残し、位置・行の高さ・線の太さ・大きさの検査は新しい決まりどおりかの検査に置き換える。
+- [x] ✅ 全37ページが固定ページに収まること（FR-014）を確かめる。あふれたら停止して報告する。 → 収まる（最も詰まっているのは p26 の残り3行、p36・p37 の残り2行）。
+- [x] ✅ 片持ち梁の方眼Excel が `strict=True` で出せることを確かめる。 → ずらし・図形への切替え・タグのない命令 0 件。数値のまま書けない数値は p2 の7件（strict の対象外）。
+- [x] ✅ p30〜35 の保留（`tests/fixtures/cantilever_p01_37/deferred.py` の `xfail(strict=True)`）を外し、全37ページが生成できることを確かめる（Step 3 で保留。2026-10-20 ユーザー判断 c）。あわせて `deferred.py` の `DEFERRED_DIFFERENCES`（p36 の `p36-combinations-summary.r10.c8`〜`r18.c8` の9セルの `+` の位置、spacing の operator inline origin。10.0 pt で 0.600 pt ずれる）を外し、位置の検査を新しい決まりどおりかの検査に置き換える（2026-10-20 オーケストレーター判断、FR-027）。 → `deferred.py` を削除。
 
 #### Step 10: 受入と文書
 
