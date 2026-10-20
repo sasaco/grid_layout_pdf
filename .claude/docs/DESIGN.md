@@ -156,6 +156,7 @@ Python の自作 PDF 計算書ライブラリを設計する。A4.pdf の GridLa
 | 【ユーザー確認済み・Gate 3】分子の中の上付き（代表例 p2 の「³」）と入れ子の分数の分母（「2」）は、方眼Excel では 8.3〜8.5 pt 縦にずれる。FR-021 のセルへの写し方から来る制限として受け入れる。 | 1マスに1文字片を置く写し方では、半マスより細かい縦位置を表せないため。Gate 3 でユーザーが承認した（2026-10-20）。 | 代表例の式を書き換えてずれを避ける | 2026-10-20 |
 | 【ユーザー確認済み・Gate 3】Excel から書き出した PDF とライブラリの PDF を並べた画像（代表例 標準・長い、片持ち梁 p1〜37）の目視をユーザーが承認した。比較スクリプトの判断（回転表の許容差を読む向きで測る、文字の大きさの比 0.75〜1.33、no_extra_text を合否に含める）も承認に含む。 | 計画書の Gate 3（2段の検証の合格と並べた画像の目視）。 | なし | 2026-10-20 |
 | 【ユーザー確認済み】feature/grid-excel-output の途中のコミット 89bba39〜02e7f6e（deferred.py の削除が混ざり、片持ち梁のテストが動かない）は履歴を書き換えずに残す。最新の e6f0dbb 以降は正常。 | まだ push しておらず、最新が正常なため。ユーザーが推奨案を承認した（2026-10-20）。 | interactive rebase で途中のコミットを直す | 2026-10-20 |
+| Release の wheel は GitHub Actions（.github/workflows/release.yml）で作る。v* のタグの push で windows-latest が core.autocrlf=false で checkout し、SOURCE_DATE_EPOCH=315532800 の uv build --wheel で作って Release に載せる。タグと pyproject の版が違えば止める。既に wheel が載っていれば作り直して同じバイト列であることだけを確かめ、差し替えない。手で実行（workflow_dispatch、tag 指定）すると既存の Release の wheel の再現を確かめる。テストは Actions で行わず、タグを push する前に手元で通す。 | 2026-10-21 のユーザー指示（Actions で作るようにして）。WebPier などは Release の wheel の url を使い uv.lock が SHA-256 を持つので、wheel を差し替えられない。ubuntu で作ると zipfile の create_system（作成した OS）の1バイトだけ手作りの v0.2.0・v0.2.1 と違ったため Windows で作る。Windows の runner で v0.2.0（75f43493…）と v0.2.1（57940f00…）を作り直し、同じバイト列であることを確かめた。テストは Windows の書体と Excel を要する。 | 手元で作って gh release create で載せる（これまで）。ubuntu-latest で作る（既存の wheel と合わない）。Actions でテストも行う。 | 2026-10-21 |
 
 ## TODO / Open Questions
 
