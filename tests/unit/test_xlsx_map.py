@@ -1543,6 +1543,37 @@ def test_a_wide_relation_keeps_off_the_left_hand_side():
     assert merge_of(workbook.sheets[0], cell.row, cell.col) == xl.CellRange(0, 5, 0, 6) and not result.shifts
 
 
+def test_the_left_hand_side_reaches_the_column_before_its_relation_s_anchor():
+    # "B′ ：" in WebPier's definitions: the prime's ink sits at the left of its advance, so the ink of the
+    # right-aligned left-hand side ends a column short of the anchor; its cells still reach the anchor (api.md).
+    lhs = Tag(Role.MATH, (Scope(Kind.EQUATION, index=0), Scope(Kind.EQUATION_LINE, index=0),
+                          Scope(Kind.EQUATION_PART, "lhs")), {"atom": "literal"})
+    relation = Tag(Role.MATH, (Scope(Kind.EQUATION, index=0), Scope(Kind.EQUATION_LINE, index=0),
+                               Scope(Kind.EQUATION_PART, "relation")), {"atom": "relation"})
+    page = raw_page(Text(x_of(3, 2), baseline(0), "x", STYLE, tag=lhs),
+                    Text(x_of(5) - 3, baseline(0), "=", STYLE, tag=relation))
+    workbook, result = map_reports([("R", (page,))], FONTS, cell_padding_pt=padding)
+    sheet = workbook.sheets[0]
+    cell = text_cell(sheet, "x")
+    assert merge_of(sheet, cell.row, cell.col) == xl.CellRange(0, 3, 0, 4) and cell.h_align == "right"
+    assert text_cell(sheet, "=").col == 5 and not result.shifts
+
+
+def test_only_the_last_piece_of_a_split_left_hand_side_reaches_the_anchor():
+    # atoms a cell apart are two pieces (the cantilever's "T  L1"): the first keeps its cells
+    lhs = Tag(Role.MATH, (Scope(Kind.EQUATION, index=0), Scope(Kind.EQUATION_LINE, index=0),
+                          Scope(Kind.EQUATION_PART, "lhs")), {"atom": "literal"})
+    relation = Tag(Role.MATH, (Scope(Kind.EQUATION, index=0), Scope(Kind.EQUATION_LINE, index=0),
+                               Scope(Kind.EQUATION_PART, "relation")), {"atom": "relation"})
+    page = raw_page(Text(x_of(1, 2), baseline(0), "a", STYLE, tag=lhs), Text(x_of(3, 2), baseline(0), "b", STYLE, tag=lhs),
+                    Text(x_of(6) - 3, baseline(0), "=", STYLE, tag=relation))
+    workbook, result = map_reports([("R", (page,))], FONTS, cell_padding_pt=padding)
+    sheet = workbook.sheets[0]
+    first, second = text_cell(sheet, "a"), text_cell(sheet, "b")
+    assert merge_of(sheet, first.row, first.col) is None and first.col == 1
+    assert merge_of(sheet, second.row, second.col) == xl.CellRange(0, 3, 0, 5) and not result.shifts
+
+
 @pytest.mark.parametrize(("gap", "joined"), [(1.5, "ab"), (4.0, "a b")])
 def test_atoms_join_with_a_space_only_where_the_gap_is_half_a_space_or_more(gap, joined):
     # FixedFonts' space is 6 pt at 10 pt: a gap of 3 pt or more becomes a space

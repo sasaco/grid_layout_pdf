@@ -1055,12 +1055,14 @@ class _SheetBuilder:
                 self.record_shift(piece, before, "fraction_in_script" if in_script else "fraction")
 
     def equation_rows(self) -> None:
-        """Merge the pieces outside fractions over their equation line's rows."""
+        """Merge the pieces outside fractions over their equation line's rows, and let the left-hand side reach
+        the column before its relation's anchor boundary."""
         lines: dict[tuple, list[_Piece]] = {}
         for piece in self.pieces:
             if piece.line_key is not None and piece.turns == 0:
                 lines.setdefault((piece.page, piece.line_key), []).append(piece)
         for members in lines.values():
+            _reach_relation(members)
             # A label wrapped to several display lines keeps each line in its own row.
             labels = [piece for piece in members if _label_line(piece.unit_path) is not None]
             if len({_label_line(piece.unit_path) for piece in labels}) > 1:
@@ -1852,6 +1854,28 @@ def _label_line(unit_path: tuple[Scope, ...]) -> int | None:
         line = next((scope.index for scope in reversed(unit_path) if scope.kind is Kind.PARAGRAPH), None)
         return 0 if line is None else line
     return None
+
+
+def _reach_relation(members: list[_Piece]) -> None:
+    """The left-hand side of an equation line, right-aligned against its relation, takes the cells up to the column
+    before the relation's anchor boundary (api.md), even where its ink ends a column short of it (a prime ′ sits at
+    the left of its advance); a piece in a fraction keeps its own cells."""
+    relations = [piece for piece in members if piece.relation_centre is not None
+                 and piece.unit_path[-1].part == "relation"]
+    if len(relations) != 1:
+        return
+    relation = relations[0]
+    last = round(relation.relation_centre) - 1
+    row = [piece for piece in members if piece.first_row <= relation.first_row <= piece.last_row]
+    sides = [piece for piece in row if piece.unit_path and piece.unit_path[-1].kind is Kind.EQUATION_PART
+             and piece.unit_path[-1].part == "lhs" and not piece.in_fraction]
+    if not sides:
+        return
+    # Only the rightmost piece of a left-hand side split into several, and only over cells no other piece takes.
+    side = max(sides, key=lambda piece: piece.last_col)
+    if side.first_col <= last and side.last_col < last and not any(
+            piece is not side and piece.first_col <= last and piece.last_col > side.last_col for piece in row):
+        side.last_col = last
 
 
 def _is_relation(unit_path: tuple[Scope, ...]) -> bool:
