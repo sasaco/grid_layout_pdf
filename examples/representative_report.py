@@ -3,6 +3,17 @@
 All numbers are supplied display data. No engineering solver is implemented.
 Text uses one font name for body and headings; the default is the bundled
 IPAex明朝, and Windows font names such as "MS Mincho" also work.
+
+term_columns="grid" writes the substituted values as TermStop term columns in
+whole grid columns (FR-025), one term per cell range in a grid Excel workbook,
+and the adjustment factor as a square root instead of a fractional exponent.
+Its anchors fit the default font IPAex明朝 at 10 pt; with other fonts (such as
+IPAexゴシック) the load totals may fall back and write_report stops. The
+default "packed" output is unchanged.
+
+xlsx=True (--xlsx) also writes the same pages as a grid Excel workbook beside
+the PDF; strict=True (--strict) makes any shifted text piece or shape fallback
+an error (with "grid", the report is written with none).
 """
 
 import argparse
@@ -15,10 +26,12 @@ from gridlayoutpdf import (
     Document, Equation, EquationAnchors, EquationGroup, Figure, Fraction,
     FontError, Heading, Image, Label, Line, MathBlock, Operator, PageBreak,
     PageDecoration, PageSection, Paragraph, Rectangle, ReportStyle, Root, Row, Script,
-    Spacer, Stack, Table, TextStyle, layout_trace, render_pdf,
+    Spacer, Stack, Table, TermStop, TextStyle, XlsxStrictError, layout_trace, render_pdf, render_xlsx,
 )
 
 DEFAULT_FONT = "IPAex明朝"
+SHEET_NAME = "代表例"
+TERM_COLUMNS = ("packed", "grid")
 
 
 def _load_figure():
@@ -58,9 +71,26 @@ def _combination_table(*, long=False):
                  numeric_columns=(2, 3, 4, 5, 6), block_id="load-combinations")
 
 
-def _section_equations(values, *, long=False):
+def _terms(*values, operator):
+    """Values in right-aligned term columns separated by centred operator columns."""
+    items = [TermStop("right")]
+    for value in values:
+        if len(items) > 1:
+            items.extend((TermStop("center"), Operator(operator), TermStop("right")))
+        items.append(value)
+    return Row(*items)
+
+
+# The second equals sign one column further left keeps the long variant's results (7.3811250)
+# out of its cell.
+GRID_SECTION_ANCHORS = EquationAnchors(10, 21, 26, 27)
+
+
+def _section_equations(values, *, long=False, term_columns="packed"):
+    grid = term_columns == "grid"
+    area = _terms("4.50", "2.70", operator="×") if grid else Row("4.50", Operator("×"), "2.70")
     return EquationGroup(
-        Equation("A", Row("4.50", Operator("×"), "2.70"), label="断面積",
+        Equation("A", area, label="断面積",
                  result=values["area"], unit=Script("m", superscript="2")),
         Equation("I", Fraction(Row("4.50", Operator("×"), Script("2.70", superscript="3")), "12"),
                  label="中立軸に関する断面二次モーメント" if long else "断面二次モーメント",
@@ -68,13 +98,33 @@ def _section_equations(values, *, long=False):
         Equation("W", Fraction("7.381125", Fraction("2.70", "2")),
                  label="縁端応力度に用いる断面係数" if long else "断面係数",
                  result=values["section_modulus"], unit=Script("m", superscript="3")),
-        anchors=EquationAnchors(10, 22, 26, 27), block_id="section-properties",
+        anchors=GRID_SECTION_ANCHORS if grid else EquationAnchors(10, 22, 26, 27),
+        term_columns=term_columns, block_id="section-properties",
     )
 
 
-def _load_equations(values, *, long=False):
+# The vertical sum has 15 grid term columns, 23 columns with IPAex明朝 at 10 pt (a value takes
+# 2 columns: "12.50" is 27.1 pt + 2 x 2.4 pt within 32.16 pt; an operator takes 1). The
+# right-hand side starts at column 7 and ends at the page's right edge; first_equal 6 is the
+# smallest that keeps the label on one line. A font whose values need more columns
+# (IPAexゴシック's "12.50" is 27.8 pt, 3 columns) makes the row fall back; write_report stops then.
+GRID_LOAD_ANCHORS = EquationAnchors(6, 24, 28, 29)
+LOAD_VALUES = ("12.50", "8.75", "6.25", "4.00", "3.50", "2.00", "1.50", "1.50")
+
+
+def _load_equations(values, *, long=False, term_columns="packed"):
+    if term_columns == "grid":
+        # Term columns ignore BreakHints, so the horizontal sum is one line here.
+        return EquationGroup(
+            Equation("S", _terms(*LOAD_VALUES, operator="+"),
+                     label="鉛直方向の作用値の合計" if long else "鉛直力の合計", result=values["vertical"], unit="kN"),
+            Equation("H", _terms("1.50", "2.50", "3.00", operator="+"),
+                     label="水平方向の作用値の合計" if long else "水平力の合計",
+                     result=values["horizontal"], unit="kN"),
+            anchors=GRID_LOAD_ANCHORS, term_columns="grid", block_id="load-totals",
+        )
     terms = []
-    for value in ("12.50", "8.75", "6.25", "4.00", "3.50", "2.00", "1.50", "1.50"):
+    for value in LOAD_VALUES:
         if terms:
             terms.append(Operator("+"))
         terms.append(value)
@@ -88,14 +138,30 @@ def _load_equations(values, *, long=False):
     )
 
 
-def build_report(image_path, *, font=DEFAULT_FONT, variant="standard", display_values=None) -> Document:
+def _adjustment_equation(values, *, term_columns="packed"):
+    reduced = Fraction("1", Row("1", Operator("+"),
+                                Fraction(Script("β", superscript="2"), Root(Row("1", Operator("+"), "γ")))))
+    if term_columns == "grid":
+        # The same value as a square root: a fraction inside a superscript has no rich-text form in a cell.
+        rhs = Root(reduced)
+    else:
+        rhs = Script(Delimited(reduced), superscript=Fraction("1", "2"))
+    return EquationGroup(Equation("η", rhs, result=values["adjustment"]),
+                         anchors=EquationAnchors(10, 22, 26), block_id="adjustment-factor")
+
+
+def build_report(image_path, *, font=DEFAULT_FONT, variant="standard", display_values=None,
+                 term_columns="packed") -> Document:
     """Build a report from a font name, image and already-formatted result strings.
 
     display_values replaces known results only; the sample expressions and input
     conditions are authored separately. Values are never calculated or rounded.
+    term_columns="grid" writes the substituted values in grid term columns.
     """
     if variant not in ("standard", "long"):
         raise ValueError("variant must be 'standard' or 'long'")
+    if term_columns not in TERM_COLUMNS:
+        raise ValueError("term_columns must be 'packed' or 'grid'")
     long = variant == "long"
     values = {
         "area": "12.1500" if long else "12.150",
@@ -149,7 +215,7 @@ def build_report(image_path, *, font=DEFAULT_FONT, variant="standard", display_v
         PageBreak(),
         Heading("2 断面諸量"),
         Paragraph("矩形断面の幾何量を以下に示す。表示桁は原資料の指定を保持し、式と単位を対応させる。"),
-        _section_equations(values, long=long),
+        _section_equations(values, long=long, term_columns=term_columns),
         Spacer(1),
         Stack(
             Columns(MathBlock("A"), Paragraph("断面積。幅と高さの積。"), col_spans=(3, 26)),
@@ -160,13 +226,10 @@ def build_report(image_path, *, font=DEFAULT_FONT, variant="standard", display_v
         Spacer(1),
         Heading("3 作用荷重"),
         Paragraph("鉛直方向と水平方向の作用値を別々に整理する。加算項の順序を保ち、単位を合計値に付す。"),
-        _load_equations(values, long=long),
+        _load_equations(values, long=long, term_columns=term_columns),
         Spacer(1),
         Paragraph("補正係数 η は下式で表す。ここでは β = 0、γ = 0 を与えた値を示す。"),
-        EquationGroup(Equation("η", Script(Delimited(Fraction("1", Row("1", Operator("+"),
-                            Fraction(Script("β", superscript="2"), Root(Row("1", Operator("+"), "γ")))))),
-                            superscript=Fraction("1", "2")), result=values["adjustment"]),
-                      anchors=EquationAnchors(10, 22, 26), block_id="adjustment-factor"),
+        _adjustment_equation(values, term_columns=term_columns),
         PageSection(A3_LANDSCAPE_REFERENCE,
                     Heading("4 荷重組合せ一覧"),
                     Paragraph("組合せごとに橋軸方向と橋軸直角方向を対として示す。軸力、せん断力、曲げモーメント、"
@@ -194,18 +257,52 @@ def build_report(image_path, *, font=DEFAULT_FONT, variant="standard", display_v
     )
 
 
-def write_report(output, *, font=DEFAULT_FONT, image_path=None, variant="standard", preview=False):
+class GridTermFallbackError(ValueError):
+    """term_columns="grid" rows fell back to ordinary wrapping; block_ids names their blocks."""
+
+    def __init__(self, message: str, block_ids: tuple[str, ...] = ()) -> None:
+        super().__init__(message)
+        self.block_ids = block_ids
+
+
+def grid_fallbacks(pages):
+    """Block ids of top-level placements whose term-aligned equations fell back (term_fallback).
+
+    Only the parts of placements on the page are read, as this report places its
+    equation groups; an equation group inside Columns or Stack is not looked into.
+    """
+    return tuple(dict.fromkeys(
+        placement["block_id"] for page in pages for placement in page.metadata["placements"]
+        if any(part["metadata"].get("term_fallback") for part in placement.get("parts", ()))))
+
+
+def write_report(output, *, font=DEFAULT_FONT, image_path=None, variant="standard", preview=False,
+                 term_columns="packed", xlsx=False, strict=False):
     """Write normal/grid PDFs and JSON from one immutable layout result.
 
     A .pdf output selects the exact normal filename; other paths are directories.
     Only --preview needs the optional development package PyMuPDF.
+    term_columns="grid" raises GridTermFallbackError (a ValueError) before writing
+    when a term row fell back. xlsx=True also writes the pages as a grid Excel
+    workbook (the PDF's name with .xlsx) and returns its path last; it is written
+    first, so that strict=True raises XlsxStrictError before any file is written.
     """
+    if strict and not xlsx:
+        raise ValueError("strict applies to the grid Excel workbook; pass xlsx=True")
     image_path = Path(image_path) if image_path is not None else Path(__file__).resolve().parent / "assets/bridge-overview.png"
-    pages = build_report(image_path, font=font, variant=variant).layout()
+    pages = build_report(image_path, font=font, variant=variant, term_columns=term_columns).layout()
+    fallen = grid_fallbacks(pages) if term_columns == "grid" else ()
+    if fallen:
+        raise GridTermFallbackError(f"grid term columns do not fit in {', '.join(fallen)} with the font "
+                                    f"{font!r}; they fell back to packed terms", fallen)
     output = Path(output)
     normal = output if output.suffix.lower() == ".pdf" else output / "representative-report.pdf"
     grid = normal.with_name(normal.stem + "-grid.pdf")
     trace = normal.with_suffix(".json")
+    workbook = normal.with_suffix(".xlsx")
+    if xlsx:
+        normal.parent.mkdir(parents=True, exist_ok=True)
+        render_xlsx([(SHEET_NAME, pages)], workbook, strict=strict)
     render_pdf(pages, normal)
     render_pdf(pages, grid, debug_grid=True)
     trace.write_text(json.dumps(layout_trace(pages), ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
@@ -221,7 +318,7 @@ def write_report(output, *, font=DEFAULT_FONT, image_path=None, variant="standar
                 for number, page in enumerate(pdf, 1):
                     page.get_pixmap(matrix=pymupdf.Matrix(1.5, 1.5), alpha=False).save(
                         previews / f"{path.stem}-page-{number}.png")
-    return normal, grid, trace
+    return (normal, grid, trace, workbook) if xlsx else (normal, grid, trace)
 
 
 def main(argv=None):
@@ -232,12 +329,25 @@ def main(argv=None):
     parser.add_argument("--image", type=Path, help="PNG/JPEG; defaults to assets/bridge-overview.png beside this script")
     parser.add_argument("--variant", choices=("standard", "long"), default="standard")
     parser.add_argument("--preview", action="store_true", help="Render all pages as PNG (development dependency PyMuPDF)")
+    parser.add_argument("--term-columns", choices=TERM_COLUMNS, default="packed",
+                        help="grid: substituted values in whole grid columns, so that the grid Excel workbook "
+                             "(--xlsx) gives each term its own cells")
+    parser.add_argument("--xlsx", action="store_true", help="Also write the pages as a grid Excel workbook (.xlsx)")
+    parser.add_argument("--strict", action="store_true",
+                        help="With --xlsx, stop when a text piece would be shifted or drawn as a shape")
     options = parser.parse_args(argv)
+    if options.strict and not options.xlsx:
+        parser.error("--strict requires --xlsx")
     try:
         paths = write_report(options.output, font=options.font, image_path=options.image,
-                             variant=options.variant, preview=options.preview)
+                             variant=options.variant, preview=options.preview,
+                             term_columns=options.term_columns, xlsx=options.xlsx, strict=options.strict)
     except FontError as exc:
         parser.error(f"--font: {exc}")
+    except GridTermFallbackError as exc:
+        parser.error(f"--term-columns grid: {exc}")
+    except XlsxStrictError as exc:
+        parser.error(f"--strict: {exc}")
     for path in paths:
         print(path)
 

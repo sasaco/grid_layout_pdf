@@ -80,7 +80,7 @@ EquationGroupはラベル・左辺・関係記号・結果・単位を先に計�
 | paragraph / cell_lines | `index`: 表示行、`data`: `align`（paragraphは`heading`も） |
 | decoration | `part`: header・footer、`data`: `template`・`align` |
 | table / table_cell | table は`block_id`、cell は`cell_id`・`row`・`col`・`rowspan`・`colspan`・`align`・`valign` |
-| equation / equation_line / equation_part | 式の番号、表示行（`continuation`・`result_line`）、label・lhs・relation・rhs・term・result_relation・result・unit（term は`index`と`align`） |
+| equation / equation_line / equation_part | 式の番号、表示行（`continuation`・`result_line`）、label・lhs・relation・rhs・term・result_relation・result・unit（term は`index`と`align`、`term_columns="grid"`の時はブロックの左端から数えた開始列`first_column`・列数`columns`・片側のセルの余白`cell_padding_pt`も） |
 | math_block | — |
 | fraction / script / root / delimited | numerator・denominator・bar / base・superscript・subscript / sign・radicand / left・right・body |
 | figure / figure_item | figure は`block_id`、item は`index`と`kind`（`raw`・`align`・`rounded`） |

@@ -2,7 +2,7 @@
 
 from dataclasses import KW_ONLY, dataclass, replace
 import math
-from typing import NoReturn
+from typing import Literal, NoReturn, get_args
 
 from .blocks import Paragraph
 from .errors import FontError, LayoutOverflowError
@@ -13,7 +13,30 @@ from .math import (
 )
 from .semantics import Kind, Scope, tagged, within
 from .styles import TextStyle, _finite_number
-from .validation import _identifier, _integer
+from .validation import TOLERANCE, _identifier, _integer, whole_units_ceil
+
+# Excel 16.0's inner padding between a cell's edge and its text, on one side, in pt. Measured
+# 2026-10-20 in Excel's PDF export (ExportAsFixedFormat at 100 %, see grid-excel-output-execution.md,
+# grid-terms): it grows about 0.12 pt per pt of text size and does not depend on the Normal style
+# font or the column width. 2.4 pt is the largest gap of any side for 8-12 pt text (ＭＳ 明朝,
+# ＭＳ ゴシック, 游明朝; 游明朝 12 pt left 2.37 pt), rounded up to 0.05 pt.
+EXCEL_CELL_PADDING_PT = 2.4
+_EXCEL_CELL_PADDING_SIZE_PT = 12.0  # the largest text size EXCEL_CELL_PADDING_PT covers
+TermColumns = Literal["packed", "grid"]
+_TERM_COLUMNS: tuple[str, ...] = get_args(TermColumns)
+
+
+def excel_cell_padding_pt(size_pt: float) -> float:
+    """Return the one-side Excel cell padding in pt for text of ``size_pt``.
+
+    EXCEL_CELL_PADDING_PT up to 12 pt, then proportionally larger (the measured
+    gap grows about 0.12 pt per pt, this rule 0.2 pt per pt: 14 pt gives 2.8 pt,
+    measured at most 2.61 pt; 16 pt gives 3.2 pt, measured at most 2.73 pt).
+    """
+    size = _finite_number(size_pt, "size_pt")
+    if size <= 0:
+        raise ValueError("size_pt must be positive")
+    return EXCEL_CELL_PADDING_PT * max(1.0, size / _EXCEL_CELL_PADDING_SIZE_PT)
 
 
 @dataclass(frozen=True, slots=True)
@@ -85,6 +108,15 @@ class EquationGroup:
     to its own line. A row whose aligned line exceeds the full RHS width falls
     back to ordinary wrapping, with an allowed break at each non-leading TermStop,
     and no longer contributes to the shared columns.
+
+    term_columns="grid" gives each term column whole grid columns instead: it
+    starts at a column boundary counted from the block's left edge and is the
+    fewest columns whose width holds, for every row using it, the term (or the
+    stop's minimum width) plus excel_cell_padding_pt() of that equation's text
+    size on each side; an empty column takes none. Columns touch, so term_gap
+    is an error. Terms are aligned inside the padding. Fitting is decided in
+    whole columns. The block must sit on a page column boundary for the terms
+    to start at page columns (not inside a pt Indent or a padded table cell).
     """
 
     equations: tuple[Equation, ...]
@@ -94,10 +126,11 @@ class EquationGroup:
     term_gap: float | None
     style: TextStyle | None
     block_id: str
+    term_columns: TermColumns
 
     def __init__(self, *equations: Equation, anchors: EquationAnchors | None = None,
                  label_columns: int | None = None, gap: float = 4.0,
-                 term_gap: float | None = None,
+                 term_gap: float | None = None, term_columns: TermColumns = "packed",
                  style: TextStyle | None = None, block_id: str = "") -> None:
         if any(not isinstance(equation, Equation) for equation in equations):
             raise ValueError("equations must contain only Equation objects")
@@ -112,10 +145,16 @@ class EquationGroup:
             term_gap = _finite_number(term_gap, "term_gap")
             if term_gap < 0:
                 raise ValueError("term_gap must be nonnegative")
+        if not isinstance(term_columns, str) or term_columns not in _TERM_COLUMNS:
+            raise ValueError(f"term_columns must be {' or '.join(_TERM_COLUMNS)}")
+        if term_columns == "grid" and term_gap is not None:
+            raise ValueError("term_gap applies only to term_columns='packed'; grid term columns "
+                             "are separated by their cell padding")
         _style_and_id(style, block_id)
         for name, value in (("equations", tuple(equations)), ("anchors", anchors),
                             ("label_columns", label_columns), ("gap", gap),
-                            ("term_gap", term_gap), ("style", style), ("block_id", block_id)):
+                            ("term_gap", term_gap), ("style", style), ("block_id", block_id),
+                            ("term_columns", term_columns)):
             object.__setattr__(self, name, value)
 
     def measure(self, context: LayoutContext, available_width: float) -> MeasuredBlock:
@@ -139,10 +178,15 @@ class EquationGroup:
         first_right = max(item.first.right for item in measured)
         second_left = max((item.second.left for item in measured if item.second), default=0)
         second_right = max((item.second.right for item in measured if item.second), default=0)
-        rhs_start = _ceil_column(points["first_equal"] + first_right + self.gap, pitch) * pitch
+        rhs_column = _ceil_column(points["first_equal"] + first_right + self.gap, pitch)
+        rhs_start = rhs_column * pitch
+        # The shared roundoff: a width of n columns made by subtraction (an Indent in Columns)
+        # can be an ulp short of n * pitch and must still hold n columns.
+        grid = (_GridTerms(pitch, rhs_column, _floor_column(available_width + TOLERANCE, pitch))
+                if self.term_columns == "grid" else None)
         segments, columns, fallback = _term_layout(
             measured, tuple(_term_segments(item, context) for item in measured), rhs_start,
-            available_width - rhs_start, self.gap if self.term_gap is None else self.term_gap)
+            available_width - rhs_start, self.gap if self.term_gap is None else self.term_gap, grid)
         parts = []
         for index, item in enumerate(measured):
             first = points["first_equal"]
@@ -152,12 +196,15 @@ class EquationGroup:
                        (_part(item.first.box, "relation"), first - item.first.left)]
             trailing = []
             rhs_end = available_width
+            rhs_end_column = grid.limit_column if grid is not None else None
             if item.result is not None:
                 second, result_right = points["second_equal"], points["result_right"]
                 _require_width(item.second.left, second, item.path + ".result_relation")
                 _require_width(item.result.width + second_right + self.gap,
                                result_right - second, item.path + ".result")
                 rhs_end = _floor_column(second - second_left - self.gap, pitch) * pitch
+                if grid is not None:  # the shared roundoff, as for limit_column
+                    rhs_end_column = _floor_column(second - second_left - self.gap + TOLERANCE, pitch)
                 trailing.extend(((_part(item.second.box, "result_relation"), second - item.second.left),
                                  (_part(item.result, "result"), result_right - item.result.width)))
             if item.unit is not None:
@@ -175,7 +222,7 @@ class EquationGroup:
                 rhs_lines = tuple(_part(line, "rhs") for line in rhs_lines)
             else:
                 rhs_lines, separate_result = _term_rhs(item, segments[index], columns, rhs_start,
-                                                       rhs_end - rhs_start)
+                                                       rhs_end - rhs_start, grid, rhs_end_column)
             if not rhs_lines:
                 rhs_lines = (MathBox(0, 0, 0, (), item.style.size * .25),)
             label = Paragraph(item.equation.label, style=item.style, block_id=item.path + ".label",
@@ -188,6 +235,9 @@ class EquationGroup:
                                "rhs_start_pt": rhs_start, "label_width_pt": label_width}
             if segments[index] is not None:
                 common_metadata["term_columns_pt"] = columns[:len(segments[index])]
+                if grid is not None:
+                    common_metadata["term_columns_grid"] = grid.columns(columns[:len(segments[index])])
+                    common_metadata["term_cell_padding_pt"] = grid.padding(item.style.size)
             if fallback[index]:
                 common_metadata["term_fallback"] = True
             for line_index, rhs in enumerate(rhs_lines):
@@ -268,10 +318,53 @@ def _term_segments(item: _EquationMeasure,
                  for stop, boxes in zip(stops, groups))
 
 
+@dataclass(frozen=True, slots=True)
+class _GridTerms:
+    """Whole grid columns for term columns, counted from the block's left edge.
+
+    rhs_column starts the RHS and limit_column is the column boundary at the
+    block's right edge (the exclusive end of its whole columns). Every column's left edge and width are whole columns times pitch,
+    so the integer columns are recovered exactly with round().
+    """
+
+    pitch: float
+    rhs_column: int
+    limit_column: int
+
+    @staticmethod
+    def padding(size: float) -> float:
+        return excel_cell_padding_pt(size)
+
+    def need(self, size: float, content: float) -> float:
+        """The width a term of ``content`` pt needs in its columns, 0 for an empty term."""
+        return content + 2 * self.padding(size) if content > 0 else 0.0
+
+    def count(self, need: float) -> int:
+        # The shared roundoff only: a term needing exactly k columns does not take k + 1.
+        return whole_units_ceil(max(0.0, need - TOLERANCE), self.pitch)
+
+    def span(self, left: float, width: float) -> tuple[int, int]:
+        """(first column, column count) of one column's left edge and width."""
+        return round(left / self.pitch), round(width / self.pitch)
+
+    def end(self, left: float, width: float) -> int:
+        first, count = self.span(left, width)
+        return first + count
+
+    def columns(self, columns: tuple[tuple[float, float, str], ...]) -> tuple[tuple[int, int, str], ...]:
+        """(first column, column count, align) from the block's left edge for each term column."""
+        return tuple((*self.span(left, width), align) for left, width, align in columns)
+
+
 def _term_columns(items: tuple[_EquationMeasure, ...],
                   segments: tuple[tuple[tuple[TermStop, MathBox], ...] | None, ...],
-                  rhs_start: float, term_gap: float) -> tuple[tuple[float, float, str], ...] | None:
-    """Share each column's alignment and widest term (or minimum width) across the group."""
+                  rhs_start: float, term_gap: float, grid: _GridTerms | None = None,
+                  ) -> tuple[tuple[float, float, str], ...] | None:
+    """Share each column's alignment and widest term (or minimum width) across the group.
+
+    With ``grid`` each column takes whole grid columns holding its widest term
+    and the cell padding of that term's equation, and columns touch.
+    """
     aligns: list[str] = []
     widths: list[float] = []
     for item, row in zip(items, segments):
@@ -282,10 +375,19 @@ def _term_columns(items: tuple[_EquationMeasure, ...],
             elif aligns[column] != stop.align:
                 raise ValueError(f"{item.path}.rhs: term column {column} align {stop.align!r} "
                                  f"conflicts with {aligns[column]!r}")
-            widths[column] = max(widths[column], box.width, stop.width or 0.0)
+            content = max(box.width, stop.width or 0.0)
+            widths[column] = max(widths[column],
+                                 content if grid is None else grid.need(item.style.size, content))
     if not aligns:
         return None
     columns = []
+    if grid is not None:
+        first = grid.rhs_column
+        for align, need in zip(aligns, widths):
+            count = grid.count(need)
+            columns.append((first * grid.pitch, count * grid.pitch, align))
+            first += count
+        return tuple(columns)
     left = rhs_start
     for align, width in zip(aligns, widths):
         columns.append((left, width, align))
@@ -295,7 +397,7 @@ def _term_columns(items: tuple[_EquationMeasure, ...],
 
 def _term_layout(items: tuple[_EquationMeasure, ...],
                  segments: tuple[tuple[tuple[TermStop, MathBox], ...] | None, ...],
-                 rhs_start: float, full_width: float, term_gap: float,
+                 rhs_start: float, full_width: float, term_gap: float, grid: _GridTerms | None = None,
                  ) -> tuple[tuple, tuple[tuple[float, float, str], ...] | None, tuple[bool, ...]]:
     """Drop rows whose aligned line exceeds the full RHS width until the columns settle.
 
@@ -306,14 +408,16 @@ def _term_layout(items: tuple[_EquationMeasure, ...],
     """
     def too_wide(row, columns) -> bool:
         left, width, _ = columns[len(row) - 1]
+        if grid is not None:  # whole columns: an exact fit is not lost to float drift
+            return grid.end(left, width) > max(grid.rhs_column, grid.limit_column)
         return left + width - rhs_start > max(0, full_width)
 
-    _term_columns(items, segments, rhs_start, term_gap)  # Alignment is shared by every row.
-    fallback = [row is not None and too_wide(row, _term_columns((item,), (row,), rhs_start, term_gap))
+    _term_columns(items, segments, rhs_start, term_gap, grid)  # Alignment is shared by every row.
+    fallback = [row is not None and too_wide(row, _term_columns((item,), (row,), rhs_start, term_gap, grid))
                 for item, row in zip(items, segments)]
     while True:
         kept = tuple(None if dropped else row for dropped, row in zip(fallback, segments))
-        columns = _term_columns(items, kept, rhs_start, term_gap)
+        columns = _term_columns(items, kept, rhs_start, term_gap, grid)
         added = False
         for index, row in enumerate(kept):
             if row is not None and too_wide(row, columns):
@@ -334,15 +438,29 @@ def _term_fallback_row(rhs: Row) -> Row:
 
 def _term_rhs(item: _EquationMeasure, row: tuple[tuple[TermStop, MathBox], ...],
               columns: tuple[tuple[float, float, str], ...], rhs_start: float,
-              normal_width: float) -> tuple[tuple[MathBox, ...], bool]:
-    """Place one term-aligned RHS, known to fit the full width, on a single line."""
+              normal_width: float, grid: _GridTerms | None = None,
+              normal_end_column: int | None = None) -> tuple[tuple[MathBox, ...], bool]:
+    """Place one term-aligned RHS, known to fit the full width, on a single line.
+
+    With ``grid`` each term is aligned between its column's edges less the cell
+    padding of the equation's text size on each side (none for a zero-width
+    column), its tag records the column span and padding, and the result moves
+    to its own line when the columns end after ``normal_end_column``.
+    """
     axis = item.style.size * .25
+    padding = grid.padding(item.style.size) if grid is not None else 0.0
     commands = []
     ascent = descent = 0.0
     for column, ((_, box), (left, width, align)) in enumerate(zip(row, columns)):
-        box = _part(box, "term", column, align=align)
-        slack = width - box.width
-        x = left - rhs_start + (slack if align == "right" else slack / 2 if align == "center" else 0)
+        inset = padding if width > 0 else 0.0
+        if grid is None:
+            box = _part(box, "term", column, align=align)
+        else:
+            first, count = grid.span(left, width)
+            box = _part(box, "term", column, align=align, first_column=first, columns=count,
+                        cell_padding_pt=inset)
+        slack = width - 2 * inset - box.width
+        x = left + inset - rhs_start + (slack if align == "right" else slack / 2 if align == "center" else 0)
         dy = box.axis - axis
         commands.extend(box.translated(x, dy))
         ascent = max(ascent, box.ascent - dy)
@@ -350,6 +468,10 @@ def _term_rhs(item: _EquationMeasure, row: tuple[tuple[TermStop, MathBox], ...],
     last_left, last_width, _ = columns[len(row) - 1]
     line = MathBox(last_left + last_width - rhs_start, ascent, descent, tuple(commands), axis)
     # Only an equation with a result has a normal region narrower than the full width.
+    if grid is not None:
+        if normal_end_column is None:
+            raise ValueError("grid term columns need the normal RHS region's last column")
+        return (line,), grid.end(last_left, last_width) > max(grid.rhs_column, normal_end_column)
     return (line,), line.width > max(0, normal_width)
 
 

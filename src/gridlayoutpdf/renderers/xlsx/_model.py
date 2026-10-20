@@ -1023,8 +1023,8 @@ class Sheet:
         _set(self, "row_heights_pt", heights)
         owners = self._check_merges()
         self._check_cells(owners)
-        self._check_borders(owners)
         self._check_row_breaks()
+        self._check_borders(owners)
         if not isinstance(self.page, PageSetup):
             raise ValueError("page must be a PageSetup")
         for name in ("header", "footer"):
@@ -1080,16 +1080,20 @@ class Sheet:
         _set(self, "cells", cells)
 
     def _check_borders(self, owners: dict[tuple[int, int], CellRange]) -> None:
+        """Each physical edge once, except a page break's: the page above ends with its last row's
+        bottom and the page below starts with its first row's top, and each page prints its own."""
         borders = _tuple(self.borders, "borders")
-        seen: dict[EdgeKey, EdgeBorder] = {}
+        breaks = set(self.row_breaks)
+        seen: dict[tuple, EdgeBorder] = {}
         for border in borders:
             if not isinstance(border, EdgeBorder):
                 raise ValueError("borders must contain EdgeBorder items")
             self._check_inside(border.row, border.col, "border cell")
             key = border.edge_key()
-            if key in seen:
-                raise ValueError(f"{border} and {seen[key]} describe the same edge")
-            seen[key] = border
+            unique = key + ((border.side,) if key[0] == "horizontal" and key[1] in breaks else ())
+            if unique in seen:
+                raise ValueError(f"{border} and {seen[unique]} describe the same edge")
+            seen[unique] = border
             kind, row, col = key
             before, after = ((row - 1, col), (row, col)) if kind == "horizontal" else ((row, col - 1), (row, col))
             merge = owners.get(before)

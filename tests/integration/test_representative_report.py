@@ -145,6 +145,41 @@ def test_writer_emits_matching_normal_grid_trace_and_optional_previews(example, 
     assert "bytes" not in trace_path.read_text(encoding="utf-8")
 
 
+@pytest.mark.parametrize("variant", ["standard", "long"])
+def test_writer_adds_a_strict_grid_excel_workbook_of_the_same_pages(example, inputs, tmp_path, variant):
+    openpyxl = pytest.importorskip("openpyxl")
+    files = example.write_report(tmp_path, image_path=inputs[0], variant=variant, term_columns="grid",
+                                 xlsx=True, strict=True)
+    assert len(files) == 4 and all(path.is_file() for path in files)
+    normal, _, trace_path, workbook_path = files
+    assert workbook_path == normal.with_suffix(".xlsx")
+    pages = json.loads(trace_path.read_text(encoding="utf-8"))["pages"]
+    workbook = openpyxl.load_workbook(workbook_path)
+    # A4 portrait, then the A3 landscape section, then A4 portrait again: three sheets.
+    assert workbook.sheetnames == ["代表例", "代表例_2", "代表例_3"]
+    assert sum(len(sheet.row_breaks.brk) + 1 for sheet in workbook.worksheets) == len(pages)
+
+
+def test_strict_workbook_of_the_packed_report_stops_before_writing_anything(example, inputs, tmp_path):
+    from gridlayoutpdf import XlsxStrictError
+
+    with pytest.raises(XlsxStrictError):
+        example.write_report(tmp_path, image_path=inputs[0], xlsx=True, strict=True)
+    assert list(tmp_path.iterdir()) == []
+    with pytest.raises(ValueError, match="strict"):
+        example.write_report(tmp_path, image_path=inputs[0], strict=True)
+
+
+def test_cli_writes_the_workbook_with_xlsx_and_strict(example, inputs, tmp_path, capsys):
+    example.main(["--output", str(tmp_path), "--image", str(inputs[0]), "--term-columns", "grid",
+                  "--xlsx", "--strict"])
+    assert (tmp_path / "representative-report.xlsx").stat().st_size > 0
+    assert str(tmp_path / "representative-report.xlsx") in capsys.readouterr().out
+    with pytest.raises(SystemExit) as stopped:
+        example.main(["--output", str(tmp_path / "packed"), "--image", str(inputs[0]), "--xlsx", "--strict"])
+    assert stopped.value.code == 2 and "--strict" in capsys.readouterr().err
+
+
 def test_copied_cli_uses_public_api_default_asset_without_pymupdf(tmp_path):
     script = tmp_path / "representative_report.py"
     shutil.copyfile(ROOT / "examples/representative_report.py", script)

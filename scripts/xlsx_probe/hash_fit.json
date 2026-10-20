@@ -1,0 +1,487 @@
+{
+ "environment": [
+  "printer|DocuWorks PDF on Ne05:"
+ ],
+ "records": [
+  {
+   "normal_font": "游ゴシック",
+   "normal_size": 11.0,
+   "row": 0,
+   "k": 1,
+   "n": 2,
+   "n_max": 2,
+   "screen_text": "0.",
+   "pdf_text": "0."
+  },
+  {
+   "normal_font": "游ゴシック",
+   "normal_size": 11.0,
+   "row": 1,
+   "k": 1,
+   "n": 3,
+   "n_max": 2,
+   "screen_text": "##",
+   "pdf_text": "##"
+  },
+  {
+   "normal_font": "游ゴシック",
+   "normal_size": 11.0,
+   "row": 2,
+   "k": 1,
+   "n": 4,
+   "n_max": 2,
+   "screen_text": "##",
+   "pdf_text": "##"
+  },
+  {
+   "normal_font": "游ゴシック",
+   "normal_size": 11.0,
+   "row": 3,
+   "k": 2,
+   "n": 5,
+   "n_max": 5,
+   "screen_text": "0.000",
+   "pdf_text": "0.000"
+  },
+  {
+   "normal_font": "游ゴシック",
+   "normal_size": 11.0,
+   "row": 4,
+   "k": 2,
+   "n": 6,
+   "n_max": 5,
+   "screen_text": "#####",
+   "pdf_text": "#####"
+  },
+  {
+   "normal_font": "游ゴシック",
+   "normal_size": 11.0,
+   "row": 5,
+   "k": 2,
+   "n": 7,
+   "n_max": 5,
+   "screen_text": "#####",
+   "pdf_text": "#####"
+  },
+  {
+   "normal_font": "游ゴシック",
+   "normal_size": 11.0,
+   "row": 6,
+   "k": 3,
+   "n": 8,
+   "n_max": 8,
+   "screen_text": "0.000000",
+   "pdf_text": "0.000000"
+  },
+  {
+   "normal_font": "游ゴシック",
+   "normal_size": 11.0,
+   "row": 7,
+   "k": 3,
+   "n": 9,
+   "n_max": 8,
+   "screen_text": "########",
+   "pdf_text": "########"
+  },
+  {
+   "normal_font": "游ゴシック",
+   "normal_size": 11.0,
+   "row": 8,
+   "k": 3,
+   "n": 10,
+   "n_max": 8,
+   "screen_text": "########",
+   "pdf_text": "########"
+  },
+  {
+   "normal_font": "游ゴシック",
+   "normal_size": 11.0,
+   "row": 9,
+   "k": 4,
+   "n": 11,
+   "n_max": 11,
+   "screen_text": "0.000000000",
+   "pdf_text": "0.000000000"
+  },
+  {
+   "normal_font": "游ゴシック",
+   "normal_size": 11.0,
+   "row": 10,
+   "k": 4,
+   "n": 12,
+   "n_max": 11,
+   "screen_text": "###########",
+   "pdf_text": "0.0000000000"
+  },
+  {
+   "normal_font": "游ゴシック",
+   "normal_size": 11.0,
+   "row": 11,
+   "k": 4,
+   "n": 13,
+   "n_max": 11,
+   "screen_text": "###########",
+   "pdf_text": "############"
+  },
+  {
+   "normal_font": "游ゴシック",
+   "normal_size": 11.0,
+   "row": 12,
+   "k": 5,
+   "n": 15,
+   "n_max": 15,
+   "screen_text": "##############",
+   "pdf_text": "0.0000000000000"
+  },
+  {
+   "normal_font": "游ゴシック",
+   "normal_size": 11.0,
+   "row": 13,
+   "k": 5,
+   "n": 16,
+   "n_max": 15,
+   "screen_text": "##############",
+   "pdf_text": "###############"
+  },
+  {
+   "normal_font": "游ゴシック",
+   "normal_size": 11.0,
+   "row": 14,
+   "k": 5,
+   "n": 17,
+   "n_max": 15,
+   "screen_text": "##############",
+   "pdf_text": "###############"
+  },
+  {
+   "normal_font": "游ゴシック",
+   "normal_size": 11.0,
+   "row": 15,
+   "k": 6,
+   "n": 18,
+   "n_max": 18,
+   "screen_text": "#################",
+   "pdf_text": "0.0000000000000000"
+  },
+  {
+   "normal_font": "游ゴシック",
+   "normal_size": 11.0,
+   "row": 16,
+   "k": 6,
+   "n": 19,
+   "n_max": 18,
+   "screen_text": "#################",
+   "pdf_text": "##################"
+  },
+  {
+   "normal_font": "游ゴシック",
+   "normal_size": 11.0,
+   "row": 17,
+   "k": 6,
+   "n": 20,
+   "n_max": 18,
+   "screen_text": "#################",
+   "pdf_text": "##################"
+  },
+  {
+   "normal_font": "游ゴシック",
+   "normal_size": 11.0,
+   "row": 18,
+   "k": 7,
+   "n": 21,
+   "n_max": 21,
+   "screen_text": "####################",
+   "pdf_text": "0.0000000000000000000"
+  },
+  {
+   "normal_font": "游ゴシック",
+   "normal_size": 11.0,
+   "row": 19,
+   "k": 7,
+   "n": 22,
+   "n_max": 21,
+   "screen_text": "####################",
+   "pdf_text": "#####################"
+  },
+  {
+   "normal_font": "游ゴシック",
+   "normal_size": 11.0,
+   "row": 20,
+   "k": 7,
+   "n": 23,
+   "n_max": 21,
+   "screen_text": "####################",
+   "pdf_text": "#####################"
+  },
+  {
+   "normal_font": "游ゴシック",
+   "normal_size": 11.0,
+   "row": 21,
+   "k": 8,
+   "n": 24,
+   "n_max": 24,
+   "screen_text": "#######################",
+   "pdf_text": "0.0000000000000000000000"
+  },
+  {
+   "normal_font": "游ゴシック",
+   "normal_size": 11.0,
+   "row": 22,
+   "k": 8,
+   "n": 25,
+   "n_max": 24,
+   "screen_text": "#######################",
+   "pdf_text": "########################"
+  },
+  {
+   "normal_font": "游ゴシック",
+   "normal_size": 11.0,
+   "row": 23,
+   "k": 8,
+   "n": 26,
+   "n_max": 24,
+   "screen_text": "#######################",
+   "pdf_text": "########################"
+  },
+  {
+   "normal_font": "ＭＳ 明朝",
+   "normal_size": 10.5,
+   "row": 0,
+   "k": 1,
+   "n": 2,
+   "n_max": 2,
+   "screen_text": "0.",
+   "pdf_text": "0."
+  },
+  {
+   "normal_font": "ＭＳ 明朝",
+   "normal_size": 10.5,
+   "row": 1,
+   "k": 1,
+   "n": 3,
+   "n_max": 2,
+   "screen_text": "##",
+   "pdf_text": "##"
+  },
+  {
+   "normal_font": "ＭＳ 明朝",
+   "normal_size": 10.5,
+   "row": 2,
+   "k": 1,
+   "n": 4,
+   "n_max": 2,
+   "screen_text": "##",
+   "pdf_text": "##"
+  },
+  {
+   "normal_font": "ＭＳ 明朝",
+   "normal_size": 10.5,
+   "row": 3,
+   "k": 2,
+   "n": 5,
+   "n_max": 5,
+   "screen_text": "0.000",
+   "pdf_text": "0.000"
+  },
+  {
+   "normal_font": "ＭＳ 明朝",
+   "normal_size": 10.5,
+   "row": 4,
+   "k": 2,
+   "n": 6,
+   "n_max": 5,
+   "screen_text": "#####",
+   "pdf_text": "#####"
+  },
+  {
+   "normal_font": "ＭＳ 明朝",
+   "normal_size": 10.5,
+   "row": 5,
+   "k": 2,
+   "n": 7,
+   "n_max": 5,
+   "screen_text": "#####",
+   "pdf_text": "#####"
+  },
+  {
+   "normal_font": "ＭＳ 明朝",
+   "normal_size": 10.5,
+   "row": 6,
+   "k": 3,
+   "n": 8,
+   "n_max": 8,
+   "screen_text": "0.000000",
+   "pdf_text": "0.000000"
+  },
+  {
+   "normal_font": "ＭＳ 明朝",
+   "normal_size": 10.5,
+   "row": 7,
+   "k": 3,
+   "n": 9,
+   "n_max": 8,
+   "screen_text": "########",
+   "pdf_text": "########"
+  },
+  {
+   "normal_font": "ＭＳ 明朝",
+   "normal_size": 10.5,
+   "row": 8,
+   "k": 3,
+   "n": 10,
+   "n_max": 8,
+   "screen_text": "########",
+   "pdf_text": "########"
+  },
+  {
+   "normal_font": "ＭＳ 明朝",
+   "normal_size": 10.5,
+   "row": 9,
+   "k": 4,
+   "n": 11,
+   "n_max": 11,
+   "screen_text": "0.000000000",
+   "pdf_text": "0.000000000"
+  },
+  {
+   "normal_font": "ＭＳ 明朝",
+   "normal_size": 10.5,
+   "row": 10,
+   "k": 4,
+   "n": 12,
+   "n_max": 11,
+   "screen_text": "###########",
+   "pdf_text": "###########"
+  },
+  {
+   "normal_font": "ＭＳ 明朝",
+   "normal_size": 10.5,
+   "row": 11,
+   "k": 4,
+   "n": 13,
+   "n_max": 11,
+   "screen_text": "###########",
+   "pdf_text": "###########"
+  },
+  {
+   "normal_font": "ＭＳ 明朝",
+   "normal_size": 10.5,
+   "row": 12,
+   "k": 5,
+   "n": 15,
+   "n_max": 15,
+   "screen_text": "##############",
+   "pdf_text": "0.0000000000000"
+  },
+  {
+   "normal_font": "ＭＳ 明朝",
+   "normal_size": 10.5,
+   "row": 13,
+   "k": 5,
+   "n": 16,
+   "n_max": 15,
+   "screen_text": "##############",
+   "pdf_text": "###############"
+  },
+  {
+   "normal_font": "ＭＳ 明朝",
+   "normal_size": 10.5,
+   "row": 14,
+   "k": 5,
+   "n": 17,
+   "n_max": 15,
+   "screen_text": "##############",
+   "pdf_text": "###############"
+  },
+  {
+   "normal_font": "ＭＳ 明朝",
+   "normal_size": 10.5,
+   "row": 15,
+   "k": 6,
+   "n": 18,
+   "n_max": 18,
+   "screen_text": "#################",
+   "pdf_text": "0.0000000000000000"
+  },
+  {
+   "normal_font": "ＭＳ 明朝",
+   "normal_size": 10.5,
+   "row": 16,
+   "k": 6,
+   "n": 19,
+   "n_max": 18,
+   "screen_text": "#################",
+   "pdf_text": "##################"
+  },
+  {
+   "normal_font": "ＭＳ 明朝",
+   "normal_size": 10.5,
+   "row": 17,
+   "k": 6,
+   "n": 20,
+   "n_max": 18,
+   "screen_text": "#################",
+   "pdf_text": "##################"
+  },
+  {
+   "normal_font": "ＭＳ 明朝",
+   "normal_size": 10.5,
+   "row": 18,
+   "k": 7,
+   "n": 21,
+   "n_max": 21,
+   "screen_text": "####################",
+   "pdf_text": "0.0000000000000000000"
+  },
+  {
+   "normal_font": "ＭＳ 明朝",
+   "normal_size": 10.5,
+   "row": 19,
+   "k": 7,
+   "n": 22,
+   "n_max": 21,
+   "screen_text": "####################",
+   "pdf_text": "#####################"
+  },
+  {
+   "normal_font": "ＭＳ 明朝",
+   "normal_size": 10.5,
+   "row": 20,
+   "k": 7,
+   "n": 23,
+   "n_max": 21,
+   "screen_text": "####################",
+   "pdf_text": "#####################"
+  },
+  {
+   "normal_font": "ＭＳ 明朝",
+   "normal_size": 10.5,
+   "row": 21,
+   "k": 8,
+   "n": 24,
+   "n_max": 24,
+   "screen_text": "#######################",
+   "pdf_text": "0.0000000000000000000000"
+  },
+  {
+   "normal_font": "ＭＳ 明朝",
+   "normal_size": 10.5,
+   "row": 22,
+   "k": 8,
+   "n": 25,
+   "n_max": 24,
+   "screen_text": "#######################",
+   "pdf_text": "########################"
+  },
+  {
+   "normal_font": "ＭＳ 明朝",
+   "normal_size": 10.5,
+   "row": 23,
+   "k": 8,
+   "n": 26,
+   "n_max": 24,
+   "screen_text": "#######################",
+   "pdf_text": "########################"
+  }
+ ]
+}

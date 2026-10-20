@@ -104,7 +104,7 @@ report = Document(
 | `KeepTogether(block)` | 子の途中で改ページしない |
 | `KeepWithNext(block)` | Headingと同様に、次の可視部品の最小fragmentと同じページに置く。子の分割規則は変えない |
 | `PreferKeepTogether(block)` | 空ページに収まれば次ページへ送って分割を避け、1ページを超えるときだけ合法な位置で分割する |
-| `Indent(block, left)` | 子をleft pt狭く計測し、右へleft pt移す。各partに`indent_pt`を記録する |
+| `Indent(block, left)` | 子をleft pt狭く計測し、右へleft pt移す。各partに`indent_pt`を記録する（入れ子では合計） |
 | `Leading(block, rows, *, minimum=False, overhang=0.0)` | 本文の各part（表示行）をrows行にそろえる。不足する行は`LayoutOverflowError`、`minimum=True`では短い行だけ伸ばす。`overhang` ptまでの超過は行送りを保ってはみ出させる。繰返しprefixと、断片の端で描く命令を持つpart（分割する表の行群）の行数の変更は`ValueError` |
 | `SideRule(block, x, *, style=BorderStyle.THIN, top=0.0, bottom=0.0, color=(0, 0, 0))` | 子の左端からx ptの位置（線の中心）に、各partの高さ全体の縦線を罫線の種類で引く。`top`は最初の本文part、`bottom`は最後の本文partの線を縮める。各partに`side_rule_pt`と`side_rule_style`（種類のExcel名）を記録する |
 
@@ -182,6 +182,25 @@ group = EquationGroup(Equation("kv", kv("0.5"), result="174930", unit="kN/m"),
 ```
 
 右辺の最上位`Row`に幅のない`TermStop(align='left', width=None)`を置くと、その式は項の列揃えの式になる。TermStopで区切った区間が列となり、最初のTermStopより前の区間が左揃えの列0（先頭のTermStopは列0の揃えと最小幅を定める）。グループ内の列揃えの式で同じ番号の列は、最も広い区間（`width`の最小幅があればそれ以上）を列幅として共有し、`align`（left・center・right）に従って列内に置く。列の間隔は`EquationGroup(term_gap=...)`で、省略すると`gap`。同じ列番号でalignが食い違う場合と末尾のTermStopはValueError。列揃えで1行に置く式は`BreakHint`を無視し（幅0）、全列が通常の右辺幅に入らなければ結果を専用の最終行へ送る。1行に収まるかの判定はその式自身の最後の列までの幅で行い、同じグループの列の多い式に引きずられない。自身の列だけで並べても1行が全幅（結果のない式は通常の右辺幅）に入らない式は「退避」とし、退避した式を除いて列を決め直し、共有の列で入らなくなった式も退避する（退避が増えなくなるまで繰り返す）。退避した式は列幅の共有に加わらず、先頭以外の各TermStopの位置に`BreakHint('allowed')`を置いた`Row`（元の`gap`と`BreakHint`はそのまま）として通常の折り返しをし、それでも入らなければLayoutOverflowErrorとなる。各行のmetadataの`term_columns_pt`にその式が使う列の左端・幅・揃え（ブロック左端からのpt）を記録し、退避した式の行は`term_columns_pt`の代わりに`term_fallback: True`を持つ。TermStopを含まない式の配置は変わらない。
+
+`EquationGroup(term_columns='packed')`（既定）は上のとおり列をptで詰めて並べる。`term_columns='grid'`は項の列をグリッドの列単位で割り当てる（FR-025）。各列は右辺の開始列（ブロック左端からの整数列）から隙間なく続き、列の境目から始まる。列の幅は、その列を使う各式について「項（`width`の最小幅があればそれ以上）＋その式の文字サイズでの`excel_cell_padding_pt(size)`×2」を求め、その最大が入る最小の列数とする。項のない列（幅0）は0列。項は列の左右からこの余白を除いた範囲に`align`で置く。8〜12 ptの文字ではExcelの実測の余白は左右とも2.4 pt以下で、左・右・中央のどの寄せ方でもExcelの表示と1 pt未満ずれる（左寄せは最大約0.6 pt、右寄せは最大約1 pt）。列の間隔は余白が担うので、`term_gap`との併用はValueError。1行に入るか・結果を専用の行へ送るかの判定は整数の列で行い、ちょうど範囲の端で終わる列は入る。それ以外の結果の専用行・退避と通常の折り返し・エラーの規則は`'packed'`と同じで、退避した式の配置は`'packed'`の退避と同一。単独の`Equation`は常に`'packed'`なので、`'grid'`にするには`EquationGroup`で包む。型注釈には`gridlayoutpdf.equations.TermColumns`（`Literal['packed', 'grid']`）を使える。
+
+各行のmetadataは`term_columns_pt`（列の左端・幅・揃え、ブロック左端からのpt）に加えて、`term_columns_grid`（同じ列の（開始列, 列数, 揃え）、ブロック左端からの整数列。列数0の項もそのまま並ぶ）と`term_cell_padding_pt`（その式で使った片側の余白）を持つ（結果の専用行にも同じ鍵が付く）。ページの列は、ブロックの置かれた列を足して求める（合計と最も近い整数との差に`pitch_x`を掛けた長さが1e-6 ptを超えれば、揃っていない置き方として扱う。方眼Excelへの対応付けと同じ判定。そうでなければ`round()`で整数にする。ページのmetadataの配置の`col`に、式までの経路の各段のpartの`indent_pt / pitch_x`と、`Columns`・`Stack`の子（`children`）の`x_pt / pitch_x`を足す。入れ子の`Indent`の`indent_pt`はずれの合計）。描画命令のタグ（`equation_part`の`term`）は`index`と`align`に加えて、`'grid'`の時だけ`first_column`（その項の開始列、ブロック左端から）・`columns`（列数）・`cell_padding_pt`（その項で使った片側の余白。0列の項は0）を持つ。
+
+`gridlayoutpdf.equations.EXCEL_CELL_PADDING_PT`（2.4 pt）は、Excel 16.0がセルの端と文字の間に取る片側の余白の実測値の上限（8〜12 ptの文字、ＭＳ 明朝・ＭＳ ゴシック・游明朝、ExcelのPDF書出し、100%、プリンターはPX-M6711FT Series。8〜12 ptの最大2.37 ptを0.05 pt単位で切り上げた値）。余白は文字サイズとともに約0.12 pt/ptで増えるため、`excel_cell_padding_pt(size_pt)`は12 ptを超える文字ではこれを`size_pt / 12`倍した値を返す（14 ptで2.8 pt、16 ptで3.2 pt。実測は14 ptで最大2.61 pt、16 ptで最大2.73 pt）。制限（実測。Excel 16.0、A4のグリッドの列21 pxを1〜8列結合したセル、右寄せの数値、ＭＳ 明朝 10 pt、Normalの書体は游ゴシック 11とＭＳ 明朝 10.5、プリンターはDocuWorks PDF）：この規則でちょうど収まる桁数の数値は、ExcelのPDF書出し（印刷、拡大率100%）では1〜8列のすべてで表示される。画面（ズーム100%、`Range.Text`）では1〜4列は表示されるが、5〜8列では「###」になる（画面の列は21 px＝15.75 ptで印刷より狭く、字の幅も画素に丸められるためと見られる）。これら以外のプリンターのドライバー（余白はDocuWorksで、「###」はPX-M6711FTで測っていない）と、`QuarterTurn`で回したセルの余白は測っていない。
+
+### 方眼Excelで重ならない書き方
+
+方眼Excel（FR-021）は文字片ごとにセルを作り、同じセルに文字片が重なると右へずらして記録する。次の書き方は、式の各部分が別々のセルになるようにするためのもので、方眼Excelへの対応付け（Step 8）の規則とあわせて使う。
+
+- 等号・結果の等号・結果の右端・単位の開始は`EquationAnchors`の整数の列。等号はその列の境目に送りの中心を置くので紙面では境目をまたぐが、方眼Excelでは等号を境目の右の列のセル、左辺を境目の左の列までのセルにする。ラベルは`label_columns`（省略時は計測した幅）の中に1行で収める。ラベルが折り返すと、その行は他の部分とセルがぶつかることがある。
+- 右辺で数値・演算子を並べる式は、最上位の`Row`の各項の間に`TermStop`を置き、`EquationGroup(term_columns='grid')`にする。各項が自分の列の範囲を持つ。数値は`TermStop('right')`、演算子は`TermStop('center')`で区切ると、行をまたいで桁と記号が揃う。
+- `TermStop`は最上位の右辺の`Row`にだけ置ける。分数の分子・分母、根号・括弧の中の`Row`は1つの項の中身で、方眼Excelでは分子・中身ごとに1つのセルになる。
+- 上付き・下付き（`Script`）の中に分数を入れない。セルのリッチテキストでは表せないため、方眼Excelは記録し、`strict=True`ではエラーになる。指数の分数は根号（`Root`）などの同じ意味の書き方にする。
+- `'grid'`の列はブロックの左端から数える。ページの直下・`Columns`・`Stack`・`At`、`Indent`の`left`がピッチの整数倍の時（入れ子を含む）はページの列の境目に揃う。ptの`Indent`や表のセル（既定の内側の余白3 pt）の中では揃わない。
+- `TermStop`のない`Row`と、退避した式（metadataの`term_fallback: True`。`'grid'`でも警告は出ない）は項をptで詰めて並べるので、方眼Excelでは同じセルに重なることがある。退避したら、アンカーを左へ寄せて右辺の列を増やすか、式を分ける。空でない項は`'grid'`で少なくとも1列を使うので、`'packed'`より横に長くなり、書体によって列数が変わる。
+- 列揃えで1行に置く式は`BreakHint`を無視する。
+- 例: `examples/representative_report.py --term-columns grid`（`build_report(..., term_columns='grid')`）。アンカーは既定の書体（IPAex明朝、10 pt）に合わせてあり、他の書体で項の列が退避すると`write_report`はValueErrorで止まる。
 
 単独の数式や表セルには`MathBlock(expression)`を使う。MathNodeと通常部品はmeasureの引数が違うため、数式をそのままCellへ渡さない。
 

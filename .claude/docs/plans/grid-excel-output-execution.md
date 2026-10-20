@@ -12,9 +12,9 @@
 | 2 | size | Step 3（FR-023） | `styles.py`・`math.py`・文字サイズのテスト・片持ち梁の文字サイズ | ✅ 完了（p30〜35 と p36 の9セルは Step 9 へ保留） |
 | 2 | borders | Step 4（FR-022・026） | `borders.py`・`tables.py`・`containers.py`・`blocks.py`（`Rule`）・`layout.py`（端の命令）・`document.py`・表と線のテスト・片持ち梁の表の線 | ✅ 完了（commit 待ち） |
 | 3 | tags | Step 5 | `scene.py`・`math.py`・`equations.py`・`tables.py`・`cell_content.py`・`figures.py`・`blocks.py`・`rotation.py`・`document.py`・`diagnostics.py`・`semantics.py`（新設） | ✅ 完了（commit 待ち） |
-| 4 | grid-terms | Step 6（FR-025） | `equations.py`・`docs/api.md` の指針 | 未着手 |
-| 5 | xlsx-map | Step 8（FR-021） | `renderers/xlsx/{__init__,_map,_numbers}.py`・`document.py`（`render_xlsx`） | 進行中（`_numbers.py` 完了） |
-| 5 | cantilever | Step 9（FR-027） | `tests/fixtures/cantilever_p01_37/**`・片持ち梁のテスト | 未着手 |
+| 4 | grid-terms | Step 6（FR-025） | `equations.py`・`docs/api.md` の指針・`examples/representative_report.py`（grid 版）・`tests/unit/test_equation_grid_terms.py` | ✅ 完了（ImplementationLoop 7 ラウンドで MEDIUM 以上 0、commit 待ち。Step 6 の3項目めは Step 8 の完成待ち） |
+| 5 | xlsx-map | Step 8（FR-021） | `renderers/xlsx/{__init__,_map,_numbers}.py`・`document.py`（`render_xlsx`） | ✅ 完了（commit 待ち。ImplementationLoop 6 ラウンドで MEDIUM 以上 0。代表例への出力は lead 指示待ち） |
+| 5 | cantilever | Step 9（FR-027） | `tests/fixtures/cantilever_p01_37/**`・片持ち梁のテスト | 進行中（案 (a) で37ページを作り直し済み・保留解除済み。レビュー中。`term_columns="grid"`・strict 検査は lead の連絡待ち） |
 | 6 | lead | Step 10 受入と文書 | 文書・PNG 正解・最終検証 | 未着手 |
 
 ### 基準（Step 1）
@@ -475,3 +475,396 @@ silent-failure のレビューは完了。python・type-design のレビュー�
 - ✅ `renderers/xlsx/_numbers.py`（`classify_number`・`excel_display`・`NumericCell`）。中断時に Red だった `test_exact_context_does_not_take_the_default_context`（`decimal.DefaultContext` を import 前に変えると `_EXACT` に漏れる）を、`Context` の全設定を名前で渡して Green（`resume-numbers-green` 244 passed、Excel の統合テストを含む）。
 - ✅ `docs/architecture.md` に「意味のタグ」の節（役割・構造の種類・データの一覧）を追加。
 
+#### cantilever（Step 9）
+
+担当 cantilever（サブエージェント）。2026-10-20。状態: **作り直し済み・レビュー中**（2026-10-20 ユーザーが案 (a) を選んで再開。式の `term_columns="grid"` と方眼Excel の strict 検査は lead の連絡待ち）。下の「あふれの確認」「案 (a) の実測」は再開前の記録。
+
+**あふれの確認（Gate 2 後半の事前確認）**
+
+作り直しの前に、回転表 p30〜37 を縦横入替のページのグリッドで組めるかを、ライブラリの部品だけで確かめた（一時スクリプト、作業ツリー外）。
+
+- 条件: `local_grid = GridSpec(0, 0, 15.48, 16.08, 48, 31)`（`CANTILEVER_SOURCE_A4` のグリッド 16.08×15.48・31列48行の縦横入替）。`Table` の行の高さは自動（整数の局所行）、セルは `CellLines`（MS Mincho 10.0 pt、上下の余白 0.3 pt・左右 0.5 pt、`padding=0`）、罫線は極細、添字は `Script(subscript_drop=1.92)`。列の幅は内容の最大幅＋1.25 pt が入る最小の局所列数。
+- 結果（行送り 10.0 pt）: p31・p33・p35・p36・p37 は1ページに収まる。**p30・p32・p34 は表の高さ（紙面では幅）が 38 局所行 = 611.04 pt 要り、使える 31 局所行 = 498.48 pt を 7 局所行（112.56 pt）超えて `LayoutOverflowError`**。611.04 pt は用紙の幅 595 pt も超えるので、余白やグリッドの列数を変えても A4 縦の紙面には入らない。行送り 10.8 pt（原本の値）では p30・p34 が 39 局所行（627.12 pt）。
+- 原因: p30・p32・p34 の表は見出し2行と18ケースで、各ケースの行に「係数／値」の2行のセル（例 `1.0S10`／`625.00`）がある。2行のセルは 1 局所行（16.08 pt）に入らない（行送り 8.0 pt で `1.0S10` の添字と次の行の字形が接触してエラー、9.0 pt でも2局所行になる）。よって 2＋18×2 = 38 局所行が下限。原本はこの行を 21.6 pt（局所行の 1.34 倍）で組んでいる。
+- 参考: p36・p37 は原本の列の幅を切り上げると 49 局所列で、本文の 48 行を超える。内容に合わせた列の幅（43・41 局所列）なら収まる。非回転のページ（p1〜29）は、1行の文字を1グリッド行・表の行を内容の行数・図を切り上げた行数として数えた下限が最大 40 行（p14・p24）で、48 行に収まる見込み（実際の組みでは未確認）。
+- 指示どおり、文字を縮める・内容を変える・グリッドを変えるなどの対処はせずに停止した。lead の判断を待つ。
+
+**判断が要る点（候補。どれも未実施）**
+
+- (a) p30〜37 だけ別の用紙の設定（グリッド）にする。原本の回転表の列の幅（29.04〜29.1・43.56・58.08・87.06 pt）は 14.52 pt のほぼ整数倍（2・3・4・6倍）、行の高さ（10.86・21.6・21.54 pt）は 10.8 pt のほぼ整数倍（p36・p37 の見出し行 44.64 pt は 4.13 倍、14.94 pt は 1.38 倍）なので、ページのグリッドを横 10.8・縦 14.52 pt にすると、縦横入替の局所グリッドで原本に近い行の高さ・列の幅をマスの整数倍で組める見込み（組んで確かめてはいない）。方眼Excel ではグリッドが変わる所で別のシートになる（FR-021）。A4.pdf のグリッドとは異なる。
+- (b) 2行のセルを1局所行に入れる: 字形が接触するので不可（上記）。
+- (c) 表を2ページに分ける・文字を縮める: FR-014・FR-023 と不可侵条件に反する。
+
+**確認に使ったもの（scratchpad、リポジトリ外）**: `rotated_probe.py`（原本の列の幅の切り上げ）・`rotated_probe_min.py`（内容に合わせた列の幅）・`rows_needed2.py`（非回転ページの行数の下限）。
+
+**案 (a) の実測（lead の依頼、2026-10-20。fixture・テストは変更せず scratchpad のスクリプトだけ）**
+
+- 決めたページのグリッド（p30〜37 用）: `GridSpec(50.88, 54.598, 10.8, 14.52, 46, 51)`（用紙 595×842 の A4 縦。原点は `CANTILEVER_SOURCE_A4` と同じ。列数・行数は `CANTILEVER_SOURCE_A4` の本文の枠 右 549.36・下 797.638 pt に収まる最大の整数で、右端 547.68・下端 795.118 pt）。縦横入替の局所グリッドは `GridSpec(0, 0, 14.52, 10.8, 51, 46)`（列の幅 14.52 pt・行の高さ 10.8 pt）。
+- 組み方: `Table`＋`CellLines`（MS Mincho 10.0 pt、行送り 10.8 pt＝原本どおり、左右の内側余白 0.5 pt、`padding=0`）、罫線は全辺極細、`split=False`、`QuarterTurn(turns=1)`、添字は `Script(subscript_drop=1.92)`。p30 は見出し「13.2 設計作用の組合せ」（MS Gothic 10 pt の `Paragraph`）を表の上に置く。列の幅は「原本の幅を 14.52 pt で丸めた列数、10.0 pt の内容が入らない列だけ広げる」。行の高さは「原本の高さを 10.8 pt で丸めた行数」で固定（自動の行の高さでも結果は同じ。ただし p36・p37 は1行のケースの行が1局所行になる）。
+- 結果: **全8表が1ページに収まり、エラーなし（字形の接触・罫線との余白・枠の超過のエラーも出ない）**。2行のセル（p30・p32・p34 で101個、p31・p33・p35 で60個、p36 で3個、p37 で5個）は2局所行（21.6 pt＝原本と同じ）に入る。1局所行には入らない（2行で2局所行）。
+
+| ページ | 局所行（紙面の横） 必要/使える | 局所列（紙面の縦） 必要/使える |
+|---|---|---|
+| p30 | 39/46（421.20/496.80 pt） | 48/50（見出しで1行使う） |
+| p31・p33・p35 | 29/46（313.20 pt） | 48/51 |
+| p32・p34 | 39/46（421.20 pt） | 48/51 |
+| p36 | 41/46（442.80 pt） | 50/51 |
+| p37 | 31/46（334.80 pt） | 50/51 |
+
+- 列の幅（局所列）: p30〜35 は (2, 3, 3, 3, 3, 3, 3, 3, 4, 3, 3, 5, 4, 6)、p36・p37 は (2, 2, 2, 3, 2, 2, 2, 2, 4, 2, 4, 4, 4, 5, 4, 6)。原本より広げたのは「性能項目」の列だけ（原本 58.08 pt＝4列 → 5列。「安全性(破壊)」が 10.0 pt で 60 pt になり 4列（58.08 pt）に入らない）。p30〜35 の表の幅 421.20 pt は原本の表の幅（421.2 pt）と同じ。内容に合わせて最小の列数にすると p30 は 44 局所列まで減る。
+- 方眼Excel で2行のセルの各行が別の局所行に載るか（xlsx-map の振り分けの規則）は確かめていない（`_map.py` が未完成のため）。
+
+**A4.pdf のグリッドのまま（16.08×15.48）で入れる別の手段（参考）**
+
+- 試した案: 「係数」と「値」を半角空白をはさんで1行に並べる（行送りは関係しなくなり、表の行は1局所行）。表の高さ（紙面の横）は入るが、表の幅（紙面の縦）が p30・p32 で 52 局所列（804.96 pt）、p31・p33 で 54、p34 で 50、p35 で 51 になり、使える 48 局所列（743.04 pt）を超える。文字の並び（セル内の行）も変わる。
+- そのほかに、行送りを詰めず・表を分けず・文字を縮めずに入れる手段は見つからなかった。用紙を A3 にする・ページの /Rotate・`local_grid` をページのグリッドの縦横入替以外にする、はそれぞれ FR-013・FR-014・FR-027 に反する。
+
+**非回転の p1〜29（A4.pdf のグリッドのまま）**
+
+- `pages/*.json` のグリッド単位の書き方（`builder.build_block` の原本座標を使わない経路: `Paragraph`・`MathBlock`・`EquationGroup`（グリッド列のアンカー）・`Table`（グリッド列・整数行の自動の行の高さ）・`Spacer`・`Columns`/`Stack`・物理寸法の図）を、ページごとに `KeepTogether` にして `CANTILEVER_SOURCE_A4`（31列48行）で組んだ。**29ページすべてが1ページに収まる**。使う行数: p01 38、p02 32、p03 44、p04 20、p05 44、p06 20、p07 42、p08 29、p09 33、p10 28、p11 27、p12 31、p13 39、p14 41、p15 29、p16 44、p17 41、p18 41、p19 37、p20 26、p21 44、p22 44、p23 22、p24 43、p25 42、p26 45、p27 36、p28 35、p29 19（いずれも /48）。
+- まだ見ていないこと: この経路は fixture 独自の部品（`SourceLiteral`・`SourceScript`・`CompactCell`）を使い、式は `term_columns="grid"` ではなく、区切り線は `Figure`＋`Line` のまま。作り直しでこれらを変えたときの行数は確かめていない（最も詰まっているのは p26 の残り 3 行）。
+- スクリプト: `rotated_probe_a.py`（自動の行の高さ）・`rotated_probe_a_rows.py`（原本の行の高さを丸めて固定）・`rotated_probe_side.py`（係数と値を1行に並べる案）・`flat_pages_probe.py`（p1〜29）。
+
+**作り直し（2026-10-20、案 (a)。ユーザー判断）**
+
+進捗:
+
+- ✅ Red（`--label cantilever-red-1`、8 failed）: `tests/integration/test_cantilever_grid_rules.py`（新設）。37ページが1ページずつ組める・ページのグリッド（p1〜29 は A4.pdf のグリッド、p30〜37 は 10.8×14.52）・回転表の `local_grid` が縦横入替のページのグリッド・配置と表のセルの辺がページのグリッドの線上・線は `Table`/`Rule`/`SideRule` の罫線の種類（分数線を除く）・書体は MS Mincho/Gothic、本文は 0.5 pt 刻み、添字はライブラリの `Script`・式の関係記号がグリッドの列の線の上に中心。どれも作り直す前の fixture で実際に失敗（p30〜35 の `原本再現できず`、0.01 pt の `local_grid`、53.52 pt の配置、図の `Line`、独自の添字、式の部分のタグなし）。
+- ✅ Green（`cantilever-green-2`、8 passed）。片持ち梁の関連テスト全体 `cantilever-green-all-1`: **302 passed**。全テスト `cantilever-full-1`: 3435 passed、2 skipped、**2 failed（既知の PNG 正解2件だけ**: `test_cantilever_p01_37_golden.py::test_all_37_pages_match_approved_pixels`・`test_representative_golden.py::test_standard_report_matches_all_approved_golden_pixels`）。
+- ✅ 全37ページが固定ページに収まる（Gate 2 後半）。使う行数: p01 35、p02 33、p03 44、p04 20、p05 44、p06 20、p07 42、p08 29、p09 33、p10 29、p11 29、p12 31、p13 39、p14 41、p15 29、p16 38、p17 35、p18 35、p19 31、p20 22、p21 32、p22 32、p23 22、p24 43、p25 42、p26 45、p27 36、p28 35、p29 19（/48）、p30 48、p31〜35 47、p36・p37 49（/51）。最も詰まっているのは p26 の残り3行と p36・p37 の残り2行。
+- ✅ 保留の解除: `deferred.py` を削除し、`xfail(strict=True)`・`DEFERRED_DIFFERENCES` とその仕組み（`verify_appearance` の `deferred` 引数）を外した。p30〜35 と p36 の9セルを含む全37ページで `verify_pdf`（通常・grid とも 3345 項目）と `verify_appearance` が合格。
+- ⏳ 式の `term_columns="grid"` と方眼Excel の `strict=True` の検査は lead の連絡待ち（指示どおり）。
+
+設計判断（fixture。ライブラリは変更していない）:
+
+- 組み方: 原本の座標の再生（`PageFrame`・0.01 pt の局所グリッド・`SourceCell`・`SourceLiteral`・`SourceScript`・`SourceTableInkFonts`・`continuous_table_rules` など）を廃止し、`pages/*.json` の縦の流れ（Stack・Spacer・Columns）をライブラリの部品で組む。`source-layout.json` は原本の位置をマスの整数倍へ寄せる手掛かりにだけ使う。各ページは `KeepTogether(Stack)`、p30〜37 は `PageSection(CANTILEVER_ROTATED_A4)`。
+- 字下げ: 原本の見出しの段は 53.52＋14.52k pt に並ぶ（k=0〜9 を確認）。最も近い列へ丸めると 140.64 と 155.16 pt が同じ列になり段が消えるため、段 k を k 列の `Indent` にした（違う段は違う列のまま）。p30〜37 は自分のグリッドの最も近い列。
+- 等号・結果・単位: 原本の位置に最も近い列。左辺・ラベル・結果・単位が入らない時だけ右へ（原本より左にはしない）。原本で1行の右辺が1行に入るよう第二等号を右へ広げる（空の右辺も1列取る。0列だとライブラリが結果を次の行へ送る）。同じアンカー・ラベル・字下げで書いた兄弟の式は列を共有する（p3 の桁ごとの行など。原本も揃っている）。
+- 読み順: ライブラリは折り返した式の結果を最終行に置く（`equations.py` の `trailing`）。原本で結果が1行目にある式（p1・p2 の R_B）は1行目と続きの行を別の式（左辺なし・関係記号は空白）に、原本で結果だけが下の行にある式（p9〜11 の水平力4件）は結果を別の式にした。文字と読み順は原本どおり。lead 判断の材料: ライブラリに「結果を1行目に置く」選択肢があれば、この書き換えは要らない。
+- 表: 列の幅・行の高さは原本の累積の境目をマスへ丸め、内容が入らない所だけ広げる（`_grid_spans`。各列を別々に丸めると表が右へ伸びた）。セルは `CellLines`（行送り＝行のピッチ、各行が1グリッド行）、上下の余白は接する罫線の太さ全体、左右は 2.0 pt＋罫線の太さ（0.6 pt では右寄せの数字が罫線に接して見えた）。原稿が原本の見出しの改行をつないでいる2セル（p32・p33「せん断」「力」）は原本の行で組む（文字が違えばエラー）。
+- 区切り線: 計画の「`Rule` へ」は、実物が p16〜20 の式のまとまりを括る**縦線**（10本）なので、縦線の部品 `SideRule`（細、列の境目、括る式より左）にした。`Rule` は本文を横切る横線の部品。lead 確認事項。
+- 添字: ライブラリの `Script`（scale 0.65 で 6.5 pt、下付き 1.92 pt・上付き 2.4 pt は原本の値）。p1 の人工斜体の D は `appearance.Sheared`（`shear_x` だけ変え、原本の 1.68 pt の添字の間隔になるよう送りを 0.68 pt 広げる）。p21・p22 の縦見出しの括弧は `appearance.VerticalGlyph`（`quarter_turns=3`、1字の枠の中央）。どちらも元の Literal のタグを保つ。
+- 混合書体の見出し（p21・p22・p28）: run ごとの Paragraph / MathBlock を `Columns` で並べ、後の run は列の境目から（方眼Excel で別のセルになる）。
+- 丸めは半分を切り上げ（`_nearest`。Python の `round` は偶数への丸め）。
+
+検査の置き換え（`verify.py`・`verify_appearance.py`）:
+
+- 残した原本との比較: 内容・読み順（`verify_source_order`・項目ごとの文字列・添字の役割・向き・ページ・文字の在庫）、書体（書体名・字形の向き・字形の幅＝人工斜体・0.5 pt 刻みの大きさ）。新たに各項目の行の構成（行ごとの字数）も原本と比べる（p21・p22 の Identity-V の括弧のある項目だけ、原本の原点が行から外れるため除く）。
+- 置き換えた検査（新しい決まりどおりか）: 図の位置（原本 ±0.1 pt → 左上がグリッドの交点、物理寸法は原本どおり）、p16〜19 の括り線（原本 ±0.1 pt → `SideRule` の塗りの縦棒2本・罫線の種類の幅・列の線上・括る項目の字形より左・項目の範囲を覆う）、p3〜8 の結果・単位・等号（原本 ±0.1 pt → 列の線上・同じ列から始まる式で共有）、`verify_appearance` の `indent`・`baseline`・`spacing`・`equals`・`table` の原本の位置との比較 → `position`（項目の左上・セルの四辺がグリッドの線上、行の字形の基線が1本、原本の段の順を保つ）・`equals`（trace のアンカーが列の整数倍、描いた関係記号の中心がアンカー上）・`table`（原本に罫線がある辺に罫線、その辺がセルの辺上、太さは原本の 0.12→0.25・0.96→1.0）・`rotation`（回転表の `local_grid` がページのグリッドの縦横入替）。原本どうしの比較（陽性対照）は書体だけ（新しい決まりの検査は出力の trace が要る）。
+- `verify._trace_regions` が `Indent` の `indent_pt` を足すようにした（以前は `PageFrame` が子の位置を trace に書いていた）。lead から連絡のあった `Indent` の入れ子の `indent_pt`（和になる変更）: fixture は各部品を高々1つの `Indent` で包むだけなので影響しない（`builder.py` の `Indent(` は1か所）。
+
+テストの書き換え:
+
+- `test_cantilever_appearance_builder.py`: 旧部品（`PageFrame`・`SourceCell` 等）の単体テストを、新しい部品（字下げの段・アンカー・読み順の分け方・改行の位置・混合書体・括り線・`Sheared`・`VerticalGlyph`・添字）の単体テストへ全面的に置き換えた。
+- `test_cantilever_fixture.py`: `CompactCell` のテストを表のセルの組み方（行送り・余白・境目の丸め・空のセル・回転表の局所グリッド・見出しの改行）のテストへ。あふれのテストは 48 行のページに合わせて 49 行の Spacer に。保留のテストを削除。
+- `test_cantilever_p01_37.py`: 保留の parametrize を外す。原本の位置を陽性対照にしていた等号・括り線の検査のテストを、出力の陽性対照と「原本の位置はグリッドに乗らないので拒否される」陰性対照・ずらし／短縮／幅の変更の陰性対照に置き換えた。
+- `test_cantilever_source_appearance.py`: 新しい区分ごとの合格・陰性対照（書体・基線から外れた演算子・等号のずれ・罫線のずれ・段の順・回転表の局所グリッド・人工斜体・0.5 pt 刻み・罫線の太さ）、原本の書体の陽性対照（37ページ）、括弧の字形の形と位置。原本の位置との比較だけを確かめていたテスト（演算子の横位置）は削除。
+- `test_cantilever_improvements.py`: 旧 adapter を経由した「公開部品での組み直し」の実証を、fixture 自身の表（全セルが1回の丸め・行送り＝行のピッチ）と3ページの公開部品の PDF に置き換えた。
+
+目視（scratchpad の画像。既存の bundle・current.json は変更していない）: p1・p9・p16・p21・p26・p30・p36 の通常と p1・p30 の grid を 1.5 倍で確認。見出しの段・表・式の等号の列・図・括り線・回転表が読める配置で、文字の重なり・はみ出しはない。原本との見た目の差（位置・行の高さ・極細の罫線の太さ）は FR-027 で許した範囲。気づいた点: p1 の表は原本より右へ広い（列の境目を丸めた結果、右端 533 pt。原本 502 pt）。p21・p22 の縦見出しのある表で最後の行だけ高かったのは、結合セルの不足分を丸めた行の高さでなく内容の行数と比べていた不具合で、直した（原本で等しい4行は各2グリッド行。`test_rows_the_original_made_equal_stay_equal_under_a_merged_heading`）。行は1行ずつ丸め（原本で等しい行は等しいまま）、列は累積の境目で丸める。
+
+
+#### grid-terms（Step 6）
+
+担当 grid-terms（サブエージェント）。2026-10-20。編集したのは `src/gridlayoutpdf/equations.py`・`docs/api.md`・`examples/representative_report.py`・`tests/unit/test_equation_grid_terms.py`（新設）と、この節・担当表の行・計画の Step 6 の行だけ。
+
+**決めた API（実装済み）**
+
+- `EquationGroup(..., term_columns="packed")`。値は `"packed"`（既定。今までの pt で詰める並べ方）か `"grid"`。名前の流儀は `TermStop(align=...)`・`BreakHint(mode)` と同じ文字列の選択肢にした。それ以外の値（`"Grid"`・`None`・`True` など）は ValueError。`"grid"` と `term_gap` を一緒に渡すと ValueError（黙って無視しない）。
+- `"grid"`: 各項の列は右辺の開始列（`rhs_start_pt` と同じ整数の列。ブロック左端から数える）から隙間なく続く。列数は「その列の最も広い項（`TermStop.width` があればそれ以上）＋その式の文字サイズでの片側の余白×2」が入る最小の整数。項のない列（幅0）は0列。項は列の左右から余白を除いた範囲に `align` で置く（Excel のセルの文字の置き方に合わせる）。1行に入るかの判定・結果の専用行・退避（fallback）・エラーは `"packed"` と同じ関数で行い、退避した式の配置は `"packed"` の退避とまったく同じ（テストで部品の等価を確認）。
+- metadata（`"grid"` の時だけ、退避していない列揃えの式の各行に追加）: `term_columns_grid` = 各列の `(開始列, 列数, align)`（ブロック左端からの整数の列）、`term_cell_padding_pt` = その式で使った片側の余白。`term_columns_pt`（左端・幅・揃え、pt）はそのまま残す（`"grid"` では列の幅も整数の列）。ページの metadata の配置には `col`（ブロックの左端のページの列）があるので、ページの列は `col + 開始列`。
+- タグ: packed は今までどおり（`equation_part` の `term` に `index` と `data.align`）。grid の時だけ `data` に `columns`（列数）と `cell_padding_pt`（ラウンド1、0列の項は0）、`first_column`（ブロック左端からの開始列、ラウンド2）を足した。`term_columns_grid[index]` でも項の列を引ける。
+
+**Excel のセルの内側の余白（定数）**
+
+- 名前と場所（lead が指定）: `gridlayoutpdf.equations.EXCEL_CELL_PADDING_PT = 2.4`（片側、pt）。lead の依頼で関数 `gridlayoutpdf.equations.excel_cell_padding_pt(size_pt) -> float` も公開した（`EXCEL_CELL_PADDING_PT × max(1, size_pt / 12)`。size_pt は正の有限の数、それ以外は ValueError）。項の列の計算はこの関数を使う。`renderers/xlsx` は import しない。
+- 実測（2026-10-20、Excel 16.0 build 20326、COM で `ExportAsFixedFormat`、拡大率 100%、PyMuPDF で読取り）: 3列を結合したセルに左寄せ・右寄せ・中央寄せで `12.50`・`0.000`・`kN`・`断面` を置き、結合の左右に細の罫線を引いた。左の余白＝最初の字の x0 − 左の罫線の中心、右の余白＝右の罫線の中心 − 最後の字の x1（原点＋送り）。細の罫線は PDF で2本の長方形になるので、1 pt 以内の縁を平均して中心にした。条件は Normal の書体2種（游ゴシック 11・ＭＳ 明朝 10.5）、列の幅（21・30 px）、文字の書体と大きさの組合せ。
+- 結果（pt。Normal の書体と列の幅では変わらない）:
+
+| 文字 | 左の余白 | 右の余白 | 中央寄せのずれ |
+|---|---|---|---|
+| ＭＳ 明朝 8 | 1.77 | 1.41〜1.47 | +0.63〜0.66 |
+| ＭＳ 明朝 9 | 1.89 | 1.53〜1.59 | +0.63〜0.66 |
+| ＭＳ 明朝・ＭＳ ゴシック 10 | 2.01 | 1.65〜1.73 | +0.56〜0.66 |
+| ＭＳ 明朝 10.5 | 2.01 | 1.59 | +0.69 |
+| ＭＳ 明朝 11 | 2.13 | 1.71 | +0.69 |
+| ＭＳ 明朝 12 | 2.25 | 1.83〜1.85 | +0.62〜0.69 |
+| ＭＳ 明朝 14 | 2.49 | 2.13〜2.19 | +0.60〜0.66 |
+| ＭＳ 明朝 16 | 2.73 | 2.37〜2.43 | +0.60〜0.66 |
+| 游明朝 10 | 2.13 | 1.71〜1.77 | +0.61〜0.69 |
+| 游明朝 12 | 2.37 | 1.91〜1.95 | +0.64〜0.69 |
+| 游明朝 14 | 2.61 | 2.15〜2.20 | +0.63〜0.71 |
+
+- 決め方: 余白は文字の大きさとともに約 0.12 pt/pt で増える（ＭＳ 明朝の左は、整数の大きさでは 0.81＋0.12×size に乗る。10.5 pt は 2.01 で外れる）。そのため1つの値では全部の大きさを覆えない。8〜12 pt の最大（游明朝 12 pt の左 2.37）を 0.05 pt 単位で切り上げた 2.4 を定数にし、12 pt を超える文字は大きさに比例させた（14 pt で 2.8 ≥ 2.61、16 pt で 3.2 ≥ 2.73）。左右で同じ値を使う（右の余白は左より小さい）。
+- 根拠に使わなかったもの: 画面の AutoFit の幅は「n 桁 × MDW ＋ 約12 px」（游ゴシック 11: 1〜9桁で 8n+12 px）で、描く時の余白とは別のもの。
+- 測っていないこと: 画面に表示した時の余白。Excel の 100% の画面では 21 px の列が 15.75 pt（印刷では 16.08 pt）なので、文字がセルに比べて約2%大きく見える。DocuWorks など他のプリンターのドライバー。17 pt 以上の文字。
+- 環境の注意: 測った時の Excel のアクティブなプリンターは「家のプリンター (PX-M6711FT Series)」だった。xlsx-core が記録した DocuWorks PDF・DocuWorks Printer とは別のもので、私は設定を変えていない。印刷される 1 px の pt は、このプリンターでは Normal の書体と列の px で変わった（21 px で游ゴシック 11: 0.7657、ＭＳ 明朝 10.5: 0.7543。30 px で 0.7642・0.7562。ＭＳ 明朝 10.5 なら 21 px の列は印刷で 15.84 pt）が、余白の pt は同じだった。**IPAex明朝は Windows に入っていないため、Excel の PDF では MS-Gothic に置き換わった**（Step 8・10 で外観を比べる時に注意）。
+- 測定のスクリプトと JSON はスクラッチパッドで作り、lead が `scripts/xlsx_probe/` に移した（`measure_cell_padding.py`・`measure_cell_padding_sizes.py`・`cell_padding.json`・`cell_padding_sizes.json`）。プリンターは PX-M6711FT Series。
+
+**進捗（RED→GREEN。ログは `.claude/logs/` の同名）**
+
+- ✅ Red `gridterms-red-1`: 38 failed、1 passed（`term_columns` の引数がない TypeError と、`excel_cell_padding_pt` がない AttributeError。正しい理由の失敗）。通ったのは「packed の metadata に grid の鍵がない」の1件で、実装前から成り立つ。
+- ✅ 既定の出力が HEAD と同じ: 実装の前に、HEAD 3e42e18 の `equations.py` で、既定の8つの場面（項の列・最小幅・`term_gap`・空の列・退避・結果の専用行・列のない式・ラベル・分数・強制改行）を組んだ。その命令（`repr` とタグ）と metadata の sha256（`ebd81f7e…`）をテストに固定した（`test_default_output_is_the_same_as_before_grid_term_columns`）。代表例の standard・long の全ページの命令・タグ・ページの metadata の sha256（`513398f7…`、スクラッチパッドのスクリプト）も、実装の後に一致することを確かめた。
+- ✅ Green `gridterms-green-2`（式の単体 4 ファイルで 268 passed）。初回の `gridterms-green-1` では2件が失敗した。原因は実装ではなく、テストに書いた算数の誤り（`X×22` が 9 列に入ることを見落とした）。場面を作り直した。
+- ✅ 代表例の grid 版: `build_report(..., term_columns="grid")`・`write_report(..., term_columns=)`・CLI の `--term-columns {packed,grid}`。既定（`"packed"`）は今と同じオブジェクトを作る。grid 版では、A・S・H の右辺を `TermStop`（数値は right、演算子は center）で区切った。荷重の式は anchors を `(6, 24, 28, 29)` にした（15 列の和を1行に収め、退避を起こさないため。first_equal 6 はラベル「鉛直力の合計」が1行に入る最小。5 にするとラベルが折り返す。ラウンド1の時点の `render_xlsx` ではずらしが 26 件に増えたが、ラウンド2の時点では0件）。断面の式は `(10, 21, 26, 27)` にした（long の結果 7.3811250 を等号のセルから離すため）。H の強制改行は、列揃えの式では無視されるので書いていない。η は lead の指示で grid 版だけ `Root(...)`（√）で書いた（上付きの中の分数はセルのリッチテキストで表せないため）。これらの grid 版の受入テスト（`test_grid_example_*`）の最初の3件は代表例を変えた後に書いたので、Red を経ていない（受入の確認として追加）。`gridterms-green-3` で 43 passed。
+- 簡易の見積り（Step 8 の対応付けではない。スクラッチパッドの `estimate_cells.py`）: 式の部品（lhs・relation・term k・result_relation・result・unit、普通の右辺は最上位の Row の項目ごと）の送りの幅をページのグリッドの列に写し、基線の行と列が重なる部品を数えた。packed の standard は 27 件、grid の standard・long はそれぞれ 8 件で、項の列による重なりは 0 件。残る 8 件は (1) 左辺と等号の 6 件（等号の送りの中心を列の境目に置くので、等号が2列にまたがる）、(2) 分数の分子の中の Row「4.50 × 2.70³」1 件、(3) η の入れ子の「1 + γ」1 件。どれも項の列（FR-025）の外で、Step 8 の対応付けの規則で決まる（lead に SendMessage 済み）。
+
+**Tips**
+
+- 列の数は `validation.whole_units_ceil(max(0, need − TOLERANCE), pitch)` で数える。項の幅と余白の和が k 列ちょうどの時に、浮動小数の誤差で k+1 列にならないようにするため（`TOLERANCE` は共有の 1e-7 pt）。
+- `"grid"` の列の左端は `(右辺の開始列 + 累積の列数) × pitch` で作る。`rhs_start_pt` と同じ式なので、列0の左端は `rhs_start_pt` とビットまで同じ。
+- `_term_rhs` は `"packed"` では余白 0.0 を渡すので、`left + 0.0`・`width − 0.0` は元の値と同じビットになり、既定の出力は変わらない（sha256 で確認）。
+
+**レビュー反映 (2026-10-20, ラウンド1)**
+
+レビュアー5体（python・silent-failure・layout・type-design・general）。重複を統合して HIGH 4・MEDIUM 6・LOW 多数。
+
+- ✅ H（python・layout・general）: 列が範囲の端でちょうど終わる時に、浮動小数の誤差（`a*p + b*p > (a+b)*p`）で退避したり、結果が専用の行へ送られたりした（幅 13・25・26・31・48 列などで再現。30 列では起きていなかった）。→ grid の時だけ整数の列で判定する（`_GridTerms.end` と `limit_column`、結果の行は `rhs_end_column` と比べる）。packed の比較は変えていない（sha256 が一致）。回帰テスト: ピッチ 16.08・15.48・14.52・10.8 × 幅 13〜48 列で右端ちょうど、second 14・18・24・26 で通常域ちょうど、1列はみ出すと退避すること。Red は `gridterms-red-r1b`（境目の誤判定 12 件ほか）、Green は `gridterms-green-r1`。
+- ✅ H（silent-failure・type-design）: Step 8 が項の列の範囲を項の命令からたどれず、送りが k−1 列にしか触れない項の数値が文字列のセルになる。→ grid の時だけ `term` のタグの data に `columns`（列数）と `cell_padding_pt` を足した（packed は `align` だけのまま）。lead に連絡。`docs/architecture.md` の表の更新は lead に依頼した。
+- ✅ H（silent-failure）・M（python・layout・type-design・general）: ブロックの左端がページの列の境目にない置き方（pt の `Indent`、表のセルの padding）では、黙ってページの列から外れる。→ レイアウトの側では、絶対の位置が分からないので検出できない。docs と docstring に、揃う置き方（ページの直下・`Columns`・`At`・`Indent` の pitch の整数倍）と揃わない置き方を書いた。揃う置き方のテストと、pt の Indent ではずれること（文書の制限）のテストを足した。Step 8 で確かめることを lead に勧めた。
+- ✅ H（silent-failure）・M（layout・general）: 代表例の grid 版は書体によっては気づかれずに退避する（IPAexゴシックの "12.50" は 27.8 pt で3列）。→ `write_report`・CLI は grid の時に退避が起きたら ValueError（CLI は `parser.error`）で止まる。`grid_fallbacks(pages)` を追加。テスト: IPAexゴシックで止まること。
+- ⏭→解消 H の一部（silent-failure）: long の grid 版は、作業中の `render_xlsx` で「右端を越える」エラーになった（2026-10-20 のラウンド1の時点）。原因は折り返したラベル（その時点では packed の long でも14件のずらし）で、Step 8 の側の扱いとして lead に連絡した。ラウンド2の時点（2026-10-20 10:28 ごろ、xlsx-map の作業中の版）では、grid の standard・long ともずらし0・図形への切替え0、packed の long はずらし2件。xlsx-map の担当が実装を進めたためと見られる。
+- ✅ M（python・layout・general）: docs の指針が言い過ぎだった（「指定しなくても列に揃う」、ずらしが起きないと読める）。→ lead の指示 (a)〜(c) を含めて書き直した。(a) 等号は境目の右の列、左辺は左の列まで。(b) 上付き・下付きに分数を入れない。(c) TermStop は最上位の右辺だけで、入れ子の Row は1つのセル。あわせて、ラベルの折り返し、退避の見つけ方（`term_fallback`、警告なし）、空でない項は1列以上、単独の `Equation` は packed であること、余白の左右差（Excel の実測より PDF のほうが右寄せ・中央寄せで1 pt 未満ずれる）を書いた。
+- ✅ M（python・general）: 既定の出力の sha256 の固定は壊れやすく、作り直しの手順がない。→ 意図して変えた時の作り直し方と、Step 6 の commit の後に外してよいことをテストの注記に書いた。代表例の HEAD との一致はスクラッチパッドのスクリプトで確かめた。general のレビュアーも、`git archive HEAD` で別に確かめて一致した。
+- ✅ M（type-design）: 余白の出どころが、レイアウトと `render_xlsx(cell_padding_pt=...)` の2か所にある。→ grid の項はタグ・metadata の `cell_padding_pt` を正とすることを lead に勧めた（Step 8 の契約）。レイアウトの側は `_GridTerms.padding` の1か所にまとめた。
+- ✅ M（layout、推測とされた点）: 列幅ちょうどの数値が Excel で「###」になるおそれ。→ COM で実測した。条件は Excel 16.0、A4 のグリッドの列 21 px を 1〜8 列結合したセル、右寄せの数値、ＭＳ 明朝 10 pt、Normal の書体は游ゴシック 11 と ＭＳ 明朝 10.5。結果: 印刷（PDF 書出し、100%）ではちょうど収まる桁数が 1〜8 列のすべてで表示され、1桁増やすと「###」になった（游ゴシックの4列だけは1桁多くても表示）。画面（ズーム 100%、`Range.Text`）では 1〜4 列は表示されたが、5〜8 列では「###」になった。lead の判断で規則は変えず、docs に制限として書いた。Step 10 の COM 検査で、合格対象の全数値セルの画面の表示を lead が確かめる。スクリプトと JSON（`measure_hash_fit.py`・`hash_fit.json`）は lead が `scripts/xlsx_probe/` に移した。この測定のプリンターは DocuWorks PDF（余白の測定の PX-M6711FT とは別）。
+- ✅ M（general）: 計画の Step 6 の行が更新されていなかった。→ 1・2 項目めを ✅ にした。3 項目めは、版を用意したことと、作業中の `render_xlsx` で standard のずらし0件を確かめたことを書き、Step 8 の完成待ちとして未完了のままにした。
+- ✅ L（同ラウンドで対応）: `term_columns` を `Literal["packed", "grid"]`（`TermColumns`）にし、選択肢を `_TERM_COLUMNS` として非公開にした。エラー文を既存の書き方（"term_columns must be packed or grid"）にそろえた。`term_columns` の欄を最後に移した（`__match_args__` の順を保つ）。余白の計算を1か所にまとめた。0 列の項は余白を取らずに列の左端に置く（空の Text が隣の列に出ない）。等価比較・hash のテスト。文字サイズの違う式で「項＋余白」の最大が列数を決めるテスト（10 pt で 2 列、14 pt で 3 列になる組合せ）。metadata の pt と整数の列が完全に一致することのテスト。代表例のテストで A・S・H の列数と揃えを名指しで確かめる。grid 版に上付きの中の分数がないことのテスト。
+- 持ち越し（LOW、lead の判断）: `examples/README.md` に `--term-columns grid` を書く（計画 Step 10 の README の更新）。DESIGN.md の FR-025 の「最も広い項が入る最小の列数」に「＋Excel のセルの余白」を足す（`update_design.py`、lead の担当）。`dataclasses.replace(EquationGroup)` は HEAD のころから使えない（独自の `__init__`）。`_map` の許容差を式の側（`TOLERANCE`）にそろえる（xlsx-map）。`QuarterTurn` の中の grid の余白（上下の余白）は測っていない。
+- 新たな見逃しパターン候補: 整数の列に「ちょうど収まる」ことが普通に起きる設計では、pt の和の比較の誤差が必ず表に出る。grid の判定は整数で行い、pt は表示と metadata のためだけに作る。
+
+**レビュー反映 (2026-10-20, ラウンド2)**
+
+レビュアー4体（silent-failure・python・layout・general）。ラウンド1の修正は全員が正しいと確かめた（silent-failure は負の通常域・幅が整数倍でないブロック・ラベル付き・自動のアンカー・別のピッチで、layout は 11,102 件の総当たりで誤判定0）。新たに HIGH 1・MEDIUM 7（重複を統合）。
+
+- ✅ H（layout）: `Columns` の中の `Indent`、A3 の `Indent` では、子の幅 `n·p − k·p` が `(n−k)·p` より1 ulp 短く、`limit_column` が1列少なくなって、右端ちょうどの行が退避した。→ `limit_column = _floor_column(available_width + TOLERANCE, pitch)`（`Columns` の measure の許容差と同じ考え方）。回帰テスト: `Columns(MathBlock, Indent(group, k·p), col_spans=(3, span))` の (9,2)・(9,5)・(12,7)、A3 の `Indent(44·p)`、1e-6 pt 狭いと退避すること。Red `gridterms-red-r2` → Green `gridterms-green-r2`。
+- ✅ M（silent-failure・python・general）: 代表例の CLI が grid の時、関係のない ValueError（壊れた画像など）まで「--term-columns grid」の誤りとして報告した。→ `GridTermFallbackError(ValueError)`（`block_ids` を持つ）を作り、CLI はそれだけを `parser.error` にする。テスト: 壊れた画像では ValueError がそのまま出ること、退避では終了コード2で stderr に `--term-columns grid` と `load-totals` が出ること。
+- ✅ M（silent-failure）: 項のタグに開始列がなく、Step 8 が命令の範囲から左端を推定した。そのため、項の中に命令のない幅（空の Row など）があると、正しく揃った項が「列の境目から外れた」と記録された。→ grid の時はタグの data に `first_column`（ブロック左端からの開始列）を足した。0列の項の `cell_padding_pt` は 0。lead に連絡する。
+- ✅ M（general）: ラウンド1の反映の塊が xlsx-map の節の下にあった（私が追記した後に xlsx-map が節を足したため）。→ grid-terms の節へ移した。
+- ✅ M（general・python・silent-failure）: 例の docstring の「同梱の書体（複数）に余裕がある」は誤りだった。→ 「既定の IPAex明朝 10 pt に合わせてあり、他の書体（IPAexゴシックなど）では退避して write_report が止まる」に直した。
+- ✅ M（general・python・layout）: docs の余白の記述が、12 pt を超える文字と左寄せのずれを無視していた。→ 「8〜12 pt では左右とも 2.4 pt 以下、どの寄せ方でも1 pt 未満のずれ（左寄せは最大約0.6 pt、右寄せは最大約1 pt）」に直した。
+- ✅ M（general）: 余白と「###」の測定でプリンターが違うのに書いていなかった。→ docs と記録に、余白は PX-M6711FT Series、「###」は DocuWorks PDF と書いた。
+- ✅ M（general）: long の grid 版と first_equal 5 の記述が、今の `render_xlsx` と合わなくなっていた。→ 時点を付けて、最新の結果を書いた（上のラウンド1の ⏭ の項目と、下の追記）。first_equal を 5 にした時のずらし 26 件はラウンド1の時点の値で、ラウンド2の時点では0件（general の確認）。6 にした理由は「ラベルを1行に収める最小の値」に絞る。
+- ✅ L（同ラウンドで対応）: 退避の判定の許容差（`TOLERANCE`）を固定するテスト（+5e-8 pt で2列、+2e-7 pt で3列）。小さい文字の広い項が列数を決めるテスト（「最も広い項＋最大の余白」の誤った実装では3列になる組合せ）。`_term_rhs` の余白を関数の中で作るようにした（引数の取り合わせを減らした）。`grid_fallbacks` の docstring を「最上位の配置だけ」に限った。`TermColumns` を docs に書いた。docs のページの列の求め方を `x_pt / pitch_x`・`indent_pt / pitch_x` にした。右端ちょうどのテストは用紙を広げて skip をなくした。テストの名前を中身に合わせた（`..._take_contiguous_whole_columns`、`..._default_is_packed_...`）。記録の「0.81＋0.12×size にちょうど乗る」は整数の大きさだけ（10.5 pt は 2.01 で外れる）。計画の「実測」を「実測の上限を切り上げた値」に直した。
+- 持ち越し（LOW）: `grid_fallbacks` は `Columns`・`Stack` の中を見ない（今の代表例では起きない。docstring に記載）。`Table(padding=0)` のセルと `QuarterTurn` の中の grid の項が揃うかは確かめていない。
+
+**レビュー反映 (2026-10-20, ラウンド3)**
+
+レビュアー3体（silent-failure・python・layout）。ラウンド2の修正は全員が正しいと確かめた。layout は 3,349 通りの置き方で 63,223 行、python は修正を外した版で回帰テストが落ちること、silent-failure はタグと metadata の照合 4000 件で、それぞれ誤り0。新たに MEDIUM 1・LOW 11（重複を統合すると 9）。
+
+- ✅ M（layout）: `Indent` を入れ子にすると、`indent_pt` が外側の値で上書きされ（`containers.py:206`、担当外）、docs に書いたページの列の求め方が内側の字下げの分だけずれた。文字の位置は正しい。→ docs に「入れ子の `Indent` ではこの求め方を使えず、描画命令の x から求める」と書き、合計を `round()` することも足した。制限を固定するテスト（`test_nested_indents_keep_only_the_outer_indent_pt`）と、ページの直下・`Columns`・`Indent`・`At` で docs の求め方が文字の位置と一致するテストを足した。`Indent` が足し込むように変えるかは lead の判断。→ その後 lead が `containers.py` の `Indent` を「入れ子では合計」に変えた（xlsx-map の節）。それに合わせて docs の制限の記述を消し、テストを `test_nested_indents_give_the_page_column_by_the_documented_rule`（入れ子でも docs の求め方で正しい列になる）に書き換えた。
+- ✅ L（silent-failure）: 結果のある行の通常域の終わりの列も、引き算（`second − second_left − gap`）で1 ulp 短くなりうる（gap 13.08 で再現）。→ grid の時だけ `_floor_column(... + TOLERANCE)` にした。packed は変えていない（sha256 が一致）。テスト `test_rows_ending_exactly_at_a_normal_region_made_by_subtraction_keep_their_result`。修正前の式では列7になる（テストが落ちる）ことを確かめた。
+- ✅ L（同ラウンドで対応）: `_term_rhs` の `normal_end_column` を `int | None` にし、grid で None なら ValueError にした（黙った誤判定を防ぐ）。`GridTermFallbackError` の `block_ids` に既定値 `()` と型注釈を付けた（copy・pickle で作り直せる）。荷重の値の並びを `LOAD_VALUES` の1か所にした（既定の出力の sha256 は一致）。CLI の help で、この例は PDF と JSON だけを書くことを明記した。`_GridTerms.limit_column` の docstring を「右端の境目（終わりを含まない端）」に直した。`Columns` の中の `Indent` が 1e-6 pt 広すぎると退避するテストを足した。
+- 確かめたこと（python）: 作業中の `render_xlsx` で、grid の standard・long はずらし0・図形への切替え0・タグのない命令0で、`strict=True` でも通った。packed は standard 1件・long 2件。
+
+**レビュー反映 (2026-10-20, ラウンド4)**
+
+レビュアー2体（silent-failure・layout）。ラウンド3の修正はどちらも正しいと確かめた。silent-failure は通常域の終わりの列を 8,304 通りで、layout は 706,962 行の総当たりで確かめ、どちらも誤り0。新たに MEDIUM 1・LOW 7。
+
+- ✅ M（layout）: 結果の行のはみ出し側を守るテストがなかった。通常域の終わりの列を +1・許容差 2e-6・ceil に変えても、テストが落ちなかった。→ テストを3つ足した。gap 13.08 で列9で終わる行は結果が専用の行へ移ること。gap を 1e-6 pt 増やすと列8で終わる行も移ること。ピッチ×second の組合せで、1列はみ出すと移ること。通常域の終わりの列を +1 にしたミュータントで確かめた。最初は 10 件中 9 件しか落ちなかった。通ったのは「1e-6 pt 足りない」側のテストで、gap を増やすと右辺の開始列も 3→4 に変わり、別の範囲を試していたため。プローブを同じ gap で測るように直した後は、10 件すべてが落ちる。ファイルは元に戻した（`+ 1` が残っていないことを確かめた）。2e-6・ceil のミュータントは実行していない。
+- ✅ L（同ラウンドで対応）: docs のページの列の求め方に「整数から 1e-6 列以上外れたら揃っていない置き方として扱う」を足した。「経路の各段の part の `indent_pt` と `Columns` の子の `x_pt` を足す」と書き、API の表の `Indent` に「入れ子では合計」を足した。テストの補助関数を docs と同じ求め方（各段の metadata から合計）にし、`Indent(Columns(...))` と `Columns(Indent(...))` の場合を足した。pt の `Indent` が docs の求め方で「揃っていない」と分かることのテストを足した。例外のテストで `copy`・`deepcopy` の後も `block_ids` が残ることを確かめるようにした（pickle はテストの読み込み方では import できない名前になるので使っていない）。CLI の help を「.xlsx は書かない」に直した。
+- 持ち越し（LOW）: grid の式の集まりの中でも、項の列のない行・退避した行の通常域は packed と同じ pt の式（許容差なし）なので、gap 13.08 のような偶然の値では、grid の項の行と結果の置き方が揃わない（silent-failure が再現した。packed から変わっていない挙動で、データは失われない）。packed の判定にも許容差を入れるかは lead の判断（既定の出力が変わりうる）。
+
+**レビュー反映 (2026-10-20, ラウンド5)**
+
+レビュアー1体（silent-failure）。ラウンド4のテストと記録の事実を確かめた。ミュータント +1・2e-6・ceil・`limit_column − 5` は、どれも今のテストで検出される。
+
+- ✅ M: docs に書いた「整数から 1e-6 **列**」の判定が、方眼Excelの対応付け（`_map` の `_TERM_EDGE_TOLERANCE_PT`、1e-6 **pt**）と食い違っていた。`Indent(2·p + 5e-6)` は、docs の判定では揃い、`render_xlsx` では `term_off_grid` になった。→ docs を「差に `pitch_x` を掛けた長さが 1e-6 pt 以上なら揃っていない」に直した（対応付けと同じ判定）。テストの補助関数も同じ判定（`documented_on_page_columns`）にし、境目の両側（5e-7 pt は揃う、2e-6・5e-6 pt は揃わない）のテストを足した。
+- ✅ L（同ラウンドで対応）: ループが空でないことの確認を足した。右辺の開始列が9であることを確かめてから行を作るようにした。docs の求め方と揃う置き方に `Stack` を足した。
+
+**レビュー反映 (2026-10-20, ラウンド6)**
+
+レビュアー1体（silent-failure）。ラウンド5の docs は `_map` の判定・`containers.py` と一致すると確かめた（`Stack`・入れ子の置き方を `map_reports` で試し、`term_off_grid` 0件）。
+
+- ✅ M: docs の判定が方眼Excelの対応付けと同じであることを、実際の対応付けで照らすテストがなかった（ラウンド5と同じ食い違いが再び起きても気付けない）。→ `test_the_documented_alignment_rule_is_in_pt` で、同じ置き方を `map_reports` にも通すようにした。`term_off_grid` が出るのは、docs の判定で揃っていない時だけであることを確かめる。このテストは xlsx-map の作業中の `_map.py` に依存する。
+- ✅ L（同ラウンドで対応）: 境目ちょうど（1e-6 pt）の扱いを `_map`（`> 1e-6` で外れ）にそろえた。docs は「超えれば」、補助関数は `<=` で揃いとした。docs に足した `Stack` の置き方（`Columns(…, Stack(…))`・`Indent(Stack(…))`）をテストに足した。1列はみ出すテストで、退避していないことも確かめるようにした。テストは `gridterms-green-r6` で 123 passed。
+
+**レビュー反映 (2026-10-20, ラウンド7) とループの終了**
+
+レビュアー1体（silent-failure）。CRITICAL・HIGH・MEDIUM は0件。`map_reports` との照合は、`_TERM_EDGE_TOLERANCE_PT` の変更（1e-5・1e-7）、列の単位での比較、開始列の判定を外すこと、葉の `indent_pt` を無視することのどれも捕まえる（ミュータントで確認）。
+
+- ✅ L（同ラウンドで対応）: docs に書いた各置き方（`Columns`・`Stack`・`Indent`・`At` とその入れ子）も `map_reports` に通し、`term_off_grid` が0件であることを確かめるようにした（容器の `indent_pt` を落とすミュータントを捕まえるため）。揃っていない側では `detail` に「not on a page column boundary」が含まれることも確かめる。ラウンド6の記録にテストのラベルと件数を書いた。
+- ループの終了: 7 ラウンド。件数の推移（重複を統合した後）は次のとおり。
+  - ラウンド1: HIGH 4・MEDIUM 6
+  - ラウンド2: HIGH 1・MEDIUM 7
+  - ラウンド3: MEDIUM 1
+  - ラウンド4: MEDIUM 1
+  - ラウンド5: MEDIUM 1
+  - ラウンド6: MEDIUM 1
+  - ラウンド7: 0
+- 残る LOW（lead の判断）: `examples/README.md` の `--term-columns grid`、DESIGN.md の FR-025 の文言、packed の通常域の許容差、`grid_fallbacks` は最上位だけ、`Table(padding=0)`・`QuarterTurn` の中は未確認、5列以上の数値の画面の「###」（Step 10 で lead が確かめる）。
+
+#### xlsx-map（Step 8）
+
+担当 xlsx-map（サブエージェント）。2026-10-20。編集したのは `src/gridlayoutpdf/renderers/xlsx/{__init__,_map}.py`（`_map.py` 新設）、`src/gridlayoutpdf/renderers/xlsx/_model.py`（最小の追加1か所、下記）、`src/gridlayoutpdf/document.py`（`Document.render_xlsx` の追加だけ）、`src/gridlayoutpdf/__init__.py`（公開名）、新設テスト3本、この記録と計画書の Step 8 の行。`_numbers.py` は変更していない。
+
+**進捗（RED→GREEN。ログは `.claude/logs/` の同名）**
+
+- ✅ Red 1: `tests/unit/test_xlsx_map.py`（47件）を先に書き、`_map.py` を `NotImplementedError` の骨組みにして `xlsxmap-red-1` 47 failed（収集エラーでない本物の失敗）→ Green。
+- ✅ Red 2〜5（`xlsxmap-red-2`〜`red-5`）: 分数の分母の押下げ、回転したセルの読む方向へのずらし、上付きの中の分数（`red-3`）、grid の項・ラベルの折り返し・数値の余白の許容差（`red-4` 6 failed）、字形のインクで列を決める（`red-5`）。等号の列の規則と上付きの中の分数は実装と同時にテストを書いたので、分岐を一時的に無効にしてテストが落ちる陰性対照を確かめた。
+- ✅ ImplementationLoop ラウンド1の修正（`xlsxmap-r1-red` 19 failed → `xlsxmap-r1-green` 380 passed、Step 7 の単体テストを含む）。
+- ✅ `tests/integration/test_xlsx_readback.py`（openpyxl、7件）、`tests/integration/test_xlsx_map_excel.py`（Excel COM、9件。Excel がなければ skip と理由、`GRIDLAYOUTPDF_REQUIRE_EXCEL=1` なら失敗。Excel の動かし方は `test_xlsx_excel_core.py` の `_run_excel`・`_EXPORT_PDF` をファイルから読み込んで使う）。Excel 16.0 で `strict=True` の報告書（段落・分数と添字の式・数値・表・Rule・回転・A3 の頁・図・画像・ヘッダー/フッター、3シート）が修復なしで開き、数値・書体・結合・上付き・文字の向き・罫線の太さ・図形の種類・用紙・拡大率 100%・先頭ページ番号・ヘッダー/フッターを読み戻せた。
+
+**印刷の位置の確認（lead 判断 A、2026-10-20）**
+
+- 行高・列幅は行・列ごとに整数 px に振り分ける。各セルは、均等割りの px とその前後のうち、Step 7 の実測の印刷の大きさ（`scripts/xlsx_probe/print_pitch.json` の游ゴシック 11・100%・11〜30 px、`PRINTED_COLUMN_PT`・`PRINTED_ROW_PT`。その外は 21 px の比 列 16.08/21・行 15.48/21）で印刷の境目が PDF に最も近くなるものを選ぶ（誤差が頁の中で積み上がらない。予測の誤差が半マスを超えるグリッドは `XlsxError`）。予測の最大誤差は A4 0 pt、p30〜37 で列 0.36・行 0.24 pt。図形・画像の座標はセルの中の割合のまま、その行・列の累積から計算する。
+- A4 の基準グリッドは計算どおり全列・全行 21 px のまま（単体テストで確認）。代表例の .xlsx の列幅・行高・図形の XML は振り分けの前と同じバイト列（数値セルの判定の変更で styles・sharedStrings だけ変わった）。
+- COM の実測（`test_every_grid_boundary_prints_within_half_a_cell_of_the_pdf`、全境目に極細の罫線を引いた頁を Excel から PDF に書き出し pymupdf で線を読む。値は PDF のグリッドの位置からの絶対のずれで、プリンターの原点のずれ 0.1〜0.8 pt を含む）。Excel の `ActivePrinter` は実行ごとに違う名前を報告した（lead の連絡の「家のプリンター PX-M6711FT」は一度も報告されていない。プリンターの設定は変えていない）。
+  - ラウンド2の振り分け（実測の印刷の大きさで選ぶ）、プリンター「DocuWorks Printer on Ne04:」: A4（16.08 × 15.48 pt、30 × 47）最後の列 +0.90 pt・最後の行 +0.78 pt（全境目の最大 0.90 / 0.78 pt）、p30〜37（10.8 × 14.52 pt、46 × 51）最後の列 +1.26 pt・最後の行 +0.78 pt（最大 1.26 / 1.02 pt）。半マスは A4 8.04 / 7.74 pt、p30〜37 5.4 / 7.26 pt。
+  - ラウンド1の振り分け（21 px の比で丸める）、プリンター「DocuWorks PDF on Ne05:」: A4 最後の列 +0.64・最後の行 +0.52 pt、p30〜37 最後の列 −0.68・最後の行 +1.98 pt（最大 1.16 / 1.98 pt）。
+  - 振り分けの前（等しい 14.25 pt の行）は p30〜37 の最後の行 −24.2 pt（レビュアーの実測）。
+- 改ページで分かれた表: 2頁目の先頭の上罫線が印刷されることを COM で確認（`test_a_table_split_at_a_page_break_prints_its_top_border_on_the_next_page`）。
+
+**代表例（`examples/representative_report.py` を編集せずスクラッチで読み込み、grid-terms の作業途中の版、cell_padding は 2.4×max(1, size/12)）**
+
+| 書体 / variant / term_columns | ずらし | 図形への切替え | 数値を文字列のまま（number_as_text） | タグなし |
+|---|---|---|---|---|
+| IPAex明朝 / standard / grid | 0 | 0 | 2 | 0 |
+| IPAex明朝 / long / grid | 0 | 0 | 2 | 0 |
+| MS Mincho / standard / grid | 0 | 0 | 0 | 0 |
+| MS Mincho / long / grid | 0 | 0 | 0 | 0 |
+| IPAex明朝 / standard / packed | 1（上付きの中の分数） | 1（同） | 2 | 0 |
+| IPAex明朝 / long / packed | 2（同上と `7.3811250` の重なり） | 1 | 3 | 0 |
+| MS Mincho / standard / packed | 2（同上と `β2` の重なり） | 1 | 0 | 0 |
+| MS Mincho / long / packed | 2（同上） | 1 | 1 | 0 |
+
+（ラウンド6の後の値。IPAex明朝の grid 版の文字列のままの2件は、grid の項の `'12.50'` と分数の分子の `'7.381125'`。）
+
+- 片持ち梁の件数は Step 9 の作り直しの後に測る（今の fixture は cantilever 担当が作業中で、単体テストの一部が失敗している。この担当の変更とは無関係）。
+
+**公開 API**
+
+- `render_xlsx(reports, path, fonts=None, *, strict=False, cell_padding_pt=None) -> XlsxResult`（`gridlayoutpdf` と `gridlayoutpdf.renderers.xlsx` から）。`reports` は `(シート名, ScenePage の並び)` の並び。全体を作ってから一時ファイル経由で置き換える。エラーの時はファイルを書かない。
+- `Document.render_xlsx(path, sheet_name, *, strict=False, cell_padding_pt=None) -> XlsxResult`（`layout()` の頁を1つの帳票として書く。ページ送りは変えていない）。
+- `cell_padding_pt` は「文字の大きさ（pt）→ セルの片側の内側の余白（pt）」の関数。`None` は `gridlayoutpdf.equations.excel_cell_padding_pt`（呼ぶたびに読む）。
+- `XlsxResult(path, sheets, shifts, fallbacks, untagged, dropped, numbers_as_text)`（frozen、全部 tuple、ハッシュ可）:
+  - `sheets`: `XlsxSheet(name, report, first_page, last_page, rows, columns, scale)`（頁は帳票の 1 始まりの通し番号、両端を含む。`scale` は印刷の拡大率）。
+  - `shifts`: `XlsxShift(sheet, page, text, from_cell, to_cell, reason)`。セルは 0 始まりの (行, 列)、`from_ref`/`to_ref` で A1 形式。`reason` は `overlap`・`fraction`・`fraction_in_script`（`SHIFT_REASONS`）。
+  - `fallbacks`: `XlsxFallback(sheet, page, kind, detail)`。`kind` は `quarter_turn`・`border_off_grid`・`border_in_merge`・`border_conflict`・`rotated_text`・`fraction_in_script`・`term_off_grid`・`cell_padding_mismatch`（`FALLBACK_KINDS`）。
+  - `numbers_as_text`: kind が `number_as_text` の `XlsxFallback`（strict の対象外、lead 判断 B）。
+  - `untagged`: タグのない命令の (型名, 数) の並び（`dict(result.untagged)`、`untagged_count`）。`dropped`: 大きさのない図形（長さ0の線など）を書かなかった記録。
+  - 記録の型は生成時に値を検査する（未知の reason・kind、負のセル、頁の範囲の逆転は ValueError）。
+- `strict=True` で `shifts` か `fallbacks` が1件でもあれば `XlsxStrictError`（`XlsxError` の派生、`ValueError` の派生。`.shifts`・`.fallbacks`、pickle・copy 可）。常に `XlsxError` になるもの: 右端（回転では上端・下端）を越えるずらし、グリッドの外の文字・図形（2頁目以降の余白の図形を含む）、Excel の上限（16,384 列・1,048,576 行・1シート 1,026 か所の改ページ）、A4・A3 以外の用紙、書式付きの頁の欄、整数でないヘッダー/フッターの大きさ、シート名の規則と重複、モデルが受けない書体名など（頁番号付き）、読めない画像。
+- 内部の入口 `_map.map_reports(reports, fonts, *, strict=False, cell_padding_pt)` は `(Workbook, XlsxResult)`（`path=None`）を返す。
+
+**`_model.py` への最小の追加（理由つき）**
+
+- `Sheet._check_borders`: 改ページ（`row_breaks`）の境目でだけ、上の行の bottom と下の行の top を同じ物理的な辺として2つ持てるようにした（各頁が自分の側を印刷するため。1つだけだと2頁目の先頭の罫線が印刷されなかった、レビュアーの実測）。そのため `_check_row_breaks` を `_check_borders` の前に移した。テスト `test_the_model_accepts_a_bottom_and_a_top_border_only_at_a_page_break`。
+
+**設計判断（実装判断。ユーザー未確認。lead が DESIGN に載せる）**
+
+- 文字片の単位: 構造の単位（段落・表のセルの行・`CellLines` の行・式の部分と項・分数の分子/分母・`MathBlock`）の文字を左から順に1つのセルにまとめ、その単位の分数が間にある所と、原子が半マス以上離れている所で分ける。原子の間が 0.08 em 以上なら空白1つでつなぐ（`Row` の既定の間隔は 0.15 em）。添字・指数は同じセルの上付き・下付きの run で、大きさは記号と同じ（Excel が約2/3に縮める）。添字の添字は1段。空白だけの文字は捨てる（何も描かない）。
+- セルの範囲: 基線のある行（基線がちょうど境目なら上の行）の1行と、字形のインクが触れる全部の列（インクのない文字は送り。境目から 1e-6 マス以内は触れないとみなす）。字の左右の余白（サイドベアリング）で隣の列を取らない（MS Mincho の `β²` の1件の原因）。
+- 式の等号（`relation`・`result_relation`）: PDF では anchor の境目に送りの中心があるので、セルは中心のある列（境目の右の列）から始め、中央寄せ（lead 了承、`docs/api.md` に lead が書く）。
+- grid の項（lead 指示、grid-terms ラウンド2のタグ）: 項の列は「配置の col＋Stack/Columns の子の `x_pt`＋`indent_pt`」で求めたブロックの左端＋タグの `first_column`、列数はタグの `columns`。ブロックの左端が列の境目に乗らない・ページの metadata から分からない（表のセル・図など）・字形が列の外にはみ出す時は `term_off_grid`、タグの `cell_padding_pt` と `cell_padding_pt(size)` が 1e-9 pt を超えて違えば `cell_padding_mismatch`（どちらも strict でエラー、配置と数値の判定はタグの余白で行う）。
+- 寄せ方: 内側から最初に見つかった構造で決める。分子・分母は中央、式の左辺は右、等号は中央、結果は右、単位・ラベル・右辺は左、項は項の `align`、`CellLines`・段落・表のセルはその `align`（`justify` は左）。縦は中央。回転したセルは読む向きの寄せ方を紙面の向きへ直す（+1: 左→下・右→上、−1: 左→上・右→下、横は中央）。
+- 数値セル（lead 判断 B）: Excel の画面はグリフを整数 px で描くので、文字の幅は1字ずつ px に切り上げた和（`screen_width`）で測り、セルの範囲（振り分けた px の幅）が「その幅＋余白×2 − 1e-7 pt」以上なら数値。足りなければ、寄せ方の反対側へ（中央寄せは両側へ1セルずつ同時に。片側が空かなければ広げない）、空いたセルだけに、罫線を越えず・結合の内側に罫線を入れずに広げる。それでも足りなければ文字列のまま `numbers_as_text` に記録（strict の対象外）。書体や上付きが混じって rich text になった数値も記録する。COM で、最も狭い表のセルの数値（MS Mincho 8・10・10.5 pt、IPAex明朝 10 pt、7 種）が `###` にならないことを確かめた（`test_number_cells_never_show_hashes`）。
+- 分数: 分子・分母が同じ行に入る時は分母（とその中の全部）を下げ `reason="fraction"`（内側の分数から）。分数線は分母の一番上の行の上の境目に図形（横は PDF の位置を、分子・分母がずれた列の数の最小だけ右へ）。同じ式の行（`EQUATION_LINE`・`MATH_BLOCK`）の分数の外の文字片はその行の最上行〜最下行に縦結合し上下中央。2行以上に折り返したラベルは各行を縦結合から外し、それぞれの基線の行に置く。
+- 上付き・下付きの中の分数（lead 判断）: 普通の大きさの分子・分母のセルにして `fallbacks` に `fraction_in_script` を1件、分母を下げたら `reason="fraction_in_script"` のずらし。strict ではエラー。基の大きさがないので文字の大きさは 0.5 pt 刻みの最も近い値（12 pt の 0.65 倍 7.8 → 8.0）。
+- 罫線: `BORDER_ROLES` の線（`Rectangle` の括り線は幅と高さの小さい方を太さとして向きを決め、色は塗りの色）で、線の中心が境目から線の太さ以内、両端も境目から線の太さ以内にあるものだけ。継ぎ目の半ストロークの補い（タグの `drawn` が `continuing` で長さが太さ以下）は捨てる。それ以外の、境目から外れた・1マスより短い罫線は図形にして `border_off_grid`。頁の下端の境目は上の行の bottom、それ以外は下の行の top（頁の上端は top、改ページの両側を別に持つ）、右端は左の列の right、それ以外は右の列の left。同じ辺に2本ある時は太い方、同じ太さなら実線、それも同じなら先の方。残した方が他方を覆わない（色が違う、破線が消える）時は `border_conflict`。二重線の2本は1辺。結合した文字片の内側に入る罫線は図形にして `border_in_merge`。
+- 回転: `QuarterTurn` の `local_grid` の `pitch_x` がページの `pitch_y` と、`pitch_y` が `pitch_x` と（相対 1e-9 で）等しい時だけセル（+1 は 90 度、−1 は 270 度）。それ以外はブロックごとに図形のグループにして `quarter_turn`。ずらしは読む向き（+1 は上、−1 は下）。180 度の文字は図形にして `rotated_text`。
+- 図: `Figure` ごとに1つのグループ。`TextBox` は文字入りの四角（角丸を保つ）、`TextDiamond` は文字入りの菱形（行ごとの段落、上下左右中央）、`Label` は枠なしのテキストボックス（`align` を保つ）、矢印・連結線は PDF と同じ線と自由形状（矢じりは開いた折れ線）、利用者の命令はそのまま図形。2点の閉じた自由形状は線。`Image`（`RasterImage`）は画像。PNG・JPEG はそのまま、他の形式は PNG に変換。
+- シートの分け方（lead 判断 C）: 用紙・グリッド・ヘッダー/フッター（雛形・寄せ方・書体・枠の位置と高さ）のどれかが変わる所で次のシート（元に戻っても新しいシート）。
+- ヘッダー・フッター: `{page}`→`&P`、`{pages}`→帳票全体の頁数の数字、先頭ページ番号は各シートの帳票内の通し番号。大きさは整数 pt だけ（Excel の書式の制約）。余白: ヘッダーは装飾の枠の上端の紙の上からの距離、フッターは枠の下端の紙の下からの距離。装飾の文字はセルにしない。
+- ページ設定: 用紙は `paper_for_size`（A4・A3 だけ）、左・上の余白はグリッドの原点。右・下の余白は PDF の値から始め、100% で収まらない時だけ `print_fit` の係数で 100% に収まる値まで小さくする（空白の紙だけなので）。拡大率は `print_fit` の値で、100% 未満なら `fallbacks` に `print_scale`（グリッドが PDF より小さく印刷されるので strict でエラー）。ブックの標準の書体は游ゴシック 11（A4.pdf のグリッドの間隔で印刷される唯一の測った書体）。画面の枠線は表示、印刷はしない。
+- タグのない命令: 利用者の命令と同じに扱い（文字はその命令だけの文字片、線などは図形）、型ごとに数える。頁の配置（`placements` の命令の範囲）に属さない命令（手で作った頁）は1つの配置に属するとみなし、タグの構造で区別する。
+
+**Tips**
+
+- `ScenePage` を手で作るテストでは、別の文字片にしたい命令に別の `Scope` の `index` を付ける（同じタグの列は同じ構造とみなす）。
+- 代表例の確認は `examples/` を `sys.path` に足して `build_report` を呼ぶスクラッチのスクリプトで行った（例のファイルは編集しない）。
+- Excel の `Range.Borders.Item(8)`（上の辺）は値のないセルにも付き、共有の辺も上の辺として報告する（改ページの境目の消失はこれでは見えない）。罫線の印刷は PDF に書き出して pymupdf で確かめる。
+- openpyxl の `paperSize` は文字列で読める（`'9'`）。画面の枠線の既定（表示）は `showGridLines=None`。
+- この環境の Bash のヒアドキュメントでは、中身によって「unexpected EOF」で失敗することがあった（バッククォートを含む文字列）。長いコードは Write ツールでスクラッチに書いてから実行する。
+
+**docs/api.md に書く候補（lead が Step 10 でまとめる）**
+
+- `render_xlsx`・`Document.render_xlsx`・`XlsxResult` と記録の型、strict の意味、常にエラーになる条件（上の「公開 API」）。
+- 方眼Excel の文字片の単位・等号の列・grid の項・分数・上付きの中の分数を避けること・罫線になる線・数値セルになる条件・シートの分け方（上の「設計判断」）。
+
+**未解決・持ち越し**
+
+- 代表例への .xlsx 出力の追加（Step 8 の3項目め）は lead の指示待ち。
+- Excel の `ActivePrinter` の報告（DocuWorks PDF）と lead の連絡（家のプリンター）が食い違っている。確認が取れていない。
+
+**レビュー反映 (2026-10-20, ラウンド 1)**
+
+レビュアー3体（silent-failure、python＋type-design、layout＋計画整合）。集約（重複は高い方へ統合）: CRITICAL 0 / HIGH 6 / MEDIUM 15 / LOW 約20。lead の指示（grid の項・ラベル・MS Mincho、判断 A〜C）もこのラウンドで反映した。
+
+- ✅ H: 改ページで分かれた表の、2頁目の先頭の上罫線が印刷されない（3体）→ 頁の上端・下端の辺を別に持ち、モデルは改ページの境目だけ bottom と top の両方を許す。COM で2頁目の線を確認。
+- ✅ H: グリッドの刻みが 21 px でないと印刷が累積してずれる（片持ち梁 p30〜37 で最後の行 −24 pt）→ 整数 px の振り分け（上の「印刷の位置の確認」）。
+- ✅ H: 余裕ありと判定した数値が Excel の画面で `###`（MS 明朝 8 pt など）→ 1字ずつ px に切り上げた幅で判定、足りなければ空いたセルへ広げ、だめなら `numbers_as_text`。
+- ✅ H: 回転した SideRule の帯（横長の `Rectangle`）が縦線とみなされ消えた → 幅と高さで向きを決める。
+- ✅ H: 半マス未満の罫線（`SideRule(top=8)` など）が記録なしに捨てられた → 捨てるのは継ぎ目の補いだけ、他は `border_off_grid`。
+- ✅ M: SideRule の罫線の色が黒になる → 塗りの色。M: 同じ辺の色・種類の違う罫線が黙って消える → `border_conflict`。M: 罫線の端の位置を黙って丸める → 端も境目から太さ以内。M: 離れた原子を1セルに詰める → 半マス以上離れたら別の文字片。M: 2頁目以降の余白の図形が隣の頁に入る → 頁ごとの範囲で検査。M: 記録の型が値を検査しない・ハッシュできない・`untagged` が外から変わる → 検査と tuple 化。M: `cell_padding_pt` の仮の分岐 → `equations.excel_cell_padding_pt` を直接使う（引数は lead の指示で残す）。M: モデルの素の ValueError（改ページ 1,026 か所超・32 文字の書体名・壊れた画像・シート名）→ `XlsxError`（シートと頁付き）。M: `XlsxStrictError` が pickle・copy できない → `__reduce__`。M: 入れ子の分数で外側の分母が右にずれる → 内側の分数から処理。M: 数値なのに文字列のセルが記録されない → `numbers_as_text`（lead 判断 B）。M: 同じ用紙・グリッドで装飾が変わるとエラー → 次のシート（lead 判断 C）。M: テストの不足（match のない raises、既定の余白の検査が何も確かめていない等）→ 直した。
+- ✅ L（同ラウンドで対応）: 2点の閉じた自由形状を線に、空白だけの文字を捨てる、`QuarterTurn` のタグの `local_grid` 欠けで KeyError にしない、`XlsxSheet.scale`、`cell_ref` の負の値、使っていない import。
+- lead 指示: grid の項は配置の metadata からブロックの左端を求めて `first_column`・`columns` で結合（`term_off_grid`・`cell_padding_mismatch`）、折り返したラベルの各行は縦結合しない、字形のインクで列を決める（MS Mincho の `β²` の1件を解消）。
+- 持ち越し（LOW）: 根号・括弧の図形は中身のセルがずれても動かない（ずらしは記録される）／`Text.shear_x` を捨てる／上付きだけが残ったセルはさらに縮む／`TextBox` の `leading` を写さない／`strict` にタグのない命令を含めない（数えて記録だけ）／`_paper` の比較は GridSpec の完全一致／ヘッダーとフッターの決め事は DESIGN で確認（lead）。
+- 新しい見逃しパターン: 罫線の「同じ物理的な辺は1つ」という正しいモデルの規則が、改ページの境目では印刷の結果（頁ごとに描く）と合わない。画面の読み戻し（COM の `Borders`）では見えず、PDF への書き出しでしか見つからない。
+
+**レビュー反映 (2026-10-20, ラウンド 2)**
+
+レビュアー2体（silent-failure、python＋type-design＋layout）。集約: CRITICAL 0 / HIGH 2 / MEDIUM 6 / LOW 約18。
+
+- ✅ H: 中央寄せの数値が片側だけに広がり、分子が分数線の中心から外れる（記録なし）→ 両側へ1セルずつ同時に、片側が空かなければ広げない。
+- ✅ H: 印刷が 100% に収まらないと黙って縮小される（30 × 50 の A4 で最後の行 −17 pt、レビュアーの COM 実測）→ `print_scale` を記録し strict でエラー。
+- ✅ M: 21 px の比で丸める振り分けは px ごとの印刷の大きさの違いで誤差が積み上がる（p30〜37 で最大 1.7 pt）→ 実測の印刷の大きさで1セルずつ選ぶ（予測の最大誤差 0.36 pt）。
+- ✅ M: 入れ子の Indent で `indent_pt` が外側の値で上書きされ、grid の項の列を1列誤る → lead が containers.py を直した（和になる）。map は変更なし、左寄せ2列以上の項の単体テストを追加。
+- ✅ M: 後半の処理（ヘッダー・分数線・罫線の図形）のモデルの ValueError が素のまま → `XlsxError` に包む（255 文字を超えるヘッダーのテスト）。
+- ✅ M: 数値を広げると、結合の内側に入る罫線が `border_in_merge` に変わり strict のエラーになる → 結合の内側になる辺も調べて広げない。
+- ✅ M: 回転した表の中の上付きの分数が `fraction_in_script` にならない → 記録は回転によらず、分母を下げるのは立っている分数だけ。
+- ✅ M: `###` を出さないことを守る COM のテストがない → `test_number_cells_never_show_hashes`（レビュアーの手元の確認は 4,608 件で 0 件）。
+- ✅ L（同ラウンドで対応）: 分数を含む・離れた原子で分かれた grid の項と回転した grid の項を `term_off_grid` で記録／手で作った頁の metadata の欠けを `XlsxError` に／`dropped`・`untagged` に文字列を渡すとエラー／`dropped` に頁を書く、継ぎ目の補いも `dropped` に載せる／`XlsxStrictError` が記録の型を検査、動いていないずらしはエラー／書体の混じった数値の記録／`FALLBACK_KINDS`・`SHIFT_REASONS` を `renderers.xlsx` から公開／`Document.render_xlsx` の docstring と型注釈／A4 の 21 px の検査を単体テストへ移した／振り分けの単体テスト（px の組・予測の誤差・割合の保存・半マスを超えるグリッドのエラー）。
+- 持ち越し（LOW）: 11〜30 px 以外のセルの印刷の大きさは 21 px の比で予測（測っていない）／余白の負の値を 0 にする（PDF の用紙がグリッドより小さい時）／`map_reports` の引数の誤りは素の ValueError（`XlsxError` は書き出せない内容の時）／`{pages}` は渡した頁の数（帳票の一部だけ渡すと PDF の番号と違う）。
+- lead 判断が要る（情報）: grid の項に分数を入れると、その項は必ず `term_off_grid` になり strict で出せない。代表例の grid 版には今は無い。
+- 陰性対照: `print_scale` の記録と回転した分数の記録は、分岐を一時的に戻すとテストが落ちることを確かめた。他の修正はテストと同時に書いた。
+- 新しい見逃しパターン: 「中央は両側へ」と書いた docstring の処理が、ループの `break` で片側だけになっていた。寄せ方を保つ処理は対称性をテストで縛る。
+
+**レビュー反映 (2026-10-20, ラウンド 3)**
+
+レビュアー2体（silent-failure、python＋type-design＋layout）。集約: CRITICAL 0 / HIGH 0 / MEDIUM 5 / LOW 約13。ラウンド2の修正に誤りは見つからなかった（予測の最大誤差は 0.5〜30 pt の刻みで 0.42 pt、回転したセルの広げ方6通り、図形の印刷位置 −0.10〜+0.63 pt をレビュアーが確認）。
+
+- ✅ M: 二重線と細・中・太の罫線が同じ辺に来ると、どちらかが記録なしに消える（太さだけで比べ、二重線の中の隙間を「覆う」とみなしていた）→ 1本の実線が細い1本の実線を覆う時だけ覆うとみなし、他は `border_conflict`（二重線の2本は1件にまとめる）。
+- ✅ M: grid の項の数値が、Excel の画面の幅で足りないと項の列を越えて広がる（記録なし）→ grid の項は広げない（足りなければ `numbers_as_text`）。
+- ✅ M: 分数だけの grid の項が `term_off_grid` にならない → 文字片の単位の外側に grid の項があれば記録（項ごとに1件）。
+- ✅ M: 回転したセルを広げる処理がテストで縛られていない → +1・−1 × 左・中央・右の6通りの結合の行と `v_align`、罫線で止まることのテスト。
+- ✅ M: 分数の処理が文字片の数×分数の数に比例して遅い（80頁で 12 秒）→ 分数ごとの文字片の索引を1度だけ作る（600 の分数で 0.4 秒）。
+- ✅ L（同ラウンドで対応）: 手で作った頁の metadata の型の誤り（IndexError・TypeError・AttributeError）も `XlsxError`／記録の順が PYTHONHASHSEED で変わる → 文字片を読んだ順で並べる（別プロセスで3つのシードのテスト）／添字の付いた数字を `number_as_text` にしない／`XlsxStrictError` の文面を「fallback(s)」に、`number_as_text` を受けない／`XlsxResult` の `untagged`・`dropped` の型の検査／未知の項の `align` は左／COM の境目のテストに「最初の境目から 1 pt 以内」（累積の誤差の戻りを捕まえる）／`###` の COM テストに中央寄せ（両側へ広げる）を追加／振り分けたグリッドで分数線と結合の内側の罫線の図形が境目に乗るテスト、分母が下端を越えるエラー・菱形・円・種類のない罫線・斜めの罫線のテスト。
+- 持ち越し（LOW）: `FALLBACK_KINDS`・`SHIFT_REASONS` は `gridlayoutpdf.renderers.xlsx` だけから公開（最上位にするかは Step 10 の docs/api.md で lead が決める）／`build()` が捕まえる KeyError などは metadata の誤りとして報告される（実装の誤りも同じ文面になりうる。元の例外は `__cause__` に残る）／`block_left` は `children` を持つ最初の part を使う（1配置に複数ある例は作れなかった、未確認）／複数行の `PageDecoration` は Excel では1行のヘッダー（未確認）。
+- lead への情報（判断が要る）: grid の項の列数は PDF の送り幅＋余白で決まり、Excel の画面の字ごとの px の切り上げを含まないので、grid の項の数値が文字列のまま残ることがある（代表例 IPAex明朝の grid 版の `'12.50'`。もう1件は分数の分子の `'7.381125'`）。grid-terms の列数の計算に字ごとの px の切り上げを含めるかを DESIGN の未決定事項に入れることを勧める。
+- 新しい見逃しパターン: 罫線の優劣を「太さ」1つの数で比べると、形の違う線（二重線の隙間、破線）が覆われたとみなされて消える。覆うかどうかは線の形で決める。
+
+**レビュー反映 (2026-10-20, ラウンド 4)**
+
+レビュアー1体（silent-failure＋python＋layout、ラウンド3の修正の検証。陰性対照のプラグインでテストが修正を縛るかも確かめた）。CRITICAL 0 / HIGH 1 / MEDIUM 1 / LOW 5。ラウンド3の修正は狙いどおり（覆う判定・grid の項を広げない・分数の索引の順序・未知の align）。
+
+- ✅ H: 分数の鍵に頁が入っておらず、1シートの2頁に同じ構造（同じ配置番号・同じタグの列）の分数があると頁をまたいで混ざり、分母が7行下がる・分数線が他の頁の行に引かれる・正しい文書が XlsxError になる（`fraction_in_script` も1件にまとまる）→ 分数と分数線の鍵に頁を入れた（Red: `xlsxmap-r4-red` 5 failed → `xlsxmap-r4-green` 161 passed）。ラウンド3の前からあったかは確認が取れていない。
+- ✅ M: 添字の付いた数字のテストが何も縛っていない（空白入りの文字で数値にならなかった）→ `Script("10", superscript="3")`・`Script("2.5", subscript="1")` に変えた。
+- ✅ L: `border_conflict` のまとめ方が広すぎ、別の線の負けが記録されない → 線ごと（二重線の2本はタグの `stroke` で1本）に記録／色を書き出す 8 bit の値で比べる（浮動小数の誤差で衝突にしない）／grid の項の `number_as_text` の文面を「grid の項の列（広げない）」に／grid の項を広げないテストで「文字列のまま・記録1件」を要求／太い実線が細い実線を覆う時に記録が出ないことを単体テストで縛る。
+- 確認: 代表例の8通りの件数は変わらない（grid 版はずらし0・fallback 0）、COM 9 件合格。
+- 新しい見逃しパターン: 「配置の中で一意」なタグの鍵を、頁をまたぐ索引（シート全体）に使うと、頁ごとに 0 から数える配置番号が衝突する。シート全体の索引の鍵には必ず頁を入れる。
+
+**レビュー反映 (2026-10-20, ラウンド 5)**
+
+レビュアー1体（silent-failure＋python、ラウンド4の修正の検証。`src` を複製して1か所ずつ壊す陰性対照で、テストが修正を縛るかを確かめた）。CRITICAL 0 / HIGH 0 / MEDIUM 1 / LOW 2。ラウンド4の修正に誤りはなく、シート全体の索引8つはすべて頁を鍵に含んでいた。
+
+- ✅ M: 入れ子の分数を内側から処理する並び順がテストで縛られていない（鍵の位置での取り出し `key[2]` を取り違えても全テストが通った）→ 分数の鍵を `_FractionKey(page, place, path)`（NamedTuple）にして名前で参照し、入れ子の3つが同じ行に入る手作りの頁と 4 pt の入れ子の分数のテストを追加。
+- ✅ L: 頁を鍵に含む `equation_rows`・`split_terms` の索引がテストで縛られていない → 2頁に同じ構造の式の行・分数を含む grid の項を置くテストを追加。
+- ✅ L: タグの `stroke` を罫線の種類と照合していない（一重の線の `stroke=1` で別の線と同じ扱い）→ `0 ≤ stroke < 線の本数` かつ `index − stroke ≥ 0` の時だけ同じ線とみなす。
+- 陰性対照（この担当が実施）: 並び順・`equation_rows` の頁・`split_terms` の頁・`stroke` の照合をそれぞれ壊すと、追加したテストが 2・1・1・1 件落ち、戻すと全件合格（`xlsxmap-r5-green`）。
+
+**レビュー反映 (2026-10-20, ラウンド 6) とループの終了**
+
+レビュアー1体（silent-failure＋python、ラウンド5の修正の検証。14 通りの陰性対照のうち 11 通りで追加したテストが落ち、生き残った3通りは下の L）。CRITICAL 0 / HIGH 0 / MEDIUM 0 / LOW 3。
+
+- ✅ L: `stroke` の下限・bool の除外をテストが縛っていない → `stroke` が -1・True の場合をテストに追加。
+- ✅ L: 分数の範囲を持たない分数線のタグ（手で作った頁）が記録なしに PDF の位置の図形になる → 頁番号付きの `XlsxError`。
+- ✅ L: 型注釈（`dict[_FractionKey, int]` など）と、`stroke` の照合を辺のループの外へ。
+- 確認（`xlsxmap-r6-green`）: 単体＋読み戻し 169 passed。
+
+**完了（ImplementationLoop）**
+
+- 全ラウンド数 6。指摘の推移（CRITICAL / HIGH / MEDIUM）: ラウンド1 0/6/15 → 2 0/2/6 → 3 0/0/5 → 4 0/1/1 → 5 0/0/1 → 6 0/0/0。
+- 最終確認: 単体＋openpyxl の読み戻し 169 passed（`xlsxmap-r6-green`）、Excel COM 9 passed（`test_xlsx_map_excel.py`）、`_map.py` の coverage 96%（`COVERAGE_FILE=.claude/logs/.coverage-xlsxmap`、ラウンド3の時点）。全テスト `xlsxmap-full`（ラウンド3の後）: 3488 passed・2 skipped・2 failed。失敗は既知の2件（`tests/visual/test_cantilever_p01_37_golden.py::test_all_37_pages_match_approved_pixels`、`tests/visual/test_representative_golden.py::test_standard_report_matches_all_approved_golden_pixels`、Step 10 で作り直す PNG 正解）、skip は `test_xlsx_excel_core.py` の DocuWorks PDF の最悪条件の2件（アクティブなプリンターが DocuWorks Printer）。xfailed は 0 件（片持ち梁の保留を cantilever 担当が作業中のため。この担当の変更とは無関係）。
+- ラウンドの途中で、片持ち梁の単体テスト（`test_cantilever_appearance_builder.py`・`test_cantilever_fixture.py`）が cantilever 担当の fixture の作業途中で失敗していた時があった（`tests/fixtures/cantilever_p01_37/**` の変更による。この担当は触っていない）。
+- 最後の全テスト `xlsxmap-full-final`（ラウンド6の後）: 3536 passed・2 skipped・10 failed。既知の PNG 正解の2件のほか、片持ち梁の統合テスト8件（`test_cantilever_p01_37.py::test_appearance_and_grid_rules_hold_on_all_37_pages`、`test_cantilever_source_appearance.py` の7件。内容は `p09-forces` の source line structure など）は cantilever 担当が作業中の `tests/fixtures/cantilever_p01_37/**` と片持ち梁のテストの変更によるもので、これらのテストと fixture は方眼Excel の写像を import しない（grep で確認）。

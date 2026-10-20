@@ -1,5 +1,6 @@
 """Immutable report documents and bounded grid-row pagination."""
 
+from collections.abc import Callable
 from dataclasses import KW_ONLY, dataclass, replace
 from pathlib import Path
 from string import Formatter
@@ -13,6 +14,7 @@ from .layout import (
 )
 from .profiles import A4_PORTRAIT_REFERENCE, PageProfile
 from .renderers.reportlab import render_pdf
+from .renderers.xlsx import XlsxResult, render_xlsx
 from .scene import ScenePage
 from .semantics import Kind, Scope, within
 from .styles import ReportStyle, TextStyle
@@ -97,6 +99,20 @@ class Document:
         destination = Path(path)
         render_pdf(pages, destination, self.fonts, debug_grid=debug_grid, invariant=invariant)
         return destination
+
+    def render_xlsx(self, path: str | Path, sheet_name: str, *, strict: bool = False,
+                    cell_padding_pt: Callable[[float], float] | None = None) -> XlsxResult:
+        """Layout completely, then write the pages as a grid Excel workbook (FR-021).
+
+        The pages are those of ``layout()``; ``sheet_name`` names the first
+        sheet (``_2``, ``_3`` ... follow where the paper, the grid or the
+        header and footer change). See ``renderers.xlsx.render_xlsx``.
+        """
+        pages = self.layout()
+        if not pages:
+            raise LayoutError("cannot render an empty Document")
+        return render_xlsx([(sheet_name, pages)], path, self.fonts, strict=strict,
+                           cell_padding_pt=cell_padding_pt)
 
 
 @dataclass(frozen=True, slots=True)

@@ -21,6 +21,9 @@ from .profiles import (
     A3_LANDSCAPE_REFERENCE, A4_PORTRAIT_REFERENCE, PageProfile, derived_profile,
 )
 from .renderers.reportlab import render_pdf
+from .renderers.xlsx import (
+    XlsxError, XlsxFallback, XlsxResult, XlsxSheet, XlsxShift, XlsxStrictError, render_xlsx,
+)
 from .rotation import QuarterTurn
 from .scene import Circle, Color, Command, Line, Polyline, RasterImage, Rectangle, ScenePage, Text
 from .styles import Insets, ReportStyle, TextStyle
@@ -41,4 +44,5 @@ __all__ = [
     "wrap_math", "TextLine", "wrap_text", "fit_tracking",
     "Color", "Command", "Text", "Line", "Polyline", "Rectangle", "Circle", "RasterImage", "ScenePage",
     "command_bounds", "render_pdf", "layout_trace",
+    "render_xlsx", "XlsxResult", "XlsxSheet", "XlsxShift", "XlsxFallback", "XlsxError", "XlsxStrictError",
 ]
