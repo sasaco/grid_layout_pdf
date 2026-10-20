@@ -14,7 +14,7 @@
 | 3 | tags | Step 5 | `scene.py`・`math.py`・`equations.py`・`tables.py`・`cell_content.py`・`figures.py`・`blocks.py`・`rotation.py`・`document.py`・`diagnostics.py`・`semantics.py`（新設） | ✅ 完了（commit 待ち） |
 | 4 | grid-terms | Step 6（FR-025） | `equations.py`・`docs/api.md` の指針・`examples/representative_report.py`（grid 版）・`tests/unit/test_equation_grid_terms.py` | ✅ 完了（ImplementationLoop 7 ラウンドで MEDIUM 以上 0、commit 待ち。Step 6 の3項目めは Step 8 の完成待ち） |
 | 5 | xlsx-map | Step 8（FR-021） | `renderers/xlsx/{__init__,_map,_numbers}.py`・`document.py`（`render_xlsx`） | ✅ 完了（commit 待ち。ImplementationLoop 6 ラウンドで MEDIUM 以上 0。比較の修正 C1〜C4、A3 のフッターの修正 F1〜F2 で MEDIUM 以上 0。A3 のフッターの件に限り `_units.py` も編集） |
-| 5 | cantilever | Step 9（FR-027） | `tests/fixtures/cantilever_p01_37/**`・片持ち梁のテスト | 進行中（37ページの作り直し・項の列・strict・回転表の行の条件（lead の判断 (a)）まで済み。レビューのラウンド5中） |
+| 5 | cantilever | Step 9（FR-027） | `tests/fixtures/cantilever_p01_37/**`・片持ち梁のテスト | 完了（37ページの作り直し・項の列・strict・回転表の行の条件（lead の判断 (a)）。レビューは5ラウンドで MEDIUM 以上 0。lead 確認事項は節の末尾） |
 | 6 | lead | Step 10 受入と文書 | 文書・PNG 正解・最終検証 | 未着手 |
 
 ### 基準（Step 1）
@@ -477,7 +477,7 @@ silent-failure のレビューは完了。python・type-design のレビュー�
 
 #### cantilever（Step 9）
 
-担当 cantilever（サブエージェント）。2026-10-20。状態: **作り直し済み・レビュー中（ラウンド4の反映と lead の判断 (a) の反映済み。ラウンド5の silent-failure レビュー中）**（2026-10-20 ユーザーが案 (a) を選んで再開。式の `term_columns="grid"`・方眼Excel の strict 検査も済み）。下の「あふれの確認」「案 (a) の実測」は再開前の記録。
+担当 cantilever（サブエージェント）。2026-10-20。状態: **完了（ImplementationLoop ラウンド5で MEDIUM 以上 0。lead の判断 (a) まで反映。commit は lead）**（2026-10-20 ユーザーが案 (a) を選んで再開。式の `term_columns="grid"`・方眼Excel の strict 検査も済み）。下の「あふれの確認」「案 (a) の実測」は再開前の記録。
 
 **あふれの確認（Gate 2 後半の事前確認）**
 
@@ -671,6 +671,27 @@ silent-failure のレビューは完了。python・type-design のレビュー�
 - 検査: `test_each_line_of_a_multi_line_cell_keeps_its_glyphs_inside_one_local_row`（複数行のセル 682 の各行の字が1つのローカルの行の中・連続した行、1行だけのセル 2322 の字がセルの中）、`test_one_line_cells_stay_centred_and_multi_line_cells_are_set_row_by_row`（行の置き方を使うのは複数行のセル 682 だけ。前の「上の行に入る」件数の固定は外した）。外観の `table` は、1行だけのセルはセルの上下の余白の間の中央（±0.01 pt）とセルの中、複数行のセルは `_top_aligned_rules`。1行だけのセルを上寄せにすると・複数行のセルを中央寄せにするとエラー。
 - 結果: 37ページの `verify_pdf` 3345 項目と外観 0 件、`render_xlsx(strict=True)` 合格（ずらし 0・図形への切替え 0・タグなし 0・数値のまま書けない数値 p2 の7件）。片持ち梁の関連テストは `cantilever-a-green-1`（2件は検査の件数の数え方と陰性対照のページの選び方の誤りで、直して `cantilever-a-green-2` で合格）。
 - `scripts/compare_xlsx_pdf.py --example cantilever --out <scratchpad>/compare-cantilever`（compare 担当の作成中のスクリプト。編集していない）: 終了コード 1。checks は `positions` だけ False（`opens_without_repair`・`readback`・`strict`・`no_hashes`・`page_count`・`page_size`・`no_extra_text` は True）。文字片 5418 のうち一致 5418・見つからない 0・**範囲外 1**（p15 の見出し「a)使用時の照査における…」、セル F677。失敗は `clipped`：Excel の印刷で最後の字が切れる。方眼Excel の `texts_clipped` の2件の1つで、Excel の字幅が PDF より広いため。位置のずれは dx 2.57 pt・dy 0.56 pt で許容内）。最大のずれは dx 12.72 pt・dy 8.122 pt、紙の軸で測った場合の範囲外は 6。Excel 16.0 build 20326、プリンターは DocuWorks Printer。
+
+**レビュー反映 (2026-10-20, ラウンド 5)**
+
+レビュアー1体（silent-failure＋python。layout の変更は lead の判断 (a) だけで、その確認は silent-failure の実験と目視で行った）。集約: CRITICAL 0 / HIGH 0 / **MEDIUM 0** / LOW 7。ImplementationLoop はここで終える。
+
+- レビュアーの実測: 37ページの table・equals の規則は誤り 0。件数の等式は trace の数え方と一致した（`cell_centre` 3004、`cell_room` 682、`cell_rows` 1398、`cell_turned` 8、`lhs_gap`＝`lhs_group`＝282）。builder の `_row_placement` を差し替えて試した結果、変えたセルと落ちたセルは1対1だった（1行下 20/20、1行上 4/4、余裕の端 607/607）。回した括弧は ±2・±0.3・0.05 pt のどれでも落ちた。monkeypatch がほかのテストへ漏れる経路はない。
+- ✅ L（同ラウンドで対応）:
+  - 同じ列の表の結合セルを、表の順によらない順で足す（`sorted`）。単体テストを追加。
+  - 置き方を変えたセルの件数を `== 6` で固定。
+  - 回した字の em の中心は、同じセルの全角の行の中心がそろっていて、かつその値と一致することを必須に。
+  - 行の番号の欠けを `cell line missing` にする。
+  - `_ALIGNED_PT` の比較を `<=` にした。docstring も直した。
+  - 検査と builder の定数（罫線の余裕・セルの余白・そろえの距離）が同じであることのテストを追加。
+  - p36 に添字がないことを `== set()` で明示。
+  - 使われなくなった文言を消した。
+  - `_row_placement` の単体テストに2行のセルの場合（同点は上、罫線で1行下）を追加。
+- 確認が取れていないこと（レビュアー）: `_with_subscript_drop` が知らない型の部品の中の添字を見落とす経路。今の37ページには該当する部品がない。
+
+テスト:
+- 片持ち梁の関連 `cantilever-r5-green-1`: **385 passed**。
+- 全テスト `cantilever-full-6`（LOW の修正の前）: 3832 passed・2 skipped・**2 failed（既知の PNG 正解2件だけ）**。最後の全テストは `cantilever-full-7`（下の報告に結果）。
 
 **lead 確認事項（cantilever、未決）**
 - 区切り線を `Rule` でなく `SideRule` にした（DESIGN FR-026・計画の文言は「Rule へ」。ラウンド1）。
@@ -1234,3 +1255,21 @@ lead の許可で、この件に限り `_units.py` を編集した（`_sheet.py`
 - 陰性対照（この担当が実施、`compare_xlsx_pdf.py` の写しを1か所ずつ壊す）: CLIP_ZOOM 4・CLIP_LEVEL 200・positions から clipped_out を外す・最初の内容ストリームだけ処理する・フォームを処理しない・/BBox を広げない・開けない時の未検査を False にする、の7通りすべてで単体テストが落ちた（壊す前は全件合格）。
 - ✅ L（同ラウンドで対応）: `TEXT_FLAGS` の注記の原因（TEXT_CLIP の bit。この bit で切り抜きの外の字が取り出されないことを確かめるテスト）、同じ字が続く時の clipped_out の照合のテスト、ClipLoss の作成失敗で PDF を閉じるテスト、Excel が開けなかった時は調べなかった検査を null・`checks_complete: false` に、docstring に clipped と clipped_out を記載、`_summary` の欠けた欄を黙って 0 にしない、照合の鍵を tuple に、空行、面積のない字の箱は ValueError（切れていないとみなさない）。
 - 持ち越し（LOW）: clipped_out の字の箱に丸ごと覆われる字は自分の切れを判定できない（その頁は clipped_out で必ず不合格になるので合否は変わらない）／字の箱の外の差は見ていない（実出力では 0）。
+
+**レビュー反映 (2026-10-20, ラウンド 6) とループの終了**
+
+レビュアー1体（silent-failure＋python、ラウンド5の修正の確認。陰性対照 9 通り中 8 通りでテストが落ちた）。CRITICAL 0 / HIGH 0 / MEDIUM 0 / LOW 5。3つの実出力の Excel の PDF に面積のない字の箱・頁の外にかかる字の箱はなかった（49,088 字）。LOW はすべて同ラウンドで直した（Red `compare-r6-red` 3 failed → `compare-r6-green` 単体 160 passed）: `verdict` は調べていない検査（None）を不合格にすること（テスト）、Excel の結果を受けた直後に全検査を None で作り、決まったものから上書き（内部エラーの時も未実施は null）、面積のない字の箱の ValueError に字と頁、頁の外にかかる字の箱は clipped（紙で切れる。描画は頁で止まるので測れない）、終了コード 1 と null の意味を docstring に。
+
+**完了（ImplementationLoop）**
+
+- 全ラウンド数 6。指摘の推移（CRITICAL / HIGH / MEDIUM）: ラウンド1 1/3/12 → 2 0/2/8 → 3 0/1/3 → 4 0/1/3 → 5 0/0/3 → 6 0/0/0。
+- 最終確認: 単体 160 passed（`compare-r6-green`）、Excel 統合 5 passed（`compare-final-excel`）。全テスト `compare-full-final`: 3836 passed・2 skipped・2 failed。失敗は既知の PNG 正解の2件（`tests/visual/test_cantilever_p01_37_golden.py::test_all_37_pages_match_approved_pixels`、`tests/visual/test_representative_golden.py::test_standard_report_matches_all_approved_golden_pixels`、Step 10 で作り直す）。skip は `test_xlsx_excel_core.py` の DocuWorks PDF の最悪条件の2件。途中の `compare-full`（ラウンド1の前）の 9 failed のうち7件は cantilever 担当の作業途中の `test_cantilever_p01_37.py` で、最終では合格している。
+- 最終の実行（2026-10-20、xlsx-map 担当の修正の途中の写像、Excel 16.0 build 20326、プリンター「DocuWorks Printer on Ne04:」、`--strict`）:
+
+| 対象 | 修復なし・読み戻し・strict・###・頁数・用紙・余った字 | 頁（ライブラリ / Excel） | standard の片 / はみ出し / 見つからない | fr021_vertical_merge の片 / はみ出し（範囲の中央からの最大のずれ） | standard の最大のずれ dx / dy (pt) | 終了コード |
+|---|---|---|---|---|---|---|
+| 代表例 grid standard | すべて合格 | 5 / 5 | 364 / 5 / 0 | 18 / 0（2.527 pt） | 10.024 / 8.516 | 1 |
+| 代表例 grid long | すべて合格 | 6 / 6 | 414 / 12 / 0 | 20 / 0（2.527 pt） | 10.024 / 8.516 | 1 |
+| 片持ち梁 p1〜37 | すべて合格 | 37 / 37 | 5418 / 1 / 0 | 0 / 0 | 12.72 / 8.122 | 1 |
+
+  はみ出しの内訳: 代表例 standard は段落の行の末尾の字が Excel の切り抜きで切れる 3（p1 の2行、p5 の1行）と、分子の上付き「3」（L53、dy 8.282 pt）・内側の分母「2」（M58、dy 8.516 pt）の2。long は末尾の字が切れる 10 と同じ2。片持ち梁は p15 の結合した段落の末尾「査」が切れる 1。どの対象も clipped_out・見つからない・余った字は 0、数値セルの ### と空の表示は 0。出力は `build/reports/xlsx-compare/{representative-standard,representative-long,cantilever}/`（`result.json`・`library.pdf`・`workbook.xlsx`・`excel/sheet-NN.pdf`・`side-by-side/page-NN.png`）。xlsx-map 担当の修正の後に lead の指示で再実行する。
