@@ -139,6 +139,74 @@ MEASURED_CELL_PIXELS = tuple(range(11, 31))  # cell sizes measured in print_pitc
 PRINT_MEASURED_FONTS = (("游ゴシック", 11.0), ("ＭＳ 明朝", 10.5))
 
 
+# At 100 % alone the printed size of each measured cell size is used instead of
+# the band factor (the band's 1.04 is 12 px at 93 %; a 21 px column prints only
+# 1.0209 times its size at 100 %), so that the right and bottom margins, with which
+# Excel aligns its header and footer sections, shrink as little as possible.
+# FULL_SCALE_PRINTED_PT is (columns, rows): pt printed at 100 % per 11-30 px,
+# the mean pitch of 6 cells in print_pitch.json ("DocuWorks Printer").
+# A print area holds a page's cells at 100 % when it is FULL_SCALE_MARGIN times
+# their printed sizes plus FULL_SCALE_ROOM_PT: Excel 16.0 with "DocuWorks Printer"
+# and 游ゴシック 11 needed beyond the printed sizes at most 4.0 pt for 2-10 columns
+# or rows of 12 and 21 px (more than 3.0 pt for some), 3.0 pt for 20 and 30 cells, 2.0 pt
+# for the A4 reference grid's 30 columns and 1.3 pt for the A3 one's 67; at this
+# rule's edge 2 and 20 columns or rows of 12, 21 and 30 px print on one paper
+# with both measured fonts (tests/integration/test_xlsx_map_excel.py). With
+# "DocuWorks PDF" only 21 px columns were seen printing at the same 16.08 pt pitch
+# at 100 %; its room and other sizes were not measured.
+FULL_SCALE_PRINTED_PT = {
+    ("游ゴシック", 11.0): (
+        {11: 8.4, 12: 9.24, 13: 9.96, 14: 10.68, 15: 11.52, 16: 12.24, 17: 12.96, 18: 13.8, 19: 14.52, 20: 15.36,
+         21: 16.08, 22: 16.8, 23: 17.6392, 24: 18.3592, 25: 19.0792, 26: 19.9192, 27: 20.6392, 28: 21.4852,
+         29: 22.2052, 30: 22.9252},
+        {11: 8.04, 12: 8.88, 13: 9.6, 14: 10.32, 15: 11.04, 16: 11.76, 17: 12.48, 18: 13.32, 19: 14.04, 20: 14.76,
+         21: 15.48, 22: 16.2, 23: 16.92, 24: 17.64, 25: 18.48, 26: 19.2008, 27: 19.924, 28: 20.644, 29: 21.364,
+         30: 22.084}),
+    ("ＭＳ 明朝", 10.5): (
+        {11: 8.28, 12: 9.0, 13: 9.84, 14: 10.56, 15: 11.28, 16: 12.12, 17: 12.84, 18: 13.56, 19: 14.28, 20: 15.12,
+         21: 15.84, 22: 16.56, 23: 17.3992, 24: 18.1192, 25: 18.8392, 26: 19.5592, 27: 20.3992, 28: 21.1204,
+         29: 21.8452, 30: 22.6852},
+        {11: 7.56, 12: 8.28, 13: 9.0, 14: 9.6, 15: 10.32, 16: 11.04, 17: 11.76, 18: 12.36, 19: 13.08, 20: 13.8,
+         21: 14.52, 22: 15.12, 23: 15.84, 24: 16.56, 25: 17.28, 26: 18.0, 27: 18.6, 28: 19.3208, 29: 20.044,
+         30: 20.764}),
+}
+FULL_SCALE_MARGIN = 1.006
+FULL_SCALE_ROOM_PT = 4.5
+
+
+def _check_fit_arguments(sheet: "Sheet", font: "Font") -> None:
+    from ._model import Font, Sheet  # the model imports this module
+
+    if not isinstance(sheet, Sheet):
+        raise ValueError("print_fit and full_scale_size_pt need a Sheet")
+    if (not isinstance(font, Font) or (font.name, font.size) not in PRINT_MEASURED_FONTS or font.bold
+            or font.italic or font.color != (0.0, 0.0, 0.0)):
+        measured = ", ".join(f"{name} {size:g} pt" for name, size in PRINT_MEASURED_FONTS)
+        raise ValueError(f"printing was measured only with the default fonts {measured}")
+
+
+def full_scale_size_pt(sheet: "Sheet", default_font: "Font") -> tuple[float, float] | None:
+    """Return the print area width and height that hold every page of ``sheet`` at 100 %.
+
+    That is FULL_SCALE_MARGIN times the printed sizes of the columns and of the
+    tallest page's rows (pages run between the manual row breaks) plus
+    FULL_SCALE_ROOM_PT each, with the Normal font ``default_font``. None when a
+    column or row is outside the measured 11-30 px. The arguments are checked
+    as ``print_fit`` checks them (ValueError).
+    """
+    _check_fit_arguments(sheet, default_font)
+    columns, rows = FULL_SCALE_PRINTED_PT[(default_font.name, default_font.size)]
+    column_sizes = [column_pixels(width) for width in sheet.column_widths_pt]
+    row_sizes = [_pixels(height, "row height") for height in sheet.row_heights_pt]
+    if any(pixels not in columns for pixels in column_sizes) or any(pixels not in rows for pixels in row_sizes):
+        return None
+    page_heights_pt(sheet.row_heights_pt, sheet.row_breaks)  # checks the breaks
+    bounds = (0, *sheet.row_breaks, len(row_sizes))
+    width = math.fsum(columns[pixels] for pixels in column_sizes)
+    height = max(math.fsum(rows[pixels] for pixels in row_sizes[start:end]) for start, end in zip(bounds, bounds[1:]))
+    return width * FULL_SCALE_MARGIN + FULL_SCALE_ROOM_PT, height * FULL_SCALE_MARGIN + FULL_SCALE_ROOM_PT
+
+
 def page_heights_pt(row_heights_pt: Sequence[float], row_breaks: Sequence[int]) -> tuple[float, ...]:
     """Return Excel's height of each page: rows between manual breaks.
 
@@ -175,7 +243,16 @@ def print_fit(sheet: "Sheet", default_font: "Font", *, maximum: int = 100) -> Pr
     rows are multiplied by the measured print factors of the scale's band
     (columns 1.04, 1.05, 1.08 and rows 1.0, 1.01, 1.025 from 90, 55, 20 %; each at
     least 0.6 % above the largest measured value, ``column_factor`` and
-    ``row_factor`` of the result). ``default_font`` must be the
+    ``row_factor`` of the result). Only when ``maximum`` is 100, a width or
+    height also fits at 100 % when it holds ``full_scale_size_pt`` (the
+    measured printed sizes); the factor reported for it is then that size over
+    the sheet's. So a sheet can fit at 100 % with ``maximum=100`` but come out
+    below 99 % with ``maximum=99`` (its cells print smaller than on screen).
+    The band factors were checked against whole pages: at 100 % they leave less
+    than the 3-4 pt room Excel needed for 2-10 cells of 12 and 21 px (see
+    FULL_SCALE_ROOM_PT), so a print area of only a few cells cut at the band
+    edge may still need a second paper (kept as Step 7 measured it; not checked
+    in Excel). ``default_font`` must be the
     ``Workbook.default_font`` the sheet is written with; only the fonts whose
     printing was measured are accepted. With the printer "DocuWorks
     Printer" every whole percent from 20 % to 100 % and every cell size from
@@ -186,15 +263,8 @@ def print_fit(sheet: "Sheet", default_font: "Font", *, maximum: int = 100) -> Pr
     wider than 255 characters of the default font, or when even 20 % (the
     smallest measured scale) is too large.
     """
-    from ._model import Font, Sheet  # the model imports this module
-
-    if not isinstance(sheet, Sheet):
-        raise ValueError("print_fit needs a Sheet")
+    _check_fit_arguments(sheet, default_font)
     font = default_font
-    if (not isinstance(font, Font) or (font.name, font.size) not in PRINT_MEASURED_FONTS or font.bold
-            or font.italic or font.color != (0.0, 0.0, 0.0)):
-        measured = ", ".join(f"{name} {size:g} pt" for name, size in PRINT_MEASURED_FONTS)
-        raise ValueError(f"printing was measured only with the default fonts {measured}")
     if isinstance(maximum, bool) or not isinstance(maximum, int) or not MIN_FIT_SCALE <= maximum <= MAX_FIT_SCALE:
         raise ValueError(f"maximum must be an integer between {MIN_FIT_SCALE} and {MAX_FIT_SCALE}, the measured scales")
     if any(column_width_chars(width, font) > MAX_COLUMN_WIDTH_CHARS for width in sheet.column_widths_pt):
@@ -208,10 +278,33 @@ def print_fit(sheet: "Sheet", default_font: "Font", *, maximum: int = 100) -> Pr
         scale = min(maximum, math.floor(min(by_width, by_height)))
         if scale >= lowest:
             break
+    if maximum == MAX_FIT_SCALE and scale < maximum:
+        full_scale = _fit_at_full_scale(sheet, font, width, height, printable_width, printable_height)
+        if full_scale is not None:
+            return full_scale
     if scale < MIN_FIT_SCALE:
         raise ValueError(f"the pages do not fit on the paper even at {MIN_FIT_SCALE} % (the smallest measured scale)")
     limited_by = "maximum" if min(by_width, by_height) >= maximum else "width" if by_width <= by_height else "height"
     return PrintFit(scale, limited_by, factor, row_factor)
+
+
+def _fit_at_full_scale(sheet: "Sheet", font: "Font", width: float, height: float, printable_width: float,
+                       printable_height: float) -> PrintFit | None:
+    """100 % when each extent fits by the top band's factor or by ``full_scale_size_pt``, else None."""
+    size = full_scale_size_pt(sheet, font)
+    if size is None:
+        return None
+    _, band_column, band_row = _PRINT_FACTORS[0]
+    factors = []
+    for extent, printable, band, need in ((width, printable_width, band_column, size[0]),
+                                          (height, printable_height, band_row, size[1])):
+        if extent * band <= printable:
+            factors.append(band)
+        elif need <= printable:
+            factors.append(need / extent)
+        else:
+            return None
+    return PrintFit(MAX_FIT_SCALE, "maximum", *factors)
 
 
 def fit_scale_percent(sheet: "Sheet", default_font: "Font", *, maximum: int = 100) -> int:

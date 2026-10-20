@@ -117,18 +117,18 @@ def x_of(col, offset=0.0):
 # 1. Text pieces, merges and alignment --------------------------------------------
 
 def test_a_paragraph_line_is_one_cell_with_its_font_size_and_alignment():
-    sheet = first_sheet(mapped(Paragraph("ab")))
-    cell = text_cell(sheet, "ab")
+    sheet = first_sheet(mapped(Paragraph("a")))
+    cell = text_cell(sheet, "a")
     assert (cell.row, cell.col) == (0, 0)
     assert cell.font == xl.Font("IPAex明朝", 10)
     assert cell.h_align == "left" and cell.v_align == "center"
-    assert merge_of(sheet, 0, 0) is None  # 12 pt in a 16.08 pt column
+    assert merge_of(sheet, 0, 0) is None  # 6 pt (8 px) and its padding fit one 15.75 pt column
 
 
 def test_a_piece_wider_than_one_column_merges_the_columns_it_spans():
-    sheet = first_sheet(mapped(Paragraph("abcdefgh")))  # 48 pt: columns 0-2
+    sheet = first_sheet(mapped(Paragraph("abcdef")))  # 36 pt: columns 0-2, room in Excel for 36 + 4.8 pt
     assert merge_of(sheet, 0, 0) == xl.CellRange(0, 0, 0, 2)
-    assert values(sheet) == {(0, 0): "abcdefgh"}
+    assert values(sheet) == {(0, 0): "abcdef"}
 
 
 @pytest.mark.parametrize(("align", "expected"), [("center", "center"), ("right", "right"), ("justify", "left")])
@@ -155,6 +155,38 @@ def test_page_setup_keeps_the_grid_origin_and_prints_at_100_percent():
     assert (page.paper, page.orientation) == ("A4", "portrait")
     assert page.margins.left == pytest.approx(OX) and page.margins.top == pytest.approx(OY)
     assert page.scale == 100 and sheet.show_gridlines and not page.print_gridlines
+
+
+@pytest.mark.parametrize(("profile", "right", "bottom"), [
+    # A4: 30 x 16.08 x 1.006 + 4.5 pt wide, 47 x 15.48 x 1.006 + 4.5 pt tall (_units.full_scale_size_pt)
+    (A4_PORTRAIT_REFERENCE, 54.6, 50.86),
+    (A3_LANDSCAPE_REFERENCE, 51.34, 50.86),
+])
+def test_right_and_bottom_margins_shrink_only_to_the_measured_full_scale_size(profile, right, bottom):
+    """Excel aligns its header and footer sections with the margins, so they shrink as little as 100 % allows."""
+    from gridlayoutpdf.renderers.xlsx._map import DEFAULT_FONT
+    from gridlayoutpdf.renderers.xlsx._units import print_fit
+
+    sheet = first_sheet(mapped(Paragraph("a"), profile=profile))
+    margins = sheet.page.margins
+    assert (margins.right, margins.bottom) == (right, bottom)
+    assert print_fit(sheet, DEFAULT_FONT).scale == sheet.page.scale == 100
+    for wider in (replace(margins, right=right + 0.01), replace(margins, bottom=bottom + 0.01)):
+        assert print_fit(replace(sheet, page=replace(sheet.page, margins=wider)), DEFAULT_FONT).scale < 100
+
+
+def test_a_margin_on_an_exact_hundredth_still_prints_at_100_percent():
+    # 29 columns of 18 px (13.8 pt printed): 29 x 13.8 x 1.006 + 4.5 = 407.1012 pt, so the margin
+    # 1190.5512 - 50.88 - 407.1012 = 732.57 pt is a whole hundredth and the print area, computed back,
+    # comes out 1 ulp short of the need
+    grid = GridSpec(50.88, 54.598, 13.8, 15.48, 29, 47)
+    page = raw_page(Text(x_of(0), baseline(0), "a", STYLE, tag=paragraph_tag()),
+                    profile=PageProfile("A3 landscape", 1191, 842, grid))
+    workbook, result = map_reports([("R", (page,))], FONTS, strict=True, cell_padding_pt=padding)
+    sheet = workbook.sheets[0]
+    assert sheet.column_widths_pt == (13.5,) * 29  # 18 px
+    assert sheet.page.scale == 100 and result.fallbacks == ()
+    assert sheet.page.margins.right == 732.56
 
 
 # 2. Overlaps ------------------------------------------------------------------------
@@ -254,14 +286,16 @@ def equation():
 
 def test_numerator_and_denominator_are_cells_in_consecutive_rows():
     sheet = first_sheet(mapped(equation()))
-    numerator, denominator = text_cell(sheet, "4.50 × 2.70"), text_cell(sheet, "12")
+    numerator, denominator = text_cell(sheet, "4.50×2.70"), text_cell(sheet, "12")
     assert denominator.row == numerator.row + 1
     assert numerator.h_align == denominator.h_align == "center"
+    # both lie high in their rows (the numerator above the bar, the denominator right under it)
+    assert numerator.v_align == denominator.v_align == "top"
 
 
 def test_the_fraction_bar_is_a_shape_on_the_row_boundary_between_them():
     sheet = first_sheet(mapped(equation()))
-    numerator = text_cell(sheet, "4.50 × 2.70")
+    numerator = text_cell(sheet, "4.50×2.70")
     (bar,) = [drawing for drawing in sheet.drawings if isinstance(drawing, xl.Line)]
     assert bar.y1 == bar.y2 == pytest.approx(sum(sheet.row_heights_pt[:numerator.row + 1]))
     assert not sheet.borders
@@ -269,7 +303,7 @@ def test_the_fraction_bar_is_a_shape_on_the_row_boundary_between_them():
 
 def test_lhs_relations_result_and_unit_are_separate_cells_merged_over_the_equation_rows():
     sheet = first_sheet(mapped(equation()))
-    numerator = text_cell(sheet, "4.50 × 2.70")
+    numerator = text_cell(sheet, "4.50×2.70")
     pieces = {value: text_cell(sheet, value) for value in ("I", "=", "7.381", "m")}
     assert len({(cell.row, cell.col) for cell in pieces.values()}) == 4
     for cell in pieces.values():
@@ -1063,7 +1097,8 @@ def test_shapes_keep_their_fraction_of_their_cell_on_a_distributed_grid():
 
 
 def test_pages_that_print_under_100_percent_are_recorded():
-    grid = GridSpec(50.88, 54.598, 16.08, 15.48, 30, 50)  # fits the PDF's A4, not Excel's at 100 %
+    # fits the PDF's A4, not the 100 % rule: 54 x 15.48 x 1.006 + 4.5 = 845.4 pt (full_scale_size_pt)
+    grid = GridSpec(50.88, 2.0, 16.08, 15.48, 30, 54)
     page = raw_page(Text(x_of(0), baseline(0), "a", STYLE, tag=paragraph_tag()),
                     profile=PageProfile("tall", 595, 842, grid))
     workbook, result = map_reports([("R", (page,))], FONTS, cell_padding_pt=padding)
@@ -1423,6 +1458,301 @@ def test_a_fraction_bar_whose_tag_names_no_fraction_is_an_error():
     bar = Line(x_of(2), baseline(3), x_of(3), baseline(3), 0.5, tag=Tag(Role.FRACTION_BAR))
     with pytest.raises(XlsxError, match="fraction bar"):
         map_reports([("R", (raw_page(bar),))], FONTS, cell_padding_pt=padding)
+
+
+# 19. Step 10 comparison (lead, 2026-10-20) ------------------------------------------------------------
+
+@pytest.mark.parametrize(("valign", "expected"), [("top", "top"), ("middle", "center"), ("bottom", "bottom")])
+def test_a_one_line_table_cell_fills_its_whole_cell_with_its_alignment(valign, expected):
+    table = Table([4], [[Cell("abc", valign=valign, align="right")]], row_heights=(2,))
+    sheet = first_sheet(mapped(table))
+    cell = text_cell(sheet, "abc")
+    assert merge_of(sheet, cell.row, cell.col) == xl.CellRange(0, 0, 1, 3)
+    assert (cell.h_align, cell.v_align) == ("right", expected)
+
+
+def test_a_spanning_table_cell_fills_its_rows_and_columns():
+    table = Table([2, 2], [[Cell("ab", colspan=2, rowspan=2)], []], row_heights=(1, 1))
+    sheet = first_sheet(mapped(table))
+    cell = text_cell(sheet, "ab")
+    assert merge_of(sheet, cell.row, cell.col) == xl.CellRange(0, 0, 1, 3)
+
+
+def test_a_table_cell_of_several_lines_keeps_a_cell_per_line():
+    sheet = first_sheet(mapped(Table([3], [[Cell("ab\ncd")]])))
+    first, second = text_cell(sheet, "ab"), text_cell(sheet, "cd")
+    assert second.row == first.row + 1
+    assert all((merge_of(sheet, cell.row, cell.col) or xl.CellRange(cell.row, 0, cell.row, 1)).last_row == cell.row
+               for cell in (first, second))
+
+
+def test_a_table_cell_inside_columns_fills_its_cell():
+    table = Table([3], [[Cell("ab")]], row_heights=(2,))
+    pages = doc(Columns(Paragraph("x"), table, col_spans=(2, 3))).layout()
+    workbook, _ = map_reports([("R", pages)], FONTS, cell_padding_pt=padding)
+    left = round(pages[0].metadata["placements"][0]["parts"][0]["metadata"]["children"][1]["x_pt"] / PX)
+    cell = text_cell(workbook.sheets[0], "ab")
+    assert merge_of(workbook.sheets[0], cell.row, cell.col) == xl.CellRange(0, left, 1, left + 2)
+
+
+def test_a_one_line_cell_of_a_turned_table_fills_its_turned_cell():
+    table = Table([2], [[Cell("ab", valign="top")]], row_heights=(3,))
+    block = QuarterTurn(table, turns=1, local_grid=GridSpec(0, 0, PY, PX, 4, 3))
+    sheet = first_sheet(mapped(*(Paragraph(f"p{index}") for index in range(3)), block))
+    cell = text_cell(sheet, "ab")
+    merge = merge_of(sheet, cell.row, cell.col)
+    # the cell is 2 local columns by 3 local rows: 3 page columns by 2 page rows, read upwards
+    assert (merge.last_col - merge.first_col + 1, merge.last_row - merge.first_row + 1) == (3, 2)
+    assert cell.rotation == 90 and cell.h_align == "left"  # the local top is the page's left
+
+
+def test_text_grows_into_free_cells_until_excel_has_room_for_it():
+    # "abcdefgh" (8 glyphs of 8 px = 48 pt) touches 3 columns (47.25 pt) and needs 48 + 2 x 2.4 pt
+    sheet = first_sheet(mapped(Paragraph("abcdefgh")))
+    assert merge_of(sheet, 0, 0) == xl.CellRange(0, 0, 0, 3)
+
+
+def test_text_that_cannot_grow_enough_is_recorded_as_clipped():
+    # 60 pt of glyphs fit the 4-column cell in the PDF; Excel needs 60 + 4.8 pt of its 63 pt, borders both sides
+    table = Table([4], [[Cell("abcdefghij", padding=1)]])
+    workbook, result = mapped(table)
+    assert [item.kind for item in result.texts_clipped] == ["text_clipped"]
+    assert not result.fallbacks
+    mapped(table, strict=True)  # recorded only, not refused
+
+
+def wide_relation_page(text="===="):
+    relation = Tag(Role.MATH, (Scope(Kind.EQUATION, index=0), Scope(Kind.EQUATION_LINE, index=0),
+                               Scope(Kind.EQUATION_PART, "relation")), {"atom": "relation"})
+    # 24 pt centred on column boundary 5
+    return raw_page(Text(x_of(5) - 12, baseline(0), text, STYLE, tag=relation))
+
+
+def test_a_wide_relation_stays_centred_on_its_anchor():
+    workbook, _ = map_reports([("R", (wide_relation_page(),))], FONTS, cell_padding_pt=padding)
+    cell = text_cell(workbook.sheets[0], "====")
+    assert merge_of(workbook.sheets[0], cell.row, cell.col) == xl.CellRange(0, 4, 0, 5)
+
+
+def test_a_wide_relation_keeps_off_the_left_hand_side():
+    lhs = Tag(Role.MATH, (Scope(Kind.EQUATION, index=0), Scope(Kind.EQUATION_LINE, index=0),
+                          Scope(Kind.EQUATION_PART, "lhs")), {"atom": "literal"})
+    page = raw_page(*wide_relation_page().commands, Text(x_of(4, 1), baseline(0), "x", STYLE, tag=lhs))
+    workbook, result = map_reports([("R", (page,))], FONTS, cell_padding_pt=padding)
+    cell = text_cell(workbook.sheets[0], "====")
+    assert merge_of(workbook.sheets[0], cell.row, cell.col) == xl.CellRange(0, 5, 0, 6) and not result.shifts
+
+
+@pytest.mark.parametrize(("gap", "joined"), [(1.5, "ab"), (4.0, "a b")])
+def test_atoms_join_with_a_space_only_where_the_gap_is_half_a_space_or_more(gap, joined):
+    # FixedFonts' space is 6 pt at 10 pt: a gap of 3 pt or more becomes a space
+    tag = Tag(Role.MATH, (Scope(Kind.MATH_BLOCK),), {"atom": "literal"})
+    page = raw_page(Text(x_of(2), baseline(0), "a", STYLE, tag=tag), Text(x_of(2, 6 + gap), baseline(0), "b", STYLE, tag=tag))
+    workbook, _ = map_reports([("R", (page,))], FONTS, cell_padding_pt=padding)
+    assert values(workbook.sheets[0]) == {(0, 2): joined}
+
+
+@pytest.mark.parametrize(("offset", "expected"), [(11, "center"), (7.5, "top"), (10, "center"), (13, "center")])
+def test_a_line_takes_the_vertical_alignment_nearest_its_place_in_its_row(offset, expected):
+    # FixedFonts' line box is 8 pt above and 2 pt below the baseline; the row is 15.48 pt
+    page = raw_page(Text(x_of(2), OY + 3 * PY + offset, "ab", STYLE, tag=paragraph_tag()))
+    workbook, _ = map_reports([("R", (page,))], FONTS, cell_padding_pt=padding)
+    assert text_cell(workbook.sheets[0], "ab").v_align == expected
+
+
+def test_a_turned_line_overhanging_its_column_stays_in_the_middle():
+    # On 10.8 pt columns (the cantilever's turned tables) a line reading upwards has its box 8 pt left of the
+    # baseline and 2 pt right of it: from 4 pt left of column 3 to 6 pt into it. Its right (the text's
+    # bottom) is nearer Excel's bottom-aligned place than the middle, by less than CROSS_ALIGN_MARGIN_PT:
+    # it stays in the middle, where Excel cuts no glyph.
+    grid = TURNED_GRID.grid
+    tag = Tag(Role.TEXT, (Scope(Kind.QUARTER_TURN, data={"turns": 1, "block_id": "t", "local_grid": {
+        "origin_x": 0, "origin_y": 0, "pitch_x": grid.pitch_y, "pitch_y": grid.pitch_x, "columns": 4, "rows": 1}}),
+        Scope(Kind.PARAGRAPH, index=0, data={"align": "left"})))
+    page = raw_page(Text(grid.x(3) + 4, grid.y(10), "ab", STYLE, 1, tag=tag), profile=TURNED_GRID)
+    workbook, _ = map_reports([("R", (page,))], FONTS, cell_padding_pt=padding)
+    cell = text_cell(workbook.sheets[0], "ab")
+    assert cell.col == 3 and cell.h_align == "center"
+
+
+# 20. Review of the comparison fixes -------------------------------------------------------------------
+
+def test_a_script_over_a_fraction_maps():
+    workbook, _ = mapped(MathBlock(Script(Fraction("a", "b"), "2")))
+    (two,) = [cell for cell in workbook.sheets[0].cells if isinstance(cell.value, xl.RichText)]
+    assert two.value.runs[0].vert_align == "superscript"
+
+
+def test_a_wide_relation_leaves_the_cells_of_a_fraction_in_the_left_hand_side():
+    # the relation would straddle its anchor over columns 4-5; the denominator below takes columns 2-4 later
+    group = EquationGroup(Equation(Fraction("M", "ZZZZ"), "1.25", relation="==="), anchors=EquationAnchors(5))
+    workbook, result = mapped(group)
+    denominator = text_cell(workbook.sheets[0], "ZZZZ")
+    assert denominator.col == 2 and "ZZZZ" not in {shift.text for shift in result.shifts}
+
+
+def test_one_line_equation_pieces_stay_centred_in_their_rows():
+    group = EquationGroup(Equation("A", "3 + 9.15", result="12.15", unit="m2"),
+                          anchors=EquationAnchors(3, 12, 17, 18), style=TextStyle(size=12))
+    sheet = first_sheet(mapped(group))
+    assert {cell.v_align for cell in sheet.cells} == {"center"}
+
+
+def test_a_top_padding_far_from_excels_keeps_the_text_in_its_own_cells():
+    from gridlayoutpdf import Insets
+
+    table = Table([4], [[Cell("ab", valign="top", padding=Insets(left=3, right=3, top=20, bottom=3))]],
+                  row_heights=(3,))
+    sheet = first_sheet(mapped(table))
+    cell = text_cell(sheet, "ab")
+    merge = merge_of(sheet, cell.row, cell.col)
+    assert merge is None or merge.first_row == merge.last_row  # not the whole three-row frame
+
+
+@pytest.mark.parametrize(("valign", "insets"), [("bottom", (3, 3, 3, 20)), ("middle", (3, 3, 40, 3))])
+def test_a_vertical_padding_far_from_excels_keeps_the_text_in_its_own_rows(valign, insets):
+    from gridlayoutpdf import Insets
+
+    left, right, top, bottom = insets
+    table = Table([4], [[Cell("ab", valign=valign, padding=Insets(left=left, right=right, top=top, bottom=bottom))]],
+                  row_heights=(4,))
+    sheet = first_sheet(mapped(table))
+    cell = text_cell(sheet, "ab")
+    merge = merge_of(sheet, cell.row, cell.col)
+    assert merge is None or merge.first_row == merge.last_row  # not the whole four-row frame
+
+
+def test_a_centred_cell_with_even_padding_fills_its_cell():
+    table = Table([6], [[Cell("ab", align="center")]], row_heights=(2,))
+    sheet = first_sheet(mapped(table))
+    cell = text_cell(sheet, "ab")
+    assert merge_of(sheet, cell.row, cell.col) == xl.CellRange(0, 0, 1, 5) and cell.h_align == "center"
+
+
+def test_a_centred_cell_with_uneven_side_padding_keeps_the_text_in_its_own_cells():
+    from gridlayoutpdf import Insets
+
+    table = Table([6], [[Cell("ab", align="center", padding=Insets(left=40, right=3, top=3, bottom=3))]],
+                  row_heights=(2,))
+    sheet = first_sheet(mapped(table))
+    cell = text_cell(sheet, "ab")
+    merge = merge_of(sheet, cell.row, cell.col)
+    assert merge is None or (merge.first_col, merge.last_col) != (0, 5)
+
+
+def test_a_cell_padding_far_from_excels_keeps_the_text_in_its_own_cells():
+    from gridlayoutpdf import Insets
+
+    table = Table([4], [[Cell("ab", align="left", padding=Insets(left=24, right=3, top=3, bottom=3))]],
+                  row_heights=(2,))
+    sheet = first_sheet(mapped(table))
+    cell = text_cell(sheet, "ab")
+    assert cell.col == 1  # the text starts 24 pt into the cell, in its second column
+
+
+def test_a_number_kept_as_text_is_not_also_recorded_as_clipped():
+    pages = doc(Table([2], [[Cell("12.5")]])).layout()
+    _, result = map_reports([("R", pages)], FONTS, cell_padding_pt=lambda size: 3.8)
+    assert len(result.numbers_as_text) == 1 and not result.texts_clipped
+
+
+def test_a_one_line_cell_of_a_clockwise_table_takes_its_top_to_the_right():
+    table = Table([2], [[Cell("ab", valign="top")]], row_heights=(3,))
+    block = QuarterTurn(table, turns=-1, local_grid=GridSpec(0, 0, PY, PX, 4, 3))
+    cell = text_cell(first_sheet(mapped(block)), "ab")
+    assert cell.rotation == 270 and cell.h_align == "right"
+
+
+def test_a_table_cell_in_an_indented_stack_fills_its_cell():
+    from gridlayoutpdf.containers import KeepTogether, Stack
+
+    table = Table([3], [[Cell("ab")]], row_heights=(2,))
+    sheet = first_sheet(mapped(KeepTogether(Stack(Paragraph("x"), Indent(table, 2 * PX)))))
+    cell = text_cell(sheet, "ab")
+    assert merge_of(sheet, cell.row, cell.col) == xl.CellRange(1, 2, 2, 4)
+
+
+def test_the_cells_of_a_split_table_fill_their_cells_on_the_next_page_too():
+    rows = [[Cell("head")]] + [[Cell(f"r{index}")] for index in range(30)]
+    table = Table([3], rows, header_rows=1, row_heights=(2,) * 31)
+    sheet = first_sheet(mapped(table))
+    for value in ("r0", "r29"):
+        cell = text_cell(sheet, value)
+        merge = merge_of(sheet, cell.row, cell.col)
+        assert (merge.last_row - merge.first_row, merge.first_col, merge.last_col) == (1, 0, 2)
+    heads = [cell for cell in sheet.cells if cell.value == "head"]
+    assert len(heads) == 2 and all(merge_of(sheet, cell.row, cell.col).last_col == 2 for cell in heads)
+
+
+def test_a_table_in_a_fractional_indent_keeps_its_own_cells():
+    table = Table([3], [[Cell("ab")]], row_heights=(2,))
+    sheet = first_sheet(mapped(Indent(table, 5)))
+    cell = text_cell(sheet, "ab")
+    merge = merge_of(sheet, cell.row, cell.col)
+    assert merge is None or merge.last_row == merge.first_row
+
+
+def test_an_indented_stack_s_table_cell_fills_its_cell():
+    table = Table([3], [[Cell("ab")]], row_heights=(2,))
+    from gridlayoutpdf.containers import KeepTogether, Stack
+
+    sheet = first_sheet(mapped(Indent(KeepTogether(Stack(Paragraph("x"), table)), 2 * PX)))
+    cell = text_cell(sheet, "ab")
+    assert merge_of(sheet, cell.row, cell.col) == xl.CellRange(1, 2, 2, 4)
+
+
+def test_note_records_stay_in_their_own_lists():
+    from gridlayoutpdf.renderers.xlsx import XlsxFallback
+
+    number, clipped = XlsxFallback("R", 1, "number_as_text", ""), XlsxFallback("R", 1, "text_clipped", "")
+    for values in ({"texts_clipped": (number,)}, {"numbers_as_text": (clipped,)}, {"fallbacks": (clipped,)}):
+        with pytest.raises(ValueError):
+            XlsxResult(None, (), **values)
+    with pytest.raises(ValueError):
+        XlsxStrictError("m", (), (clipped,))
+
+
+def test_a_relation_equally_near_two_places_takes_the_right_one():
+    # On a grid of 16 pt from the origin (exact in binary), 3 columns of "=" centred on boundary 5 straddle it
+    # either way: columns 3-5 or 4-6 are equally near
+    profile = PageProfile("exact", 595, 842, GridSpec(0, 0, 16, 16, 30, 47))
+    relation = Tag(Role.MATH, (Scope(Kind.EQUATION, index=0), Scope(Kind.EQUATION_LINE, index=0),
+                               Scope(Kind.EQUATION_PART, "relation")), {"atom": "relation"})
+    page = raw_page(Text(5 * 16 - 18, 11, "======", STYLE, tag=relation), profile=profile)  # 36 pt: 3 columns
+    workbook, _ = map_reports([("R", (page,))], FONTS, cell_padding_pt=padding)
+    cell = text_cell(workbook.sheets[0], "======")
+    assert merge_of(workbook.sheets[0], cell.row, cell.col).first_col == 4
+
+
+def test_a_number_in_mixed_fonts_grows_into_a_free_cell():
+    other = TextStyle(font="IPAexゴシック", size=10)
+    page = raw_page(Text(x_of(0), baseline(0), "123456", STYLE, tag=paragraph_tag()),
+                    Text(x_of(0, 36), baseline(0), ".5", other, tag=paragraph_tag()))
+    workbook, result = map_reports([("R", (page,))], FONTS, cell_padding_pt=padding)
+    assert merge_of(workbook.sheets[0], 0, 0) == xl.CellRange(0, 0, 0, 3)  # 48 + 4.8 pt need a fourth column
+    assert len(result.numbers_as_text) == 1 and "cut" not in result.numbers_as_text[0].detail
+
+
+def test_a_number_in_mixed_fonts_is_recorded_once():
+    other = TextStyle(font="IPAexゴシック", size=10)
+    page = raw_page(Text(x_of(0), baseline(0), "123456", STYLE, tag=paragraph_tag()),
+                    Text(x_of(0, 36), baseline(0), ".5", other, tag=paragraph_tag()),
+                    Text(x_of(3, 2), baseline(0), "x", STYLE, tag=paragraph_tag(line=1)))  # the next cell is taken
+    _, result = map_reports([("R", (page,))], FONTS, cell_padding_pt=padding)
+    assert len(result.numbers_as_text) == 1 and not result.texts_clipped
+    assert "may be cut" in result.numbers_as_text[0].detail
+
+
+def test_script_runs_are_measured_at_their_own_size():
+    # "MMMM" + superscript "MMMM" (6.5 pt): 32 + 24 px = 42 pt, + 2 x 1 pt fits three columns (47.25 pt);
+    # measured at the base size the superscript would take 32 px and need 50 pt
+    tag = Tag(Role.MATH, (Scope(Kind.MATH_BLOCK),), {"atom": "literal"})
+    script = Tag(Role.MATH, (Scope(Kind.MATH_BLOCK), Scope(Kind.SCRIPT, "superscript")), {"atom": "literal"})
+    page = raw_page(Text(x_of(0), baseline(0), "MMMM", STYLE, tag=tag),
+                    Text(x_of(0, 25), baseline(0) - 4, "MMMM", TextStyle(size=6.5), tag=script),
+                    Text(x_of(3, 1), baseline(0), "x", STYLE, tag=paragraph_tag()))  # column 3 is taken
+    _, result = map_reports([("R", (page,))], FONTS, cell_padding_pt=lambda size: 1.0)
+    assert not result.texts_clipped
 
 
 def test_records_are_exported_from_the_package():

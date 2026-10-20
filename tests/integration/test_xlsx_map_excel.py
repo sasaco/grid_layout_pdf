@@ -253,5 +253,120 @@ def test_number_cells_never_show_hashes(tmp_path):
     read = _core._run_excel(tmp_path, _READ, {"path": str(path)})
     shown = [item for sheet in read["sheets"] for item in sheet["cells"] if isinstance(item["value"], (int, float))]
     assert shown, "no number cells were written"
-    assert [item for item in shown if "#" in item["text"]] == []
+    # Excel shows ### for a number too wide for its cells, and nothing when not even one # fits (11 px)
+    assert [item for item in shown if "#" in item["text"] or not item["text"].strip()] == []
     assert len(shown) + len(result.numbers_as_text) == len(blocks)
+
+
+# --- printing at 100 % with the measured printed cell sizes (the A3 footer fix) -------------------------
+
+_EXPORT_SHEETS = r"""
+  foreach ($item in $params.books) {
+    $book = $xl.Workbooks.Open($item.path, 0, $true)
+    $index = 0
+    foreach ($ws in $book.Worksheets) { $index++; $ws.ExportAsFixedFormat(0, "$($item.pdf)-$index.pdf") }
+    $book.Close($false)
+  }
+  [ordered]@{ printer = $xl.ActivePrinter }
+"""
+
+
+def _measured_printer(printer):
+    """As in test_xlsx_excel_core.py: an unmeasured printer is an xfail (a failure when Excel is required).
+
+    The printed sizes and the room at 100 % were measured only with "DocuWorks Printer" ("DocuWorks PDF":
+    only the 21 px column pitch).
+    """
+    if not printer.startswith("DocuWorks Printer on "):
+        message = f"printing at 100 % was measured only with DocuWorks Printer, not {printer}"
+        if _core._REQUIRED:
+            pytest.fail(message)
+        pytest.xfail(message)
+
+
+def _full_scale_cases():
+    from gridlayoutpdf.renderers.xlsx._model import CellValue, Font, Margins, PageSetup, Sheet
+    from gridlayoutpdf.renderers.xlsx._units import full_scale_size_pt, print_fit
+
+    cases = {}
+    for font in (Font("游ゴシック", 11), Font("ＭＳ 明朝", 10.5)):
+        for pixels in (12, 21, 30):  # 12 px has the largest measured column factor
+            for kind in ("columns", "rows"):
+                for count in (2, 20):
+                    size = pixels * 0.75
+                    widths, heights = ((size,) * count, (15.75,) * 3) if kind == "columns" else ((15.75,) * 3, (size,) * count)
+                    mark = CellValue(0, count - 1, "X") if kind == "columns" else CellValue(count - 1, 0, "X")
+                    probe = Sheet("S", widths, heights, cells=(mark,))
+                    need_width, need_height = full_scale_size_pt(probe, font)
+                    paper_width, paper_height = probe.page.paper_size_pt
+                    # the measured size and 0.005 pt to spare; the other extent has plenty of room
+                    right = paper_width - 36 - need_width - 0.005 if kind == "columns" else 36
+                    bottom = paper_height - 36 - need_height - 0.005 if kind == "rows" else 36
+                    sheet = Sheet("S", widths, heights, cells=(mark,),
+                                  page=PageSetup(margins=Margins(36, 36, right, bottom, 18, 18)))
+                    assert print_fit(sheet, font).scale == 100
+                    cases[f"{font.name}-{pixels}px-{count}-{kind}"] = (sheet, font)
+    return cases
+
+
+def test_pages_cut_at_the_measured_full_scale_size_print_on_one_paper(tmp_path, record_property):
+    """At 100 % a print area just as wide (or tall) as full_scale_size_pt keeps its cells on one paper."""
+    pymupdf = pytest.importorskip("pymupdf")
+    from gridlayoutpdf.renderers.xlsx._model import Workbook
+    from gridlayoutpdf.renderers.xlsx._package import save_workbook
+
+    books = []
+    for name, (sheet, font) in _full_scale_cases().items():
+        path = tmp_path / f"{name}.xlsx"
+        save_workbook(Workbook((sheet,), default_font=font), path)
+        books.append({"path": str(path), "pdf": str(tmp_path / name)})
+    printer = _core._run_excel(tmp_path, _EXPORT_SHEETS, {"books": books}, timeout=600)["printer"]
+    record_property("printer", printer)
+    _measured_printer(printer)
+    split = []
+    for book in books:
+        with pymupdf.open(f"{book['pdf']}-1.pdf") as printed:
+            if len(printed) != 1 or "X" not in printed[0].get_text():
+                split.append(Path(book["path"]).stem)
+    assert split == [], f"split with {printer}"
+
+
+def _lines(page):
+    """(text, bbox) of each printed line of a pymupdf page."""
+    found = []
+    for block in page.get_text("dict")["blocks"]:
+        for line in block.get("lines", ()):
+            text = "".join(span["text"] for span in line["spans"]).strip()
+            if text:
+                found.append((text, line["bbox"]))
+    return found
+
+
+@pytest.mark.parametrize("align", ["left", "center", "right"])
+def test_headers_and_footers_print_within_a_cell_of_the_pdf(tmp_path, align, record_property):
+    """A4 and A3 pages at 100 %, no extra pages, every header and footer section within a cell of the PDF."""
+    pymupdf = pytest.importorskip("pymupdf")
+    document = Document(
+        Paragraph("縦の頁"), PageSection(A3_LANDSCAPE_REFERENCE, Paragraph("横の頁")),
+        profile=A4_PORTRAIT_REFERENCE,
+        header=PageDecoration("見出し{page}", align=align), footer=PageDecoration("{page}/{pages}", align=align))
+    library, path = tmp_path / "library.pdf", tmp_path / "report.xlsx"
+    document.render(library)
+    result = document.render_xlsx(path, "S", strict=True, cell_padding_pt=padding)
+    assert [sheet.scale for sheet in result.sheets] == [100, 100]
+    printer = _core._run_excel(tmp_path, _EXPORT_SHEETS, {"books": [{"path": str(path), "pdf": str(tmp_path / "x")}]})[
+        "printer"]
+    record_property("printer", printer)
+    _measured_printer(printer)
+    anchor = {"left": lambda box: box[0], "center": lambda box: (box[0] + box[2]) / 2, "right": lambda box: box[2]}[align]
+    pitch = A4_PORTRAIT_REFERENCE.grid.pitch_x
+    with pymupdf.open(library) as expected:
+        for number, page in enumerate(expected, start=1):
+            with pymupdf.open(tmp_path / f"x-{number}.pdf") as printed:
+                assert len(printed) == 1, f"sheet {number} printed {len(printed)} pages with {printer}"
+                lines = dict(_lines(printed[0]))
+                for text in (f"見出し{number}", f"{number}/2"):
+                    want = dict(_lines(page))[text]
+                    got = lines[text]
+                    record_property(f"{text} dx", round(anchor(got) - anchor(want), 2))
+                    assert abs(anchor(got) - anchor(want)) <= pitch, (text, want, got, printer)

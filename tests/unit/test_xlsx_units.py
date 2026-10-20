@@ -172,12 +172,13 @@ def test_scales_below_twenty_percent_are_not_used():
 
 
 def test_reference_a3_landscape_grid_prints_at_100_percent_with_margins_left_for_the_print_factor():
-    # 67 x 47 cells: 1055.25 * 1.04 = 1097.5 pt wide, so the right margin is at most 42.21 pt.
+    # 67 x 47 cells: 1055.25 * 1.04 = 1097.5 pt wide (right margin at most 42.21 pt by the band factor);
+    # at 100 % the measured printed sizes need 67 x 16.08 x 1.006 + 4.5 = 1088.3 pt (at most 51.34 pt).
     page = PageSetup(paper="A3", orientation="landscape",
                      margins=Margins(left=50.88, top=54.598, right=42.2, bottom=47.0, header=18, footer=18))
-    assert _fit(_grid(67, 47, (), page)).scale == 100
+    assert _fit(_grid(67, 47, (), page)) == (100, "maximum", 1.04, 1.0)
     narrower = PageSetup(paper="A3", orientation="landscape",
-                         margins=Margins(left=50.88, top=54.598, right=42.3, bottom=47.0, header=18, footer=18))
+                         margins=Margins(left=50.88, top=54.598, right=51.35, bottom=47.0, header=18, footer=18))
     assert _fit(_grid(67, 47, (), narrower)) == (99, "width", 1.04, 1.0)
 
 
@@ -260,16 +261,17 @@ def test_at_100_percent_only_yu_gothic_prints_the_a4_reference_grid_pitch():
 
 
 @pytest.mark.parametrize(("paper", "orientation", "columns", "right"), [
-    ("A4", "portrait", 30, 52.99), ("A3", "landscape", 67, 42.21),
+    ("A4", "portrait", 30, 54.6), ("A3", "landscape", 67, 51.34),
 ])
 def test_handoff_margins_for_100_percent_are_exact_upper_limits(paper, orientation, columns, right):
-    # Grid origin 50.88 / 54.598 pt (A4_PORTRAIT_REFERENCE); 47 rows of 15.48 pt.
+    # Grid origin 50.88 / 54.598 pt (A4_PORTRAIT_REFERENCE); 47 rows of 15.48 pt. At 100 % the measured
+    # printed sizes (full_scale_size_pt) set the limits; beyond them the band factors give 99 %.
     def fit(right_margin, bottom_margin):
         margins = Margins(left=50.88, top=54.598, right=right_margin, bottom=bottom_margin, header=18, footer=18)
         return _fit(_grid(columns, 47, (), PageSetup(paper=paper, orientation=orientation, margins=margins)))
-    assert fit(right, 47.04).scale == 100
-    assert fit(right + 0.01, 47.04) == (99, "width", 1.04, 1.0)
-    assert fit(right, 47.05) == (99, "height", 1.04, 1.0)
+    assert fit(right, 50.86).scale == 100
+    assert fit(right + 0.01, 40.0) == (99, "width", 1.04, 1.0)
+    assert fit(40.0, 50.87) == (99, "height", 1.04, 1.0)
 
 
 def test_a4_pdf_margins_alone_give_98_percent_on_either_side():

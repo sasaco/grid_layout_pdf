@@ -73,7 +73,7 @@ from dataclasses import dataclass, replace
 from io import BytesIO
 from pathlib import Path
 from string import Formatter
-from typing import NamedTuple
+from typing import Literal, NamedTuple
 
 from PIL import Image as PILImage
 
@@ -87,32 +87,45 @@ from ...validation import TOLERANCE
 from . import _model as xl
 from ._numbers import classify_number
 from ._package import save_workbook
-from ._units import PIXELS_PER_PT, excel_column_width_pt, page_heights_pt, print_fit
+from ._units import (FULL_SCALE_PRINTED_PT, PIXELS_PER_PT, excel_column_width_pt, full_scale_size_pt,
+                     page_heights_pt, print_fit)
 
 # The workbook's Normal font: only Yu Gothic 11 prints 21 px cells at the A4.pdf grid pitch (Step 7).
 DEFAULT_FONT = xl.Font("游ゴシック", 11)
 # Printed pt of one 11-30 px column and row at 100 % with that Normal font, Step 7's measurement
 # (scripts/xlsx_probe/print_pitch.json: Yu Gothic 11, scale 100, "DocuWorks Printer"; the mean pitch of
-# 6 cells). 21 px prints 16.08 x 15.48 pt, the A4.pdf grid pitch. Other sizes use the 21 px ratio.
-PRINTED_COLUMN_PT = {11: 8.4, 12: 9.24, 13: 9.96, 14: 10.68, 15: 11.52, 16: 12.24, 17: 12.96, 18: 13.8,
-                     19: 14.52, 20: 15.36, 21: 16.08, 22: 16.8, 23: 17.6392, 24: 18.3592, 25: 19.0792,
-                     26: 19.9192, 27: 20.6392, 28: 21.4852, 29: 22.2052, 30: 22.9252}
-PRINTED_ROW_PT = {11: 8.04, 12: 8.88, 13: 9.6, 14: 10.32, 15: 11.04, 16: 11.76, 17: 12.48, 18: 13.32,
-                  19: 14.04, 20: 14.76, 21: 15.48, 22: 16.2, 23: 16.92, 24: 17.64, 25: 18.48, 26: 19.2008,
-                  27: 19.924, 28: 20.644, 29: 21.364, 30: 22.084}
+# 6 cells, _units.FULL_SCALE_PRINTED_PT). 21 px prints 16.08 x 15.48 pt, the A4.pdf grid pitch. Other sizes
+# use the 21 px ratio.
+PRINTED_COLUMN_PT, PRINTED_ROW_PT = FULL_SCALE_PRINTED_PT[(DEFAULT_FONT.name, DEFAULT_FONT.size)]
 PRINT_COLUMN_PT_PER_PX = PRINTED_COLUMN_PT[21] / 21
 PRINT_ROW_PT_PER_PX = PRINTED_ROW_PT[21] / 21
 SCREEN_PT_PER_PX = 1 / PIXELS_PER_PT
-SPACE_GAP_EM = 0.08  # atoms at least this far apart (Row's default gap is 0.15 em) are joined with a space
+_HUNDREDTH_GUARD = 1e-6  # in hundredths of a pt
+SPACE_GAP_EM = 0.08  # the space threshold of a font without a space glyph width (half a space otherwise)
 _CELL_EPSILON = 1e-6  # in cells: an extent ending this close to a boundary does not reach the next cell
 _BASELINE_NUDGE_PT = 1e-4  # a baseline on a boundary belongs to the cell above it (the glyphs' side)
 _PITCH_TOLERANCE = 1e-9
 _TERM_EDGE_TOLERANCE_PT = 1e-6  # a grid term's columns start this close to a page column boundary
 _PADDING_TOLERANCE = 1e-9
+_FRAME_TOLERANCE_PT = 1e-4  # a table cell's frame lies this close to page cell boundaries
+# Where Excel prints a top- and a bottom-aligned line's box inside its cell, pt from the cell's top or bottom,
+# in a workbook with this module's DEFAULT_FONT as the Normal font (another Normal font moves them; measure again).
+# Upright: measured in Excel 16.0 (MS Mincho 10.5 pt in 15.48 pt rows, "DocuWorks Printer"): 1.37-1.39 pt and
+# 3.50 pt with the printer's origin included, 1.10-1.19 pt and 3.47-3.76 pt from the printed borders. Turned text:
+# not measured, one pixel each way; a turned piece in one column, outside an equation and without a table
+# cell's valign (a one-line cell on the grid takes its cell's valign) uses it.
+EXCEL_TOP_INSET_PT, EXCEL_BOTTOM_INSET_PT = 1.38, 3.5
+EXCEL_TURNED_INSET_PT = 0.75
+# Top or bottom only when nearer than the middle by this much: near ties stay in the middle, where Excel cuts no
+# glyph (a bottom-aligned 12 pt heading and right-aligned turned lines had glyphs cut at the cell's edge in Step
+# 10's comparison).
+CROSS_ALIGN_MARGIN_PT = 1.0
 _EDGE_TOLERANCE_PT = 1e-6
 SHIFT_REASONS = ("overlap", "fraction", "fraction_in_script")
 FALLBACK_KINDS = ("quarter_turn", "border_off_grid", "border_in_merge", "border_conflict", "rotated_text",
-                  "fraction_in_script", "term_off_grid", "cell_padding_mismatch", "print_scale", "number_as_text")
+                  "fraction_in_script", "term_off_grid", "cell_padding_mismatch", "print_scale", "number_as_text",
+                  "text_clipped")
+_NOTE_KINDS = ("number_as_text", "text_clipped")  # recorded beside the fallbacks; strict does not refuse them
 _TURNED_ROTATION = {0: 0, 1: 90, 2: 180, 3: 270}
 _UNIT_KINDS = frozenset({Kind.FRACTION, Kind.EQUATION_PART, Kind.PARAGRAPH, Kind.CELL_LINES,
                          Kind.TABLE_CELL, Kind.MATH_BLOCK, Kind.DECORATION})
@@ -132,8 +145,8 @@ class XlsxStrictError(XlsxError):
         super().__init__(message)
         self.shifts = _records(shifts, "shifts", XlsxShift)
         self.fallbacks = _records(fallbacks, "fallbacks", XlsxFallback)
-        if any(item.kind == "number_as_text" for item in self.fallbacks):
-            raise ValueError("number_as_text records are not what strict refuses")
+        if any(item.kind in _NOTE_KINDS for item in self.fallbacks):
+            raise ValueError("number_as_text and text_clipped records are not what strict refuses")
 
     def __reduce__(self):
         return type(self), (str(self), self.shifts, self.fallbacks)
@@ -249,9 +262,10 @@ class XlsxFallback:
     page column boundary, placed by its ink), "cell_padding_mismatch" (a
     grid term laid out with another cell padding than ``cell_padding_pt``),
     "print_scale" (the sheet prints under 100 %, so its grid prints smaller
-    than the PDF's) or, only in ``XlsxResult.numbers_as_text``,
+    than the PDF's); only in ``XlsxResult.numbers_as_text``,
     "number_as_text" (a number kept as text because Excel would show it as
-    ###).
+    ###), and only in ``XlsxResult.texts_clipped``, "text_clipped" (text
+    whose cells are narrower than Excel draws it, so its end may be cut).
     """
 
     sheet: str
@@ -281,7 +295,11 @@ class XlsxResult:
     """What ``render_xlsx`` wrote and every compromise it made.
 
     ``shifts`` and ``fallbacks`` are what ``strict=True`` refuses.
-    ``numbers_as_text`` lists numbers kept as text (kind "number_as_text").
+    ``numbers_as_text`` lists numbers kept as text (kind "number_as_text") and
+    ``texts_clipped`` text whose cells cannot hold it in Excel (kind
+    "text_clipped"); strict refuses neither. A number kept as text is
+    recorded in ``numbers_as_text`` only; whether Excel may cut it is in that
+    record's detail ("may be cut").
     ``untagged`` counts the commands without a semantic tag by command type,
     as sorted (type name, count) pairs (``dict(result.untagged)`` gives a
     mapping); they are mapped like user commands. ``dropped`` lists shapes
@@ -296,6 +314,7 @@ class XlsxResult:
     untagged: tuple[tuple[str, int], ...] = ()
     dropped: tuple[str, ...] = ()
     numbers_as_text: tuple[XlsxFallback, ...] = ()
+    texts_clipped: tuple[XlsxFallback, ...] = ()
 
     def __post_init__(self) -> None:
         if self.path is not None and not isinstance(self.path, Path):
@@ -303,8 +322,12 @@ class XlsxResult:
         object.__setattr__(self, "sheets", _records(self.sheets, "sheets", XlsxSheet))
         object.__setattr__(self, "shifts", _records(self.shifts, "shifts", XlsxShift))
         object.__setattr__(self, "fallbacks", _records(self.fallbacks, "fallbacks", XlsxFallback))
-        if any(item.kind == "number_as_text" for item in self.fallbacks):
-            raise ValueError("number_as_text records belong in numbers_as_text")
+        if any(item.kind in _NOTE_KINDS for item in self.fallbacks):
+            raise ValueError("number_as_text and text_clipped records belong in their own lists")
+        clipped = _records(self.texts_clipped, "texts_clipped", XlsxFallback)
+        if any(item.kind != "text_clipped" for item in clipped):
+            raise ValueError("texts_clipped must contain only text_clipped records")
+        object.__setattr__(self, "texts_clipped", clipped)
         numbers = _records(self.numbers_as_text, "numbers_as_text", XlsxFallback)
         if any(item.kind != "number_as_text" for item in numbers):
             raise ValueError("numbers_as_text must contain only number_as_text records")
@@ -367,7 +390,7 @@ def map_reports(reports, fonts: FontRegistry, *, strict: bool = False,
         raise ValueError("strict must be a boolean")
     if not callable(cell_padding_pt):
         raise ValueError("cell_padding_pt must be a function of the font size")
-    sheets, infos, shifts, fallbacks, dropped, numbers = [], [], [], [], [], []
+    sheets, infos, shifts, fallbacks, dropped, numbers, clipped = [], [], [], [], [], [], []
     untagged: Counter[str] = Counter()
     for name, pages in _reports(reports):
         try:
@@ -392,13 +415,14 @@ def map_reports(reports, fonts: FontRegistry, *, strict: bool = False,
             shifts.extend(builder.shifts)
             fallbacks.extend(builder.fallbacks)
             numbers.extend(builder.numbers_as_text)
+            clipped.extend(builder.texts_clipped)
             dropped.extend(builder.dropped)
             untagged.update(builder.untagged)
     try:
         workbook = xl.Workbook(sheets, default_font=DEFAULT_FONT)
     except ValueError as exc:
         raise XlsxError(f"workbook: {exc}") from None
-    result = XlsxResult(None, infos, shifts, fallbacks, untagged, dropped, numbers)
+    result = XlsxResult(None, infos, shifts, fallbacks, untagged, dropped, numbers, clipped)
     if strict and (shifts or fallbacks):
         details = [f"{shift.sheet} page {shift.page}: {shift.text!r} {shift.from_ref} -> {shift.to_ref} ({shift.reason})"
                    for shift in result.shifts[:5]]
@@ -558,6 +582,9 @@ class _Piece:
     last_col: int = 0
     moved: int = 0
     term_padding: float | None = None  # a grid term column's cell padding, as the layout used it
+    place: tuple = ()  # the placement that drew it
+    valign: Literal["top", "middle", "bottom"] | None = None  # a table cell's valign, when the piece fills it
+    relation_centre: float | None = None  # an equation relation's PDF centre, in columns from the grid origin
 
     @property
     def text(self) -> str:
@@ -602,6 +629,7 @@ class _SheetBuilder:
         self.shifts: list[XlsxShift] = []
         self.fallbacks: list[XlsxFallback] = []
         self.numbers_as_text: list[XlsxFallback] = []
+        self.texts_clipped: list[XlsxFallback] = []
         self.dropped: list[str] = []
         self.untagged: Counter[str] = Counter()
         self.pieces: list[_Piece] = []
@@ -664,6 +692,7 @@ class _SheetBuilder:
         try:
             self.fraction_rows()
             self.equation_rows()
+            self.table_cells()
             cells, merges = self.place()
             self.place_bars()
             borders = self.borders(merges)
@@ -816,6 +845,19 @@ class _SheetBuilder:
         nudge = -_BASELINE_NUDGE_PT if command.quarter_turns == 1 else _BASELINE_NUDGE_PT
         return math.floor((command.x + nudge - grid.origin_x) / grid.pitch_x)
 
+    def cross_box(self, atom: _Atom, cross: int) -> tuple[float, float]:
+        """An atom's line box (ascent to descent) across its cross cell, in pt from the cell's side that is
+        the text's top: the page's top upright, its left for +1 turns, its right for -1 turns."""
+        command, grid = atom.command, self.grid
+        metrics = self.fonts.measure(self.fonts.normalize_text(command.text), command.style)
+        if command.quarter_turns == 0:
+            baseline = command.y - grid.y(cross)
+        elif command.quarter_turns == 1:
+            baseline = command.x - grid.x(cross)
+        else:
+            baseline = grid.x(cross + 1) - command.x
+        return baseline - metrics.ascent, baseline + metrics.descent
+
     def add_piece(self, page_index: int, turns: int, atoms: list[_Atom], place,
                   extents: tuple[Box, ...] | list[Box] | None = None) -> None:
         """Add one piece; ``extents`` (the unit's other strokes) is given when the piece is its whole unit."""
@@ -834,7 +876,7 @@ class _SheetBuilder:
         fractions = tuple((_FractionKey(page_index, place, (*path[:index], replace(scope, part=None))), scope.part)
                           for index, scope in enumerate(path)
                           if scope.kind is Kind.FRACTION and scope.part in ("numerator", "denominator"))
-        piece = _Piece(page_index, turns, atoms, unit_path, line_key, in_fraction, fractions)
+        piece = _Piece(page_index, turns, atoms, unit_path, line_key, in_fraction, fractions, place=place)
         grid = self.grid
         lo, hi = min(atom.lo for atom in atoms), max(atom.hi for atom in atoms)
         cross = self.cross(base[0])
@@ -842,6 +884,7 @@ class _SheetBuilder:
             # An equation's relation is centred on its anchor boundary: it takes the columns from that boundary.
             piece.first_row = piece.last_row = cross
             centre = ((lo + hi) / 2 - grid.origin_x) / grid.pitch_x
+            piece.relation_centre = centre
             piece.first_col = math.floor(centre + _CELL_EPSILON)
             piece.last_col = piece.first_col + max(1, math.ceil((hi - lo) / grid.pitch_x - _CELL_EPSILON)) - 1
         else:
@@ -1031,6 +1074,137 @@ class _SheetBuilder:
                     if not piece.in_fraction:
                         piece.first_row, piece.last_row = top, bottom
 
+    def table_cells(self) -> None:
+        """Let the only piece of a table cell fill the cell's whole range with the cell's alignment.
+
+        The library places a one-line cell's text in its frame by the cell's
+        align and valign, so the merged range of the frame's grid cells, with
+        the same alignment, prints it where the PDF does. Cells of several
+        pieces keep a cell per piece (each display line in its own row).
+        """
+        cells: dict[tuple, list[_Piece]] = {}
+        for piece in self.pieces:
+            path = piece.atoms[0].command.tag.path if piece.atoms[0].command.tag is not None else ()
+            position = next((index for index in range(len(path) - 1, -1, -1)
+                             if path[index].kind is Kind.TABLE_CELL), None)
+            if position is not None:
+                cells.setdefault((piece.page, piece.place, path[:position + 1]), []).append(piece)
+        for (page, place, path), members in cells.items():
+            if len(members) != 1:
+                continue
+            piece = members[0]
+            frame = self.cell_frame(page, place, path)
+            if frame is None:
+                continue
+            first_row, last_row, first_col, last_col = frame
+            if not (first_row <= piece.first_row <= piece.last_row <= last_row
+                    and first_col <= piece.first_col <= piece.last_col <= last_col):
+                continue  # the text does not lie in the frame the metadata gives
+            valign = path[-1].data.get("valign")
+            if piece.turns == 0 and not self.frame_keeps_place(piece, frame, valign):
+                continue  # a cell padding far from Excel's: the text keeps its own cells
+            piece.first_row, piece.last_row, piece.first_col, piece.last_col = frame
+            piece.valign = valign
+
+    def frame_keeps_place(self, piece: _Piece, frame: tuple[int, int, int, int], valign: str | None) -> bool:
+        """Would Excel's alignment in the whole frame print the text within half a cell of the PDF's place?
+
+        Excel aligns inside its own cell padding (``cell_padding_pt``) and
+        the insets from the top or bottom (``EXCEL_TOP_INSET_PT``...); a
+        table cell with a much larger padding puts the PDF's text elsewhere.
+        """
+        grid = self.grid
+        first_row, last_row, first_col, last_col = frame
+        left, right = grid.x(first_col), grid.x(last_col + 1)
+        top, bottom = grid.y(first_row), grid.y(last_row + 1)
+        inked = [atom.ink if atom.ink is not None else (atom.lo, atom.hi) for atom in piece.atoms]
+        ink_left, ink_right = min(low for low, _ in inked), max(high for _, high in inked)
+        base = next((atom for atom in piece.atoms if atom.vert is None), piece.atoms[0])
+        metrics = self.fonts.measure(self.fonts.normalize_text(base.command.text), base.command.style)
+        box_top, box_bottom = base.command.y - metrics.ascent, base.command.y + metrics.descent
+        padding = self.padding(base.command.style.size)
+        align = _alignment(piece.unit_path)
+        dx = (ink_left - (left + padding) if align == "left" else ink_right - (right - padding) if align == "right"
+              else (ink_left + ink_right - left - right) / 2)
+        dy = (box_top - (top + EXCEL_TOP_INSET_PT) if valign == "top"
+              else box_bottom - (bottom - EXCEL_BOTTOM_INSET_PT) if valign == "bottom"
+              else (box_top + box_bottom - top - bottom) / 2)
+        return abs(dx) <= grid.pitch_x / 2 and abs(dy) <= grid.pitch_y / 2
+
+    def cell_frame(self, page: int, place, path: tuple[Scope, ...]) -> tuple[int, int, int, int] | None:
+        """The page-local (first row, last row, first col, last col) of a table cell's frame, or None.
+
+        The placement is followed through Stack and Columns children, Indent
+        offsets and QuarterTurn's ``local_to_part`` (the page metadata) down
+        to the table part that records the cell's frame.
+        """
+        if place[:1] != ("placement",):
+            return None
+        placements = self.pages[page].metadata.get("placements", ())
+        trace = placements[place[1]] if place[1] < len(placements) else {}
+        col, row = trace.get("col"), trace.get("row")
+        if not all(isinstance(value, int) and not isinstance(value, bool) for value in (col, row)):
+            return None
+        grid = self.grid
+        matrix = (1.0, 0.0, 0.0, 1.0, grid.x(col), grid.y(row))  # local pt -> page pt: x' = a x + c y + e
+        pitch = grid.pitch_y
+
+        def then(inner: tuple) -> tuple:
+            a, b, c, d, e, f = matrix
+            a2, b2, c2, d2, e2, f2 = inner
+            return (a * a2 + c * b2, b * a2 + d * b2, a * c2 + c * d2, b * c2 + d * d2,
+                    a * e2 + c * f2 + e, b * e2 + d * f2 + f)
+
+        def part_top(part: Mapping) -> float:
+            return part["y_pt"] if "y_pt" in part else part["row"] * pitch
+
+        cell = path[-1]
+        for scope in path[:-1]:
+            if scope.kind is Kind.TABLE:
+                continue
+            if scope.kind in (Kind.STACK, Kind.COLUMNS) and scope.index is not None:
+                part = next((part for part in _parts(trace) if "children" in part.get("metadata", {})), None)
+                if part is None or scope.index >= len(part["metadata"]["children"]):
+                    return None
+                child = part["metadata"]["children"][scope.index]
+                matrix = then((1.0, 0.0, 0.0, 1.0, part["metadata"].get("indent_pt", 0.0) + child["x_pt"],
+                               part_top(part) + child["y_pt"]))
+                trace = child
+            elif scope.kind is Kind.QUARTER_TURN:
+                part = next((part for part in _parts(trace) if "local_to_part" in part.get("metadata", {})), None)
+                local = scope.data.get("local_grid")
+                if part is None or not isinstance(local, Mapping) or "pitch_y" not in local:
+                    return None
+                matrix = then((1.0, 0.0, 0.0, 1.0, part["metadata"].get("indent_pt", 0.0), part_top(part)))
+                matrix = then(tuple(part["metadata"]["local_to_part"]))
+                trace, pitch = part["metadata"]["child"], local["pitch_y"]
+            else:
+                return None
+        for part in _parts(trace):
+            metadata = part.get("metadata", {})
+            for record in metadata.get("cells", ()):
+                if record.get("cell_id") != cell.data.get("cell_id"):
+                    continue
+                box = record["frame"]
+                left = metadata.get("indent_pt", 0.0) + box["x_pt"]
+                top = part_top(part) + box["y_pt"]
+                corners = [then((1.0, 0.0, 0.0, 1.0, x, y))[4:] for x in (left, left + box["width"])
+                           for y in (top, top + box["height"])]
+                xs, ys = [x for x, _ in corners], [y for _, y in corners]
+                edges = []
+                for low, high, origin, step in ((min(ys), max(ys), grid.origin_y, grid.pitch_y),
+                                                (min(xs), max(xs), grid.origin_x, grid.pitch_x)):
+                    first, stop = round((low - origin) / step), round((high - origin) / step)
+                    if (abs(low - (origin + first * step)) > _FRAME_TOLERANCE_PT
+                            or abs(high - (origin + stop * step)) > _FRAME_TOLERANCE_PT or stop <= first):
+                        return None  # a frame off the page's cell boundaries keeps the piece's own cells
+                    edges.append((first, stop - 1))
+                (first_row, last_row), (first_col, last_col) = edges
+                if first_row < 0 or first_col < 0 or last_row >= self.page_rows or last_col >= self.columns:
+                    return None
+                return first_row, last_row, first_col, last_col
+        return None
+
     def record_shift(self, piece: _Piece, before: tuple[int, int], reason: str) -> None:
         base = piece.page * self.page_rows
         self.shifts.append(XlsxShift(self.name, self.page_number(piece.page), self.cell_text(piece)[0],
@@ -1040,8 +1214,17 @@ class _SheetBuilder:
     def place(self) -> tuple[tuple[xl.CellValue, ...], tuple[xl.CellRange, ...]]:
         occupied: set[tuple[int, int]] = set()
         cells, merges = [], []
+        planned: dict[tuple[int, int], int] = {}  # cells each piece will take unless it moves, by piece
+        for number, piece in enumerate(self.pieces):
+            base = piece.page * self.page_rows
+            for row in range(piece.first_row, piece.last_row + 1):
+                for col in range(piece.first_col, piece.last_col + 1):
+                    planned.setdefault((base + row, col), number)
+        numbers = {id(piece): number for number, piece in enumerate(self.pieces)}
         for piece in sorted(self.pieces, key=_reading_order):
             base = piece.page * self.page_rows
+            if piece.relation_centre is not None:
+                self.centre_relation(piece, occupied, planned, numbers[id(piece)])
             step_row, step_col = {0: (0, 1), 1: (-1, 0), 3: (1, 0)}[piece.turns]
             before = (piece.first_row, piece.first_col)
             while any((base + row, col) in occupied for row in range(piece.first_row, piece.last_row + 1)
@@ -1072,17 +1255,92 @@ class _SheetBuilder:
         merges.sort(key=lambda merge: (merge.first_row, merge.first_col))
         return tuple(cells), tuple(merges)
 
+    def cross_alignment(self, piece: _Piece) -> str:
+        """The vertical alignment (in the text's direction) that puts its line box nearest the PDF's.
+
+        Excel puts a top-aligned line's box ``EXCEL_TOP_INSET_PT`` below the
+        cell's top, a bottom-aligned one ``EXCEL_BOTTOM_INSET_PT`` above its
+        bottom (turned text: ``EXCEL_TURNED_INSET_PT``) and a middle one in
+        the middle; top or bottom wins only when its anchor lies nearer the
+        same anchor of the PDF's line box than the middle's does by
+        ``CROSS_ALIGN_MARGIN_PT`` (a fraction's numerator and denominator,
+        high in their rows, take the top).
+        """
+        base = next((atom for atom in piece.atoms if atom.vert is None), piece.atoms[0])
+        top, bottom = self.cross_box(base, piece.first_row if piece.turns == 0 else piece.first_col)
+        size = self.grid.pitch_y if piece.turns == 0 else self.grid.pitch_x
+        top_inset, bottom_inset = ((EXCEL_TOP_INSET_PT, EXCEL_BOTTOM_INSET_PT) if piece.turns == 0
+                                   else (EXCEL_TURNED_INSET_PT, EXCEL_TURNED_INSET_PT))
+        errors = {"middle": abs(size / 2 - (top + bottom) / 2),
+                  "top": abs(top_inset - top),
+                  "bottom": abs(size - bottom_inset - bottom)}
+        best = min(("top", "bottom"), key=lambda name: errors[name])
+        return best if errors[best] < errors["middle"] - CROSS_ALIGN_MARGIN_PT else "middle"
+
+    def check_clipped(self, piece: _Piece, runs: list[xl.Run], font: xl.Font, base: int,
+                      occupied: set[tuple[int, int]], edges: set[tuple], *, record: bool = True) -> str | None:
+        """Grow text cells until Excel has room for the text, or record that its end may be cut.
+
+        Excel draws glyphs in whole pixels (``screen_width``) inside the cell
+        padding; text grows like a number (``widen``), a grid term keeps its
+        term columns. Returns why the text may be cut, or None when it fits;
+        ``record=False`` leaves the record to the caller.
+        """
+        # cell_text writes one run per atom, in order (a joining space belongs to the run after it)
+        width = math.fsum(self.screen_width(run.text, atom.command.style)
+                          for atom, run in zip(piece.atoms, runs, strict=True))
+        need = width + 2 * (piece.term_padding if piece.term_padding is not None else self.padding(font.size))
+        if self.room(piece) >= need - TOLERANCE:
+            return None
+        if piece.term_padding is None and self.widen(piece, need, occupied, edges):
+            return None
+        cells = ("its grid term columns (grid terms do not grow) are" if piece.term_padding is not None
+                 else "its cells and the free cells beside them are")
+        short = (f"its end may be cut; Excel may draw it in {need:g} pt with its padding (whole screen pixels "
+                 f"per glyph, an estimate), {cells} {self.room(piece):g} pt")
+        if record:
+            text = "".join(run.text for run in runs)
+            self.texts_clipped.append(XlsxFallback(
+                self.name, self.page_number(piece.page), "text_clipped",
+                f"{text!r} at {cell_ref(base + piece.first_row, piece.first_col)}: {short}"))
+        return short
+
+    def centre_relation(self, piece: _Piece, occupied: set[tuple[int, int]], planned: dict[tuple[int, int], int],
+                        number: int) -> None:
+        """Put a relation's columns where their centre is nearest its PDF centre, over free cells only.
+
+        A relation wider than a column then straddles its anchor boundary as
+        in the PDF; cells another piece takes or will take (the left-hand
+        side, a fraction's denominator in a lower row) stay theirs.
+        """
+        base = piece.page * self.page_rows
+        count = piece.last_col - piece.first_col + 1
+        rows = range(piece.first_row, piece.last_row + 1)
+
+        def free(cell: tuple[int, int]) -> bool:
+            return cell not in occupied and planned.get(cell, number) == number
+
+        candidates = [start for start in range(piece.first_col - count + 1, piece.first_col + 1)
+                      if start >= 0 and start + count <= self.columns
+                      and all(free((base + row, col)) for row in rows for col in range(start, start + count))]
+        if candidates:
+            start = min(candidates, key=lambda start: (abs(start + count / 2 - piece.relation_centre), -start))
+            piece.first_col, piece.last_col = start, start + count - 1
+
     def cell_text(self, piece: _Piece) -> tuple[str, list[xl.Run], xl.Font]:
         """Return the piece's text, its runs and the cell font."""
         base = [atom for atom in piece.atoms if atom.vert is None] or piece.atoms
         style = base[0].command.style
         font = _font(style)
+        space = self.fonts.measure(" ", style).width
+        threshold = space / 2 if space > 0 else SPACE_GAP_EM * style.size
         runs, previous = [], None
         for atom in piece.atoms:
             command = atom.command
             text = command.text
+            # a space where it is closer to the PDF's gap than no space is
             if (previous is not None and atom.vert is None and previous.vert is None
-                    and atom.lo - previous.hi >= SPACE_GAP_EM * style.size):
+                    and atom.lo - previous.hi >= threshold):
                 text = " " + text
             run_font = (replace(font, name=command.style.font) if atom.vert is not None
                         else _font(command.style))
@@ -1103,7 +1361,7 @@ class _SheetBuilder:
         return math.fsum(self.rows.sizes[piece.first_row:piece.last_row + 1])
 
     def widen(self, piece: _Piece, need: float, occupied: set[tuple[int, int]], edges: set[tuple]) -> bool:
-        """Grow a number's cells into free neighbours until Excel has room to show it, or leave them.
+        """Grow a piece's cells into free neighbours until Excel has room to show it, or leave them.
 
         A piece grows away from the side it is aligned to, a centred one by a
         cell on both sides at once (so its centre stays), only over cells no
@@ -1167,11 +1425,15 @@ class _SheetBuilder:
         rich = any(run.font is not None or run.vert_align is not None for run in runs)
         value: str | float | xl.RichText = xl.RichText(runs) if rich else text
         number_format = None
+        kept_as_text = False
         if rich and not any(run.vert_align for run in runs) and classify_number(text) is not None:
+            # it grows like any text; one record says why it is text and whether Excel may cut it
+            kept_as_text = True
+            short = self.check_clipped(piece, runs, font, base, occupied, edges, record=False)
             self.numbers_as_text.append(XlsxFallback(
                 self.name, self.page_number(piece.page), "number_as_text",
                 f"{text!r} at {cell_ref(base + piece.first_row, piece.first_col)}: its runs differ in font or "
-                "script, so it stays rich text"))
+                "script, so it stays rich text" + ("" if short is None else f"; {short}")))
         if not rich:
             number = classify_number(text)
             if number is not None:
@@ -1183,19 +1445,31 @@ class _SheetBuilder:
                         piece.term_padding is None and self.widen(piece, need, occupied, edges)):
                     value, number_format = number.value, number.number_format
                 else:
+                    kept_as_text = True
                     cells = ("its grid term columns (grid terms do not grow) are" if piece.term_padding is not None
                              else "its cells and the free cells beside them are")
                     self.numbers_as_text.append(XlsxFallback(
                         self.name, self.page_number(piece.page), "number_as_text",
                         f"{text!r} at {cell_ref(base + piece.first_row, piece.first_col)}: Excel draws it in "
                         f"{need:g} pt with its padding, {cells} {self.room(piece):g} pt"))
+        if number_format is None and not kept_as_text:  # a number kept as text has grown and is recorded already
+            self.check_clipped(piece, runs, font, base, occupied, edges)
         align = _alignment(piece.unit_path)
+        valign = piece.valign
+        single = (piece.first_row == piece.last_row) if piece.turns == 0 else (piece.first_col == piece.last_col)
+        # FR-021: an equation's pieces outside its fractions are centred in their rows
+        equation = piece.line_key is not None and not piece.in_fraction
+        if valign is None and single and not equation:
+            valign = self.cross_alignment(piece)
+        cross = {"top": "top", "middle": "center", "bottom": "bottom"}.get(valign, "center")
         if piece.turns == 0:
-            h_align, v_align = align, "center"
+            h_align, v_align = align, cross
         else:
             reading = {"left": "bottom", "center": "center", "right": "top"}[align]
-            h_align = "center"
             v_align = reading if piece.turns == 1 else {"bottom": "top", "top": "bottom"}.get(reading, reading)
+            # the cell's top turns to the page's left (+1 turns) or right (-1 turns)
+            h_align = ({"top": "left", "center": "center", "bottom": "right"} if piece.turns == 1
+                       else {"top": "right", "center": "center", "bottom": "left"})[cross]
         return xl.CellValue(base + piece.first_row, piece.first_col, value, number_format, font,
                             h_align, v_align, _TURNED_ROTATION[piece.turns])
 
@@ -1492,8 +1766,11 @@ class _SheetBuilder:
         """Print at the largest scale that keeps every page on one paper, at 100 % where the paper allows.
 
         The right and bottom margins only hold blank paper, so they shrink
-        (never grow) until the pages fit at 100 % with the print factors of
-        ``_units.print_fit``; the grid's origin keeps the PDF's left and top margins.
+        (never grow) until the pages fit at 100 % by ``_units.print_fit``; Excel
+        aligns its header and footer sections with these margins, so each
+        shrinks only as far as the smaller of the two needs, the top band's
+        factor and the measured printed sizes (``full_scale_size_pt``). The
+        grid's origin keeps the PDF's left and top margins.
         """
         page = sheet.page
         if print_fit(sheet, DEFAULT_FONT).scale < 100:
@@ -1503,8 +1780,16 @@ class _SheetBuilder:
                 paper_width, paper_height = page.paper_size_pt
                 width = math.fsum(excel_column_width_pt(width) for width in sheet.column_widths_pt)
                 height = max(page_heights_pt(sheet.row_heights_pt, sheet.row_breaks))
-                right = math.floor((paper_width - page.margins.left - width * fit.column_factor) * 100) / 100
-                bottom = math.floor((paper_height - page.margins.top - height * fit.row_factor) * 100) / 100
+                needs = [(width * fit.column_factor, height * fit.row_factor)]
+                measured = full_scale_size_pt(sheet, DEFAULT_FONT)
+                if measured is not None:
+                    needs.append(measured)
+                # whole hundredths, rounded down; just below a whole hundredth so that the print area,
+                # computed back from the margin, is never 1 ulp short of the need
+                right = math.floor((paper_width - page.margins.left - min(need[0] for need in needs)) * 100
+                                   - _HUNDREDTH_GUARD) / 100
+                bottom = math.floor((paper_height - page.margins.top - min(need[1] for need in needs)) * 100
+                                    - _HUNDREDTH_GUARD) / 100
                 margins = replace(page.margins, right=max(0.0, min(page.margins.right, right)),
                                   bottom=max(0.0, min(page.margins.bottom, bottom)))
                 sheet = replace(sheet, page=replace(page, margins=margins))

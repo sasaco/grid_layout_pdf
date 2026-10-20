@@ -13,8 +13,8 @@
 | 2 | borders | Step 4（FR-022・026） | `borders.py`・`tables.py`・`containers.py`・`blocks.py`（`Rule`）・`layout.py`（端の命令）・`document.py`・表と線のテスト・片持ち梁の表の線 | ✅ 完了（commit 待ち） |
 | 3 | tags | Step 5 | `scene.py`・`math.py`・`equations.py`・`tables.py`・`cell_content.py`・`figures.py`・`blocks.py`・`rotation.py`・`document.py`・`diagnostics.py`・`semantics.py`（新設） | ✅ 完了（commit 待ち） |
 | 4 | grid-terms | Step 6（FR-025） | `equations.py`・`docs/api.md` の指針・`examples/representative_report.py`（grid 版）・`tests/unit/test_equation_grid_terms.py` | ✅ 完了（ImplementationLoop 7 ラウンドで MEDIUM 以上 0、commit 待ち。Step 6 の3項目めは Step 8 の完成待ち） |
-| 5 | xlsx-map | Step 8（FR-021） | `renderers/xlsx/{__init__,_map,_numbers}.py`・`document.py`（`render_xlsx`） | ✅ 完了（commit 待ち。ImplementationLoop 6 ラウンドで MEDIUM 以上 0。代表例への出力は lead 指示待ち） |
-| 5 | cantilever | Step 9（FR-027） | `tests/fixtures/cantilever_p01_37/**`・片持ち梁のテスト | 進行中（案 (a) で37ページを作り直し済み・保留解除済み。レビュー中。`term_columns="grid"`・strict 検査は lead の連絡待ち） |
+| 5 | xlsx-map | Step 8（FR-021） | `renderers/xlsx/{__init__,_map,_numbers}.py`・`document.py`（`render_xlsx`） | ✅ 完了（commit 待ち。ImplementationLoop 6 ラウンドで MEDIUM 以上 0。比較の修正 C1〜C4、A3 のフッターの修正 F1〜F2 で MEDIUM 以上 0。A3 のフッターの件に限り `_units.py` も編集） |
+| 5 | cantilever | Step 9（FR-027） | `tests/fixtures/cantilever_p01_37/**`・片持ち梁のテスト | 進行中（37ページの作り直し・項の列・strict・回転表の行の条件（lead の判断 (a)）まで済み。レビューのラウンド5中） |
 | 6 | lead | Step 10 受入と文書 | 文書・PNG 正解・最終検証 | 未着手 |
 
 ### 基準（Step 1）
@@ -477,7 +477,7 @@ silent-failure のレビューは完了。python・type-design のレビュー�
 
 #### cantilever（Step 9）
 
-担当 cantilever（サブエージェント）。2026-10-20。状態: **作り直し済み・レビュー中**（2026-10-20 ユーザーが案 (a) を選んで再開。式の `term_columns="grid"` と方眼Excel の strict 検査は lead の連絡待ち）。下の「あふれの確認」「案 (a) の実測」は再開前の記録。
+担当 cantilever（サブエージェント）。2026-10-20。状態: **作り直し済み・レビュー中（ラウンド4の反映と lead の判断 (a) の反映済み。ラウンド5の silent-failure レビュー中）**（2026-10-20 ユーザーが案 (a) を選んで再開。式の `term_columns="grid"`・方眼Excel の strict 検査も済み）。下の「あふれの確認」「案 (a) の実測」は再開前の記録。
 
 **あふれの確認（Gate 2 後半の事前確認）**
 
@@ -563,6 +563,125 @@ silent-failure のレビューは完了。python・type-design のレビュー�
 
 目視（scratchpad の画像。既存の bundle・current.json は変更していない）: p1・p9・p16・p21・p26・p30・p36 の通常と p1・p30 の grid を 1.5 倍で確認。見出しの段・表・式の等号の列・図・括り線・回転表が読める配置で、文字の重なり・はみ出しはない。原本との見た目の差（位置・行の高さ・極細の罫線の太さ）は FR-027 で許した範囲。気づいた点: p1 の表は原本より右へ広い（列の境目を丸めた結果、右端 533 pt。原本 502 pt）。p21・p22 の縦見出しのある表で最後の行だけ高かったのは、結合セルの不足分を丸めた行の高さでなく内容の行数と比べていた不具合で、直した（原本で等しい4行は各2グリッド行。`test_rows_the_original_made_equal_stay_equal_under_a_merged_heading`）。行は1行ずつ丸め（原本で等しい行は等しいまま）、列は累積の境目で丸める。
 
+**レビュー反映 (2026-10-20, ラウンド 1)**
+
+レビュアー3体（silent-failure＋python、layout＋type-design＋pdf、計画整合＋テスト妥当性）。集約（重複は高い方へ）: CRITICAL 0 / HIGH 2 / MEDIUM 11（うち1件は lead 判断）/ LOW 約25。Red（`cantilever-r1-red`、39 failed）→ Green。
+
+- ✅ H: 等号を 4 pt 以上ずらすと `equals` も `verify_pdf` も通っていた → 探す幅をやめ、trace の行ごとに「右辺の開始より左の等号は第一等号の線上」「結果のある行の最も右の等号は第二等号の線上」「それ以外の等号は右辺の字形にはさまれる」を必須にした。ずらし 2・6・16.08・−16.08 pt の陰性対照。
+- ✅ H: 結果・単位の描いた位置は p3〜8・p16〜19 以外で検査されていなかった → 全ページの式の行で「結果の最後の字形の右端が result_right」「単位の最初の字形の原点が unit_start」（右辺の終わりは trace の項の列から求める）。p12 の結果・単位を −6 pt ずらす陰性対照。
+- ✅ M: 図の位置が自分の配置に結び付いていなかった → trace の `figure_id` の配置の左上と PDF の画像の左上の一致を必須に（1マス・1行ずらしの陰性対照）。
+- ✅ M: p20 の括り線が未検査、高さ 100 pt の閾値で短い括り線が落ちていた → 括り線の検査を `_group_bars` に分けて p16〜20 に、閾値は 20 pt（p20 の最短 77 pt）。p20 の陰性対照（ずらし・短縮・幅・欠け・1列右）。
+- ✅ M: 原本 PDF の hash の陰性テストが消えていた → `test_source_pdf_hash_is_checked_before_reading_the_original`。
+- ✅ M: 新しい部分検査の陰性対照の不足 → 項目のグリッド外れ（trace を 0.5 pt）、アンカーの列外れ（+0.3 pt）、回転の記録の欠け、原本にある罫線の欠け、段の順、ブロックの中での文字のずれ。
+- ✅ M: 37ページ全体の `verify_appearance` のテストがない → `test_appearance_and_grid_rules_hold_on_all_37_pages`。
+- ✅ M: 兄弟の式のアンカーの多数決で p14 の第二等号が原本の最も近い列より左になった → 兄弟（family）の判定を原稿の `anchors` の値から「原本の最も近い列が同じ」に変え、アンカーは式の原本の左端からの距離で丸める（式の左端の段によらない）。全ページの全アンカーが自分の原本の最も近い列以上であるテスト。
+- ✅ M: 段の写し方を図にも使っていた（p23・p24 の正面図が2列右）→ 図は最も近い列。文字の部品は段のまま（最も近い列にすると p12・p15 で段の順が崩れることを確かめた）。
+- ✅ M: `font_profile()` の読み直しで組立てが組版の約7倍遅い → 入力は1回だけ読む（`_fixture_json`、公開の読込みは複製を返す）。
+- ✅ M: 使われない古い組版の値が `pages/*.json`・`font-profile.json` に残り、原稿の `anchors` が兄弟の判定に効いていた → `pages/*.json` から削除（表の `columns`・`horizontal_rules`・`vertical_rules`・`border_width`・`padding` 等 217 件、式の `anchors` 190 件、区切り線の `rows` 10 件、セルの `padding`・`size`・`line_advance` 20 件。セルの `size` は font-profile の値と一致することを確かめてから）。書いてあればエラー。`font-profile.json` の `body_size`・`rotated_body_size`・`spacing_ratio`・`script_size_ratio`・`subscript_offset`・`superscript_offset` を削除。
+- ⏳ M（lead 判断）: 区切り線を `Rule` でなく `SideRule` にした件。DESIGN の FR-026 と計画の文言は「Rule へ」。
+- ✅ L（同ラウンドで対応）: 死んだ分岐、`_grid_spans` の説明、結合セルの幅（`_widen_for_spans`）、位置の決まった混合書体の run の幅の検査、文字列の数式見出しの run、`Sheared` の大きさの依存と入力検査、縦向きの括弧を原本で回したセルの行に限る、括り線の中身が stack でない時のエラー、式の記録の数の不一致・行の文字のない右辺の行・単位だけの別行の結果をエラーに、行の構成の検査の除外を固定の4項目に、`rotation` の件数を記録ごとに数え `turns` も確かめる、関係記号の幅を EquationGroup と同じ測り方に、式の幅は container の列数で、陰性対照の `match` を固有の文に、37ページ一括と1ページずつの組みの一致。
+- 持ち越し（LOW）: 同じ段の項目が同じ列に揃っているかは見ていない／ReportLab の既定の Helvetica が使われない資源として PDF に載る（ライブラリの範囲）。
+
+**式の項の列（FR-025、2026-10-20 lead の連絡で着手）**
+
+- 全ての式を `EquationGroup(term_columns="grid")` にした。右辺の最上位の各項目を1項（添字は直前の項目の項）とし `TermStop` で区切る。寄せ方は演算子が中央・数値が右・その他が左、同じ列で式どうしが食い違えば左（ライブラリが食い違いを ValueError にするため）。
+- 最初は項を全部分けると 13 行で結果が下の行へ行き（読み順が変わる）、14 行が退避（`term_fallback`）した。対処: (1) 項の数が同じ連続した式ごとに1つの `EquationGroup`（列の共有は同じ形の式どうし。形の違う長い式が他の式の列0を広げていた。グループは同じアンカーで `Stack` に入れ、元の ID を保つ）、(2) ライブラリで組んで原本の行を保てない run だけ右辺全体を1項（入れ子の Row）にする。結果: 項の列の式 238 行、項なし 44 行、退避 0、結果の下の行への移動 0。全37ページの行数は項の列にする前と同じ。（訂正、ラウンド2: 238 行には右辺全体を1項にした行を含む。ラウンド2の後で 16 行・9グループ。下の「レビュー反映 ラウンド 2」）
+
+**方眼Excel の strict 検査（2026-10-20 lead の連絡で着手）**
+
+- Red: 作り直す前の fixture（HEAD を `git archive` で scratchpad に展開。p30〜35 を除く31ページ）では、`render_xlsx` が strict でなくても `XlsxError: sheet '片持ち梁' page 1: '13.850' moved to free cells passes the right edge of the grid (31 x 48 cells)` で書き出せない。
+- 作り直した fixture の最初の結果（strict なし）: シート2枚（`片持ち梁` p1〜29、`片持ち梁_2` p30〜37、回転表はセル）、図形への切替え 0、タグのない命令 0、ずらし 24（結果の数値・`#######` が第二等号のセルにかかる 20 件、p21・p22 の縦見出しの「）」4件）、数値のまま書けない数値 89。
+- 対処: (1) 結果に方眼Excel のセル（第二等号のセル〈関係記号の送りが2列なら2セル〉の右から result_right まで、Excel の画面の字の幅〈字ごとに画素へ切上げ〉＋余白×2 が入る数）を与えるよう result_right・第二等号を決める。ただし原本の行を保つこと（読み順）を優先し、保てない時はライブラリで組んで確かめながらセルを減らす。(2) p13・p14 の地震時の反力は段の列（7）では結果と単位が本文の幅に入らないため、原本の最も近い列（6）にする（段の浅い文字の部品より右である時だけ）。(3) 縦見出しのセルは各行を自分のグリッドの行の中央に置く（`CellLines.first_baseline`、セルは上寄せ）。7行を8行に中央寄せすると全行が行の境目をまたぎ、方眼Excel で回した括弧とそのほかの字が別の行に割り当てられていた。
+- 結果: `render_xlsx(..., strict=True)` が合格。ずらし 0・図形への切替え 0・タグのない命令 0。数値のまま書けない数値は p2 の7件（`537.29` など。セル2つ 31.5 pt に対し、builder の見積り〈`_excel_cells`：Excel の画面の字の幅を字ごとに画素へ切り上げる計算〉で 36.3 pt。Excel での実測ではない。builder がライブラリで組んで、3つ目のセルを与えると原本の行を保てないことを確かめて減らした）。`dropped` は表の継ぎ目の補いの線 2065 件だけ（0.125 pt の補い 1799 件と 0.5 pt の補い 266 件。補う線の端は補われる線が描くので、方眼Excel の罫線には影響しない）。テスト `test_grid_excel_of_all_37_pages_is_strict`。
+- 目視（scratchpad、`v2-*.png`）: p1・p9・p13・p16・p21・p26・p30・p36 の通常と p9・p16・p21 の grid。項の列で右辺の項の間が広がった（p1・p16）が、行は原本どおりで重なりなし。p21 の縦見出しは1字1行。
+
+
+**レビュー反映 (2026-10-20, ラウンド 2)**
+
+レビュアー2体（silent-failure、layout＋計画整合）。集約: CRITICAL 0 / HIGH 1 / MEDIUM 11 / LOW 約17。残った指摘の大半は「部品の中の字の位置が PDF の検査で何にも結び付いていない」（項・左辺・ラベル・セルの字・行の基線・入れ子の段落・括り線の位置）だった。個別に検査を足す前に trace を確かめると、描画命令はすべて意味のタグ（式の部分・項の列 `first_column`/`columns`/寄せ方/余白、セル、セルの行、段落、括り線）を持っていた。そこで (1) PDF が trace の命令をそのまま描いていること（`placement`）と、(2) タグ付きの命令が規則を満たすこと、の2段に分けた。Red `cantilever-r2-red-1`（21 failed：区分 `placement` がない、各規則の検査がない）→ Green。
+
+- ✅ H: 項の位置が PDF で検査されていなかった（p15 の `13580.00` を 64.1 pt ずらしても通る）→ `placement`: 全 Text 命令（37ページで 6889）の字形が命令の原点から方向に沿って送りの中に並ぶこと（±0.02 pt）、全 Line（4569）と括り線の Rectangle（10）が端・太さ・矩形どおりであること、命令にない字形・線がないこと（debug grid の線は色と太さで除く）。`equals`: 各項の字が自分の列（式の左端＋`first_column`×ピッチから `columns` 列）の余白の内にあり、寄せ方（右・左・中央）どおり。陰性対照: 字形を +64.1・±1・下へ 0.5 pt（`placement`）、命令にない字形、括り線のずらし・欠け、表の罫線のずらし、trace ごと項を ±1・+64.1 pt・`×` を +1 pt（`equals`）。
+- ✅ M: 第二等号の列をまたぐ字形があると、その行の結果・単位の検査を黙って飛ばしていた → trace でその行に結果があれば `a glyph runs across the second relation` で拒否（結果の無い行だけ飛ばす）。結果を第二等号の上へ動かす陰性対照（読み順は保つ）。
+- ✅ M: 左辺・ラベルの位置が未検査 → ラベルは式の左端から始まる、左辺の右端は同じグループの行でそろい関係記号の手前で終わる（ライブラリの組み方 `first − first_left − gap`）。陰性対照（左辺の最後の命令を −2 pt、ラベルを +2 pt）。
+- ✅ M: 入れ子の段落（p16〜19 の「可動支承に働く鉛直荷重」など、領域の左端を持たない Stack の中）の位置が未検査 → 表と式の外の左寄せの段落・数式の各行（全角の本文の字、添字・分数を除く）の最初の命令が列の線上（`position`）。
+- ✅ M: セルの字の位置が未検査（M-4）・縦の行の位置（M-5）→ `table`: セルの各行がセルの中で寄せ方どおり（中央は左右の罫線の差の半分＝0.76 pt 以内、左右寄せは余白 2〜3.5 pt）、同じ行の字は1本の基線、行の間はちょうど行のピッチ×行番号の差（回転表は局所グリッドの 10.8 pt）、行のまとまり（命令の枠）が中央寄せのセルの中央（0.76 pt 以内）・上寄せのセルの上の余白の内。全セルで測った中央からのずれは最大 0.5 pt。陰性対照（下へ 2 pt、1行上へ、右へ 3 pt）。
+- ✅ M: 括り線の x が trace に結び付いていなかった（M-6）→ `placement` で矩形が命令どおり、`position` で中心が列の線・上下が行の線。陰性対照（+1 pt）。
+- ✅ M: 括り線の陰性対照の名前が「1列右」なのに2列ずらしていた → 1列右は括る字の左のままで、`_group_bars`（字より左か）では拒否できないことを確かめた。陰性対照は「字の上（2列右）」に改名し、各括り線の列（原本の縦線の段の列：p16〜19 は 6、p20 は 5、各ページ2本）を `test_bracket_bars_are_side_rules_of_a_border_style_on_column_lines` で固定した（1列のずれもここで落ちる）。本数は `== 10`（L-8）。
+- ✅ M（M1）: p14 の起点側・終点側の反力が原本で同じ左端なのに列が1つ違った → 地震時の反力に最も近い列を使う例外（`_result_needs_nearest_column`）をやめ、式も段の列に戻した。代わりにアンカーをページの列で決める（下）ことで結果と単位が本文に入る。原本で同じ左端の式は同じ列（`test_groups_with_the_same_original_left_take_the_same_column`、43組）。
+- ✅ M（M2）: 原本でそろっていた等号・結果・単位が、段の違うグループの間でずれていた（p16〜19 の T1・T2 とストッパー、p13・p14 の断面力と反力）→ アンカーを「式の原本の左端からの距離」でなく「原本の位置に最も近いページの列」で決める（`_source_anchors`）。原本の列がすべて同じ式はまとめて決め（`_family_anchors`）、一部の列だけ同じ式どうしはその列を右側にそろえる（原本の行を保てる時だけ、`_equation_anchors`）。原本で同じ列の組 2976 のうち、そろわないのは p13 の断面力と反力の第二等号の2組だけ（反力は右辺のために 25 列目が要り、断面力をそこへ動かすと単位が本文に入らない＝ライブラリで組んで確かめた）。`test_anchors_the_original_aligned_stay_aligned_across_groups` が例外をこの2組に固定し、例外が避けられないことも確かめる。Red はそろえる段を外した builder で確かめた（p3 などの組がずれて失敗）。`verify.py` の p3〜8 の列の共有は「出力で左端が同じ式」から「原本で同じ位置（0.5 pt 以内）だった式」に変えた（陰性対照: 結果・単位を1列ずらす）。
+- ✅ M（M4）: 右辺全体を1項にした run は「退避なし」のテストに掛からない → `WHOLE_TERM_RUNS` に固定（p1・p2・p12・p13・p19 の9グループ・16行）。記録の「238 行（うち 14 行は1項）」の数を訂正（上）。
+- ⏳ M（M3、lead へ）: `builder._excel_cells` が方眼Excel の写像の非公開の `gridlayoutpdf.renderers.xlsx._units`（`PIXELS_PER_PT`・`excel_column_width_pt`）を読む。セル数の見積りを公開の関数にしてほしい（または公開しない方針の判断）。src は触っていない。
+- ⏳ M（M5、lead へ）: commit の履歴: `deferred.py` の削除が lead の commit 89bba39 に入り、89bba39〜c1e9475 のテストは `deferred` を import する（その commit 単独ではテストが通らない）。
+- ✅ L: 原稿でなく font-profile の古い鍵も書いてあればエラー（`_reject_obsolete_profile_keys`、Red `cantilever-r2-red-2` 6 failed）。`_keeps_original_lines` は右辺の折り返し（`continuation`）も拒否。p09 の run のアンカーを全項目で比べる。※ は `placement` で検査される（`_characters` の除外は書体の比較だけ）。README の組み方（アンカー・そろえ方・1項の run・縦見出し・SideRule の判断待ち・検査の区分）を更新。記録の「36.3 pt」「長さ0」の書き方を訂正（上）。
+- 持ち越し（LOW）: `_SCRIPT_X_EM`（.1）が `Sheared` の既定と同じ値の重複（ライブラリの Script の横の間隔の公開値がないため）。
+
+テスト: 片持ち梁の関連 `cantilever-r2-green-5` **359 passed**。全テスト `cantilever-full-3`: 3700 passed、2 skipped、**2 failed（既知の PNG 正解2件だけ**）。全37ページ: `verify_pdf`（通常・grid）3345 項目合格、外観 0 件（`placement` 10449・`equals` 3471・`table` 29736・`position` 35361 件の検査）、`render_xlsx(strict=True)` 合格（ずらし 0・図形への切替え 0・タグなし 0・数値のまま書けない数値 p2 の7件）、行数はラウンド1と同じ（p13 も 39 行）。目視（scratchpad `img/r2-p13-grid.png`・`r2-p16-grid.png`）: p16 の T1・T2 の結果とストッパーの行が同じ列、p13 の重なり・はみ出しなし。
+
+**レビュー反映 (2026-10-20, ラウンド 3)**
+
+レビュアー2体（silent-failure、layout＋計画整合）。集約: CRITICAL 0 / HIGH 1 / MEDIUM 6 / LOW 17。Red `cantilever-r3-red-1`（13 failed：先頭が空白の命令・破線の罫線・タグのない命令・タグを失ったセル／式の行・1行のグループの左辺・セルの 0.7〜1.4 pt のずれ・debug grid・規則ごとの件数）→ Green。layout の3件の Red はそれぞれの修正を外した builder（monkeypatch、`scratchpad/red_r3.py`）で確かめた（p3 の × が2列、結果の間隔 16.2 列）。
+
+- ✅ H（layout H1）: 右辺が空で結果だけの行（p16〜20 の「＝ 8 576.98 kN」、p20 の Hsd）の結果が等号から 15〜16 列離れていた。原因は、結果のない長い右辺（同じグループの別の run）を1行に入れるために第二等号を広げていたこと。結果のない右辺はライブラリが全幅を与えるので、第二等号を広げる判定（`_grid_width(with_result=True)`）を結果のある式の右辺だけにした。結果の手前の字からの間隔は最大 4.4 列（`test_results_stay_near_what_precedes_them` で 4.5 列以下に固定）。
+- ✅ M（layout M1-new）: 原本で数 pt 違う結果の右端（p3 の 345.32・347.84・350.36 pt）が列の中点をまたいで別の列に分かれ、p3〜7 の「×」も2列に分かれていた → そろえの判定を「最も近い列が同じ」から「原本で 6 pt 以内」に（`_source_positions`・`ALIGNED_SOURCE_PT`）。原本で右辺の始まり（と第一等号）が 6 pt 以内のグループどうしは同じ形の式の各項の最小の幅を `TermStop.width` でそろえる（`_shared_term_widths`。入らなければグループ自身の幅、それでも入らなければ1項）。6 pt 以内の組 3344 のうちそろわないのは p13 の2組だけ（前と同じ）。p3〜7 の「×」は各ページ1列（`test_operators_the_original_set_in_one_column_share_a_column`）。
+- 一部対応（layout M2-new）: 「Hsd ＝ 0.00 kN」の等号と結果の間が 4.4〜5.4 列 → 空白の第二の関係記号にはセルを取らないようにして 4.4 列以下に。残りは、空の右辺に1列要ること（ライブラリの制約）と、同じグループの `#######` が方眼Excel で求めるセル（数値だけにセルを与えると方眼Excel でずらし5件が出ることを確かめた）による。読み順と方眼Excel のセルを優先した結果として残す（lead 確認事項に追加）。
+- ✅ M（silent M-1）: 先頭が空白の命令（9件）は字形を 8 pt ずらしても `placement` を通った → 横書きで傾けていない命令は、最後の字形の右端が原点＋送り（±0.02 pt）であることも必須に。p28「　[」を −8・−2 pt ずらす陰性対照。
+- ✅ M（silent M-2）: 規則が 0 件でも区分の合計に隠れて通った → report に規則ごとの件数 `rule_checks`（`placement.text`・`placement.rule`・`placement.tag`・`equals.term`・`equals.label`・`equals.lhs`・`position.paragraph`・`position.side_rule`・`table.cell` など）を出し、37ページのテストで固定（括り線 10、項の数＝trace の項の数 906 など）。加えて、意味のタグのない命令・PDF に字があるのにタグ付きのセルの行がないセル・タグ付きの命令がない式の行をエラーにした（陰性対照: p16 のタグを消す、p30・p36 の `cell_lines` を消す、p9 の `equation_line` を消す）。
+- ✅ M（silent M-3）: 1行のグループ（252 のうち 230）では左辺の検査が空振り → ライブラリの組み方どおり「左辺の右端＝第一等号の線 − グループの関係記号の左側の最大 − 原稿の gap」を ±0.01 pt で必須に（gap は `pages/*.json` から）。p3 の1行の式の左辺を −2 pt の陰性対照。
+- ✅ M（silent M-4）: セルの許容値（中央 0.76 pt、余白 2〜3.5 pt）が広く、0.7〜1.4 pt のずれが通った → trace の表の罫線（境目ごとの最も太い線）から余白を正確に求める（上下＝罫線の太さ、左右＝2 pt＋罫線の太さ）。寄せ方・行のまとまりの上下中央は ±0.01 pt。上寄せのセル（p21・p22 の縦見出し）は各行が自分のグリッドの行の中央。陰性対照（p1「G2」右・下 0.7 pt、p1「520.0」・p26「0.00」左 1.4 pt）。
+- ✅ L: `placement` で罫線の色・破線、矩形の塗りも照合（破線にした罫線の陰性対照）。`_train_anchors` は全ての組を比べる。未知の寄せ方・縦の寄せ方・段落の寄せ方は ValueError。セルの検査の文言を分けた（行送り／上下中央／行の中央）。debug grid の PDF の `placement` のテスト（除いたグリッド線が 32＋49 本）。README の最頻値の説明。
+- 持ち越し（LOW）: 添字（82件）と段落の行の2つ目以降の命令（47件）の位置はライブラリの組み方の範囲として規則を置かない（`placement` で trace どおりであることは確かめる）。`_family_anchors` の `chosen or (values, True, 0)`・`_equations` が keeps を捨てる経路は今は通らない（37ページで `WHOLE_TERM_RUNS`・行の構成・`numbers_as_text` の固定が崩れを検出する）。`texts_clipped` 2件（p15 の見出し、p36 の `EQ`）は固定していない。1項の run の項の間が詰まって見える（p12・p13）。
+
+テスト: 片持ち梁の関連 `cantilever-r3-green-3` **373 passed**。全37ページ: `verify_pdf`（通常・grid）3345 項目、外観 0 件、`render_xlsx(strict=True)` 合格（ずらし 0・図形への切替え 0・タグなし 0・数値のまま書けない数値 p2 の7件）、行数は前と同じ。目視（scratchpad `img/r3-p03-grid.png`・`r3-p16-grid.png`・`r3-p20-grid.png`）: p3 の × と結果がそれぞれ1列、p16 の結果だけの行が等号の近く。全テスト `cantilever-full-4`: 3759 passed、2 skipped、20 failed（既知の PNG 正解2件、この担当の重複して貼った検査1件〈直して `cantilever-r3-green-3` で合格〉、Step 10 の比較スクリプトの作業途中の17件〈`'ClipLoss' object has no attribute 'close'`。`scripts/compare_xlsx_pdf.py` は未追跡で、この担当は触っていない〉）。
+
+**回転表の字をローカルの行に収める（2026-10-20 lead の追加の条件）**
+
+- 条件: 方眼Excel と PDF の比較で、p30〜37 の回転表の各行の字（10 pt）がローカルの行（10.8 pt、ページの列）の境目をまたいでいた。各表示行の字形（`command_bounds`）をそのローカルの行の中に収め、それを確かめる検査を足す。
+- 実測（作業前）: 表の Text のうち行の境目をまたぐもの: 回転表 2601 件中 1509 件（p30〜37）。回転していない表でも 1363 件中 128 件（p1・p21〜29。2行分の高さのセルに1行を中央寄せすると、行の境目に字がかかる）。原因は、`CellLines` の行のまとまりをセルの中で中央寄せしていたこと（行の位置がグリッドの行に合わない）。
+- 対処（fixture だけ、ライブラリは変えていない）:
+  - 全ての表のセルを上寄せにし、`CellLines.first_baseline` で各行を自分のグリッドの行に置く（`builder._row_placement`）。行のまとまりはセルの中で行単位で中央（余りが奇数なら上）。各行の字の箱が行の中に入り、端の行は罫線から離れる基線の範囲の中央に基線を置く。端の行が罫線に当たって入らない時は1行ずらす。上下の余白は0にした（行の高さは今までどおり罫線の太さを足して決めるので、行数は変わらない）。
+  - Table は行ごとの部分の端の罫線から、字を罫線の太さ全部ぶん離す（`tables._inner_edges`）。そのため、離す量は罫線の太さ全部にした（半分では `content lacks clearance from border strokes` で止まることを確かめた）。
+  - p30〜37 の下付き添字は、10 pt の基底（上 8.59 pt）と 6.5 pt の添字（下 0.92 pt）が 10.8 pt の行に入るよう、基線から 1.0 pt 下にした。原本の 1.92 pt のままでは1行に 11.43 pt 要る。ほかのページは 1.92 pt のまま。
+  - 回転表の基線は ReportStyle の `baseline_offset` ではなく、セルの `first_baseline` で決めた（表の中の行は `CellLines` が置くため）。
+- 結果: 行の境目をまたぐ Text は回転表・回転していない表とも 0 件。行数は前と同じ（p30 48、p31〜35 47、p36・37 49 / 51）。`render_xlsx(strict=True)` 合格（ずらし 0・図形への切替え 0・タグなし 0・数値のまま書けない数値 p2 の7件）。全37ページの `verify_pdf` 3345 項目と外観 0 件。
+- 検査:
+  - `test_cantilever_grid_rules.py::test_each_table_line_keeps_its_glyphs_inside_one_local_row`（各表の全 Text の字形が1つのローカルの行の中。回転表 2601 件）。Red は、行のまとまりを中央寄せにする前の置き方に builder を差し替えて確かめた（p1「雪荷重」が行をまたいで失敗。`scratchpad/red_rows.py`）。
+  - 外観の `table` も、上寄せのセルで「各行の字が自分のグリッドの行の中」「行は連続」「行単位で中央（1行以内）」「端の行が罫線に当たらない」「基線は空きの中央（±0.01 pt）」を確かめるようにした。p30 のセルの行を1 pt ずらす陰性対照も足した。
+  - 見た目（scratchpad `img/r4-p30-crop.png`・`r4-p21-grid.png`）: p30 の字はページの列の中に収まっている。p21 の2行分の高さのセルの1行は上の行に置かれる（以前はセルの中央）。
+- テスト: 片持ち梁の関連 `cantilever-rows-green-2` **376 passed**。
+
+**レビュー反映 (2026-10-20, ラウンド 4)**
+
+レビュアー2体（silent-failure、layout＋計画整合）。集約: CRITICAL 0 / HIGH 1 / MEDIUM 4（うち lead 判断1件）/ LOW 12。
+
+- ✅ H（silent H-1）: セルの行をグリッド1行ぶん丸ごとずらしても通った（レビュアーの実測: builder を「入るなら1行下」に差し替えて 37ページで 0 件。中央の判定が ±1 行を許し、先頭の行の位置を基準にしていた）→ 上寄せのセルの検査を `_top_aligned_rules` に分け、builder の選び方（行単位で中央、同点は上、罫線に当たれば次の候補、空きの中央の基線）を trace の字の箱と罫線の太さから組み直して、行と基線が一致することを必須に。陰性対照 `test_cell_lines_moved_a_whole_row_are_rejected`（p1・p26、builder を1行下に差し替え）。
+- ✅ M（silent M-1）: 基線のない行（p21・p22 の回した括弧 8 行）は行の中で 2 pt 動いても通った → 同じセルの全角の字の em の中心に合うことを必須に（`cell line without a baseline is off its row's em box`）。陰性対照（±2・0.3 pt）。
+- ✅ M（silent M-2）: `rule_checks` の固定が粗かった → 規則名を分けた（`equals.lhs_gap`／`equals.lhs_group`、`table.cell_align`・`cell_baseline`・`cell_spacing`・`cell_rows`・`cell_room`・`cell_turned`・`cell_centre`・`cell_coverage`）。37ページのテストで trace から数えた件数と等式で固定（左辺と関係記号のある行の数＝`lhs_gap`、タグ付きのセルの数＝`cell_centre`＝`cell_room`、`cell_turned`＝8、`placement.rule`＝Line・Rectangle の命令の数）。
+- ✅ M（layout M2）: p26 の6表・p27 の5表は原本で x と列の幅が同じなのに、出力で列の境目が1列ずれていた → 原本で同じ x・同じ列の幅の表は、どの表の内容も入る同じ列にする（`_same_columns`、`_table(needs_only=True)`）。`test_tables_the_original_drew_alike_keep_the_same_columns`（Red は `_same_columns` を外して確かめた: p26 で (5,3,2,3,…) と (5,3,3,2,…)）。行数は同じ。
+- ⏳ M（layout M1、lead 判断）: 1行だけのセルが2行以上の高さを持つ時、余りが奇数だと上（回転表では左）の行に入る。回転表で 1381 セル、ほかで 86 セル。p21・p22 では表が「1行おきに空行」に見える。lead の条件「各表示行の字形がローカルの行の中」を満たすための結果。レビュアーの代案: 方眼Excel の写像は字が1つのセルを結合セルにして縦の寄せ方で置くので（`_map.py` の `table_cells`）、1行だけのセルはセル全体の中央（字は行の境目にかかる）に戻せる見込み。ただし lead の条件を「複数行のセルの各行」と読み直すことになる。件数は `test_one_line_cells_in_two_rows_sit_in_their_upper_row` に固定（罫線を避けて1行下に入る見出しのセル 16 も）。
+- ✅ L: `_ALIGNED_PT`（`verify.py` の列の共有）を builder と同じ 6 pt に。`_row_placement` の単体テスト（同点は上、罫線で1行ずらす、入らない時のエラー）。回転表の下付き 1.0 pt・ほかのページ 1.92 pt のテスト、`_with_subscript_drop` は分数の中もたどる。検査とbuilder の罫線の余裕の値が等しいことのテスト。陰性対照を期待する文言で一致させた。`test_results_stay_near_what_precedes_them` は確かめた行の数（200 超）も確かめる。`_authored_gaps` の説明（既定 2 は builder の値）。README（下付き 1.0 pt、`table` の規則の説明、同じ列の表）と検査の docstring を更新。
+- 持ち越し（LOW、記録のみ）: p12 の7項の2グループと p10 の forces/reactions は、項の幅をそろえると原本の行に入らない・第一等号の有無が違うため、項の列がそろわない（原本で6 pt 以内の項の始まり 3224 組のうち 35 組）。p3〜8 の空白の第一の関係記号も1列取るので、ラベルと右辺の間が原本より広い。回転表の下付き 1.0 pt と lead の条件は DESIGN・計画にはまだ書いていない（lead の判断で DESIGN へ）。
+- Red の根拠: H-1・M-1 はレビュアーの陰性実験（修正前の検査で 0 件）、M2 は monkeypatch（`scratchpad/red_cols.py`）。
+
+テスト: 片持ち梁の関連 `cantilever-r4-green-3`（1件はテストの数え方の誤りで、直して `cantilever-r4-green-4` grid_rules 19 passed）。全37ページ: `verify_pdf` 3345 項目、外観 0 件、`render_xlsx(strict=True)` 合格（ずらし 0・図形への切替え 0・タグなし 0・数値のまま書けない数値 p2 の7件）、行数は同じ。
+
+**1行だけのセルはセル全体の中央に（2026-10-20 lead の判断 (a)）**
+
+- lead の判断: 条件の意図は「Excel で1つのセル（行）に置かれる字が行の境目をまたがないこと」。写像は字が1つだけのセルをセルの範囲全体に結合し縦の寄せ方を写すので、1行だけのセルはセル全体の中央（元の valign）でよい。条件は「複数行のセルの各表示行の字形はローカルの1行の中」と読み直し、1行だけのセルはセルの範囲の中に収まることを検査する。
+- 対処: `builder._table` は1行だけのセルを行の置き方（`_row_placement`）から外し、元の `valign="middle"`・上下の余白＝罫線の太さに戻した。複数行のセル（682 セル）は前のとおり行ごと。行数は同じ。
+- 検査: `test_each_line_of_a_multi_line_cell_keeps_its_glyphs_inside_one_local_row`（複数行のセル 682 の各行の字が1つのローカルの行の中・連続した行、1行だけのセル 2322 の字がセルの中）、`test_one_line_cells_stay_centred_and_multi_line_cells_are_set_row_by_row`（行の置き方を使うのは複数行のセル 682 だけ。前の「上の行に入る」件数の固定は外した）。外観の `table` は、1行だけのセルはセルの上下の余白の間の中央（±0.01 pt）とセルの中、複数行のセルは `_top_aligned_rules`。1行だけのセルを上寄せにすると・複数行のセルを中央寄せにするとエラー。
+- 結果: 37ページの `verify_pdf` 3345 項目と外観 0 件、`render_xlsx(strict=True)` 合格（ずらし 0・図形への切替え 0・タグなし 0・数値のまま書けない数値 p2 の7件）。片持ち梁の関連テストは `cantilever-a-green-1`（2件は検査の件数の数え方と陰性対照のページの選び方の誤りで、直して `cantilever-a-green-2` で合格）。
+- `scripts/compare_xlsx_pdf.py --example cantilever --out <scratchpad>/compare-cantilever`（compare 担当の作成中のスクリプト。編集していない）: 終了コード 1。checks は `positions` だけ False（`opens_without_repair`・`readback`・`strict`・`no_hashes`・`page_count`・`page_size`・`no_extra_text` は True）。文字片 5418 のうち一致 5418・見つからない 0・**範囲外 1**（p15 の見出し「a)使用時の照査における…」、セル F677。失敗は `clipped`：Excel の印刷で最後の字が切れる。方眼Excel の `texts_clipped` の2件の1つで、Excel の字幅が PDF より広いため。位置のずれは dx 2.57 pt・dy 0.56 pt で許容内）。最大のずれは dx 12.72 pt・dy 8.122 pt、紙の軸で測った場合の範囲外は 6。Excel 16.0 build 20326、プリンターは DocuWorks Printer。
+
+**lead 確認事項（cantilever、未決）**
+- 区切り線を `Rule` でなく `SideRule` にした（DESIGN FR-026・計画の文言は「Rule へ」。ラウンド1）。
+- `builder._excel_cells` が非公開の `gridlayoutpdf.renderers.xlsx._units` を読む（公開の見積り関数がほしい。ラウンド2 M3）。
+- commit の履歴: `deferred.py` の削除が 89bba39 に入り、89bba39〜c1e9475 のテストは `deferred` を import する（ラウンド2 M5）。
+- 結果だけの行（p16〜20 の Hsd・Hbd ＝ 0.00 など）の等号と結果の間が 3.4〜4.4 列残る（ラウンド3 M2-new。空の右辺の1列はライブラリの制約、残りは方眼Excel のセル）。
+- p13 の断面力と反力の第二等号の2組はそろわない（ラウンド2）。
+- （済み、lead の判断 (a)）1行だけのセルはセル全体の中央に戻した。
+- p15 の見出し（F677）は Excel の印刷で最後の字が切れる（compare の範囲外 1、`texts_clipped`）。
+- 回転表の下付き添字を原本の 1.92 pt から 1.0 pt にした件と、lead の条件「各表示行の字形がローカルの行の中」を DESIGN（FR-027）・計画に書くかどうか。
+- 項の列がそろわない所（p12 の7項の2グループ、p10。ラウンド4 L1）と、空白の第一の関係記号の1列（p3〜8）。
 
 #### grid-terms（Step 6）
 
@@ -868,3 +987,250 @@ silent-failure のレビューは完了。python・type-design のレビュー�
 - 最終確認: 単体＋openpyxl の読み戻し 169 passed（`xlsxmap-r6-green`）、Excel COM 9 passed（`test_xlsx_map_excel.py`）、`_map.py` の coverage 96%（`COVERAGE_FILE=.claude/logs/.coverage-xlsxmap`、ラウンド3の時点）。全テスト `xlsxmap-full`（ラウンド3の後）: 3488 passed・2 skipped・2 failed。失敗は既知の2件（`tests/visual/test_cantilever_p01_37_golden.py::test_all_37_pages_match_approved_pixels`、`tests/visual/test_representative_golden.py::test_standard_report_matches_all_approved_golden_pixels`、Step 10 で作り直す PNG 正解）、skip は `test_xlsx_excel_core.py` の DocuWorks PDF の最悪条件の2件（アクティブなプリンターが DocuWorks Printer）。xfailed は 0 件（片持ち梁の保留を cantilever 担当が作業中のため。この担当の変更とは無関係）。
 - ラウンドの途中で、片持ち梁の単体テスト（`test_cantilever_appearance_builder.py`・`test_cantilever_fixture.py`）が cantilever 担当の fixture の作業途中で失敗していた時があった（`tests/fixtures/cantilever_p01_37/**` の変更による。この担当は触っていない）。
 - 最後の全テスト `xlsxmap-full-final`（ラウンド6の後）: 3536 passed・2 skipped・10 failed。既知の PNG 正解の2件のほか、片持ち梁の統合テスト8件（`test_cantilever_p01_37.py::test_appearance_and_grid_rules_hold_on_all_37_pages`、`test_cantilever_source_appearance.py` の7件。内容は `p09-forces` の source line structure など）は cantilever 担当が作業中の `tests/fixtures/cantilever_p01_37/**` と片持ち梁のテストの変更によるもので、これらのテストと fixture は方眼Excel の写像を import しない（grep で確認）。
+
+#### compare（Step 10 の検査スクリプト）
+
+担当 compare（サブエージェント）。2026-10-20。編集するのは `scripts/compare_xlsx_pdf.py`（新設）・`tests/unit/test_compare_xlsx_pdf.py`（新設）・`tests/integration/test_compare_xlsx_pdf_excel.py`（新設、Excel がある時だけ）・この節だけ。`src/**`・`tests/fixtures/**`・既存のテスト・`examples/**` は編集しない。
+
+**進捗**
+
+- 着手。必読の文書と COM の流儀（`test_xlsx_excel_core.py` の `_run_excel`、`measure_print_pitch.py`）を読み、代表例（grid 版・standard）を `render_xlsx(strict=True)` で出して Excel 16.0（build 20326、プリンター「DocuWorks Printer on Ne04:」）から PDF に書き出す予備の実験をした（スクラッチ、リポジトリには書いていない）。
+
+**予備の実験で分かったこと（実測）**
+
+- Excel の PDF では IPAex明朝 が ＭＳ ゴシック に置き換わり、10 pt の文字は 9.96 pt、上付きは 6.60 pt で出る（ライブラリの PDF は 10・6.5 pt）。字の幅が変わるので、文字片の左端・右端・中心のどれで比べるかでずれが大きく変わる。
+- PyMuPDF の span の切れ方は2つの PDF で違う（ライブラリは `A`・` `・`=` が別の span、Excel は隣のセルの文字も1つの行・span にまとまることがある。例 `1 +`）。このため Excel 側は span ではなく、同じ向き・同じ基線の文字を読む向きに並べた列の中で、空白を除いた文字列を探す。
+- openpyxl で読むと、写像はすべての値のセルに寄せ方（left・center・right と縦の center）を書いている。改ページは `rowBreaks` の `brk id`（その行の下で改ページ、0 始まりの行番号ではその次の行から次の頁）。
+- 式の左辺・等号・結果・単位は、分数のある式では行の範囲を縦結合して上下中央（FR-021 の確定事項）なので、Excel では PDF の基線の行より下に出る（`W = 7.381125/(2.70/2)` の3行の式のラベル「断面係数」は、文字の箱の上端がライブラリ 180.6 pt・Excel 196.9 pt で約 16 pt。縦の許容の半マス 7.74 pt を超える）。検査はこの差をそのまま報告する（合格に寄せる調整はしない）。
+
+**進捗（RED→GREEN。ログは `.claude/logs/` の同名）**
+
+- ✅ Red 1: `tests/unit/test_compare_xlsx_pdf.py`（37件）を、名前だけの骨組みのスクリプト（`NotImplementedError`）に対して `compare-red-1` 37 failed → 実装して `compare-green-2` 37 passed（途中の `green-1` の1件は期待値の誤り。数値のセルはインクの始まる列から始まる）。
+- ✅ Red 2: 代表例で実際に回すと、表の文字片がセルに見つからず「最も近い基準」に落ちていた（ライブラリの文字の箱の中心は帯の上の行、写像は基線の行にセルを置く）。セルを Excel が印刷した字の中心で引く形に直した（`compare-red-2` 2 failed → `compare-green-4`）。あわせて `SpecialCells` が結合範囲の全セルを返して数値セルの数が合わなかった（22 に対し 65）ので、結合範囲の左上だけを数える。
+- ✅ Red 3（試して戻した）: 片持ち梁の見つからない文字片を、上付きが別の列になるためと推定し、小さい字の列を基の列に足す処理を書いた（`compare-red-3` → `compare-green-5`）。結果が1件も変わらず、実際は Excel の印刷で末尾の字が切れていた（下記）ので、処理を戻し、上付きが別の列になることのテストに置き換えた（`compare-green-7` 39 passed）。
+- ✅ 統合テスト `tests/integration/test_compare_xlsx_pdf_excel.py`（3件、Excel がなければ skip と理由、`GRIDLAYOUTPDF_REQUIRE_EXCEL=1` なら失敗）。数値の列が 11 px だと Excel の `Range.Text` は「###」でなく空になることを実測したので（`compare-excel-red-2` 1 failed）、空の表示も数値が見えないセルとして数える（`compare-excel-green-2` 3 passed）。
+
+**設計判断（実装判断。ユーザー未確認）**
+
+- 文字片: ライブラリの PDF は PyMuPDF の span ごと（空白を除く）。Excel の PDF は span の切れ方が違うので、同じ向きで基線が 1 pt 以内の字を読む向きに並べた列を作り、その中で文字列を探す（隣のセルの字と続いていてもよい）。上付き・下付きは両方とも別の列・別の span になる。
+- 対応付け: 文字列の長いものから（上付きの「3」が「12.375」の「3」を取らないため）、同じ文字列の中では距離（許容で割ったずれの長さ）の近い組から、1つの字は1つの文字片にだけ割り当てる。見つからない文字片は `missing`。
+- ずれ: Excel − ライブラリ（pt）。許容は読む向きに1マス・直交に半マス（横の文字は横 pitch_x・縦 pitch_y/2、回転した縦の文字は縦 pitch_y・横 pitch_x/2。計画の「横1マス・縦半マス」を読む向きで読んだ。回転表の局所グリッドはページのグリッドの縦横入替なので、局所の1列＝ページの pitch_y）。境目ちょうどは許容内（1e-6 pt）。
+- 比べる点: Excel が印刷した字の中心を含むセル（openpyxl で読んだ結合範囲を、そのページのグリッドに置いたもの）の寄せ方で決める。横は左寄せ＝左端・右寄せ＝右端・中央＝中心、縦は上・中・下（回転したセルの寄せ方も紙面の向きで書かれているので、そのまま紙面の軸で使う）。根拠: Excel では IPAex明朝 が別の書体になり字の幅が変わる（実測 ＭＳ ゴシック）。セルが保つのは寄せた側の端なので、その端で比べれば書体の幅の違いがずれに入らない。セルの外の字（ヘッダー・フッター・図の字）は寄せ方が分からないので、軸ごとに左端・中心・右端（上・中・下）のうち最も小さいずれをとる（甘い側の判断なので JSON に `anchor: nearest` と残す）。
+- 数値セル: Excel の `SpecialCells(xlCellTypeConstants, xlNumbers)` の各セル（結合範囲は左上だけ）の `Range.Text` に「#」がある、または空なら記録。数が openpyxl で数えたファイルの数値セルと違えば不合格（`SpecialCells` の失敗で 0 件になって合格するのを防ぐ）。
+- 修復: `DisplayAlerts=False` の `Workbooks.Open` の例外（xlsx-core の実測で修復が要るブックは開かない）と、`%TEMP%` の `error*.xml` の増加。
+- 終了コード: 0 合格、1 検査の不合格、2 引数の誤り、3 Excel がない（理由を標準エラーと JSON に）、4 ライブラリが書けない（strict のエラーなど。例外の型・文面・ずらしと切替えの記録を JSON に）、5 Excel が最後まで動かない（時間切れ・スクリプトの失敗・Excel が残った）。`--no-strict` でも、ずらし・図形への切替えがあれば不合格（`checks.strict`）。プリンターは読むだけで変えない。
+
+**実行結果（2026-10-20、Excel 16.0 build 20326、プリンター「DocuWorks Printer on Ne04:」）**
+
+| 対象 | 修復なし | ページ数（ライブラリ/Excel） | 文字片 | 見つからない | はみ出し | 最大のずれ dx / dy (pt) | ### |
+|---|---|---|---|---|---|---|---|
+| 代表例 grid standard | ✅ | 5 / 5 | 382 | 1 | 279 | 17.248 / 18.961 | 0 |
+| 代表例 grid long | ✅ | 6 / 6 | 434 | 1 | 137 | 17.248 / 18.961 | 0 |
+| 片持ち梁 p1〜37（strict で出せた、ずらし・切替え 0） | ✅ | 37 / 37 | 5430 | 15 | 1067 | 18.5 / 8.851 | 0 |
+
+出力は `build/reports/xlsx-compare/{representative-standard,representative-long,cantilever}/`（`result.json`・`library.pdf`・`workbook.xlsx`・`excel/sheet-NN.pdf`・`side-by-side/page-NN.png`）。3つとも位置の検査で不合格。並べた画像で確かめた原因（写像の挙動。検査の誤りではない）:
+
+1. 表のセル: ライブラリは2マスの行の帯の中央に字を置き、写像は基線の行だけのセルにするので、Excel では約 8.5 pt 下（許容 7.74 pt）。回転表 p30〜37 では横に約 5.5〜6.5 pt（許容 5.4 pt）。
+2. 分数のある式の左辺・等号・結果・単位・ラベルは縦結合の上下中央（FR-021）で、2行の式で約 8.4 pt、3行の式で約 16 pt 下。
+3. Excel の字の幅が広く、結合したセルの末尾の字が印刷で切れる（代表例の「…統一する。」の「。」、片持ち梁 15 片。例 p12「…x 1/2」→「…x 1/」、p16 の「]」、p01 の末尾の「＋」）。
+4. 幅のある関係記号「＝±」が1列右（dx 17.3 pt、片持ち梁 p9〜11）、長いリッチテキストの後ろの添字が右へずれる（最大 18.5 pt、p16・p17）、A3 の頁の右フッター（dx 17.2 pt）。
+
+- lead に中間報告済み。`test_xlsx_map_excel.py::test_number_cells_never_show_hashes` は「#」だけを見ていて空の表示を見逃す（この担当は既存のテストを編集しない）。
+
+**lead 判断の反映（2026-10-20）: FR-021 の縦結合の分類 `fr021_vertical_merge`**
+
+- lead 判断: 分数のある式の左辺・等号・結果・単位・ラベルの縦結合と上下中央は FR-021 の確定事項なので、その文字片は別の分類にし、縦は「Excel の位置がその結合範囲の中にあり、範囲の上下中央から半マス以内」、横は通常どおり1マス以内。他の文字片は今の基準。分類はタグで行い、位置から推定しない。比べるスクリプトの判定は緩めない（空の `Range.Text` の検出も残す）。表のセル・末尾の字の切れ・幅のある関係記号・添字のずれ・A3 のフッター・11 px の空の表示は xlsx-map 担当が写像を直す。
+- ✅ Red 4（`compare-red-4b` 8 failed。最初の `compare-red-4` は定数がなく収集エラーだったので、定数だけ足して本物の失敗を確かめた）→ `compare-green-8` 46 passed。
+- 実装: `text_categories(ScenePage)` が、回していない `Text` 命令ごとに、そのタグの最も内側の `EQUATION_LINE`（写像と同じく `MATH_BLOCK` も）の行の鍵（配置番号・path・part を外した scope。写像の `line_key` と同じ作り方）を作り、その行に分数（`FRACTION` の scope）の中の命令が1つでもあり、自分は分数の外で、行の中の最初の `EQUATION_PART` の part が label・lhs・relation・result_relation・result・unit なら `fr021_vertical_merge`。PDF の各字は、その基線（0.05 pt 以内）上で字の原点より左で始まる最後の命令に属するとし、文字片の全部の字が `fr021_vertical_merge` の命令のものならその分類（混じれば standard、厳しい側）。
+- 判定（`Match.rule`）: `fr021_vertical_merge` の文字片は、Excel の字の中心を含むセルが2行以上の結合なら `merged_range`（横は |dx| ≤ 1マス、縦は Excel の字の中心と結合範囲の上下中央の差 `range_dy` が半マス以内。字の中心はセルを引いた時点で範囲の中）。セルが1行なら縦結合がないので通常の基準（`ordinary`、甘くしない）。どのセルにもなければ `no_cell` で常に不合格。
+- ✅ Red 5（`compare-red-5`）: 代表例で `fr021_vertical_merge` の最大の dy が 285.7 pt になった。候補の順を `range_dy` で並べたため、どの結合範囲でも中央に近い他の式の「=」を取っていた。候補の順は常にライブラリと Excel の位置の差（dx・dy）で決め、判定だけを範囲の規則で行う（`compare-green-10` 47 passed）。
+- JSON: ページごとの `pieces`・`matched`・`max_dx_pt`・`max_dy_pt` は standard の文字片だけ。`fr021_vertical_merge` の件数（pieces・matched・outside）と最大のずれ（max_dx_pt・max_dy_pt＝ライブラリとの差・max_range_dy_pt＝範囲の中央との差）は別の欄。`missing`・`outside` の各項目に `category`・`rule`・`range_dy_pt`。全体の `summary` も同じ分け方。標準出力にも2行に分けて出す。
+- 同じ時刻に xlsx-map 担当が `_map.py` を編集中（表のセルが行の帯に結合されるようになっていた）。単体テストの1件が旧い写像の「数値のセルは1行」を縛っていたので、「グリッドの整数行」に直した。
+- 途中の実行（写像の修正の途中、2026-10-20）: 代表例 standard は standard 364 片中 はみ出し 6（分数の分母・分子の上付きが Excel で 8.2〜10.7 pt 下、A3 の右フッター dx 17.2 pt）・見つからない 0、`fr021_vertical_merge` 18 片はすべて範囲の中央から 2.527 pt 以内（ライブラリとの差は最大 18.961 pt）。写像の修正の後に lead の指示で再実行する。
+
+**Step 10 の比較の不合格への追加の修正（lead 指示 2026-10-20、HEAD c1e9475 の後）**
+
+`scripts/compare_xlsx_pdf.py`（compare 担当、編集していない）の「全文字片が横1マス・縦半マス以内」の不合格を、写像の側で直した。TDD: `xlsxmap-cmp-red`（10 failed）→ 実装 → 単体＋読み戻し合格。
+
+- ✅ 1) 表のセルの文字: 表のセル（`Kind.TABLE_CELL`）の文字片が1つだけの時は、そのセルの枠（頁の metadata の表の part の `cells` の `frame`。Stack・Columns の子の `x_pt`/`y_pt`、`indent_pt`、QuarterTurn の `local_to_part` を辿ってページの pt に直す）が頁のセルの境目に乗っていれば、枠の全セルを結合し、タグの align と valign を写す（回転した表は valign の top を +1 で左・−1 で右へ）。枠が境目から外れる・metadata から分からない時は今までどおり。複数の文字片のセルは各行をその行のセルに置く。
+- ✅ 2) 分数のある式の縦結合は要件どおりで変えていない（比較スクリプトでは `fr021_vertical_merge` に分類され、範囲の中央からのずれは最大 2.5 pt）。
+- ✅ 3) 末尾の字が切れる: 文字列のセル（数値でないもの）も、Excel で要る幅（字ごとに px へ切り上げた幅＋余白×2、上付きは自分の大きさで測る）が入るまで、数値と同じ規則（寄せの反対側へ、中央は両側同時、空いたセルだけ、罫線を越えず）で広げる。広げても足りない時は `XlsxResult.texts_clipped`（kind `text_clipped`、strict の対象外、件数を見て lead が決める）に記録。grid の項は広げない。
+- ✅ 4) 幅のある等号: 等号は、送りの中心が PDF の中心に最も近く、空いている（左辺の取った列を除く）列の範囲に置く（2列以上の等号は anchor の境目をまたぐ）。
+- ✅ 4) 長い行の後ろの添字のずれ（片持ち梁 p16・p17、最大 18.5 pt）の原因: 原子の間の空白。`Row` の既定の間隔 1.5 pt（0.15 em）に、半角の空白（MS Mincho で 5 pt）を入れていたので、空白1つごとに 3.5 pt ずつ右へずれていた。→ 空白は「PDF の間隔がその書体の空白の幅の半分以上」の時だけ入れる（間隔が空白なしより空白ありに近い時。書体に空白の幅がなければ 0.08 em）。IPAex明朝の空白は 2.9 pt なので 1.5 pt の間隔には空白が入り、MS Mincho には入らない。
+- 縦の位置（追加、実装判断・ユーザー未確認）: 1行だけのセルの縦の寄せ方を、PDF の行の箱（ascent〜descent）に最も近い Excel の置き方から選ぶ（上端・下端・中央のうち差が最も小さいもの、同じなら中央）。Excel の置き方は、立った文字は実測（Excel 16.0、MS Mincho 10.5 pt、15.48 pt の行、「DocuWorks Printer」、プリンターの原点のずれを含む。レビュアーの測定）で上寄せの箱の上端がセルの上から 1.38 pt、下寄せの箱の下端がセルの下から 3.5 pt（`EXCEL_TOP_INSET_PT`・`EXCEL_BOTTOM_INSET_PT`）、回転した文字は測っていないので 0.75 pt（`EXCEL_TURNED_INSET_PT`、片持ち梁の比較で合格する推定）。式の分数の外の文字片（左辺・等号・結果・単位・ラベル・右辺）は FR-021 どおり中央のまま。分数の分子・分母（行の上寄り）、見出し、回転表の 10.8 pt の列からはみ出す行（片持ち梁 p30〜37）がこれで合う。普通の段落の行は中央のまま。縦の寄せ方は、分数で下げた後のセルで選ぶ。
+- ⏭ 4) A3 の頁の右フッター「3/5」の dx 17.2 pt の原因: Excel はヘッダー・フッターの右の欄を右の余白の内側に揃える。`fit` が 100% で印刷するために右の余白を `print_fit` の係数（列 1.04、実測の最大より 0.6% 以上大きい安全側の値、Step 7）で縮める（A3 横 67 列: PDF の 62.8 pt → 42.21 pt）ので、右の欄が約 20 pt 右へ出る（A4 では 61.72 → 52.99 pt で約 9 pt、許容内）。写像の側だけでは直せない: 右の余白を PDF の値にすると 98% の印刷になり `print_scale`（strict でエラー）になる。直すには (a) `print_fit` の係数を 21 px の実測（1.0209）に近づける（Step 7 の安全側の判断を変える。他のプリンター・セルの大きさで自動の改ページが入る危険）、(b) `headerFooter` の `alignWithMargins="0"` を書く（`_sheet.py`、Excel での位置は測っていない）のどちらかで、lead・xlsx-core の判断が要る。
+- ⏭ 代表例に残る2件: 分数の中の分数の分母 `'2'`（基線が行の 0.10 の所にあり、字は上の行にはみ出している。上の行は内側の分子が取っているので、行を変えられない）、分子の上付き `'3'`（Excel の上付きの位置と大きさが PDF と違う。セルの上付きは位置を指定できない）。どちらもセルの置き方では直せない。
+- ✅ 5) `###` の COM テスト: 11 px の列で Excel の `Range.Text` が空になる場合も検出する。
+
+**比較スクリプトの結果（プリンター「DocuWorks Printer on Ne04:」、Excel 16.0 build 20326）**
+
+| 対象 | 文字片 | 範囲外（standard） | 最大 dx / dy | 判定 |
+|---|---|---|---|---|
+| 片持ち梁 p1〜37（strict） | 5418 | 0 | 12.72 / 8.12 pt | passed（exit 0） |
+| 代表例 standard（IPAex明朝、grid） | 364 | 4（上の2件と A3 のフッター2件） | 17.25 / 8.52 pt | failed |
+| 代表例 long | 414 | 5（同じ2件とフッター3件） | 17.25 / 8.52 pt | failed |
+
+修正の前は、代表例 standard で範囲外 279 件（最大 dy 19.0 pt）、片持ち梁で 69 件だった（この担当の途中の測定）。
+
+記録の件数（レビュー反映の後、cell_padding は `excel_cell_padding_pt`、文字列のまま残した数値は `texts_clipped` に重ねて記録しない）:
+
+| 対象 | `numbers_as_text` | `texts_clipped` |
+|---|---|---|
+| 片持ち梁 p1〜37（MS Mincho） | 7（表の `537.29` など、罫線に挟まれた2列） | 2（p15 の全幅の行、p36 の `EQ`） |
+| 代表例 standard / long（IPAex明朝、grid） | 2 / 2 | 6 / 43 |
+| 代表例 standard / long（MS Mincho、grid） | 0 / 0 | 4 / 43 |
+
+`texts_clipped` は画面の px で見積もった「切れうる」で、代表例の多くは本文の全幅の行と表の行。比較スクリプトでは印刷でそれらの字がすべて見つかっている（見つからない 0）ので、印刷で切れるかは確認が取れていない。IPAex明朝は Excel の PC に無く ＭＳ ゴシックで印刷されるので、IPAex の字幅による見積もりは当たらない。
+
+**レビュー反映 (2026-10-20, ラウンド 1)**
+
+レビュアー3体（silent-failure、python＋type-design、layout＋計画整合）。集約（重複は高い方）: CRITICAL 1 / HIGH 3 / MEDIUM 12 / LOW 約15。全テストの事前確認 `compare-full`: 3610 passed・2 skipped・9 failed（既知の PNG 正解2件と、cantilever 担当の作業途中の `test_cantilever_p01_37.py` の7件。どちらもこのスクリプトを読み込まない）。Red `compare-r1-red` 42 failed → `compare-r1-green-b` 単体 92 passed、`compare-r1-excel` 統合 5 passed。
+
+- ✅ C1（2体）: `merged_range` の縦の判定が Excel 側の値だけ（字の中心と、その字で引いた結合範囲の中央）で、ライブラリの位置を見ていなかった（レビュアーの実験で 285 pt 離れた範囲でも合格）→ ライブラリの文字片の基線の点が結合範囲の行の上下半マス以内にあることも必須（`library_off_range`）。
+- ✅ H1（2体）: Excel の字がずれてどのセルの外に出ると「最も近い基準」に落ちて幅の差でずれが打ち消された → Excel の字の中心のセルがなければ、ライブラリの文字片の基線の点（写像のセルの決め方。グリフの側へ 0.01 pt）のセルを使う。ヘッダー・フッターは装飾のタグの `align`。最も近い基準は図の字だけになり、ページごとの件数と文字列（`nearest`・`nearest_texts`）を出す。
+- ✅ H2（2体）: 想定外の例外が終了コード 1（不合格と同じ）で JSON も残らなかった → ライブラリの段（build・render_xlsx・render_pdf）だけを 4 にし、それ以降の比較の失敗は新設の終了コード 6（`internal_error` を JSON に）。PowerShell が起動できない・結果が JSON でない・Excel の結果の欄が欠けている・型が違うものは `ExcelError`（5、`validate_excel_report`）。
+- ✅ H3: 合否の検査（positions・strict・数値セルの数の照合）を run の単位で縛るテストがなかった → Excel の代わりの関数に、ずらし・用紙の大きさ・壊れた PDF・数値セルの数のずれ・図形の数のずれ・欄の欠けを入れ、それぞれ不合格・終了コードを確かめる。複数シートの頁の対応付け、改ページの数の合わないブックの拒否、`--no-strict` でずらしがあれば不合格、前回の出力の削除も。
+- ✅ M（読み戻し）: 修復の検査は `Open` の例外だけが実体で修復ログは一度も出ていない → 新しい検査 `readback`: シートごとに Excel の `Shapes.Count` とファイルの drawing の anchor の数（グループは1）が一致すること。docstring を実態に合わせた。
+- ✅ M（上付きの書式）: 上付きが基の大きさで印刷されても合格した → 字の大きさの比（Excel / ライブラリ）が 0.75〜1.33 の外なら不合格（`size`。実測は 9.96/10、6.60/6.5）。
+- ✅ M（向き）: 回転した文字片が横書きの字に当たっても合格しえた → 同じ向きの字だけを候補にする。
+- ✅ M（余った字）: Excel の字のうちどの文字片にも使われなかったものを `extra`（件数と最大 50 件）として出す（合否に含めるかは未決定、検討案）。
+- ✅ M（許容の読み替え）: 回転した文字の許容を読む向きで取る判断はユーザー未確認 → 紙の向きの許容なら不合格になる件数を `outside_if_paper_axes` として出す（Gate 3 で確認してもらう）。
+- ✅ M（引数）: `--pages` の範囲（1〜37）・増加順、`--font ""`、`--variant`/`--font` の有無を `is not None` で、`--timeout` は有限の正 → すべて終了コード 2（テスト11件）。
+- ✅ M（型・不変条件）: `Box`（有限・順序）・`Piece`（空白なし・大きさ・寄せ方）・`Glyph`（1字）・`CellArea`（寄せ方）・`Match`（規則と欄の対応・正の許容）・`Target`（フォルダ名に使える名前。`--font` 由来の `/` などは `_` に）を作る時に検査。`ScenePage`・`FontRegistry`・`XlsxResult` の型、Excel の関数は `Protocol`。`_records` は `dataclasses.fields`。
+- ✅ M（統合テスト）: 結合した数値セルを1回だけ数える・図形の読み戻し・回転した文字片が Excel の同じ向きの字に当たる、を Excel 実機で追加。
+- ✅ M（時間）: PowerShell の区間ごとの秒数を `excel.seconds`・シートごとの `export_seconds`・`numbers_seconds` に出す（片持ち梁で Excel の合計 28 秒）。
+- ✅ L（同ラウンドで対応）: 文字片0個の帳票は positions 不合格、頁の大きさの検査 `page_size`（±1 pt）、`get_text` のフラグを明示（`TEXTFLAGS_RAWDICT`。Excel のセルの切り抜きの外の字は取り出されない。レビュアーが flags=0 なら取れることを確認）、`general` などの寄せ方はエラー（写像は必ず書く）、Excel がない時も前回の出力を消す、PowerShell の後始末は自分のブックだけを閉じ、`Close` の失敗で `Quit` を飛ばさない、PID のファイルがない失敗の報告。
+- 持ち越し（LOW）: 字の列が離れたセルの字を続けてつなぐため、診断の帰属がずれうる（不合格を合格にはしない）／1字の文字片が別のセルの途中の字に当たりうる（推測、実例なし）／統合テストが非公開の `_model`・`_package` を使う／`main` をサブプロセスで動かすテストはない。
+- 統合テストの追加分は Red を先に回していない（`shapes` の欄が前の版になかったので、前の版では KeyError で落ちる）。
+- 現在の写像（xlsx-map 担当の修正の途中）での実行: 代表例 standard は standard 364 片中 はみ出し 4（分子の上付き「3」と内側の分母「2」が dy 8.3・8.5 pt、A3 の右フッター 2頁が右寄せの基準で dx 19.1 pt）・見つからない 0・最も近い基準 6（図のラベル）、`fr021_vertical_merge` 18 片すべて合格（範囲の中央から最大 2.527 pt）。long は standard はみ出し 5。片持ち梁は全検査合格（5418 片、`fr021_vertical_merge` 0 片、紙の向きの許容なら不合格 6 片）。
+
+**レビュー反映（比較の修正, ラウンド C1）**
+
+レビュアー2体（silent-failure＋python、layout＋type-design＋計画整合。陰性対照・COM の実測・比較スクリプトで確かめた）。集約: CRITICAL 1 / HIGH 2 / MEDIUM 6 / LOW 約12。
+
+- ✅ C: 上付き・下付きだけの文字片（`Script(Fraction(...), "2")` の親の単位）で `check_clipped` が `StopIteration`（HEAD では動いた）→ 基の原子が無ければ最初の原子。テスト追加。
+- ✅ H: 幅のある等号の中央寄せが、後から置く左辺の分数の分母の列を取り、分母が8列ずれる → まだ置いていない文字片の予定のセル（全文字片の初めの範囲）も避ける。
+- ✅ H: 1行の式の左辺・等号・結果・単位が 11〜12 pt で上寄せになる（FR-021 の「上下中央」と食い違う）→ 式の分数の外の文字片は中央に固定。
+- ✅ M: 表のセルの余白が Excel の余白と大きく違うと、枠いっぱいにした文字が PDF から 1マス以上ずれる → Excel の寄せ方で枠に置いた位置が PDF から半マス以内の時だけ枠いっぱいにする（`frame_keeps_place`、立った文字）。metadata の辿り方を誤った時に黙って文字が動くことも、これで防ぐ。
+- ✅ M: 数値が `numbers_as_text` と `texts_clipped` に二重に記録される → 文字列のまま残した数値は `texts_clipped` に重ねない（件数の表を直した）。
+- ✅ M: 下寄せの位置の推定（1 px）が実測で約 3 pt 外れる → 立った文字は実測の値（上 1.38・下 3.5 pt）に、回転した文字は推定のまま（上の「縦の位置」）。
+- ✅ M: `cell_frame` の各分岐がテストで縛られていない → Indent した Stack・KeepTogether の中の表、−1 回転の表、分割した表の2頁目と繰り返すヘッダー、端数の Indent の表のテストを追加。
+- ✅ M（計画・文書との食い違い）: DESIGN の「等号は境目の右の列から」（4）、文字列を広げる処理と `texts_clipped`、表のセルを枠いっぱいにすること、縦の寄せ方の選び方、空白の閾値、Excel の置き方の値は、lead が DESIGN（実装判断・ユーザー未確認）と `docs/api.md`（`XlsxResult` の項目と strict の対象外に `texts_clipped`）に載せる必要がある（この担当は DESIGN・api.md を編集しない）。`scripts/compare_xlsx_pdf.py` の result.json は `numbers_as_text` だけを出す（`texts_clipped` も出すかは compare 担当・lead へ）。
+- ✅ L（同ラウンドで対応）: rich text の幅を原子ごとの書体で測る（同じ文字の run が混ざらない）／縦の寄せ方を分数で下げた後のセルで選ぶ／`texts_clipped` の文面を「切れうる」（見積もり）に／記録の型（`_NOTE_KINDS`）と等号の同点（右を取る）のテスト／`_Piece.valign` の型を Literal に／残っていた何もしない代入を削除。
+- 確認: 単体＋読み戻し 198 passed。比較スクリプト: 片持ち梁 p1〜37 は passed（範囲外 0、最大 12.72 / 8.12 pt）、代表例 standard 範囲外 4・long 5（入れ子の分数の分母 `'2'`、分子の上付き `'3'`、A3 のフッター。A3 のフッターの今回の実測は dx 19.14 pt）。
+- 持ち越し（LOW）: `EXCEL_TURNED_INSET_PT` は測っていない／空白の閾値は IPAex明朝で 1.45 pt と Row の間隔 1.5 pt の差が 0.05 pt しかない（Excel では代わりの書体で印刷され、空白の幅が違う）／`texts_clipped` の画面の見積もりと印刷の関係は確認が取れていない。
+
+**レビュー反映 (2026-10-20, ラウンド 2)**
+
+レビュアー2体（silent-failure、python＋type-design＋layout。陰性対照 40 通りで、壊しても通るテストを探した）。集約: CRITICAL 0 / HIGH 2 / MEDIUM 8 / LOW 約19。Red `compare-r2-red` 29 failed・`compare-r2-red-b` 1 failed → `compare-r2-green-e` 単体 125 passed、`compare-r2-excel` 統合 5 passed。
+
+- ✅ H（Excel 実機でレビュアーが確認）: Excel がセルの境目で字を一部切っても、PyMuPDF はその字を取り出し、位置の検査に合格した（`TEXTFLAGS_RAWDICT` で外れるのは切り抜きから完全に外れた字だけ）→ 新しい不合格 `clipped`。各セルに `printable`（Excel が文字を印刷する範囲。読む向きに沿って、1つのセルの立った文字はその寄せ方の空く側へ、次の値のあるセルかグリッドの端まで。結合範囲・数値・回転した文字は自分のセルだけ）を持たせ、照合した Excel の字の箱がその範囲を `CLIP_TOLERANCE_PT` = 1.5 pt 超えて出たら不合格。字はそれぞれ自分の中心のセルで判定する（ライブラリの1つの span「－1.350」が Excel では符号の T と数値の W:X の2つのセルだった。初めは片のセルだけで判定して片持ち梁 p28・p29 などで 46 件の誤検出、画像で切れていないことを確かめて直した、`compare-r2-red-b`）。1.5 pt は Step 8 で実測した印刷の境目のずれ（最大 1.26 pt）を覆う値で、それより小さい切れは検出しない（記録した限界）。実測の根拠: 代表例 long p1 の「す」は箱が 537.14 pt まで、Excel の切り抜きと字のインクの右端がともに 534.12 pt（約 2 pt 切れている）。片持ち梁 p15 の「査」も同じ（536.49 pt に対しインクは 534.125 pt で止まる）。
+- ✅ H: 本番の経路でライブラリの基線の点（`lookup`）を作る処理がテストで縛られていなかった → 横書き・rotate 90・270 の PDF で `lookup`（基線からグリフの側へ 0.01 pt）と大きさを確かめるテスト。
+- ✅ M: 大きさが分からないと黙って合格した → 片か字の大きさが不明なら `size_unknown` で不合格。手で作るテストは補助関数 `P` で 10 pt を渡す。
+- ✅ M: 出力先に書けない時（`--out` が既存のファイル等）に終了コード 1・JSON なしだった → `main` が OSError を受けて終了コード 6 と標準エラー。
+- ✅ M（lead 判断どおりに戻した）: ラウンド1の H の代わりのセル（ライブラリの基線の点）が `fr021_vertical_merge` にも効き、「どのセルにもなければ常に不合格」を緩めていた → `fr021_vertical_merge` の片は Excel の字の中心のセルだけで引く。
+- ✅ M: 合否が `fr021_vertical_merge` の不合格を縛る run 単位のテストがなかった → 分数の行だけの文書を Excel の代わりの関数で写すと、standard は合格のまま `fr021_vertical_merge` だけが `range_dy` で不合格になり positions が不合格になるテスト。ページごとの `outside_count`（standard）・`fr021_vertical_merge.missing` を追加。
+- ✅ M: 分類の2つの条件（part が FR021_PARTS、文字片の全部の字が FR021 の命令）がテストで縛られていなかった → 分数の外の右辺の項（「7×」）が standard、`piece_category` の表のテスト。
+- ✅ M: 「最も近い基準」に落とす対象を位置で決めていた → タグで決める。図（`Kind.FIGURE`）の字だけが最も近い基準、ヘッダー・フッターは装飾の寄せ方（セルより優先）、それ以外でどのセルにもない片は `no_cell` で不合格。
+- ✅ M: どの文字片にも使われなかった Excel の字を合否に入れていなかった → 新しい検査 `no_extra_text`（今の3つの対象では 0 件なので合否は変わらない）。
+- ✅ M: 写像の `texts_clipped` と `dropped` を JSON に書いていなかった → `xlsx.texts_clipped`（頁と内容）・`xlsx.dropped`（件数）。
+- ✅ L（同ラウンドで対応）: 比べたページがない時に `page_size` が合格になった、ページごとに Text の命令があるのに文字片が 0 なら positions 不合格（`text_commands`）、字の命令への割り当てを自己検査（命令ごとに割り当てた字の数がその文字の数と違う、またはどの命令も描いていない字があれば ValueError → 終了コード 6。回転した命令も読む向きで割り当てる）、`CommandInfo` を NamedTuple に、`Match` の不変条件（許容は正の2つ組、範囲の規則は fr021 の片だけ、基準の値、大きさの比）、Excel の結果の各欄の型と負でない数・`hashes` の要素の検査（終了コード 5）、内部エラー時は `checks_complete: false`、ブックの関係（rels）を Type で選び絶対パスの target と外部の関係を扱う、`excel.temp`（PowerShell の `%TEMP%`）を記録、`_rule` の docstring を実態に。
+- 持ち越し（LOW）: 写像の `equation_rows` は分数の外の右辺の項も行に縦結合するので、そういう式では通常の基準で約 8 pt の不合格が出る（厳しい側。今の代表例・片持ち梁にはない。lead の判断が要る）／境目ちょうどに中心がある字のセルは並びの先のものになる（実際の Excel の印刷では起きにくい）／`_paper_outside` が許容から升目を逆算している／字の列が離れたセルの字をつなぐ（診断の帰属）／`main` をサブプロセスで動かすテストはない／統合テストが非公開の `_model` を使う。
+- 現在の写像での実行（xlsx-map 担当の修正の途中の版、Excel 16.0 build 20326、DocuWorks Printer on Ne04:）: 代表例 standard は standard 364 片中 はみ出し 7（段落の行の末尾の字が切れる 3、分子の上付き「3」・内側の分母「2」の dy 8.3・8.5 pt、A3 の右フッター 2 頁の dx 19.1 pt）・`fr021_vertical_merge` 18 片すべて合格。long は standard 414 片中 15。片持ち梁は 5418 片中 1（p15 の結合した段落の末尾「査」が切れる）、ほかの検査はすべて合格。
+
+**レビュー反映 (2026-10-20, ラウンド 3)**
+
+レビュアー2体（silent-failure：Excel の PDF の切り抜きを外して描き直し画素で比べる実験、python＋type-design＋layout：陰性対照 61 通り）。集約（重複は高い方）: CRITICAL 0 / HIGH 1 / MEDIUM 3 / LOW 約16。Red `compare-r3-red` 11 failed → `compare-r3-green` 単体 140 passed、`compare-r3-excel` 統合 5 passed。
+
+- ✅ H: `clipped` は読む向きの切れしか見ていなかった。片持ち梁 p30〜37 の回転表で 183 字のインクが直交する向き（字の頭）に最大 1.53 pt 切れ、代表例の 12 pt の見出しの上端も最大 0.48 pt 切れていたが合格していた（レビュアーが描き直しの画素の差で確認）→ セルの印刷範囲のモデル（`printable`・`CLIP_TOLERANCE_PT`）をやめ、Excel が実際に切ったインクを測る `ClipLoss` にした。Excel の PDF を、そのままと、全ページの内容ストリームと全フォーム XObject から切り抜きの演算子（`W`・`W*`）を除いたものの2通りに CLIP_ZOOM（4 px/pt）・グレーで描き、差が CLIP_LEVEL（64）を超える画素が字の箱の中にあれば、その字（`Glyph.clipped`）と片（`Match.clipped_glyphs`、JSON の `outside[].clipped_glyphs`）を不合格にする。両方の軸と回転した字に効く。切り抜きの除去は字句に分けて行う `without_clipping`（文字列の中の「W n」は触らない。インライン画像 `BI` は安全に飛ばせないので ValueError → 終了コード 6）。
+- ✅ M（2体）: 切れた字の中心が隣の値のあるセルに入ると見逃す、`printable` の分岐がテストで縛られていない → 上のモデルの廃止で解消（関係するテスト3件を、実際の切り抜きを持つ PDF で、行の向き・直交する向き・回転した字の頭の切れを確かめるテストに置き換えた）。
+- ✅ M: タグから片の属性を作る本番の経路（回転 ±1 の割り当て、図・装飾の印）がテストで縛られていない → turns=+1 と −1 の `QuarterTurn` の片が縦で standard、`Figure` の `Label` の片が `figure`、右寄せのフッターの片が `align="right"` のテスト。
+- ✅ L（同ラウンドで対応）: 図の字はセルを引かない（図は図形なので最も近い基準）、`nearest` は図の字だけを数える、`no_cell` の片は JSON の dx・dy を null に、`workbook_shapes` のパッケージに workbook がない時の名前の付いた ValueError と、Type で選ぶ・外部の関係・絶対パスの関係を手で作った zip で確かめるテスト、bool の数・シートなしで開いたの検査のテスト、終了コード 4・5 でも `checks_complete: false`、ライブラリの段の OSError（ファイルが開かれている等）は終了コード 6（出力の失敗）、`TEXT_FLAGS` の注記を実態に（MuPDF が捨てるのは切り抜きから完全に外れた字だけ）、`CommandInfo` の `turns`・`glyphs` を必須に、`Piece.lookup` の要素数の検査、どのセルにもないフッターが位置どおりなら合格するテスト。
+- 持ち越し（LOW）: `xlsx.dropped`（大きさのない図形）は記録だけで合否に入らない（2段目は文字片の検査。線・図形は並べた画像の目視で見る前提を Gate 3 の依頼に書く）／JSON の欄の名前（`missing` は一覧、`missing_count`・`summary.missing` は数）。
+- 時間: 片持ち梁 117 秒（描き直しの比較を含む）、代表例 16〜24 秒。
+- 現在の写像（xlsx-map 担当の修正の途中）での実行: 代表例 standard は standard 364 片中 はみ出し 11（見出し・段落の行の字が切れる 7、分子の上付き「3」・内側の分母「2」の dy 8.3・8.5 pt、A3 の右フッター 2 頁の dx 19.1 pt）、`fr021_vertical_merge` 18 片すべて合格。long は standard 414 片中 19。片持ち梁は 5418 片中 30（回転表 p30〜37 の字の頭が切れる 29、p15 の段落の末尾 1）。見出し「橋脚部材の計算整理」の頭と p30 の「ﾓｰﾒﾝﾄ」の頭が切れていることを、描き直しとの差の画像で確かめた。
+
+**レビュー反映（比較の修正, ラウンド C2〜C4）とループの終了**
+
+- C2（silent-failure＋python＋layout、24 通りの陰性対照、Excel の置き方の独立した実測）: CRITICAL 0 / HIGH 0 / MEDIUM 3 / LOW 7。MEDIUM はどれも「修正をテストが縛っていない」（`planned`、分子・分母を中央に固定しない側、`frame_keeps_place` の縦の判定）→ テストを直した。LOW: 書体の混ざった数値の二重記録、同点のテストを 2 進で正確な格子に、原子ごとの書体で幅を測るテスト、`zip(strict=True)`、定数のコメント（測定条件に標準の書体）。Excel の置き方の実測は 上 1.10〜1.19 pt・下 3.47〜3.76 pt（印刷した罫線から）で、定数と合う。
+- C3（silent-failure＋python、15 通りの陰性対照）: HIGH 1 / MEDIUM 1 / LOW 3。HIGH は C2 の修正の回帰（書体の混ざった数値を広げなくなった）→ rich text の数値も広げ（`check_clipped(record=False)` が足りない理由を返す）、記録は `numbers_as_text` の1件にまとめる。MEDIUM: 下寄せ・中央の縦、中央の横の判定のテストを追加。
+- C4（silent-failure＋python、17 通りの陰性対照）: CRITICAL 0 / HIGH 0 / MEDIUM 1 / LOW 3。MEDIUM は「中央寄せで枠いっぱいになる側」のテストが無い → `test_a_centred_cell_with_even_padding_fills_its_cell` を追加し、横の中央の式を左寄せの式に変えると落ちることをこの担当が確かめた（再レビューはしていない）。LOW: grid の項の rich text の数値の文面、`XlsxResult` の docstring（文字列のまま残した数値は `numbers_as_text` だけ）、`EXCEL_TURNED_INSET_PT` のコメント → 直した。
+- 縦の寄せ方の規則の変更（C3〜C4 の間、lead 了承）: 上寄せ・下寄せは中央より `CROSS_ALIGN_MARGIN_PT`（1 pt）以上近い時だけ。比較スクリプトに新しく入った clipped の検査で、下寄せの 12 pt の見出しと右寄せの回転した行の字が「切れる」と出たため、近い時は字の切れない中央にする。片持ち梁 p30〜37 の回転表は PDF の字が 10.8 pt の列の境目をまたぐ（ローカルの行に基線を 11 pt 前後で置くため約 4.4 pt はみ出す）ので、中央では位置の検査で 63 件が dx 5.5〜6.5 pt（許容 5.4 pt）。lead の判断で写像は中央（切れない方）のまま、回転表は fixture 側（cantilever 担当）で各行の字をローカルの1行に収める。
+- 最終確認（`xlsxmap-cmp-final`）: 単体・openpyxl の読み戻し・Excel COM で 3316 passed。比較スクリプト（「DocuWorks Printer on Ne04:」）: 片持ち梁 p1〜37 は p30〜37 の 63 件（上の回転表）と p15 の clipped 1 件のほかは合格、代表例 long は範囲外 15（clipped 10・入れ子の分母と上付き 2・A3 のフッター 3）。
+
+**全幅の行の clipped の原因（lead の問い、修正はしていない）**
+
+(b)（Excel の字の幅が PDF より広い、正確には PDF の行が Excel のセルの余白の分を残していない）であって、(a)（本文の枠がグリッドより右へ出る）ではない。`profile.body_rect` の右端はどの頁もグリッドの右端と同じ（A4 の基準で 533.28 pt、片持ち梁で 549.36 pt）。
+
+| 行 | PDF の行の右端（送り / インク） | グリッドの右端 | 行の幅（PDF） | Excel で要る幅（字ごとに px へ切り上げた画面の見積もり＋余白 2.4 pt×2） | Excel のセルの幅（画面 / 印刷） |
+|---|---|---|---|---|---|
+| 代表例 long p1・p6 の本文の全幅の行（9件） | 530.88 / 529.1〜530.4 pt | 533.28 pt | 480.00 pt | 508.8 pt | 30 列: 472.5 / 482.4 pt |
+| 代表例 long p1「矩形断面の幅を b、…」 | 533.22 / 532.40 pt | 533.28 pt | 482.34 pt | 511.05 pt | 同上 |
+| 片持ち梁 p15「a) 使用性の照査…」（F 列から） | 531.28 / 530.73 pt | 549.36 pt | 400.00 pt | 424.8 pt | 空いている 25 列: 393.75 / 402.0 pt |
+
+- 代表例の行は PDF の字幅（IPAex明朝）で本文の幅 482.4 pt に 480〜482.3 pt を詰めて組まれ、Excel のセルの内側の余白（片側 2.4 pt）の入る余地がない。印刷のセルの幅は PDF と同じ 482.4 pt でも、余白を引いた 477.6 pt に 480 pt の字は入らない（しかも Excel は IPAex明朝を持たず ＭＳ ゴシックで印刷し、字幅が変わる）。比較スクリプトで切れたのは各行の最後の字1つ。
+- 片持ち梁 p15 の行は、PDF ではグリッドの右端まで 18 pt 余るが、写像が広げられたのは 25 列まで（26 列目以降は他の文字片か罫線が取っている）で、400 pt＋余白 4.8 pt が印刷の 402 pt に入らない。
+- 意見: シートに列を足すのは筋でない（1マス＝1セルと改ページ・印刷の拡大率の前提が崩れ、グリッドの外の列はページの右の余白に印刷される）。PDF 側で、方眼Excel に出す文書は段落の折り返し幅から Excel のセルの余白（`excel_cell_padding_pt` の両側）を引いて組む方が筋（grid の項が余白を列の幅に含めるのと同じ考え方。例: 段落・見出しに、grid の項と同じく Excel の余白を残す指定を足す）。ただし Excel が別の書体で印刷する IPAex明朝では字幅の差が残るので、余白を残しても切れないとは言い切れない（MS Mincho の片持ち梁では字幅は同じ）。
+
+**A3 の右フッターの修正（lead の指示 (1)、2026-10-20）**
+
+lead の許可で、この件に限り `_units.py` を編集した（`_sheet.py` は変更していない）。COM の実測はすべて Excel 16.0 build 20326、アクティブなプリンター「DocuWorks Printer on Ne04:」（設定は変えていない）。
+
+- 原因: Excel はヘッダー・フッターの左・右の欄を余白に揃える（`alignWithMargins` の既定）。写像は 100% にするため右の余白を `print_fit` の段の係数 1.04（12 px・93% の最大 1.0322＋0.6%）で縮めていて、A3 は PDF の 62.8 pt から 42.21 pt、A4 は 61.72 pt から 52.99 pt になっていた。
+- 実測（案の比較、代表例 long の grid 版のシートで右の余白だけを変えた）:
+  - PDF の余白のままでは 100% で収まらない。A4（30 列）は右 61.0 pt で列が次の紙に出て（4 頁）、60.0 pt で収まる。A3（67 列）は 61.5 pt で出て、61.0 pt で収まる。
+  - 案 (b) `alignWithMargins="0"`: 左・右の欄は余白に関係なく紙の端から約 54 pt（0.75 in）に置かれた（右の余白 62.8・42.21 pt のどちらでも、右の欄の右端は紙の右端から 54.9 pt、左の欄は 54.98 pt から）。今の PDF の余白では1マス以内になるが、PDF の余白が 54 pt から離れるほどずれるので、筋でないと判断した。
+  - 案 (a) の基礎データ: 印刷した大きさ（print_pitch.json の 100%）の合計に対して Excel が要った余裕は、12・21 px の 2〜10 列・行で 3.0 pt を超え 4.0 pt 以下、20・30 で 3.0 pt 以下、A4 の基準グリッド 30 列で 2.0 pt 以下、A3 の 67 列で 1.3 pt 以下（游ゴシック 11）。
+  - 段の係数を下げるだけ（1.04 → 規則の下限 1.0384）では A3 の右の余白が約 43.9 pt にしかならず、1マス以内に入らない。
+- 採った案 (a): 100% の判定にだけ、測ったセルの大きさ（11〜30 px）の印刷の大きさを使う。`_units.FULL_SCALE_PRINTED_PT`（2書体×20 幅の列と行、print_pitch.json の 100% の値）、`full_scale_size_pt(sheet, font)` = 印刷の大きさの合計 × `FULL_SCALE_MARGIN`（1.006）＋ `FULL_SCALE_ROOM_PT`（4.5 pt、実測の最大 4.0 pt に 0.5 pt の余裕）。測っていない大きさのセルがあれば None（段の係数だけ）。`print_fit` は maximum が 100 で段の判定が 100 未満の時、幅と高さのそれぞれが段の係数か `full_scale_size_pt` のどちらかで収まれば 100%（報告する係数はその大きさ／シートの大きさ）。写像の `fit()` は軸ごとに2つの規則の小さい方まで余白を縮める。`_map.PRINTED_COLUMN_PT`・`PRINTED_ROW_PT` は `FULL_SCALE_PRINTED_PT` の游ゴシックの値を使う（同じ数の二重定義をやめた）。
+- 結果: A4 の右の余白 54.6 pt、A3 は 51.34 pt、下の余白はどちらも 50.86 pt（前は 47.04 pt）。全ページ 100%、頁の数は改ページどおり（比較スクリプトの page_count 合格、追加の統合テストで各シート1頁）。ヘッダー・フッターの PDF からの横のずれ（A4 / A3）: 左 1.22 / 0.98 pt、中央 3.28 / 5.08 pt、右 6.30 / 10.02 pt（1マス 16.08 pt）。比較スクリプトの範囲外は、代表例（IPAex明朝、grid）standard 7 → 5、long 15 → 12（A3 のフッターがなくなった。残りは全幅の行の clipped と、入れ子の分母・上付きの dy）。
+- テスト（TDD）: Red は `xlsxmap-a3-red-unit2`（8 failed。初回は関数が無く collection error だったので、空の関数を置いて実際の失敗を確かめた）、`xlsxmap-a3-red-map`（2 failed）、`xlsxmap-a3-red-com`（A3 の右寄せで dx 19.1 pt の failed）。Green は単体 `xlsxmap-a3-green2` 3323 passed、統合（`GRIDLAYOUTPDF_REQUIRE_EXCEL=1`）`xlsxmap-a3-green-com` 488 passed・2 skipped（skip は従来どおり DocuWorks PDF の最悪条件の2件）。Step 7 の統合テスト `test_xlsx_excel_core.py` は全件合格。
+  - 新設: `tests/unit/test_xlsx_full_scale.py`（表が print_pitch.json の 100% と一致、余裕の計算、測っていない大きさは None、100% の境目、段の係数で収まる頁は従来どおり、maximum 99 では使わない、軸ごとにどちらの規則でもよい）。`test_xlsx_map.py` に余白の縮め方のテスト。`test_xlsx_map_excel.py` に、`full_scale_size_pt` ちょうどの印刷範囲で 2書体×12・21・30 px×2・20 列（行）が1枚に収まるテストと、左・中央・右のヘッダー・フッターが A4・A3 で PDF から1マス以内のテスト。
+  - 陰性対照: `FULL_SCALE_ROOM_PT` を 2.0 にすると、上の統合テストで 24 件中 13 件が2枚に分かれて落ちた（`xlsxmap-a3-negctl`）。
+  - Step 7 の単体テストの変更（理由: 旧い限界 52.99・42.21 pt を値として固定していたため）: `test_xlsx_units.py` の `test_reference_a3_landscape_grid_prints_at_100_percent_with_margins_left_for_the_print_factor`（99% になる余白を 42.3 から 51.35 pt に）と `test_handoff_margins_for_100_percent_are_exact_upper_limits`（限界を 54.6・51.34 pt、下 50.86 pt に）。`test_xlsx_map.py` の `test_pages_that_print_under_100_percent_are_recorded` は、50 行の格子が新しい規則で 100% になるので、54 行の格子に変えた。
+- レビュー（ImplementationLoop、ラウンド F1、レビュアー1体: silent-failure＋python＋計画整合、浮動小数の走査 17,694 通り）: CRITICAL 0 / HIGH 0 / MEDIUM 2 / LOW 8。
+  - ✅ M1: 0.01 pt に切り捨てた余白が 0.01 の倍数ちょうどの時、印刷範囲を引き算で戻すと 1 ulp 足りず 99% になる（A3 横、18 px×29 列で右 732.57 pt）→ 切り捨ての前に `_HUNDREDTH_GUARD`（1e-6 ×0.01 pt）を引く。その例を写像の単体テストにした（Red `xlsxmap-a3-r1-red`: strict で print_scale 99% → 右 732.56 pt・100%）。
+  - ✅ M2（記録で対応、lead の判断に残す）: 段の係数は 100% で 2〜10 セルに要る 3〜4 pt の余裕を含まないのに、軸ごとの「どちらか」でそれを受け入れ、新しいテストがそれを期待値にしていた → 段の係数で 100% を認める挙動は Step 7 のまま（変えると Step 7 の `_worst_measured_cases` の 100% の場合と `test_worst_case_generator_skips_conditions_print_fit_cannot_return` が変わる）。テストを、幅が段の係数で十分に収まる 30 列の組に変え、`print_fit` の docstring に限界を書いた。数セルだけの印刷範囲を段の係数の端で切った時に2枚に分かれるかは Excel で確かめていない（確認が取れていない）。
+  - ✅ L: `fit()` の docstring（小さい方）、maximum が 100 の時だけ実測の大きさを使うこと（maximum=99 で 99 未満になりうる）を docstring に、テストのコメント、「20 and 30 cells」、新しい2つの COM テストは Step 7 と同じく測っていないプリンターで xfail、エラー文と px の求め方（`column_pixels`）。
+  - 申し送り（L4、lead）: 余裕の実測の生データ（ページ数の JSON）はスクラッチ（`scratchpad/xlsxmap/ecom1/pages.json`・`ecom2/pages.json`・`fcom1`）にだけあり、`scripts/xlsx_probe/` に測定スクリプトと JSON はない。L8: `PrintFit` の係数は実測の規則では「要る大きさ／シートの大きさ」（4.5 pt を含む）。使うのは `_map.fit` だけ。
+  - 確認: 単体 `xlsxmap-a3-r1-green` 3334 passed、COM `xlsxmap-a3-r1-com`（test_xlsx_map_excel.py）13 passed、Step 7 の COM `xlsxmap-a3-r1-core` 33 passed・2 skipped。
+- ラウンド F2（同じレビュアー、F1 の修正の確認。2つの走査をやり直して失敗 0）: CRITICAL 0 / HIGH 0 / MEDIUM 0 / LOW 1。LOW: 新しい COM テストのプリンターの判定が DocuWorks PDF も「測った」扱い → 判定を「DocuWorks Printer on 」だけにし、docstring に DocuWorks PDF は 21 px の列の間隔だけと書いた（`xlsxmap-a3-r2-com` 13 passed）。
+- ループの終了: 2 ラウンド（CRITICAL / HIGH / MEDIUM: F1 0/0/2 → F2 0/0/0）。
+- 確認が取れていないこと（A3 のフッター）: DocuWorks PDF では 21 px の列が 100% で同じ 16.08 pt の間隔で印刷されることだけを見ていて、余裕と他の大きさは測っていない。ほかのプリンターのドライバーも測っていない（その場合に列が次の紙に出るおそれは、段の係数だけの時より大きい）。ＭＳ 明朝 10.5 の余裕は境目のテスト（4.5 pt で1枚）だけで、要る余裕の大きさは測っていない。
+
+**MS Mincho の代表例の測定（lead の指示 (2)、修正はしていない）**
+
+比較スクリプト `--example representative --variant standard|long --font "MS Mincho"`（grid 版、上の A3 のフッターの修正の後の写像）。Excel の PDF の書体は MS-Mincho（IPAex明朝の時は ＭＳ ゴシックと Calibri）で、書体は PDF と同じ。
+
+| 対象 | 範囲外（standard の片） | うち全幅・表の行の clipped | ほか | `texts_clipped` | `numbers_as_text` |
+|---|---|---|---|---|---|
+| standard（MS Mincho） | 4 / 364 | 2（p1 A2、p5 A2） | 上付き「3」L53・入れ子の分母「2」M58 の dy 8.1・8.5 pt | 4（p1 A2・A6、p5 A2、p2 の「β2」N73） | 0 |
+| long（MS Mincho） | 13 / 414 | 11（p1 A2・A7・A8・A9、p2 の表の「鉛直方向の作用値」A66・「水平方向の作用値」A69、p6 A2〜A6） | 同じ dy 2件 | 43（p1 の5行、p2 の3件、A3 の p3〜p5 の BA 列 30件、p6 の5行） | 0 |
+| 比較: standard（IPAex明朝） | 5 / 364 | 3 | 同じ dy 2件 | 6 | 2 |
+| 比較: long（IPAex明朝） | 12 / 414 | 10 | 同じ dy 2件 | 43 | 2 |
+
+- 書体が同じでも、全幅の行の末尾の字の切れは残る（standard 2 行、long 9 行。どれも最後の字1つ）。上の原因の分析（PDF の行が Excel のセルの余白を残していない）と合う。
+- long の p2 の表のラベル2件は MS Mincho の時だけ切れた（IPAex明朝では切れていない）。
+- `texts_clipped` の見積もりのうち、A3 の BA 列の 30 件、p1 A6、p2 の「β2」は、比較スクリプトでは切れていない（見積もりは画面の px による上側の見積もり）。
+
+**レビュー反映 (2026-10-20, ラウンド 4)**
+
+レビュアー1体（silent-failure＋python。Excel 実機の実験と陰性対照）。CRITICAL 0 / HIGH 1 / MEDIUM 3 / LOW 10。3つの実出力の `clipped` 119 字はすべて本当に切れており（誤った不合格 0）、字の箱の外の差は 0 だった。Red `compare-r4-red` 11 failed（最初の版はテストの補助関数が画素の配列を字ごとに写して止まらず、止めて直した）→ `compare-r4-green-b` 単体 147 passed、`compare-r4-excel` 統合 5 passed。
+
+- ✅ H: run の単位で ClipLoss が使われていることを縛るテストがなかった（本番の呼び出しを外しても全件合格）→ Excel の代わりの関数に `clip=`（頁をフォーム XObject として切り抜きを通して見せる）を加え、最初の段落の最後の字「元」を切ると、その片が `clipped`・`clipped_glyphs == ["元"]` で positions が不合格になるテスト。これで、フォームの /BBox も切り抜きになることが分かり（`show_pdf_page` は W ではなく /BBox で切る）、写しでは全フォームの /BBox も広げるようにした。
+- ✅ M（判定を緩めない側で直した）: 4 px/pt のページ全体の描画では 0.08〜0.19 pt の切れを見逃し、画素の位相で結果が変わった → 字の箱ごとに 16 px/pt で描く（`ClipPage.clipped`、表示リストを頁ごとに1度作る）。0.3 pt の切れを位相 0・1/16・1/8 pt で見つけ、0.3 pt 上なら見つけないテスト。CLIP_LEVEL 64 の根拠（縁の画素でインクが全部内側なら差は 255 c (1 − c) ≤ 63.75、実測の最大 46）を注記。代表例と片持ち梁の現在の出力で、レビュアーの頁全体の描き直し（6 px/pt）と切れた字の数が一致した（代表例 3、片持ち梁 1）。
+- ✅ M: 切り抜きで取り出されなくなった字のインクが、隣のセルの字の切れとして報告された（Excel 実機でレビュアーが確認）→ 切り抜きを外した写しにだけある字を `ClipPage.dropped` とし、頁の JSON に `clipped_out`（字と箱）・`clipped_out_count`、全体の `summary.clipped_out` に出す。1字でもあれば positions を不合格に。隣の字の判定では、それらの字の箱の中の差を数えない。`TEXT_FLAGS` の注記を実測に合わせた（Excel の PDF では中心が切り抜きの外の字は取り出されない。合成の PDF では取り出されたので、テストは字全体が外にある場合で確かめる）。
+- ✅ M: 複数の内容ストリームとフォームの切り抜きの除去がテストで縛られていなかった → 切り抜き・字・切り抜きの終わりが別々の内容ストリームにある頁のテスト、フォームは上の run のテスト。
+- ✅ L（同ラウンドで対応）: `workbook_shapes` のテストを、別の関係が先にある `_rels/.rels`・絶対パスの drawing・パッケージの外を指す外部の関係・先に来る vmlDrawing で縛った、出力の OSError と Excel がない時も `checks_complete: false`、`without_clipping` の辞書（`<</ActualText (a>b W n)>>`）のテスト、`no_cell` の片を頁の最大のずれから外す、`_compare` の変数名の取り違えを直した、ClipLoss の作成に失敗した時に開いた PDF を閉じる。
+- 持ち越し（LOW）: ライブラリの段の OSError は入力の欠け（画像ファイルがない等）も終了コード 6（出力の失敗）として報告する（型と文面は JSON に残る）。
+- 時間: 片持ち梁 68 秒、代表例 21〜28 秒。
+- 現在の写像（xlsx-map 担当の修正の途中の版）での実行: 代表例 standard は standard 364 片中 はみ出し 7（段落の行の末尾の字が切れる 3、分子の上付き「3」・内側の分母「2」の dy 8.3・8.5 pt、A3 の右フッター 2 頁の dx 19.1 pt）、`fr021_vertical_merge` 18 片すべて合格。long は standard 414 片中 15。片持ち梁は 5418 片中 80（回転表 p30〜37 の文字が直交する向きに 8.4〜8.6 pt、許容 5.4 pt が 79、p15 の段落の末尾が切れる 1）。見出しの頭の切れと回転表の字の頭の切れは、この版の写像ではなくなっていた（描き直しの比較でも 0）。
+
+**レビュー反映 (2026-10-20, ラウンド 5)**
+
+レビュアー1体（silent-failure＋python。実出力の頁全体の描き直し 8 px/pt との照合、Excel 実機、陰性対照）。CRITICAL 0 / HIGH 0 / MEDIUM 3 / LOW 7。実出力の clipped は描き直しの比較と完全に一致（standard 3・long 10・cantilever 1 字、clipped_out 0、字の箱の外の差 0）、CLIP_ZOOM 4〜16・CLIP_LEVEL 0〜128 で実出力の結果は変わらなかった。Excel 実機で 30 pt のセルの D が clipped、E〜P が clipped_out、隣の x は誤検出なし。Red `compare-r5-red-b` 3 failed → `compare-r5-green` 単体 156 passed、`compare-r5-excel` 統合（下）。
+
+- ✅ M（3件、どれもラウンド4の修正がテストで縛られていなかった）: 16 px/pt と 64 → 0.1 pt の切れを位相 0・1/16・1/8 pt で見つけるテストを追加。`clipped_out` を positions の不合格に入れたこと → Excel の代わりの関数で段落の末尾を切り抜きの完全に外へ出す run のテストと、空の切り抜きの中に見えない字を足すと（missing・extra は 0 のまま）`clipped_out` だけで positions が不合格になるテスト。後の内容ストリームとフォームの中の切り抜き → 空のストリームを先に置いた頁、切り抜きを持つ頁をフォームとして写した頁、それをさらに写した入れ子の頁で、C が clipped・D が clipped_out になるテスト。
+- 陰性対照（この担当が実施、`compare_xlsx_pdf.py` の写しを1か所ずつ壊す）: CLIP_ZOOM 4・CLIP_LEVEL 200・positions から clipped_out を外す・最初の内容ストリームだけ処理する・フォームを処理しない・/BBox を広げない・開けない時の未検査を False にする、の7通りすべてで単体テストが落ちた（壊す前は全件合格）。
+- ✅ L（同ラウンドで対応）: `TEXT_FLAGS` の注記の原因（TEXT_CLIP の bit。この bit で切り抜きの外の字が取り出されないことを確かめるテスト）、同じ字が続く時の clipped_out の照合のテスト、ClipLoss の作成失敗で PDF を閉じるテスト、Excel が開けなかった時は調べなかった検査を null・`checks_complete: false` に、docstring に clipped と clipped_out を記載、`_summary` の欠けた欄を黙って 0 にしない、照合の鍵を tuple に、空行、面積のない字の箱は ValueError（切れていないとみなさない）。
+- 持ち越し（LOW）: clipped_out の字の箱に丸ごと覆われる字は自分の切れを判定できない（その頁は clipped_out で必ず不合格になるので合否は変わらない）／字の箱の外の差は見ていない（実出力では 0）。
