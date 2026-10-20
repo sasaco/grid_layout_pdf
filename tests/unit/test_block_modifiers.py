@@ -99,6 +99,13 @@ def test_indent_shifts_child_and_reduces_its_measurement_width(context):
     assert measure_block(api.Indent(child, 0), context, 100).commands[0] == Line(1, 2, 99, 2)
 
 
+def test_nested_indents_record_the_whole_shift(context):
+    child = WidthBlock((1, 2), "body")
+    result = measure_block(api.Indent(api.Indent(child, 20), 30), context, 100)
+    assert result.commands[0] == Line(51, 2, 99, 2)
+    assert [part.metadata["indent_pt"] for part in result.parts] == [50, 50]
+
+
 @pytest.mark.parametrize("left", [-1, float("nan"), float("inf"), True, "1"])
 def test_indent_rejects_invalid_offsets(left):
     with pytest.raises(ValueError, match="left"):

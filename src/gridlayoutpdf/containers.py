@@ -177,7 +177,8 @@ class Indent:
     """Measure a block ``left`` pt narrower and shift it right by that amount.
 
     The offset is in points from the block's own left edge, independent of the
-    grid columns. Every part records it as ``indent_pt`` metadata.
+    grid columns. Every part records the whole shift (nested Indents add up)
+    as ``indent_pt`` metadata.
     """
 
     block: Block
@@ -203,7 +204,9 @@ class Indent:
         child = measure_child(self.block, context, available_width - self.left, f"{location}.block")
 
         def shifted(parts: tuple[LayoutPart, ...]) -> tuple[LayoutPart, ...]:
-            return tuple(replace(part, metadata={**part.metadata, "indent_pt": self.left},
+            # A nested Indent already shifted the part; indent_pt is the whole shift.
+            return tuple(replace(part, metadata={**part.metadata,
+                                                 "indent_pt": part.metadata.get("indent_pt", 0.0) + self.left},
                                  **{name: tuple(command.translated(self.left, 0)
                                                 for command in getattr(part, name))
                                     for name in ("commands", *EDGE_COMMANDS)})
