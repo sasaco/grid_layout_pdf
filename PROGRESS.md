@@ -3,6 +3,28 @@
 > Auto-maintained by /checkpointing. Shows the most recent 5 checkpoints (newest first).
 > Full checkpoints live in `.claude/checkpoints/` (git-ignored).
 
+## [2026-10-20-090259](.claude/checkpoints/2026-10-20-090259.md)
+
+### 何をしたのか
+
+方眼Excel 出力（FR-021〜027、計画 `.claude/docs/plans/grid-excel-output.md`）を feature/grid-excel-output で Step 1〜10 まで実装し、Gate 1〜4 を通過した。書体名での指定と IPAex の同梱（FR-024）、文字サイズの 0.5 pt 刻み（FR-023）、標準ライブラリで .xlsx を書く層（ADR-0001）、Excel の罫線の種類と辺ごとの罫線（FR-022・026）、描画命令の意味のタグ、数値セルの見分け、項の列のグリッド揃え（FR-025）、ScenePage から方眼Excel への写像と strict、Excel から書き出した PDF との比較スクリプト、片持ち梁 p1〜37 の新しい決まりでの作り直し（FR-027）を行った。PNG 正解（片持ち梁 通常37枚・代表例 標準5枚）を作り直して登録し、版を 0.2.0 にした。最終の全件は 3838 passed・2 skipped、カバレッジ 98.2%。最新コミットは 2e1b742（未 push）。この期間には、それより前に main で汎用部品・SideRule（FR-020）・CellLines.first_baseline などのコミットもある。
+
+### どういうやり取りをユーザーと行ったのか
+
+2026-10-20 にユーザーが計画を承認し（新しいブランチで、TDD と parallel-agent-dev）、作業中は「continue」で再開した。p30〜37 の回転表が A4 のグリッドの縦横入替に収まらない件では、ユーザーが「p30〜37だけ別グリッド」を選んだ。Gate 3 の質問ツールは拒否されたため文章で4点（全幅の行の最後の字の切れは制限として記録、上付き・入れ子の分母のずれは受入れ、並べた画像の目視、途中のコミットの履歴は残す）を示し、ユーザーが「承認」と答えた。Gate 4 の PNG 正解の候補（片持ち梁 74枚・代表例）もユーザーが「承認」した。
+
+### どうやったのか
+
+lead が依存の順に担当（grid-terms・xlsx-map・cantilever・compare）へ所有ファイルを分けて並行に実装させ、各担当は TDD と ImplementationLoop で MEDIUM 以上を0にした。lead は工程の境目ごとに全件を自分で実行した。Excel の印刷の寸法（列 16.08/21、行 15.48/21 pt/px、セルの余白 2.4 pt）を Excel COM で実測し、行・列の幅の px の配り方を決めた。比較は `scripts/compare_xlsx_pdf.py`（Excel 16.0、DocuWorks Printer）で行い、決定は update_design.py で DESIGN.md に追記した。片持ち梁の正解は render.py の staging → 目視の記録 → activate の手順で `versions/20261020T084235Z-5654d55613454fceb14d796e01cdf09b/` を有効化してから登録した。
+
+### 途中でどういう課題が起こったのか
+
+回転表が A4 のグリッドの縦横入替では 38/31 局所行であふれ、停止して報告し、ユーザーの選択で別グリッドにした。私が xlsx-map 担当に画面の px に揃えるよう誤って指示し、担当の指摘で印刷の実測の px に改めた。入れ子の Indent の indent_pt が外側だけだった不具合を TDD で直した。担当がステージした deferred.py の削除が私の別のコミット（89bba39）に混ざり、89bba39〜02e7f6e では片持ち梁のテストが動かない（ユーザー承認で履歴は書き換えない。以後は `git commit -- <paths>` を使う）。Excel の印刷で全幅の行の最後の字が切れる件と、上付き・入れ子の分母の 8.3〜8.5 pt のずれは制限として残った。版を上げると pyproject.toml・uv.lock が片持ち梁の正解の入力 hash に入るため、候補を作り直した。
+
+### 将来のアクション
+
+feature/grid-excel-output の push と main への統合（PR）はユーザーの指示を待つ。持ち越しの LOW: packed の項に許容差を設けるか、grid_fallbacks が最上位しか見ない点、Table(padding=0) と QuarterTurn の未検査の組合せ、片持ち梁の builder が非公開の `_units` を読む点（公開関数が要る）、結果だけの行の最大 4.4 列の隙間、p10・p12・p13 の揃えの残り、DESIGN の FR-026 の「Rule」と fixture の SideRule の表記の差。Python 3.12 環境での 0.2.0 の wheel の導入確認は未実施。外枠の Excel の medium 罫線は PDF より太く印刷される。
+
 ## [2026-10-17-045132](.claude/checkpoints/2026-10-17-045132.md)
 
 ### 何をしたのか

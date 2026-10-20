@@ -369,3 +369,20 @@ APP側にも並行JRSNAP統合あり。最新境界はcli._render_reports/prepar
 ### Boundaries and Next
 
 原本PDF・書体・既存golden画像・fixture原稿・uv.lockは変更していない。コミットと外部公開は未実施。残件として、MeasuredBlock.splitの断片複製が1頁あたりO(残り部品)である点（公開APIを変えずに消すには非検証コンストラクタが必要）と、commandのtranslatedが毎回再検証する点（ulp差を生む恐れがあるため算術は変更しない）を保持する。FontRegistry.measureのメモ化は現状1.3倍で未採用。
+
+---
+
+## Current Feature: Grid Excel output (FR-021〜027) completed
+<!-- orchestra:block-id: grid-excel-output-20261020 -->
+
+### Status
+
+2026-10-20 feature/grid-excel-output で計画 docs/plans/grid-excel-output.md の Step 1〜10 を完了し、Gate 1〜4（計画承認、37頁の固定、Excel 比較と目視、PNG 正解の承認・全件・uv build）を通過した。全件 grid-excel-final 3838 passed・2 skipped、カバレッジ 98.2%。版 0.2.0。最新コミット 2e1b742、未 push。
+
+### Artifacts
+
+計画 docs/plans/grid-excel-output.md、実行記録 docs/plans/grid-excel-output-execution.md、要件 docs/DESIGN.md FR-021〜027 と Key Decisions、受入 ../docs/validation.md の「方眼Excel（FR-021〜027）」、比較 ../scripts/compare_xlsx_pdf.py、片持ち梁の有効な版 build/reports/cantilever-p01-37/versions/20261020T084235Z-5654d55613454fceb14d796e01cdf09b/。
+
+### Next
+
+push と main への統合はユーザーの指示を待つ。持ち越しの LOW（packed の許容差、grid_fallbacks の最上位だけの検査、Table(padding=0)×QuarterTurn、builder の _units 依存、結果だけの行の隙間、p10・p12・p13 の揃え、FR-026 の Rule/SideRule の表記）と、Python 3.12 での 0.2.0 wheel の確認は未対応。途中のコミット 89bba39〜02e7f6e は片持ち梁のテストが動かないが、ユーザー承認で履歴は残す。
