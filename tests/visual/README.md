@@ -67,3 +67,10 @@ uv run --locked --extra dev python -X utf8 .claude/skills/_shared/run_tests.py -
 意図した変更時も、上記代表帳票と同じく、原因の確認・新候補への出力・全74画像の目視・hashを指定した承認・通常37枚の登録の順を守ります。原本の表示値、固定37頁、原寸図、頁番号省略の条件は画像回帰と別に独立検査します。
 
 修正版は`20261017T023053Z-a954761644604bd1a289b5fcdd9f20d1`です。全体ゲート`cantilever-appearance-final-full`で画像回帰を含む **1738件合格（107.30秒）**。78成果物hashをmanifestのapprovalへ、原稿・独立期待値・図・原本・MS明朝/MSゴシック・実装など128入力hashをsource_inputsへ保存しています。新たな全頁目視記録は`build/reports/cantilever-p01-37/appearance-correction-visual-review.json`です。原本との文字の横位置・基線・字形・行高検査を通過してから登録しており、旧基準の自動更新による合格ではありません。既存の代表帳票5頁goldenは変更していません。
+
+## 方眼Excel の作業での作り直し（2026-10-20）
+
+feature/grid-excel-output（FR-021〜027）で描き方の決まりを改めたため、両方の正解を作り直しました。ユーザーが Gate 4 で候補を目視して承認した後にだけ登録しています。
+
+- 片持ち梁: FR-027 の新しい決まりで全37ページを組み直したため、37ページとも画素が変わりました。p30〜37 は横 10.8・縦 14.52 pt のグリッドの縦横入替で組みます（ユーザーの選択）。候補の通常・grid 74枚を目視の対象とし、`build/reports/cantilever-p01-37/versions/20261020T084235Z-5654d55613454fceb14d796e01cdf09b/` を有効化してから通常37枚を登録しました。目視の記録は `build/reports/cantilever-p01-37/grid-excel-output-visual-review.json` です。
+- 代表帳票: 標準版は5ページのままです。表の行の高さをグリッドに揃えた変更（Step 4）で p1・p3・p4 が変わり、p2・p5 は画素が同じです。承認の記録は `.claude/logs/grid-excel-output-visual-approval.json` で、標準・長い版の通常・grid の全画像の hash を持ちます。

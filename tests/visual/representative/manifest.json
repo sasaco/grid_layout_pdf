@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "approval": {
-    "reviewer": "root",
-    "date": "2026-10-16",
-    "decision": "approved for representative visual baseline",
-    "record": ".claude/logs/lead-visual-approval.json",
-    "record_sha256": "ee9792e54a726b2ec0ca6e9f7da1a4418fe4bde815e2721c31260cbe9ac17f63"
+    "reviewer": "user (Gate 4 承認, 2026-10-20)",
+    "date": "2026-10-20",
+    "decision": "approved for representative visual baseline (grid-excel-output Gate 4)",
+    "record": ".claude/logs/grid-excel-output-visual-approval.json",
+    "record_sha256": "d7662bbddd174c3f88fae9be281d8f35b5fcc7a43e43b99a41a017aa064de252"
   },
   "report": {
     "example": "examples/representative_report.py",
@@ -33,9 +33,9 @@
   "pages": [
     {
       "file": "representative-report-page-1.png",
-      "approved_source": "build/reports/representative/standard/previews/representative-report-page-1.png",
-      "sha256": "72690150b65e6c20241203eb4b941bde4fb1505dc8df069c0f2b975ddd53efbe",
-      "pixel_sha256": "d300a0ba1e441df87d7985f617a4f50333ab211e8a914ec7811b61ff237840df",
+      "approved_source": "build/reports/visual-candidate/standard/previews/representative-report-page-1.png",
+      "sha256": "478e9506dff31c47443485a376202fb18a7ebb46e459e7470f825596f35ac2ec",
+      "pixel_sha256": "3a4aed1d86b40ca04d0a64d95dc6aaa9161d3641be10078bf86317f2ba57b8c5",
       "size": [
         893,
         1263
@@ -44,7 +44,7 @@
     },
     {
       "file": "representative-report-page-2.png",
-      "approved_source": "build/reports/representative/standard/previews/representative-report-page-2.png",
+      "approved_source": "build/reports/visual-candidate/standard/previews/representative-report-page-2.png",
       "sha256": "c1eb0fa3c2154485fa2b3637d4297acbe3529a3203091082eff37a38f0edbb56",
       "pixel_sha256": "9fd06e6d5d4ed20d408e587853108c5f589598b6fb7ff1e4d84f926403df9d6a",
       "size": [
@@ -55,9 +55,9 @@
     },
     {
       "file": "representative-report-page-3.png",
-      "approved_source": "build/reports/representative/standard/previews/representative-report-page-3.png",
-      "sha256": "d8646d9d1c31f15314075808c04bb45bfcf6cd99dfc1f028678199a43ea1c826",
-      "pixel_sha256": "7f631fea6ebdc9d3fa17675302b7c01cac668a41ca38683bb6abbc351fc58bc7",
+      "approved_source": "build/reports/visual-candidate/standard/previews/representative-report-page-3.png",
+      "sha256": "d8bd0e9fa48974691cd14e726fc262ac5627859f40348a6c5da2a83c55438d7c",
+      "pixel_sha256": "e211582a86c058d8c81d9720740dcc206b828c4d2e4ef8074a90ab9bbd52cf97",
       "size": [
         1787,
         1263
@@ -66,9 +66,9 @@
     },
     {
       "file": "representative-report-page-4.png",
-      "approved_source": "build/reports/representative/standard/previews/representative-report-page-4.png",
-      "sha256": "aacab951433f7ccc25a6939a1069ae8ccaf2d5f1827a2fc9893f958ba2974d74",
-      "pixel_sha256": "558a4ba77865191104e7b6f41a3311bc28acd0073d4539f777dfe3c426e44165",
+      "approved_source": "build/reports/visual-candidate/standard/previews/representative-report-page-4.png",
+      "sha256": "145e8ef34e9eadeef60f6cc554713cfef52e58455ab3bf5959c8b719f8c8fa86",
+      "pixel_sha256": "790acbc0218828d00818c0b2bc225c59a6cd892dc56ce2f9320e50c475c4de5e",
       "size": [
         1787,
         1263
@@ -77,7 +77,7 @@
     },
     {
       "file": "representative-report-page-5.png",
-      "approved_source": "build/reports/representative/standard/previews/representative-report-page-5.png",
+      "approved_source": "build/reports/visual-candidate/standard/previews/representative-report-page-5.png",
       "sha256": "b34b2738144ecff6cec7a6ddd7d463fc5a05e98d4b684784dbb36792f7ffa89a",
       "pixel_sha256": "a98bc252ed518cc0c23e4af9233362324118a76039b6c3fef61462a05e35ba48",
       "size": [

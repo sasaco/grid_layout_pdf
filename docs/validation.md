@@ -57,6 +57,12 @@ Windowsの検証ではPopplerが配置されていないため、PyMuPDFを画�
 | FR-010 式の折返し | wrap_math / EquationGroup。`test_equation_wrap.py`、項・演算子の保存、強制改行、結果行 |
 | FR-011 用紙混在 | PageSection / derived_profile。A4→A3→A4、ネスト・空セクション、MediaBoxと文字サイズ |
 | FR-014 片持ち梁の固定37頁再現 | cantilever_p01_37 fixture。原本1頁=出力1頁、A4縦、頁番号省略、CCW90表、全文・セル・図の独立照合、追加頁拒否 |
+| FR-021 方眼Excel | renderers/xlsx / `render_xlsx`。`test_xlsx_*` の openpyxl 読み戻し・図形のXML・バイト列の決定性、`scripts/compare_xlsx_pdf.py` による Excel から書き出した PDF との比較 |
+| FR-022・026 罫線 | BorderStyle / 表・Rule・SideRule。セルの罫線への写し方と、利用者に Line を描かせない検査 |
+| FR-023 文字サイズの刻み | 0.5 pt 刻みの丸めと、片持ち梁の 10.0 pt での固定37頁 |
+| FR-024 書体名 | fontfinder。同梱書体と Windows の書体フォルダからの解決、wheel の新しい環境での解決 |
+| FR-025 項の列 | `EquationGroup(term_columns="grid")`。代表例の grid 版を `strict=True` で方眼Excel に出せること |
+| FR-027 片持ち梁の作り直し | 新しい決まりで全37頁、`test_cantilever_grid_rules.py`、方眼Excel を `strict=True` で出せること |
 
 ## 範囲と制約
 
@@ -140,3 +146,13 @@ rootは再生成した最終候補の通常37枚/grid37枚を個別表示し、�
 修正後にsdistから再生成したwheelは22製品moduleを含み、Python3.12.12/3.13.11の新規環境へインストールして新APIを描画しました。両版の画素・物理画像寸法・文字内容が一致し、PyMuPDFを導入していないことを確認しました。結果は`build/reports/cantilever-p01-37/improvements-wheel-acceptance.json`、wheel SHA-256は`14ac344e68447ef802580824e14b02cf6a719c6d7b04ea0a92dc28125ac02510`です。
 
 独立レビューのQ01（原本領域対応・Medium）とQ02（枠逸脱診断の軸・Low）を修正して再レビューし、未解決0件となりました。全ゲート通過後に`versions/20261017T033209Z-f93e3db55c094beaa28d3b3029fc2b7d/`を有効化し、129入力・78成果物・currentの解決先・両PDF37頁を再監査済みです。旧versionは保持しています。詳細と成果物へのリンクは[改善計画の実行記録](../.claude/docs/plans/cantilever-p01-37-improvements-execution.md)を参照してください。
+
+### 方眼Excel（FR-021〜027）
+
+2026-10-20、feature/grid-excel-output の最終全件ゲート `grid-excel-final` は **3838 passed・2 skipped（587.01秒）**、製品全体の行カバレッジは **98.2%（7230行中7101行、pytest表示98%）** です。lead が単独で一回実行した値です。PNG 正解2件（片持ち梁37頁・代表5頁）はユーザーが Gate 4 で承認した新しい画像に対して合格しています。skip の2件は DocuWorks PDF の印刷を前提にした Excel の検査で、この環境のプリンター（DocuWorks Printer on Ne04:）では対象外です。ログは `.claude/logs/grid-excel-final.log` です。
+
+Excel 16.0（build 20326）で、代表例（`term_columns="grid"` の標準・長い版）と片持ち梁 p1〜37 を `strict=True` で方眼Excel に出し、`scripts/compare_xlsx_pdf.py` で Excel から書き出した PDF とライブラリの PDF を比べました。修復なしで開くこと・ページ数・用紙・`###` の表示なし・見つからない字0は全件合格です。文字片が横1マス・縦半マスを越えたのは代表例 標準364片中5、長い版414片中12、片持ち梁5418片中1です。内訳は、本文の幅いっぱいの行で Excel のセルの余白（片側 2.4 pt）のために最後の1字が切れるものと、分子の中の上付き・入れ子の分数の分母の縦のずれ（8.3〜8.5 pt）です。Gate 3 でユーザーが並べた画像を目視し、これらを方眼Excel の制限として受け入れました（DESIGN の Key Decisions）。
+
+片持ち梁は FR-027 の新しい決まりで全37頁を組み直し、固定37頁に収まることと、原本との内容の照合を確かめています。p30〜37 は横 10.8・縦 14.52 pt のグリッドの縦横入替で組みます（ユーザーの選択）。有効な版は `build/reports/cantilever-p01-37/versions/20261020T084235Z-5654d55613454fceb14d796e01cdf09b/` です。
+
+配布物は 0.2.0 です。`uv build` の wheel（SHA-256 `4f84b2abe368fa50beca841cad64209a70609906469a26a181fa87709145e5fb`）に `renderers/xlsx` と同梱書体が入り、依存が ReportLab・Pillow だけ（openpyxl・PyMuPDF は開発用）であることを確かめました。この wheel を新しい仮想環境（Python 3.13）に入れ、`python -I` で `render_xlsx(..., strict=True)` が書けることを確かめています。Python 3.12 の環境での導入はこの作業では行っていません。
