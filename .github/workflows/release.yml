@@ -44,6 +44,11 @@ jobs:
       - name: Build the wheel
         run: uv build --wheel -o dist
 
+      - uses: actions/upload-artifact@v4
+        with:
+          name: wheel
+          path: dist/*.whl
+
       - name: Publish the wheel, or check the published one
         run: |
           wheel=$(ls dist/*.whl)
