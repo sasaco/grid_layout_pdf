@@ -387,6 +387,16 @@ Imageは静止PNG/JPEGを対象に、指定枠へ縦横比を保って内接さ�
 
 `col_span`／`rows`のペアも指定すれば、そのグリッド枠内でalign／valignに従って配置する。既定はcenter／middleなので、物理寸法だけでも予約行の余りへ縦中央配置する。上端に固定する場合は`valign="top"`を指定する。寸法の片方だけの指定、比率不一致、枠不足を拒否し、縮小や切り抜きで収容しない。物理寸法を省略した既存のfit動作は変わらない。
 
+`PdfFigure(col_span, rows, data, *, page=0, preview=None, align="center", valign="middle", block_id="")`は、ベクターのPDF（CADの図など）の1頁をグリッド枠に置く。`data`はPDFのbytes、`page`は0から数える頁。頁の表示範囲（CropBox、無ければMediaBox）を、縦横比を保って枠に内接するよう拡大・縮小し、align／valignで寄せる（既定は中央）。PDFでは頁の内容を1つのform XObjectとして描くので、線も文字もベクターのまま残り、CropBoxの外は切り取られる。同じbytesの同じ頁を何度置いてもPDFには1つだけ書く。注釈・フォームは描かない。
+
+```python
+from gridlayoutpdf import PdfFigure
+
+drawing = PdfFigure(30, 20, pdf_bytes, preview=png_bytes, block_id="配筋図")
+```
+
+`data`は作った時に読み、PDFとして読めない・暗号化されている・その頁がない・頁が回転（`/Rotate`）している・表示範囲の面積が0のときは`ValueError`（`block_id`を前に付ける）。枠が利用幅を超えれば計測時に`LayoutOverflowError`。分割せず、`QuarterTurn`には入れられない。方眼Excelはベクターの頁を持てないので、`preview`（同じ図のPNG/JPEGのbytes。画素数の縦横比が頁の縦横比と各軸±0.5pixelで合うこと）を同じ位置に画像として置く。`preview`がなければ枠線だけを置き、`fallbacks`に`pdf_figure_frame`として記録する（`strict=True`では`XlsxStrictError`）。低水準の描画命令は`VectorPage(x, y, width, height, data, page=0, *, preview=None, tag=None)`で、頁の表示範囲をその箱へ引き伸ばす。
+
 ## 改ページ・位置指定・用紙混在
 
 `PageSection(profile, *blocks)`の範囲だけ用紙を切り替え、退出時は親の用紙へ新ページで戻る。ネストも同じ規則。profile・利用幅に応じて部品を再計測し、文字サイズを維持する。参照A4/A3とderived_profileは共通のグリッドピッチを使い、独自のPageProfileでは指定したgridを使う。空セクションは進行中のページを分断しない。
@@ -417,7 +427,7 @@ print([sheet.name for sheet in result.sheets], result.numbers_as_text)
 - セルの罫線になるのは`Table`・`Rule`・`SideRule`が描いた線だけ。利用者の`Line`（図の中を含む）・分数線・根号・図は、セルの境目に載っていても図形。図はグループ化した図形・テキストボックス・画像になる。
 - `QuarterTurn`は`local_grid`がページのグリッドの縦横入替の時にセル（文字の向き90度）で、それ以外は図形にして`fallbacks`に記録する。
 - `PageDecoration`はExcelのヘッダー・フッター（`align`の欄）。`{page}`は`&P`と各シートの先頭ページ番号、`{pages}`は渡した帳票の総数。
-- `XlsxResult`は`path`、`sheets`（`XlsxSheet`：名前・帳票・ページ範囲・行列数・印刷の拡大率）、`shifts`（`XlsxShift`：理由は`overlap`・`fraction`・`fraction_in_script`）、`fallbacks`（`XlsxFallback`：種類は`quarter_turn`・`border_off_grid`・`border_in_merge`・`border_conflict`・`rotated_text`・`fraction_in_script`・`term_off_grid`・`cell_padding_mismatch`・`print_scale`）、`numbers_as_text`、`texts_clipped`、`untagged`（意味のタグのない描画命令の型と数）、`dropped`（大きさのない図形）を持つ。
+- `XlsxResult`は`path`、`sheets`（`XlsxSheet`：名前・帳票・ページ範囲・行列数・印刷の拡大率）、`shifts`（`XlsxShift`：理由は`overlap`・`fraction`・`fraction_in_script`）、`fallbacks`（`XlsxFallback`：種類は`pdf_figure_frame`・`quarter_turn`・`border_off_grid`・`border_in_merge`・`border_conflict`・`rotated_text`・`fraction_in_script`・`term_off_grid`・`cell_padding_mismatch`・`print_scale`）、`numbers_as_text`、`texts_clipped`、`untagged`（意味のタグのない描画命令の型と数）、`dropped`（大きさのない図形）を持つ。
 - `strict=True`では`shifts`か`fallbacks`が1件でもあれば`XlsxStrictError`（`XlsxError`の一種）にし、何も書かない。`numbers_as_text`・`texts_clipped`・`untagged`は対象外。
 - `cell_padding_pt`はExcelのセルの片側の内側の余白（文字の大きさ→pt）。省略時は`term_columns='grid'`と同じ`excel_cell_padding_pt`。
 - 書体はPDFと同じ書体名を書く。開くパソコンにその書体がないとExcelは別の書体で表示する（同梱のIPAex書体はPDF用で、Excelでは使えるようにならない）。両端揃えの字間（`tracking`）と`Text.shear_x`はセルでは表せないため捨てる。

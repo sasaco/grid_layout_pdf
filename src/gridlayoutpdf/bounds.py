@@ -2,7 +2,7 @@
 
 from .fonts import FontRegistry, default_fonts
 from .geometry import Rect
-from .scene import Circle, Line, Polyline, RasterImage, Rectangle, Text, _text_matrix
+from .scene import Circle, Line, Polyline, RasterImage, Rectangle, Text, VectorPage, _text_matrix
 
 
 def transformed_text_bounds(command: Text, bounds: Rect) -> Rect:
@@ -27,7 +27,7 @@ def command_bounds(command, fonts: FontRegistry | None = None) -> Rect:
     Overlapping commands are valid; this function only describes one envelope.
     Omitting ``fonts`` measures text with the shared default registry.
     """
-    if isinstance(command, RasterImage):
+    if isinstance(command, (RasterImage, VectorPage)):
         return Rect(command.x, command.y, command.width, command.height)
     if isinstance(command, Text):
         if fonts is None:

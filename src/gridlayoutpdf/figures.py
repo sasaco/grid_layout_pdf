@@ -1,6 +1,6 @@
-"""Local-point vector figures and grid-framed raster images."""
+"""Local-point vector figures, grid-framed raster images and vector PDF pages."""
 
-from dataclasses import KW_ONLY, dataclass
+from dataclasses import KW_ONLY, dataclass, field
 from io import BytesIO
 from math import hypot
 from pathlib import Path
@@ -10,7 +10,8 @@ from PIL import Image as PILImage, ImageOps
 from .bounds import command_bounds
 from .errors import FontError, LayoutOverflowError
 from .layout import LayoutContext, LayoutPart, MeasuredBlock, measurement_inputs
-from .scene import Circle, Color, Line, Polyline, RasterImage, Rectangle, Text
+from .pdfpages import pdf_page_box
+from .scene import Circle, Color, Line, Polyline, RasterImage, Rectangle, Text, VectorPage
 from .semantics import Kind, Role, Scope, Tag, tagged
 from .styles import TextStyle, _finite_number
 from .validation import TOLERANCE, _identifier, _integer
@@ -267,6 +268,93 @@ class Image:
         return MeasuredBlock(width, context.profile.grid.pitch_y,
                              (LayoutPart(rows, (command,)),), keep_together=True,
                              block_id=self.block_id)
+
+
+@dataclass(frozen=True, slots=True)
+class PdfFigure:
+    """One page of a vector PDF fitted into a grid frame, drawn as vector artwork.
+
+    The frame is ``col_span`` columns by ``rows`` rows. The page's crop box is
+    scaled to fit it with its aspect kept, enlarged or reduced, and placed by
+    ``align`` (left, center, right) and ``valign`` (top, middle, bottom).
+    ``page`` counts from 0. ``data`` is snapshotted and read when the figure
+    is made: a ValueError says when it is not a readable PDF, is encrypted,
+    has no such page, the page is rotated or its box has no area.
+
+    The PDF draws the page as one form XObject (``pdfpages``). A grid Excel
+    sheet cannot hold PDF artwork: it shows ``preview`` (PNG or JPEG bytes
+    of the same picture, its pixel size within half a pixel per axis of the
+    page's aspect) over the same box, or else only a frame there, recorded
+    as the fallback "pdf_figure_frame" (refused by ``strict=True``).
+    """
+
+    col_span: int
+    rows: int
+    data: bytes
+    _: KW_ONLY
+    page: int = 0
+    preview: bytes | None = None
+    align: str = "center"
+    valign: str = "middle"
+    block_id: str = ""
+    _box: tuple[float, float, float, float] = field(init=False, repr=False, compare=False)
+
+    def __post_init__(self) -> None:
+        _frame(self.col_span, self.rows, self.block_id)
+        source = self.block_id or "PdfFigure"
+        if not isinstance(self.data, (bytes, bytearray, memoryview)) or not self.data:
+            raise ValueError(f"{source}: data must contain nonempty PDF bytes")
+        object.__setattr__(self, "data", bytes(self.data))
+        if isinstance(self.page, bool) or not isinstance(self.page, int) or self.page < 0:
+            raise ValueError(f"{source}: page must be a nonnegative integer")
+        if self.align not in ("left", "center", "right"):
+            raise ValueError("align must be left, center or right")
+        if self.valign not in ("top", "middle", "bottom"):
+            raise ValueError("valign must be top, middle or bottom")
+        try:
+            box = pdf_page_box(self.data, self.page)
+        except ValueError as exc:
+            raise ValueError(f"{source}: {exc}") from exc
+        object.__setattr__(self, "_box", box)
+        if self.preview is not None:
+            if not isinstance(self.preview, (bytes, bytearray, memoryview)) or not self.preview:
+                raise ValueError(f"{source}: preview must contain nonempty PNG or JPEG bytes or be None")
+            object.__setattr__(self, "preview", bytes(self.preview))
+            _check_preview(self.preview, box[2], box[3], source)
+
+    def measure(self, context: LayoutContext, available_width: float) -> MeasuredBlock:
+        source = self.block_id or "PdfFigure"
+        width, height = _frame_size(context, self.col_span, self.rows, available_width, source)
+        _, _, box_width, box_height = self._box
+        scale = min(width / box_width, height / box_height)
+        drawn_width, drawn_height = box_width * scale, box_height * scale
+        x = {"left": 0, "center": (width - drawn_width) / 2, "right": width - drawn_width}[self.align]
+        y = {"top": 0, "middle": (height - drawn_height) / 2, "bottom": height - drawn_height}[self.valign]
+        command = VectorPage(x, y, drawn_width, drawn_height, self.data, self.page, preview=self.preview,
+                             tag=Tag(Role.IMAGE, (), {"block_id": self.block_id}))
+        return MeasuredBlock(width, context.profile.grid.pitch_y,
+                             (LayoutPart(self.rows, (command,)),), keep_together=True,
+                             block_id=self.block_id)
+
+
+def _check_preview(data: bytes, box_width: float, box_height: float, source: str) -> None:
+    """A preview is one PNG or JPEG image whose pixels have the page's aspect within half a pixel per axis."""
+    try:
+        with PILImage.open(BytesIO(data)) as image:
+            found, frames = image.format, getattr(image, "n_frames", 1)
+            image.verify()
+        with PILImage.open(BytesIO(data)) as image:
+            image.load()
+            pixels_x, pixels_y = image.size
+    except (OSError, ValueError, SyntaxError, PILImage.DecompressionBombError) as exc:
+        raise ValueError(f"{source}: preview is not a readable image: {exc}") from exc
+    if found not in ("PNG", "JPEG", "MPO") or frames != 1:
+        raise ValueError(f"{source}: preview must be a single PNG or JPEG image, not {found}")
+    lower = max((pixels_x - .5) / box_width, (pixels_y - .5) / box_height)
+    upper = min((pixels_x + .5) / box_width, (pixels_y + .5) / box_height)
+    if lower > upper:
+        raise ValueError(f"{source}: preview of {pixels_x} x {pixels_y} px differs from the page's aspect "
+                         f"({box_width:g} x {box_height:g} pt) by more than half a pixel per axis")
 
 
 # The kind of a drawing command written by the user (a "raw" figure item).

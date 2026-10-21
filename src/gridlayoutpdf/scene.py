@@ -277,8 +277,49 @@ class RasterImage:
         return replace(self, x=self.x + dx, y=self.y + dy)
 
 
-Command = Text | Line | Polyline | Rectangle | Circle | RasterImage
-COMMAND_TYPES = (Text, Line, Polyline, Rectangle, Circle, RasterImage)
+@dataclass(frozen=True, slots=True)
+class VectorPage:
+    """One page of a PDF (``page`` counts from 0) drawn as vector artwork over a box.
+
+    The page's crop box is stretched over the box (``PdfFigure`` keeps the
+    aspect). ``preview`` is optional PNG or JPEG bytes of the same picture:
+    the grid Excel sheet shows it, since a sheet cannot hold PDF artwork.
+    The renderer reads ``data`` before it touches the destination.
+    """
+    x: float
+    y: float
+    width: float
+    height: float
+    data: bytes
+    page: int = 0
+    _: KW_ONLY
+    preview: bytes | None = None
+    tag: Tag | None = field(default=None, compare=False)
+
+    def __post_init__(self) -> None:
+        _coordinates(self, "x", "y", "width", "height")
+        if self.width <= 0 or self.height <= 0:
+            raise ValueError("width and height must be positive")
+        _finite_number(self.x + self.width, "right")
+        _finite_number(self.y + self.height, "bottom")
+        if not isinstance(self.data, (bytes, bytearray, memoryview)) or not self.data:
+            raise ValueError("data must contain nonempty PDF bytes")
+        object.__setattr__(self, "data", bytes(self.data))
+        if isinstance(self.page, bool) or not isinstance(self.page, int) or self.page < 0:
+            raise ValueError("page must be a nonnegative integer")
+        if self.preview is not None:
+            if not isinstance(self.preview, (bytes, bytearray, memoryview)) or not self.preview:
+                raise ValueError("preview must contain nonempty image bytes or be None")
+            object.__setattr__(self, "preview", bytes(self.preview))
+        _tag(self)
+
+    def translated(self, dx: float, dy: float) -> "VectorPage":
+        dx, dy = _offset(dx, dy)
+        return replace(self, x=self.x + dx, y=self.y + dy)
+
+
+Command = Text | Line | Polyline | Rectangle | Circle | RasterImage | VectorPage
+COMMAND_TYPES = (Text, Line, Polyline, Rectangle, Circle, RasterImage, VectorPage)
 
 
 @dataclass(frozen=True, slots=True)

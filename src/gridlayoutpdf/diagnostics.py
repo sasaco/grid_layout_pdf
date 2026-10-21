@@ -8,7 +8,7 @@ from .errors import FontError
 from .fonts import FontRegistry, default_fonts
 from .geometry import Rect
 from .metadata import json_value
-from .scene import Circle, Line, Polyline, RasterImage, Rectangle, ScenePage, Text, _text_rotation
+from .scene import Circle, Line, Polyline, RasterImage, Rectangle, ScenePage, Text, VectorPage, _text_rotation
 
 
 def _rect(rect: Rect) -> dict:
@@ -59,6 +59,11 @@ def _command(command, fonts: FontRegistry, index: int, location: str) -> dict:
     elif isinstance(command, RasterImage):
         trace.update(x=command.x, y=command.y, width=command.width, height=command.height,
                      sha256=sha256(command.data).hexdigest(), byte_count=len(command.data))
+    elif isinstance(command, VectorPage):
+        trace.update(x=command.x, y=command.y, width=command.width, height=command.height, page=command.page,
+                     sha256=sha256(command.data).hexdigest(), byte_count=len(command.data))
+        if command.preview is not None:
+            trace["preview_sha256"] = sha256(command.preview).hexdigest()
     # Like optional paint, a semantic tag is listed only when the command has one.
     if command.tag is not None:
         trace["tag"] = command.tag.to_json()
@@ -71,7 +76,7 @@ def layout_trace(pages: Iterable[ScenePage], fonts: FontRegistry | None = None) 
     Page numbers are 1-based positions in the supplied sequence. Command
     positions and bounds are absolute top-origin points; metadata is copied
     verbatim, including any block-local anchors, baselines and origins.
-    Images are represented by their byte count and SHA-256, never raw bytes.
+    Images and PDF pages are represented by their byte count and SHA-256, never raw bytes.
     A command's semantic tag is listed as ``tag`` only when it has one.
     No component measurement, pagination or PDF rendering is performed.
     Omitting ``fonts`` uses the shared default registry; pass the registry

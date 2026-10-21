@@ -13,7 +13,8 @@ from ..bounds import command_bounds
 from ..fonts import FontRegistry, default_fonts
 from ..errors import FontError, LayoutOverflowError
 from ..geometry import Rect
-from ..scene import Circle, Line, Polyline, RasterImage, Rectangle, ScenePage, Text, _text_matrix
+from ..pdfpages import embed_pdf_page, pdf_page_box
+from ..scene import Circle, Line, Polyline, RasterImage, Rectangle, ScenePage, Text, VectorPage, _text_matrix
 
 
 def _grid_commands(page: ScenePage) -> tuple[Line, ...]:
@@ -35,6 +36,14 @@ def _draw(canvas: Canvas, command, height: float, fonts: FontRegistry) -> None:
             canvas.drawImage(ImageReader(BytesIO(command.data)), command.x,
                              height - command.y - command.height,
                              command.width, command.height, mask="auto")
+            return
+        if isinstance(command, VectorPage):
+            # The page's box (left, bottom, width, height) is stretched over the command's box.
+            name, (left, bottom, box_width, box_height) = embed_pdf_page(canvas, command.data, command.page)
+            scale_x, scale_y = command.width / box_width, command.height / box_height
+            canvas.transform(scale_x, 0, 0, scale_y, command.x - scale_x * left,
+                             height - command.y - command.height - scale_y * bottom)
+            canvas.doForm(name)
             return
         if isinstance(command, Text):
             canvas.setFillColorRGB(0, 0, 0)
@@ -113,6 +122,11 @@ def _prepare(pages, fonts: FontRegistry, debug_grid: bool):
                         ImageReader(BytesIO(command.data)).getRGBData()
                     except (OSError, ValueError, SyntaxError, PILImage.DecompressionBombError) as exc:
                         raise ValueError(f"{block_id}: invalid RasterImage data: {exc}") from exc
+                if isinstance(command, VectorPage):
+                    try:
+                        pdf_page_box(command.data, command.page)
+                    except ValueError as exc:
+                        raise ValueError(f"{block_id}: invalid VectorPage data: {exc}") from exc
                 try:
                     bounds = command_bounds(command, fonts)
                 except FontError as exc:

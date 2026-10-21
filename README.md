@@ -6,7 +6,7 @@
 
 ## ローカルインストール
 
-Python 3.12 以上と uv を使用します。実行時の依存ライブラリ ReportLab・Pillow はインストール時に自動で導入されます。
+Python 3.12 以上と uv を使用します。実行時の依存ライブラリ ReportLab・Pillow・pypdf はインストール時に自動で導入されます。
 以下は Windows / PowerShell の例です。
 
 このリポジトリのルートで通常インストールする場合:

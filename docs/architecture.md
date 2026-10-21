@@ -32,7 +32,8 @@ flowchart LR
 | rotation | 局所グリッドで子を計測し、90度回転した既存primitiveと変換metadataへ確定 |
 | tables | セル配置と結合検証、整数行高、分割禁止行群、ヘッダー |
 | cell_content | 明示した文字／数式行のpt配置・余白・最低高を一度だけ整数行へ丸める |
-| figures | 図枠・矢印・ラベル、画像の読込みと内容固定 |
+| figures | 図枠・矢印・ラベル、画像の読込みと内容固定、PDFの頁を枠へ内接させるPdfFigure |
+| pdfpages | PDFの頁の読込み（pypdf）と検査、頁をform XObjectとしてReportLabの文書へ写す |
 | document | ページフロー、見出し連鎖、用紙切替、ページ装飾 |
 | diagnostics | 確定したページの配置・文字・実境界をJSONへ変換 |
 | renderers/reportlab | 全ページの事前検査、描画状態の分離、PDF座標変換、一時ファイル出力 |

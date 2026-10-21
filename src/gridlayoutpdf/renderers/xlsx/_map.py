@@ -52,7 +52,8 @@ from where a line happens to lie:
 * A QuarterTurn laid out on the page grid with its pitches swapped becomes
   turned cells; any other one becomes a group of shapes and is recorded.
 * A Figure is one shape group (TextBox and TextDiamond are shapes with text,
-  Label a frameless text box); an Image is a picture.
+  Label a frameless text box); an Image is a picture, and so is a
+  PdfFigure's preview (without one, its box is a frame and recorded).
 * Page decorations become the Excel header and footer: ``{page}`` is the page
   field counted from the sheet's first page number and ``{pages}`` the
   report's page count; a format specification is an error.
@@ -81,7 +82,7 @@ from ...borders import BorderStyle
 from ...bounds import command_bounds, transformed_text_bounds
 from ...fonts import FontRegistry, default_fonts
 from ...geometry import Rect as Box
-from ...scene import Circle, Line, Polyline, RasterImage, Rectangle, ScenePage, Text
+from ...scene import Circle, Line, Polyline, RasterImage, Rectangle, ScenePage, Text, VectorPage
 from ...semantics import BORDER_ROLES, Kind, Role, Scope
 from ...validation import TOLERANCE
 from . import _model as xl
@@ -123,8 +124,8 @@ CROSS_ALIGN_MARGIN_PT = 1.0
 _EDGE_TOLERANCE_PT = 1e-6
 SHIFT_REASONS = ("overlap", "fraction", "fraction_in_script")
 FALLBACK_KINDS = ("quarter_turn", "border_off_grid", "border_in_merge", "border_conflict", "rotated_text",
-                  "fraction_in_script", "term_off_grid", "cell_padding_mismatch", "print_scale", "number_as_text",
-                  "text_clipped")
+                  "fraction_in_script", "term_off_grid", "cell_padding_mismatch", "print_scale", "pdf_figure_frame",
+                  "number_as_text", "text_clipped")
 _NOTE_KINDS = ("number_as_text", "text_clipped")  # recorded beside the fallbacks; strict does not refuse them
 _TURNED_ROTATION = {0: 0, 1: 90, 2: 180, 3: 270}
 _UNIT_KINDS = frozenset({Kind.FRACTION, Kind.EQUATION_PART, Kind.PARAGRAPH, Kind.CELL_LINES,
@@ -262,7 +263,8 @@ class XlsxFallback:
     page column boundary, placed by its ink), "cell_padding_mismatch" (a
     grid term laid out with another cell padding than ``cell_padding_pt``),
     "print_scale" (the sheet prints under 100 %, so its grid prints smaller
-    than the PDF's); only in ``XlsxResult.numbers_as_text``,
+    than the PDF's), "pdf_figure_frame" (a PdfFigure's page without a
+    preview image, written as a frame over its box); only in ``XlsxResult.numbers_as_text``,
     "number_as_text" (a number kept as text because Excel would show it as
     ###), and only in ``XlsxResult.texts_clipped``, "text_clipped" (text
     whose cells are narrower than Excel draws it, so its end may be cut).
@@ -1685,6 +1687,15 @@ class _SheetBuilder:
             data, image_format = _picture_data(command.data)
             return xl.Picture(*self.box(page, command.x, command.y, command.width, command.height),
                               data, image_format)
+        if isinstance(command, VectorPage):
+            box = self.box(page, command.x, command.y, command.width, command.height)
+            if command.preview is not None:
+                data, image_format = _picture_data(command.preview)
+                return xl.Picture(*box, data, image_format)
+            block = command.tag.data.get("block_id") if command.tag is not None else None
+            self.fallback(page, "pdf_figure_frame",
+                          f"block {block or '(no id)'}: page {command.page} of a PDF without a preview, a frame")
+            return xl.Rect(*box)
         if isinstance(command, Text):
             if not command.text:
                 return None

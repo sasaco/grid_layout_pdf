@@ -9,7 +9,7 @@ from .diagnostics import layout_trace
 from .document import Document, PageDecoration, PageSection
 from .equations import Equation, EquationAnchors, EquationGroup, MathBlock, wrap_math
 from .errors import FontError, LayoutError, LayoutOverflowError
-from .figures import Arrow, Connector, Figure, Image, Label, TextBox, TextDiamond
+from .figures import Arrow, Connector, Figure, Image, Label, PdfFigure, TextBox, TextDiamond
 from .fonts import FontFace, FontRegistry, TextMetrics
 from .geometry import GridSpec, Point, Rect
 from .layout import Block, LayoutContext, LayoutPart, MeasuredBlock, measure_block
@@ -25,7 +25,7 @@ from .renderers.xlsx import (
     XlsxError, XlsxFallback, XlsxResult, XlsxSheet, XlsxShift, XlsxStrictError, render_xlsx,
 )
 from .rotation import QuarterTurn
-from .scene import Circle, Color, Command, Line, Polyline, RasterImage, Rectangle, ScenePage, Text
+from .scene import Circle, Color, Command, Line, Polyline, RasterImage, Rectangle, ScenePage, Text, VectorPage
 from .styles import Insets, ReportStyle, TextStyle
 from .tables import Cell, Table, proportional_spans
 from .text import TextLine, fit_tracking, wrap_text
@@ -38,11 +38,11 @@ __all__ = [
     "Block", "LayoutContext", "LayoutPart", "MeasuredBlock", "measure_block",
     "Document", "PageDecoration", "PageSection", "Paragraph", "Heading", "Spacer", "PageBreak", "Rule",
     "Stack", "Columns", "KeepTogether", "KeepWithNext", "PreferKeepTogether", "Indent", "Leading", "SideRule",
-    "At", "QuarterTurn", "BorderStyle", "TableBorders", "Cell", "CellLines", "Table", "proportional_spans", "Figure", "Image", "Arrow", "Label", "TextBox", "TextDiamond", "Connector",
+    "At", "QuarterTurn", "BorderStyle", "TableBorders", "Cell", "CellLines", "Table", "proportional_spans", "Figure", "Image", "PdfFigure", "Arrow", "Label", "TextBox", "TextDiamond", "Connector",
     "MathNode", "MathBox", "Literal", "Symbol", "Operator", "Row", "Fraction", "Root", "Script",
     "Delimited", "BreakHint", "TermStop", "as_math", "MathBlock", "Equation", "EquationGroup", "EquationAnchors",
     "wrap_math", "TextLine", "wrap_text", "fit_tracking",
-    "Color", "Command", "Text", "Line", "Polyline", "Rectangle", "Circle", "RasterImage", "ScenePage",
+    "Color", "Command", "Text", "Line", "Polyline", "Rectangle", "Circle", "RasterImage", "VectorPage", "ScenePage",
     "command_bounds", "render_pdf", "layout_trace",
     "render_xlsx", "XlsxResult", "XlsxSheet", "XlsxShift", "XlsxFallback", "XlsxError", "XlsxStrictError",
 ]

@@ -74,3 +74,20 @@ root単独全体1738 passed / 107.30秒、製品行coverage98.923134%（2664/269
 ### Next
 
 push と main への統合はユーザーの指示を待つ。持ち越しの LOW（packed の許容差、grid_fallbacks の最上位だけの検査、Table(padding=0)×QuarterTurn、builder の _units 依存、結果だけの行の隙間、p10・p12・p13 の揃え、FR-026 の Rule/SideRule の表記）と、Python 3.12 での 0.2.0 wheel の確認は未対応。途中のコミット 89bba39〜02e7f6e は片持ち梁のテストが動かないが、ユーザー承認で履歴は残す。
+
+---
+
+## Current Feature: Vector PDF page figure (FR-028)
+<!-- orchestra:block-id: pdf-figure-20261021 -->
+
+### Status
+
+2026-10-21 sasa/pdf-figure で PdfFigure（ベクターのPDFの1頁をマスの枠へ縦横比を保って内接させる部品）と描画命令 VectorPage を追加した。WebPier 決定73（0400 の 4.1 の配筋図）からの依頼。push・tag・Release は WebPier のオーケストレーターが行う。
+
+### Implementation
+
+pdfpages.py が pypdf で頁を読み、ReportLab の文書へ form XObject として写す（BBox は CropBox、内容は復号・連結して Flate、Resources は符号化のまま、名前は PDF の SHA-256 から）。方眼Excel は preview の PNG/JPEG を画像に、なければ枠線と fallback pdf_figure_frame（strict で拒否）。実行時の依存に pypdf>=6,<7 を足した。決定は DESIGN.md の FR-028・Key Decisions・技術選定。
+
+### Verification
+
+新しいテスト tests/unit/test_pdf_figure.py・test_pdf_figure_xlsx.py・tests/integration/test_pdf_figure_pdf.py。全件では main でも失敗する2件（Excel COM の a3-tall-pages、作業ツリーが CRLF の render.py の SHA-256 で落ちる片持ち梁の golden）だけが失敗。
