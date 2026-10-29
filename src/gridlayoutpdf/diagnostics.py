@@ -51,7 +51,7 @@ def _command(command, fonts: FontRegistry, index: int, location: str) -> dict:
     # Optional paint is listed only when used, so solid outlines trace as before.
     if getattr(command, "dash", ()):
         trace["dash"] = list(command.dash)
-    if isinstance(command, (Rectangle, Circle)):
+    if isinstance(command, (Rectangle, Circle, Polyline)):
         if command.fill is not None:
             trace["fill"] = list(command.fill)
         if not command.stroke or isinstance(command, Circle):

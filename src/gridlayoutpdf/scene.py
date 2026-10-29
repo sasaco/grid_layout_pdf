@@ -52,9 +52,9 @@ def _dash(command) -> None:
     object.__setattr__(command, "dash", lengths)
 
 
-def _paint(command) -> None:
+def _paint(command, width_name: str = "stroke_width") -> None:
     """Validate an area's outline stroke and optional fill."""
-    _stroke(command, "stroke_width")
+    _stroke(command, width_name)
     if not isinstance(command.stroke, bool):
         raise ValueError("stroke must be a boolean")
     if command.fill is not None:
@@ -147,7 +147,11 @@ class Line:
 
 @dataclass(frozen=True, slots=True)
 class Polyline:
-    """Connected segments; a dash pattern continues across the vertices."""
+    """Connected segments; a dash pattern continues across the vertices.
+
+    Only a closed polyline may have a ``fill``; ``stroke=False`` paints only
+    the fill, and the bounds are then the exact envelope of the points.
+    """
 
     points: tuple[Point, ...]
     width: float = 0.5
@@ -155,6 +159,8 @@ class Polyline:
     closed: bool = False
     _: KW_ONLY
     dash: tuple[float, ...] = ()
+    fill: Color | None = None
+    stroke: bool = True
     tag: Tag | None = field(default=None, compare=False)
 
     def __post_init__(self) -> None:
@@ -170,7 +176,9 @@ class Polyline:
         if len(points) < minimum:
             raise ValueError(f"Polyline requires at least {minimum} points")
         object.__setattr__(self, "points", points)
-        _stroke(self, "width")
+        if self.fill is not None and not self.closed:
+            raise ValueError("only a closed polyline can have a fill")
+        _paint(self, "width")
         _dash(self)
         _tag(self)
 

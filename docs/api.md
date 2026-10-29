@@ -351,16 +351,17 @@ diagram = Figure(
 photo = Image("detail.png", col_span=20, rows=10)
 ```
 
-LineとPolylineは`dash=(on, off, ...)`でpt単位の破線になる（始点から位相0、Polylineは頂点をまたいで継続）。Rectangleと`Circle(x, y, radius, *, stroke_width=.5, color=(0,0,0), fill=None, stroke=True)`は`fill`で塗り、`stroke=False`なら塗りだけを描く。線も塗りもない図形は拒否する。線なしの図形の範囲は線幅を含まない正確な外形になる。
+LineとPolylineは`dash=(on, off, ...)`でpt単位の破線になる（始点から位相0、Polylineは頂点をまたいで継続）。Rectangleと`Circle(x, y, radius, *, stroke_width=.5, color=(0,0,0), fill=None, stroke=True)`は`fill`で塗り、`stroke=False`なら塗りだけを描く。`Polyline(points, width=.5, color=(0,0,0), closed=False, *, dash=(), fill=None, stroke=True)`も同じで、塗れるのは`closed=True`の折れ線だけ（閉じていない折れ線に`fill`を渡すと`ValueError`）。既定（`fill=None`）の描き方は塗りの導入前と同じバイト列になる。自己交差する折れ線の塗りは、PDFでは偶奇規則になる。方眼Excelでは塗った閉じた折れ線を塗りのフリーフォームにする（`fallbacks`は増えない）。線も塗りもない図形は拒否する。線なしの図形の範囲は線幅を含まない正確な外形になる。
 
 ```python
-from gridlayoutpdf import Circle, Figure, Line, Rectangle
+from gridlayoutpdf import Circle, Figure, Line, Polyline, Rectangle
 
 marks = Figure(
     10, 4,
     Line(10, 10, 130, 10, .35, dash=(2, 2)),
     Rectangle(20, 20, 30, 12, fill=(1, 1, 1), stroke=False),
     Circle(80, 30, 1.7, fill=(0, 0, 0), stroke=False),
+    Polyline(((100, 40), (120, 40), (110, 25)), closed=True, fill=(.8, .8, .8)),
 )
 ```
 

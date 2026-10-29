@@ -91,3 +91,20 @@ pdfpages.py が pypdf で頁を読み、ReportLab の文書へ form XObject と�
 ### Verification
 
 新しいテスト tests/unit/test_pdf_figure.py・test_pdf_figure_xlsx.py・tests/integration/test_pdf_figure_pdf.py。全件では main でも失敗する2件（Excel COM の a3-tall-pages、作業ツリーが CRLF の render.py の SHA-256 で落ちる片持ち梁の golden）だけが失敗。
+
+---
+
+## Current Feature: Filled closed polyline (FR-029)
+<!-- orchestra:block-id: polyline-fill-20261029 -->
+
+### Status
+
+2026-10-29 オーナーの決定で、閉じた Polyline に Rectangle・Circle と同じ fill（既定 None）と stroke（既定 True）を足した。閉じていない折れ線の fill は ValueError。版は 0.4.0（これまで新しい FR は minor、直しは patch で上げてきたため）。commit・tag・push はナビゲーターが行う。
+
+### Implementation
+
+scene.Polyline に kw-only の fill・stroke を足し、_paint を線幅の名前を受け取る形にして共用した。bounds は stroke=False なら点の外形そのもの。layout_trace は fill を使った時だけ fill、stroke=False の時だけ stroke を出す。ReportLab は drawPath に stroke・fill を渡す（既定は stroke=1, fill=0 で今までと同じ）。方眼Excel は xl.Polyline に fill・stroke を渡して塗りのフリーフォームにし（fallback なし）、線なしで面積のない折れ線は dropped。菱形の文字の箱も fill・stroke を写す。
+
+### Verification
+
+新しいテスト tests/unit/test_polyline_fill.py・test_polyline_fill_xlsx.py・tests/integration/test_polyline_fill_pdf.py。塗りなしの折れ線4本の PDF（invariant）と方眼Excel の SHA-256 を変更前の 85b0389 で採り、変更後も同じであることをテストにした。全件 3930 passed・2 skipped・1 failed（作業ツリーが CRLF の render.py の SHA-256 で落ちる片持ち梁の golden、変更前から）。uv build --wheel は通る。

@@ -44,7 +44,7 @@ def command_bounds(command, fonts: FontRegistry | None = None) -> Rect:
     elif isinstance(command, Polyline):
         left, right = min(p.x for p in command.points), max(p.x for p in command.points)
         top, bottom = min(p.y for p in command.points), max(p.y for p in command.points)
-        radius = command.width / 2
+        radius = command.width / 2 if command.stroke else 0
     elif isinstance(command, Rectangle):
         left, right = command.x, command.x + command.width
         top, bottom = command.y, command.y + command.height

@@ -1649,7 +1649,8 @@ class _SheetBuilder:
         xs = [point.x for point in outline.points]
         ys = [point.y for point in outline.points]
         return xl.Diamond(*self.box(page, min(xs), min(ys), max(xs) - min(xs), max(ys) - min(ys)),
-                          stroke_width_pt=outline.width, color=outline.color, dash=outline.dash, text=frame)
+                          stroke=outline.stroke, stroke_width_pt=outline.width, color=outline.color,
+                          fill=outline.fill, dash=outline.dash, text=frame)
 
     def convert(self, command, page: int, align: str = "left"):
         """Return the shape of one scene command in sheet pt, or None for a shape of no extent."""
@@ -1661,14 +1662,14 @@ class _SheetBuilder:
         if isinstance(command, Polyline):
             points = [self.point(page, point.x, point.y) for point in command.points]
             distinct = len(set(points))
-            if distinct < 2:
+            if distinct < 2 or (distinct == 2 and not command.stroke):  # a fill of no area paints nothing
                 return self.drop(command, page)
             if command.closed and distinct == 2:  # a closed shape of two points is the segment between them
                 start = points[0]
                 end = next(point for point in points if point != start)
                 return xl.Line(*start, *end, stroke_width_pt=command.width, color=command.color, dash=command.dash)
             return xl.Polyline(points, closed=command.closed, stroke_width_pt=command.width,
-                               color=command.color, dash=command.dash)
+                               color=command.color, dash=command.dash, fill=command.fill, stroke=command.stroke)
         if isinstance(command, Rectangle):
             x, y, width, height = self.box(page, command.x, command.y, command.width, command.height)
             if width == 0 or height == 0:

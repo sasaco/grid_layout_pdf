@@ -68,9 +68,10 @@ def _draw(canvas: Canvas, command, height: float, fonts: FontRegistry) -> None:
         canvas.setLineCap(0)
         canvas.setLineJoin(1)
         canvas.setDash(list(getattr(command, "dash", ())))
-        if area and command.fill is not None:
+        painted = area or isinstance(command, Polyline)
+        if painted and command.fill is not None:
             canvas.setFillColorRGB(*command.fill)
-        paint = {"stroke": int(command.stroke), "fill": int(command.fill is not None)} if area else {}
+        paint = {"stroke": int(command.stroke), "fill": int(command.fill is not None)} if painted else {}
         if isinstance(command, Line):
             canvas.line(command.x1, height - command.y1, command.x2, height - command.y2)
         elif isinstance(command, Rectangle):
@@ -89,7 +90,7 @@ def _draw(canvas: Canvas, command, height: float, fonts: FontRegistry) -> None:
                 path.lineTo(point.x, height - point.y)
             if command.closed:
                 path.close()
-            canvas.drawPath(path, stroke=1, fill=0)
+            canvas.drawPath(path, **paint)
     finally:
         canvas.restoreState()
 
