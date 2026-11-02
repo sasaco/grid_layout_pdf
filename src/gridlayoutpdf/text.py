@@ -50,15 +50,22 @@ def _numeric_separator(text, index):
             and unicodedata.category(text[index]) == "Nd")
 
 
+def _signed_number(text, index):
+    """A sign written directly against a digit joins the number (UAX #14, PR/HY before NU)."""
+    return text[index - 1] in "+-−±" and unicodedata.category(text[index]) == "Nd"
+
+
 def _breaks(text):
     for index in range(1, len(text) + 1):
         if index < len(text):
             if _word_character(text[index - 1]) and _word_character(text[index]):
                 continue
-            if _numeric_separator(text, index):
+            if _numeric_separator(text, index) or _signed_number(text, index):
                 continue
             left, right = text[:index].rstrip(" "), text[index:].lstrip(" ")
             if (left and left[-1] in _OPENING) or (right and right[0] in _CLOSING):
+                continue
+            if left.endswith("="):
                 continue
         yield index
 
@@ -101,8 +108,10 @@ def wrap_text(
     newline, including a trailing newline, preserves its blank lines. Tabs are
     rejected. Contiguous Latin letters/numeric-category characters are words;
     Japanese characters (including kanji numerals) can break at basic kinsoku
-    boundaries. This is horizontal Japanese/Latin wrapping, not a full Unicode
-    line-breaking or complex-script shaping implementation.
+    boundaries. A number keeps its decimal point, digit-group comma, and a sign
+    written directly against a digit; a soft line never ends with "=". This is
+    horizontal Japanese/Latin wrapping, not a full Unicode line-breaking or
+    complex-script shaping implementation.
 
     Justification fits only non-final soft lines. If bounded positive tracking
     cannot fill any valid candidate, retain the latest fitting legal break at

@@ -86,7 +86,7 @@
     "src/gridlayoutpdf/semantics.py": "de2c16cbff0b224c848c7d8c8189399bc09451230e85f91d33e92d8b82ee0f0c",
     "src/gridlayoutpdf/styles.py": "effd38a1689f0b902e9a295e74cbc85db020910ad10de57052507e00beffc6f3",
     "src/gridlayoutpdf/tables.py": "e2009c1c977a2e6995b252afabbdf2f5b9a9c68b7714f4e2d0f15a3da73531fd",
-    "src/gridlayoutpdf/text.py": "71b44e180b84bcf46c4fa6dcc4b846d719f706812e98dba60ef8f0c0cc89b78b",
+    "src/gridlayoutpdf/text.py": "bf9b8a75ccdb2a43d4d858fa61cb8ed3ef71b14f2db899c1b45955242927a770",
     "src/gridlayoutpdf/validation.py": "22488c540a4b3f003f3e3c2d1131fa1bc4dabdc239d7f25cb03fbac2522cc585",
     "src/gridlayoutpdf/__init__.py": "772f719ff8954add5156a0af77f5ec7025fc75ba108d9405f073a1357343c7e2",
     "src/gridlayoutpdf/renderers/reportlab.py": "61e4220674af11f0a99972e737e685ef8ac80f5540a588c5bd4ea38b8f1a8219",

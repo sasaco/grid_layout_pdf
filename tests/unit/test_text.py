@@ -282,6 +282,21 @@ def test_a_decimal_point_or_digit_group_separator_between_digits_is_not_a_break(
     assert [line.text for line in wrap_text("日本語、200", fonts, TextStyle(), 45)] == ["日本語、", "200"]
 
 
+def test_a_sign_directly_before_a_digit_is_not_a_break(fonts):
+    # UAX #14 (PR/HY before NU): a sign joins the number it is written against; the line breaks before it.
+    for sign in "−-+±":
+        assert [line.text for line in wrap_text(f"日本語{sign}6.1", fonts, TextStyle(), 45)] == ["日本語", f"{sign}6.1"]
+    # A space between the sign and the digit, or a sign before a non-digit, still allows the break after it.
+    assert [line.text for line in wrap_text("日本語− 6", fonts, TextStyle(), 45)] == ["日本語−", "6"]
+    assert [line.text for line in wrap_text("日本語−日本", fonts, TextStyle(), 45)] == ["日本語−", "日本"]
+
+
+def test_an_equals_sign_does_not_end_a_line(fonts):
+    # A result such as "= −6.1 (kN·m)" moves to the next line together with its "=".
+    assert [line.text for line in wrap_text("Mdx = 1 / 12 × 2.5 / 2 = −6.1 (kN·m)", fonts, TextStyle(), 120)] == [
+        "Mdx = 1 / 12 × 2.5 / 2", "= −6.1 (kN·m)"]
+
+
 def test_fit_tracking_accepts_a_script_style_and_keeps_its_size(fonts):
     from gridlayoutpdf.styles import _script_style
     script = _script_style(TextStyle(size=12), .65)
