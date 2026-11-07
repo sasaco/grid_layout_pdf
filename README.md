@@ -86,8 +86,9 @@ print(page.grid.x(1), page.grid.y(1))     # 66.96, 70.078 (pt)
 
 書体は `TextStyle(font=...)` に書体名で指定し、ライブラリが書体ファイルを探します。
 書体名は書体ファイルにある英語名・日本語名のファミリー名かフルネーム（例: `IPAex明朝`、`IPAexGothic`、`MS Mincho`、`ＭＳ 明朝`）です。
-探す順は、同梱の IPAex明朝・IPAexゴシック（004.01、IPA フォントライセンス v1.0）、`%WINDIR%\Fonts`、`%LOCALAPPDATA%\Microsoft\Windows\Fonts` です。
-macOS・Linux では同梱の書体だけを探し、それ以外の書体名は `FontError` になります。
+探す順は、同梱の IPAex明朝・IPAexゴシック（004.01、IPA フォントライセンス v1.0）、`fontfinder.add_directory()` で足したフォルダー（足した順）、`%WINDIR%\Fonts`、`%LOCALAPPDATA%\Microsoft\Windows\Fonts` です。
+macOS・Linux では同梱の書体と足したフォルダーだけを探し、それ以外の書体名は `FontError` になります。
+書体を自分で同梱するアプリは、書体を使う前に一度 `gridlayoutpdf.fontfinder.add_directory(<絶対パス>)` を呼べば、どの OS でもそのフォルダーの書体を名前で使えます（0.5.0 から）。
 TrueType collection (TTC) の書体番号は名前から決まります。CFF 形式の OpenType フォントには対応していません。
 
 ```python

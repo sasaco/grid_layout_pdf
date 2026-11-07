@@ -434,3 +434,177 @@ def test_unpaired_surrogate_records_are_ignored(tmp_path):
     path.write_bytes(build_font({**fixture_tables(), b"name": bytes(table)}))
     (face,) = fontfinder.read_face_names(path)
     assert face.families == ("GLP Pair",) and face.full_names == ()
+
+
+@pytest.fixture
+def added(monkeypatch):
+    """An empty list of added font folders for this test only.
+
+    The change counter is restored too, so a registry that resolved a name
+    while the test's folders were added drops that face afterwards.
+    """
+    monkeypatch.setattr(fontfinder, "_ADDED_DIRECTORIES", [])
+    monkeypatch.setattr(fontfinder, "_search_changes", fontfinder._search_changes)
+    return fontfinder._ADDED_DIRECTORIES
+
+
+def test_added_folders_come_after_the_bundled_fonts_and_before_the_windows_folders(windows, added, tmp_path):
+    system, user = windows
+    first, second = tmp_path / "first", tmp_path / "second"
+    fontfinder.add_directory(first)
+    fontfinder.add_directory(str(second))
+    assert fontfinder.search_directories() == (BUNDLED.resolve(), first, second, system, user)
+    write_font(system / "shared.ttf", renamed("GLP Added Shared"))
+    assert fontfinder.find_font("GLP Added Shared").path == (system / "shared.ttf").resolve()
+    write_font(second / "shared.ttf", renamed("GLP Added Shared"))
+    assert fontfinder.find_font("GLP Added Shared").path == (second / "shared.ttf").resolve()
+    write_font(first / "shared.ttf", renamed("GLP Added Shared"))
+    assert fontfinder.find_font("GLP Added Shared").path == (first / "shared.ttf").resolve()
+    write_font(first / "impostor.ttf", renamed("IPAexMincho", japanese="IPAex明朝"))
+    assert fontfinder.find_font("IPAex明朝").path == (BUNDLED / "ipaexm.ttf").resolve()
+
+
+def test_added_folders_are_searched_on_other_operating_systems(windows, added, tmp_path, monkeypatch):
+    system, _ = windows
+    monkeypatch.setattr(fontfinder, "_is_windows", lambda: False)
+    folder = tmp_path / "engine-fonts"
+    write_font(folder / "engine.ttf", renamed("GLP Engine"))
+    write_font(system / "windows-only.ttf", renamed("GLP Windows Only"))
+    fontfinder.add_directory(folder)
+    assert fontfinder.search_directories() == (BUNDLED.resolve(), folder)
+    assert fontfinder.find_font("GLP Engine").path == (folder / "engine.ttf").resolve()
+    with pytest.raises(FontError) as caught:
+        fontfinder.find_font("GLP Windows Only")
+    message = str(caught.value)
+    assert f"the bundled fonts and {folder}" in message
+    assert "other operating systems do not search system fonts" in message
+
+
+def test_adding_a_folder_again_keeps_its_first_place(windows, added, tmp_path):
+    system, user = windows
+    first, second = tmp_path / "first", tmp_path / "second"
+    for path in (first, second, str(first), first, Path(str(second))):
+        fontfinder.add_directory(path)
+    assert added == [first, second]
+    assert fontfinder.search_directories() == (BUNDLED.resolve(), first, second, system, user)
+
+
+def test_a_folder_listed_twice_is_searched_at_its_first_place(windows, added):
+    system, user = windows
+    fontfinder.add_directory(user)
+    fontfinder.add_directory(BUNDLED.resolve())
+    assert fontfinder.search_directories() == (BUNDLED.resolve(), user, system)
+
+
+@pytest.mark.parametrize("path", ["fonts", "", ".", Path("fonts"), b"C:/fonts", None, 3])
+def test_relative_or_non_path_folders_are_rejected(added, path):
+    with pytest.raises(ValueError, match="font folder"):
+        fontfinder.add_directory(path)
+    with pytest.raises(ValueError, match="font folder"):
+        fontfinder.remove_directory(path)
+    assert added == []
+
+
+def test_missing_added_folder_is_skipped_and_reported(windows, added, tmp_path):
+    system, _ = windows
+    missing = tmp_path / "no-such-fonts"
+    not_a_folder = tmp_path / "file.ttf"
+    write_font(not_a_folder, renamed("GLP Not A Folder"))
+    fontfinder.add_directory(missing)
+    fontfinder.add_directory(not_a_folder)
+    write_font(system / "system.ttf", renamed("GLP System"))
+    assert fontfinder.find_font("GLP System").path.name == "system.ttf"
+    with pytest.raises(FontError, match="was not found") as caught:
+        fontfinder.find_font("GLP Nowhere")
+    assert str(missing) in str(caught.value)
+    assert not missing.exists()
+    write_font(missing / "later.ttf", renamed("GLP Later Added"))
+    assert fontfinder.find_font("GLP Later Added").path == (missing / "later.ttf").resolve()
+
+
+def test_collection_face_index_in_an_added_folder_comes_from_the_name(windows, added, tmp_path):
+    folder = tmp_path / "engine-fonts"
+    folder.mkdir()
+    (folder / "pair.ttc").write_bytes(build_collection([
+        renamed("GLP Added Alpha"),
+        renamed("GLP Added Beta", japanese="GLP足し乙"),
+    ]))
+    fontfinder.add_directory(folder)
+    beta = fontfinder.find_font("GLP足し乙")
+    assert (beta.path, beta.face_index, beta.family) == ((folder / "pair.ttc").resolve(), 1, "GLP Added Beta")
+    assert not beta.bundled
+
+
+def test_removed_folder_is_no_longer_searched(windows, added, tmp_path):
+    system, user = windows
+    folder = tmp_path / "engine-fonts"
+    write_font(folder / "engine.ttf", renamed("GLP Removed"))
+    fontfinder.remove_directory(folder)  # Never added: nothing changes.
+    assert added == []
+    fontfinder.add_directory(folder)
+    assert fontfinder.find_font("GLP Removed").path.name == "engine.ttf"
+    fontfinder.remove_directory(str(folder))
+    assert fontfinder.search_directories() == (BUNDLED.resolve(), system, user)
+    with pytest.raises(FontError):
+        fontfinder.find_font("GLP Removed")
+
+
+def test_adding_a_folder_reads_nothing(tmp_path):
+    folder = tmp_path / "engine-fonts"
+    write_font(folder / "engine.ttf", renamed("GLP Not Read"))
+    probe = """
+import sys
+events = []
+def hook(event, args):
+    if event in ("open", "os.scandir", "os.listdir", "os.stat"):
+        events.append(str(args[0]) if args else "")
+from gridlayoutpdf import fontfinder
+sys.addaudithook(hook)
+fontfinder.add_directory(sys.argv[1])
+fontfinder.add_directory(sys.argv[1] + "-missing")
+print(repr([path for path in events if "engine-fonts" in path]))
+"""
+    result = subprocess.run([sys.executable, "-X", "utf8", "-c", probe, str(folder)], capture_output=True,
+                            text=True, encoding="utf-8", cwd=tmp_path, check=False)
+    assert result.returncode == 0, result.stderr
+    assert result.stdout.split() == ["[]"]
+
+
+def test_font_registry_drops_faces_resolved_before_the_folders_change(windows, added, tmp_path):
+    from gridlayoutpdf.fonts import FontRegistry
+
+    system, _ = windows
+    write_font(system / "system.ttf", renamed("GLP Moved"))
+    fonts = FontRegistry()
+    before = fonts.resolve("GLP Moved")
+    assert before.path == (system / "system.ttf").resolve()
+    assert fonts.resolve("GLP Moved") is before
+    folder = tmp_path / "engine-fonts"
+    write_font(folder / "engine.ttf", renamed("GLP Moved"))
+    fontfinder.add_directory(folder)
+    after = fonts.resolve("GLP Moved")
+    assert after.path == (folder / "engine.ttf").resolve()
+    assert fonts.resolve("GLP Moved") is after
+    fontfinder.add_directory(folder)  # Already added: the resolved face is kept.
+    assert fonts.resolve("GLP Moved") is after
+    fontfinder.remove_directory(folder)
+    assert fonts.resolve("GLP Moved").path == (system / "system.ttf").resolve()
+
+
+@needs_ms_fonts
+def test_ms_fonts_copied_into_an_added_folder_are_used_on_every_os(windows, added, tmp_path, monkeypatch):
+    from gridlayoutpdf.fonts import FontRegistry
+
+    folder = tmp_path / "engine-fonts"
+    folder.mkdir()
+    for file in ("msmincho.ttc", "msgothic.ttc"):
+        shutil.copyfile(WINDOWS_FONTS / file, folder / file)
+    fontfinder.add_directory(folder)
+    monkeypatch.setattr(fontfinder, "_is_windows", lambda: False)
+    for name, file, index in (("MS Mincho", "msmincho.ttc", 0), ("ＭＳ 明朝", "msmincho.ttc", 0),
+                              ("MS Gothic", "msgothic.ttc", 0), ("MS PGothic", "msgothic.ttc", 2),
+                              ("ＭＳ Ｐゴシック", "msgothic.ttc", 2)):
+        location = fontfinder.find_font(name)
+        assert (location.path, location.face_index) == ((folder / file).resolve(), index), name
+        assert not location.bundled
+    assert FontRegistry().measure("計算書", TextStyle(font="MS PGothic")).width > 0

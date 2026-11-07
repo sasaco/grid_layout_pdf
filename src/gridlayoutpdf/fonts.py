@@ -11,7 +11,7 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFError, TTFont
 
 from .errors import FontError
-from .fontfinder import FontLocation, face_names_at, find_font, forget
+from .fontfinder import FontLocation, _search_version, face_names_at, find_font, forget
 from .geometry import Rect
 from .styles import TextStyle, _finite_number
 
@@ -146,14 +146,24 @@ class FontRegistry:
     ``TextStyle.font`` holds a family or full name, in English or Japanese,
     from the font's name table. Names are looked up by
     :func:`gridlayoutpdf.fontfinder.find_font` only when first measured or
-    drawn; each registry then keeps the resolved face for that name.
+    drawn; each registry then keeps the resolved face for that name, until
+    a folder is added or removed with
+    :func:`gridlayoutpdf.fontfinder.add_directory` or
+    :func:`~gridlayoutpdf.fontfinder.remove_directory`. Add folders before
+    laying out a document, as measuring and drawing must use the same faces.
     Subclasses may override :meth:`resolve` and :meth:`measure`.
     """
 
     def __init__(self) -> None:
         self._faces: dict[str, FontFace] = {}
+        self._search_version = _search_version()
 
     def resolve(self, name: str) -> FontFace:
+        version = _search_version()
+        if version != self._search_version:
+            # The added font folders changed, so a name may now resolve to another file.
+            self._faces.clear()
+            self._search_version = version
         if isinstance(name, str):
             name = unicodedata.normalize("NFC", name)
         face = self._faces.get(name) if isinstance(name, str) else None

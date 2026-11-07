@@ -108,3 +108,20 @@ scene.Polyline に kw-only の fill・stroke を足し、_paint を線幅の名�
 ### Verification
 
 新しいテスト tests/unit/test_polyline_fill.py・test_polyline_fill_xlsx.py・tests/integration/test_polyline_fill_pdf.py。塗りなしの折れ線4本の PDF（invariant）と方眼Excel の SHA-256 を変更前の 85b0389 で採り、変更後も同じであることをテストにした。全件 3930 passed・2 skipped・1 failed（作業ツリーが CRLF の render.py の SHA-256 で落ちる片持ち梁の golden、変更前から）。uv build --wheel は通る。
+
+---
+
+## Current Feature: Added font folders (FR-030)
+<!-- orchestra:block-id: font-folders-20261108 -->
+
+### Status
+
+2026-11-08 structural-mcp の Phase 11 決定 27 からの依頼で、fontfinder.add_directory・remove_directory を足した。版は 0.5.0（新しい API なので minor）。commit・tag・push・Release は structural-mcp のナビゲーターがオーナーの許可（この1回の Release）で行う。
+
+### Implementation
+
+fontfinder にプロセスで1つの並び _ADDED_DIRECTORIES を置き、search_directories() は同梱・足したフォルダ・Windows のフォルダの順で、重なるフォルダは最初の位置だけにする。path は絶対パスのみ（相対・空・bytes・型違いは ValueError）、足すときには読まない。見つからないときの文言は、Windows 以外で足したフォルダがあれば「the bundled fonts and <フォルダ> (other operating systems do not search system fonts)」、なければ前と同じ。並びの変更の回数 _search_version() を FontRegistry が覚え、変わったら解決済みの書体を捨てる。
+
+### Verification
+
+tests/unit/test_fontfinder.py に 16 件（並び・2回目・同じフォルダ・相対パスの拒否・ないフォルダ・TTC の書体番号・外す・FontRegistry の捨て直し・MS 明朝/MS ゴシック/MS P ゴシックを写したフォルダを Windows 以外として探す）を足した。RED（16 errors）→ GREEN。全件の結果はコミットのメッセージに書く。

@@ -3,9 +3,11 @@
 A requested name may be any Windows-platform English (0x409) or Japanese
 (0x411) family name (nameID 1 or 16) or full name (nameID 4), matched exactly
 after NFC normalization. The search order is the fonts bundled with this
-package, then ``%WINDIR%\\Fonts``, then
+package, then the folders added with :func:`add_directory` (in the order they
+were added, on every operating system), then ``%WINDIR%\\Fonts``, then
 ``%LOCALAPPDATA%\\Microsoft\\Windows\\Fonts``. Other operating systems search
-only the bundled fonts. Nothing is read until a name is looked up.
+only the bundled fonts and the added folders. Nothing is read until a name is
+looked up.
 
 Within the first folder that has a match, matches are tried in tiers: full
 name (nameID 4), then family name (nameID 1), then typographic family name
@@ -33,8 +35,8 @@ import unicodedata
 from .errors import FontError
 
 __all__ = [
-    "BUNDLED_DIRECTORY", "FONT_SUFFIXES", "FaceNames", "FontLocation", "face_names_at",
-    "face_names_from", "find_font", "forget", "read_face_names", "search_directories",
+    "BUNDLED_DIRECTORY", "FONT_SUFFIXES", "FaceNames", "FontLocation", "add_directory", "face_names_at",
+    "face_names_from", "find_font", "forget", "read_face_names", "remove_directory", "search_directories",
 ]
 
 BUNDLED_DIRECTORY = Path(__file__).resolve().with_name("font_data")
@@ -45,6 +47,10 @@ _ENGLISH, _JAPANESE = 0x409, 0x411
 _LANGUAGES = (_ENGLISH, _JAPANESE)
 _WINDOWS_PLATFORM, _UNICODE_ENCODINGS = 3, (0, 1, 10)
 _SHA256 = re.compile(r"[0-9a-f]{64}")
+# Folders added with add_directory, searched in this order after the bundled fonts (one list per process).
+_ADDED_DIRECTORIES: list[Path] = []
+# Counts changes to the added folders, so a FontRegistry drops the faces it resolved before a change.
+_search_changes = 0
 
 
 @dataclass(frozen=True, slots=True)
@@ -109,13 +115,60 @@ def _absolute(variable: str) -> Path | None:
     return path if path.is_absolute() else None
 
 
-def search_directories() -> tuple[Path, ...]:
-    """Folders searched in order; Windows folders only exist on Windows.
+def _directory_argument(path: object) -> Path:
+    try:
+        if isinstance(path, bytes):
+            raise TypeError
+        directory = Path(path)  # type: ignore[arg-type]
+    except TypeError:
+        raise ValueError(f"A font folder must be a str or os.PathLike path: {path!r}") from None
+    if not directory.is_absolute():
+        # A relative folder would be searched relative to the working directory of each lookup.
+        raise ValueError(f"A font folder must be an absolute path: {path!r}")
+    return directory
 
-    ``%WINDIR%`` falls back to ``%SystemRoot%``. Unset or relative values are
-    not searched.
+
+def add_directory(path: str | os.PathLike[str]) -> None:
+    """Search the font folder ``path`` after the bundled fonts and before the Windows folders.
+
+    Added folders are searched on every operating system, in the order they
+    were first added; adding a folder that is already added changes nothing
+    (paths are compared as :class:`pathlib.Path` compares them). ``path`` must
+    be absolute, otherwise :class:`ValueError`. The folder is not read here: a
+    folder that is missing when a name is looked up is skipped, like a missing
+    Windows font folder. The list belongs to the process; a
+    :class:`~gridlayoutpdf.fonts.FontRegistry` drops the faces it resolved
+    before the list changed.
     """
-    directories = [BUNDLED_DIRECTORY]
+    global _search_changes
+    directory = _directory_argument(path)
+    if directory not in _ADDED_DIRECTORIES:
+        _ADDED_DIRECTORIES.append(directory)
+        _search_changes += 1
+
+
+def remove_directory(path: str | os.PathLike[str]) -> None:
+    """Stop searching a folder added with :func:`add_directory`; a folder never added changes nothing."""
+    global _search_changes
+    directory = _directory_argument(path)
+    if directory in _ADDED_DIRECTORIES:
+        _ADDED_DIRECTORIES.remove(directory)
+        _search_changes += 1
+
+
+def _search_version() -> int:
+    """A number that changes whenever the added folders change (used by FontRegistry)."""
+    return _search_changes
+
+
+def search_directories() -> tuple[Path, ...]:
+    """Folders searched in order: the bundled fonts, the added folders, then the Windows folders.
+
+    The Windows folders are searched only on Windows. ``%WINDIR%`` falls back
+    to ``%SystemRoot%``. Unset or relative values are not searched. A folder
+    listed twice is searched only at its first place.
+    """
+    directories = [BUNDLED_DIRECTORY, *_ADDED_DIRECTORIES]
     if _is_windows():
         windows = _absolute("WINDIR") or _absolute("SystemRoot")
         if windows is not None:
@@ -123,7 +176,7 @@ def search_directories() -> tuple[Path, ...]:
         local = _absolute("LOCALAPPDATA")
         if local is not None:
             directories.append(local / "Microsoft" / "Windows" / "Fonts")
-    return tuple(directories)
+    return tuple(dict.fromkeys(directories))
 
 
 @dataclass(frozen=True, slots=True)
@@ -428,12 +481,14 @@ def find_font(name: str) -> FontLocation:
         if entry is None:
             continue
         return FontLocation(entry.path, entry.face_index, entry.family, entry.sha256)
+    searched = ", ".join(str(directory) for directory in directories[1:])
     if _is_windows():
-        searched = ", ".join(str(directory) for directory in directories[1:])
         scope = (f"the bundled fonts and {searched}" if searched else
                  "the bundled fonts only (WINDIR, SystemRoot and LOCALAPPDATA give no absolute font folder)")
         if searched and _absolute("WINDIR") is None and _absolute("SystemRoot") is None:
             scope += " (WINDIR and SystemRoot are unset or relative, so the system font folder was not searched)"
+    elif searched:
+        scope = f"the bundled fonts and {searched} (other operating systems do not search system fonts)"
     else:
         scope = "only the bundled fonts (other operating systems do not search system fonts)"
     detail = ""
