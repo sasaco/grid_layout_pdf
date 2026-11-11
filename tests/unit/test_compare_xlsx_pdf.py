@@ -1,7 +1,7 @@
 """Step 10 second stage: the Excel-independent parts of scripts/compare_xlsx_pdf.py.
 
 Text pieces of the library PDF are matched by their text (whitespace removed)
-to Excel's PDF; equal texts take the nearest occurrence first, longer texts
+to Excel's PDF; equal texts take the occurrence of their size and the nearest first, longer texts
 are matched before shorter ones, and one printed glyph serves one piece.
 Positions are compared at the anchor the workbook cell's alignment gives
 (left, right or centre; top, bottom or middle), within one grid cell along the
@@ -108,6 +108,31 @@ def test_the_nearest_pair_is_assigned_before_a_farther_one():
     pieces = [P("7", Box(110, 50, 115, 60)), P("7", Box(100, 50, 105, 60))]
     result = match(pieces, [glyphs("7", 101, 50), glyphs("7", 130, 50)])
     assert sorted((item.piece.box.x0, item.box.x0) for item in result.matches) == [(100, 101), (110, 130)]
+
+
+def test_a_symbol_and_its_equal_subscript_each_take_the_print_of_their_size():
+    # "s" with the subscript "s", right-aligned in one cell and printed about 9 pt to the right (measured: WebPier's
+    # 0400, cell H255). The subscript lies nearer the printed symbol than the symbol itself does, but that print is
+    # 1.5 times its size: each takes the print of its own size, and both are within the tolerance.
+    area = cell(96.0, 348.0, 196.0, 364.0, "right")
+    pieces = [P("s", Box(176.35, 351.124, 181.35, 361.124)), P("s", Box(182.35, 356.052, 185.6, 362.552), size=6.5)]
+    rows = [(Glyph("s", Box(186.17, 351.014, 191.15, 360.974), size=9.96),),
+            (Glyph("s", Box(191.21, 355.821, 194.51, 362.421), size=6.6),)]
+    result = match(pieces, rows, [area])
+    assert [(item.piece.size, item.box.x0) for item in result.matches] == [(10.0, 186.17), (6.5, 191.21)]
+    assert result.outside == () and result.missing == ()
+
+
+def test_a_subscript_printed_at_the_base_size_still_fails_beside_its_equal_symbol():
+    # The same pair with the subscript lost (printed at the base size): the symbol takes the nearer print of its
+    # size, and the subscript is left with a print 1.5 times its size.
+    area = cell(96.0, 348.0, 196.0, 364.0, "right")
+    pieces = [P("s", Box(176.35, 351.124, 181.35, 361.124)), P("s", Box(182.35, 356.052, 185.6, 362.552), size=6.5)]
+    rows = [(Glyph("s", Box(184.0, 351.014, 188.98, 360.974), size=9.96),
+             Glyph("s", Box(188.98, 351.014, 193.96, 360.974), size=9.96))]
+    result = match(pieces, rows, [area])
+    assert [item.piece.size for item in result.outside] == [6.5]
+    assert result.outside[0].failures == ("size",)
 
 
 def test_longer_texts_are_matched_before_their_substrings():

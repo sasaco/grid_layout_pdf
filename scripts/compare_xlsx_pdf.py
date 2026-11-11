@@ -26,8 +26,10 @@ of every number cell. The checks are:
    and within one grid cell along its reading direction and half a cell
    across it (the page grid's pitch). Pieces are matched by text: Excel's
    glyphs of one direction and baseline are read in order as one row and
-   searched for the piece's text, longer texts first, equal texts nearest
-   first, one glyph for one piece. Excel prints the bundled IPAex faces with
+   searched for the piece's text, longer texts first, equal texts at about
+   the piece's size before the others (a symbol and its equal subscript in
+   one cell, "s" with the subscript "s", each take their own print) and
+   nearest first, one glyph for one piece. Excel prints the bundled IPAex faces with
    another face (measured: ＭＳ ゴシック), whose glyph widths differ, so
    positions are compared at the anchor the workbook cell's alignment gives:
    the left edge of a left-aligned cell, the right edge of a right-aligned
@@ -458,9 +460,13 @@ def match_page(pieces: Sequence[Piece], rows: Sequence[Sequence[Glyph]], cells: 
     """Match the library's pieces to Excel's glyph rows of the same page by text.
 
     Longer texts are matched first (a superscript "3" must not take the "3"
-    of "12.375"); the pieces of one text take Excel's occurrences nearest
-    first (distance in tolerances); a glyph serves one piece; a piece takes
-    only glyphs read in its direction. Glyphs no piece took are ``extra``.
+    of "12.375"); the pieces of one text take Excel's occurrences printed at
+    about their size (SIZE_RATIO_LIMITS) before the others, and nearest first
+    (distance in tolerances): a symbol and its equal subscript printed side by
+    side, both shifted the same way within the tolerance, would otherwise take
+    each other's glyphs and both fail by their size. A glyph serves one piece;
+    a piece takes only glyphs read in its direction. Glyphs no piece took are
+    ``extra``.
     The cell is the one of Excel's text, else (not for FR021 pieces, whose
     rule is the merged range Excel printed them in) the library piece's.
     """
@@ -492,9 +498,9 @@ def match_page(pieces: Sequence[Piece], rows: Sequence[Sequence[Glyph]], cells: 
                 item = Match(piece, box, dx, dy, limit, anchor, None if area is None else area.address, rule,
                              range_dy, inside, _size_ratio(piece, glyphs),
                              tuple(glyph.char for glyph in glyphs if glyph.clipped))
-                candidates.append((item.distance, index, row, start, item))
-        candidates.sort(key=lambda candidate: candidate[:4])
-        for _, index, row, start, item in candidates:
+                candidates.append(("size" in item.failures, item.distance, index, row, start, item))
+        candidates.sort(key=lambda candidate: candidate[:5])
+        for _, _, index, row, start, item in candidates:
             taken = {(row, k) for k in range(start, start + len(text))}
             if index in found or taken & used:
                 continue
